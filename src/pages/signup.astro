@@ -6,6 +6,6 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Login">
 	<main class="container mx-auto my-8">
 		<h1 class="text-4xl">Welcome, please create an account</h1>
-		<Signup client:load />
+		<Signup client:only="react" />
 	</main>
 </Layout>

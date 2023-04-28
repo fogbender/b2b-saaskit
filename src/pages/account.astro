@@ -6,6 +6,6 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Account">
 	<main class="container mx-auto my-8">
 		<h1 class="text-4xl">Here's your account</h1>
-		<Account client:load />
+		<Account client:only="react" />
 	</main>
 </Layout>
