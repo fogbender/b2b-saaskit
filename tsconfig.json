@@ -3,6 +3,8 @@
   "compilerOptions": {
     "exactOptionalPropertyTypes": false,
     "skipLibCheck": true,
-    "checkJs": true
+    "checkJs": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }
