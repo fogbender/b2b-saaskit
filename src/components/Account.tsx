@@ -6,6 +6,7 @@ import {
 } from '@propelauth/react';
 
 import '@propelauth/base-elements/dist/default.css';
+import { useEffect, useState } from 'react';
 
 export function Account() {
 	return (
@@ -19,6 +20,8 @@ function AccountInteral() {
 	const auth = useAuthInfo();
 	const logoutFn = useLogoutFunction();
 	const { redirectToCreateOrgPage, redirectToOrgPage } = useRedirectFunctions();
+
+	const [selectedOrgId, setSelectedOrgId] = useState('');
 
 	if (auth.loading === true) {
 		return <>Loading...</>;
@@ -60,13 +63,18 @@ function AccountInteral() {
 					console.log(org);
 					return (
 						<div key={org.orgId} className="ml-2">
-							<button>
-								<b>{org.orgName}</b>
+							<button
+								onClick={() => {
+									setSelectedOrgId(org.orgId);
+								}}
+							>
+								Select <b>{org.orgName}</b>
 							</button>
 							<br />
 						</div>
 					);
 				})}
+				{selectedOrgId && <Organizations token={auth.accessToken} orgId={selectedOrgId} />}
 			</div>
 			<details>
 				<summary className="cursor-pointer">Debug</summary>
@@ -75,3 +83,41 @@ function AccountInteral() {
 		</>
 	);
 }
+
+type User = {
+	userId: string;
+	email: string;
+};
+
+const Organizations = (props: { token: string; orgId: string }) => {
+	const [users, setUsers] = useState<User[]>([]);
+	const [status, setStatus] = useState<'loading' | 'error' | 'success'>('loading');
+	useEffect(() => {
+		setStatus('loading');
+		setUsers([]);
+		fetch('/api/orgs/' + props.orgId, {
+			headers: {
+				Authorization: 'Bearer ' + props.token,
+			},
+		})
+			.then(
+				(res) =>
+					res.json() as Promise<{
+						users: User[];
+					}>
+			)
+			.then((res) => res.users)
+			.then(setUsers)
+			.then(() => setStatus('success'));
+	}, [props.orgId]);
+	return (
+		<div>
+			Users: {status === 'loading' && 'Loading...'}
+			{status === 'error' && 'Error'}
+			{status === 'success' &&
+				users.map((user) => {
+					return <div key={user.userId}>{user.email}</div>;
+				})}
+		</div>
+	);
+};
