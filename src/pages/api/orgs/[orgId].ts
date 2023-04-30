@@ -1,14 +1,11 @@
 import type { APIRoute } from 'astro';
-import { handleError, initBaseAuth } from '@propelauth/node';
+import { handleError, initAuth as initBaseAuth } from '@propelauth/cloudflare-worker';
 
 export const get: APIRoute = async ({ params, request }) => {
 	const propelauth = initBaseAuth({
 		authUrl: import.meta.env.PUBLIC_AUTH_URL,
 		apiKey: import.meta.env.PROPELAUTH_API_KEY,
-		manualTokenVerificationMetadata: {
-			verifierKey: import.meta.env.PROPELAUTH_VERIFIER_KEY,
-			issuer: import.meta.env.PUBLIC_AUTH_URL,
-		},
+		verifierKey: import.meta.env.PROPELAUTH_VERIFIER_KEY,
 	});
 	const token = request.headers.get('Authorization');
 	try {
@@ -20,7 +17,7 @@ export const get: APIRoute = async ({ params, request }) => {
 			throw new Error('No orgId');
 		}
 		// check that we have access to this org
-		await propelauth.validateAccessTokenAndGetUserWithOrgInfo(token, { orgId });
+		await propelauth.validateAuthHeaderAndGetUserWithOrgInfo(token, { orgId });
 		// get users in org
 		const orgUsers = await propelauth.fetchUsersInOrg({ orgId });
 
