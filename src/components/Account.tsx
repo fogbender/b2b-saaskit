@@ -1,4 +1,9 @@
-import { AuthProvider, useAuthInfo, useLogoutFunction } from '@propelauth/react';
+import {
+	AuthProvider,
+	useAuthInfo,
+	useLogoutFunction,
+	useRedirectFunctions,
+} from '@propelauth/react';
 
 import '@propelauth/base-elements/dist/default.css';
 
@@ -13,11 +18,11 @@ export function Account() {
 function AccountInteral() {
 	const auth = useAuthInfo();
 	const logoutFn = useLogoutFunction();
+	const { redirectToCreateOrgPage, redirectToOrgPage } = useRedirectFunctions();
 
 	if (auth.loading === true) {
 		return <>Loading...</>;
 	}
-	console.log(auth);
 	if (auth.user === null) {
 		return (
 			<>
@@ -37,7 +42,36 @@ function AccountInteral() {
 			<button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={() => logoutFn(true)}>
 				Click here to log out
 			</button>
-			{JSON.stringify(auth)}
+			<button
+				className="px-4 py-2 bg-blue-500 text-white rounded ml-2"
+				onClick={() => redirectToOrgPage()}
+			>
+				Manage orgs
+			</button>
+			<button
+				className="px-4 py-2 bg-blue-500 text-white rounded ml-2"
+				onClick={() => redirectToCreateOrgPage()}
+			>
+				Create org
+			</button>
+			<div>
+				My orgs:
+				{auth.orgHelper.getOrgs().map((org) => {
+					console.log(org);
+					return (
+						<div key={org.orgId} className="ml-2">
+							<button>
+								<b>{org.orgName}</b>
+							</button>
+							<br />
+						</div>
+					);
+				})}
+			</div>
+			<details>
+				<summary className="cursor-pointer">Debug</summary>
+				{JSON.stringify(auth)}
+			</details>
 		</>
 	);
 }
