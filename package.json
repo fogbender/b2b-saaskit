@@ -14,6 +14,7 @@
     "@astrojs/react": "^2.1.1",
     "@astrojs/vercel": "^3.2.5",
     "@propelauth/base-elements": "^0.0.16",
+    "@propelauth/node": "^2.1.0",
     "@propelauth/react": "2.1.0-beta.4",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
