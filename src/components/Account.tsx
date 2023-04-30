@@ -34,7 +34,7 @@ function AccountInteral() {
 					Login
 				</a>
 				<a href="/signup" className="ml-2 px-4 py-2 bg-blue-500 text-white rounded">
-					Signup
+					Sign up
 				</a>
 			</>
 		);
