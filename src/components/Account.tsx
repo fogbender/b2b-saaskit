@@ -1,4 +1,4 @@
-import { AuthProvider, useAuthInfo } from '@propelauth/react';
+import { AuthProvider, useAuthInfo, useLogoutFunction } from '@propelauth/react';
 
 import '@propelauth/base-elements/dist/default.css';
 
@@ -12,8 +12,13 @@ export function Account() {
 
 function AccountInteral() {
 	const auth = useAuthInfo();
+	const logoutFn = useLogoutFunction();
+
+	if (auth.loading === true) {
+		return <>Loading...</>;
+	}
 	console.log(auth);
-	if (auth.loading === false && auth.user === null) {
+	if (auth.user === null) {
 		return (
 			<>
 				<h1 className="text-2xl font-bold text-center">Not logged in</h1>
@@ -26,5 +31,13 @@ function AccountInteral() {
 			</>
 		);
 	}
-	return <>{JSON.stringify(auth)}</>;
+	return (
+		<>
+			<p>The User is logged in</p>
+			<button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={() => logoutFn(true)}>
+				Click here to log out
+			</button>
+			{JSON.stringify(auth)}
+		</>
+	);
 }
