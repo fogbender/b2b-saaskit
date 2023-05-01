@@ -1,38 +1,48 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Doppler from './b2b-saaskit/01_doppler.md';
+import DopplerTutorial from './b2b-saaskit/02_doppler_tutorial.md';
+import PropelAuth from './b2b-saaskit/03_propelauth.md';
+import Congrats from './b2b-saaskit/99_congrats.md';
 export const prerender = true;
+const checks = [
+	{
+		stepName: '01_DOPPLER',
+		havePassed: () => {
+			return import.meta.env.DOPPLER_PROJECT !== undefined;
+		},
+	},
+	{
+		stepName: '02_DOPPLER_TUTORIAL',
+		havePassed: () => {
+			return import.meta.env.DOPPLER_TUTORIAL !== undefined;
+		},
+	},
+	{
+		stepName: '03_PROPELAUTH',
+		havePassed: () => {
+			return import.meta.env.PUBLIC_AUTH_URL !== undefined;
+		},
+	},
+] as const satisfies Readonly<
+	{
+		stepName: string;
+		havePassed: () => boolean;
+	}[]
+>;
+const firstFailedCheck = checks.find((check) => !check.havePassed())?.stepName;
 ---
 
-<Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
+<Layout title="Welcome to B2B SaaSKit.">
+	<main class="container">
+		<h1>Welcome to <span class="text-gradient">B2B SaaSKit</span></h1>
+		<div class="instructions prose max-w-none">
+			{firstFailedCheck === '01_DOPPLER' && <Doppler />}
+			{firstFailedCheck === '02_DOPPLER_TUTORIAL' && <DopplerTutorial />}
+			{firstFailedCheck === '03_PROPELAUTH' && <PropelAuth />}
+			{firstFailedCheck === '03_PROPELAUTH' && <PropelAuth />}
+			{firstFailedCheck === undefined && <Congrats />}
+		</div>
 	</main>
 </Layout>
 
@@ -40,7 +50,6 @@ export const prerender = true;
 	main {
 		margin: auto;
 		padding: 1.5rem;
-		max-width: 60ch;
 	}
 	h1 {
 		font-size: 3rem;
@@ -61,22 +70,5 @@ export const prerender = true;
 		background-color: white;
 		padding: 1rem;
 		border-radius: 0.4rem;
-	}
-	.instructions code {
-		font-size: 0.875em;
-		font-weight: bold;
-		background: rgba(var(--accent), 12%);
-		color: rgb(var(--accent));
-		border-radius: 4px;
-		padding: 0.3em 0.45em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent));
-	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
-		padding: 0;
 	}
 </style>
