@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Prod from './b2b-saaskit/00_production.md';
 import Doppler from './b2b-saaskit/01_doppler.md';
 import DopplerTutorial from './b2b-saaskit/02_doppler_tutorial.md';
 import PropelAuth from './b2b-saaskit/03_propelauth.md';
@@ -30,13 +31,16 @@ const checks = [
 		havePassed: () => boolean;
 	}[]
 >;
-const firstFailedCheck = checks.find((check) => !check.havePassed())?.stepName;
+const firstFailedCheck = import.meta.env.PROD
+	? ('00_prod' as const)
+	: checks.find((check) => !check.havePassed())?.stepName;
 ---
 
 <Layout title="Welcome to B2B SaaSKit.">
 	<main class="container">
 		<h1>Welcome to <span class="text-gradient">B2B SaaSKit</span></h1>
 		<div class="instructions prose max-w-none">
+			{firstFailedCheck === '00_prod' && <Prod />}
 			{firstFailedCheck === '01_DOPPLER' && <Doppler />}
 			{firstFailedCheck === '02_DOPPLER_TUTORIAL' && <DopplerTutorial />}
 			{firstFailedCheck === '03_PROPELAUTH' && <PropelAuth />}
