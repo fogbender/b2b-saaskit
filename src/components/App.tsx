@@ -11,8 +11,10 @@ import { useMemo } from 'react';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
 import { QueryProvider, apiServer, queryKeys, useQuery } from './client';
 import type { FogbenderTokenResponse } from '../types/types';
+import { env } from '../env';
 
 export function App() {
+	console.log(env);
 	return (
 		<AuthProvider authUrl={import.meta.env.PUBLIC_AUTH_URL}>
 			<QueryProvider>
