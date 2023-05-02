@@ -19,10 +19,12 @@
     "@tanstack/eslint-plugin-query": "^4.29.4",
     "@tanstack/react-query": "^4.29.5",
     "@tanstack/react-query-devtools": "^4.29.6",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "astro": "^2.3.2",
     "fogbender-react": "^0.2.11",
+    "jsonwebtoken": "^9.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "wretch": "^2.5.2"
