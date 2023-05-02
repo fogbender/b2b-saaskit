@@ -1,0 +1,12 @@
+---
+import { App } from '../../components/App';
+import Layout from '../../layouts/Layout.astro';
+export const prerender = true;
+---
+
+<Layout title="App">
+	<main class="container mx-auto my-8">
+		<h1 class="text-4xl">Welcome to the app</h1>
+		<App client:only="react" />
+	</main>
+</Layout>
