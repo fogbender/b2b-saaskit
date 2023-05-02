@@ -4,6 +4,7 @@ import Prod from './b2b-saaskit/00_production.md';
 import Doppler from './b2b-saaskit/01_doppler.md';
 import DopplerTutorial from './b2b-saaskit/02_doppler_tutorial.md';
 import PropelAuth from './b2b-saaskit/03_propelauth.md';
+import Fogbender from './b2b-saaskit/04_fogbender.md';
 import Congrats from './b2b-saaskit/99_congrats.md';
 export const prerender = true;
 const checks = [
@@ -23,6 +24,15 @@ const checks = [
 		stepName: '03_PROPELAUTH',
 		havePassed: () => {
 			return import.meta.env.PUBLIC_AUTH_URL !== undefined;
+		},
+	},
+	{
+		stepName: '04_FOGBENDER',
+		havePassed: () => {
+			return (
+				import.meta.env.PUBLIC_FOGBENDER_WIDGET_ID !== undefined &&
+				import.meta.env.FOGBENDER_SECRET !== undefined
+			);
 		},
 	},
 ] as const satisfies Readonly<
@@ -45,6 +55,7 @@ const firstFailedCheck = import.meta.env.PROD
 			{firstFailedCheck === '02_DOPPLER_TUTORIAL' && <DopplerTutorial />}
 			{firstFailedCheck === '03_PROPELAUTH' && <PropelAuth />}
 			{firstFailedCheck === '03_PROPELAUTH' && <PropelAuth />}
+			{firstFailedCheck === '04_FOGBENDER' && <Fogbender />}
 			{firstFailedCheck === undefined && <Congrats />}
 		</div>
 	</main>

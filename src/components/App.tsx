@@ -6,13 +6,18 @@ import {
 	OrgMemberInfo,
 	useRedirectFunctions,
 } from '@propelauth/react';
-
+import { FogbenderSimpleFloatie } from 'fogbender-react';
+import { useMemo } from 'react';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
+import { QueryProvider, apiServer, queryKeys, useQuery } from './client';
+import type { FogbenderTokenResponse } from '../types/types';
 
 export function App() {
 	return (
 		<AuthProvider authUrl={import.meta.env.PUBLIC_AUTH_URL}>
-			<AccountInteral />
+			<QueryProvider>
+				<AccountInteral />
+			</QueryProvider>
 		</AuthProvider>
 	);
 }
@@ -91,6 +96,35 @@ const AppWithOrg = ({
 	auth: UseAuthInfoLoggedInProps;
 	activeOrg: OrgMemberInfo;
 }) => {
+	const fogbenderQuery = useQuery({
+		queryKey: queryKeys.fogbender(auth.user.userId, activeOrg.orgId),
+		queryFn: () =>
+			apiServer
+				.url('/api/fogbender')
+				.auth('Bearer ' + auth.accessToken)
+				.json({ orgId: activeOrg.orgId })
+				.post()
+				.json<FogbenderTokenResponse>(),
+		staleTime: Infinity,
+	});
+	const userJWT = fogbenderQuery.data?.userJWT;
+	// token is undefined until we got the userJWT from out backend (because it needs to be signed with fogbender secret)
+	const token = useMemo(() => {
+		if (!userJWT) {
+			return;
+		}
+		return {
+			widgetId: import.meta.env.PUBLIC_FOGBENDER_WIDGET_ID,
+			customerId: activeOrg.orgId,
+			customerName: activeOrg.orgName,
+			userId: auth.user.userId,
+			userEmail: auth.user.email,
+			userName: auth.user.email, // Don’t know the name? Reuse email here
+			userAvatarUrl: auth.user.pictureUrl,
+			userJWT,
+		};
+	}, [auth.user, activeOrg, fogbenderQuery.data?.userJWT]);
+
 	return (
 		<>
 			<div>
@@ -106,7 +140,10 @@ const AppWithOrg = ({
 				</button>
 			</div>
 			<br />
-			<div>Something here</div>
+			<div>
+				Something here
+				{token && <FogbenderSimpleFloatie token={token} />}
+			</div>
 		</>
 	);
 };
