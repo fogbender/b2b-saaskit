@@ -104,6 +104,10 @@ const AppWithOrg = ({
 				.auth('Bearer ' + auth.accessToken)
 				.json({ orgId: activeOrg.orgId })
 				.post()
+				.unauthorized((e) => {
+					console.error('Failed to get userJWT', e);
+					return { userJWT: undefined };
+				})
 				.json<FogbenderTokenResponse>(),
 		staleTime: Infinity,
 	});
