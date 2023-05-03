@@ -3,14 +3,15 @@ import { handleError, initBaseAuth } from '@propelauth/node';
 import jsonwebtoken from 'jsonwebtoken';
 
 import type { FogbenderTokenResponse } from '../../types/types';
+import { serverEnv } from '../../t3-env';
 
 export const post: APIRoute = async ({ request }) => {
 	const propelauth = initBaseAuth({
-		authUrl: import.meta.env.PUBLIC_AUTH_URL,
-		apiKey: import.meta.env.PROPELAUTH_API_KEY,
+		authUrl: serverEnv.PUBLIC_AUTH_URL,
+		apiKey: serverEnv.PROPELAUTH_API_KEY,
 		manualTokenVerificationMetadata: {
-			verifierKey: import.meta.env.PROPELAUTH_VERIFIER_KEY,
-			issuer: import.meta.env.PUBLIC_AUTH_URL,
+			verifierKey: serverEnv.PROPELAUTH_VERIFIER_KEY,
+			issuer: serverEnv.PUBLIC_AUTH_URL,
 		},
 	});
 	const token = request.headers.get('Authorization');
@@ -33,7 +34,7 @@ export const post: APIRoute = async ({ request }) => {
 			customerId: orgMemberInfo.orgId,
 		};
 
-		const secret = import.meta.env.FOGBENDER_SECRET;
+		const secret = serverEnv.FOGBENDER_SECRET;
 		const userJWT = jsonwebtoken.sign(unsignedToken, secret, {
 			algorithm: 'HS256',
 		});

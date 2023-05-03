@@ -11,10 +11,11 @@ import { useMemo } from 'react';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
 import { QueryProvider, apiServer, queryKeys, useQuery } from './client';
 import type { FogbenderTokenResponse } from '../types/types';
+import { env } from '../config';
 
 export function App() {
 	return (
-		<AuthProvider authUrl={import.meta.env.PUBLIC_AUTH_URL}>
+		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<QueryProvider>
 				<AccountInteral />
 			</QueryProvider>
@@ -118,7 +119,7 @@ const AppWithOrg = ({
 			return;
 		}
 		return {
-			widgetId: import.meta.env.PUBLIC_FOGBENDER_WIDGET_ID,
+			widgetId: env.PUBLIC_FOGBENDER_WIDGET_ID,
 			customerId: activeOrg.orgId,
 			customerName: activeOrg.orgName,
 			userId: auth.user.userId,

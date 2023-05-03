@@ -1,13 +1,14 @@
 import type { APIRoute } from 'astro';
 import { handleError, initBaseAuth } from '@propelauth/node';
+import { serverEnv } from '../../../t3-env';
 
 export const get: APIRoute = async ({ params, request }) => {
 	const propelauth = initBaseAuth({
-		authUrl: import.meta.env.PUBLIC_AUTH_URL,
-		apiKey: import.meta.env.PROPELAUTH_API_KEY,
+		authUrl: serverEnv.PUBLIC_AUTH_URL,
+		apiKey: serverEnv.PROPELAUTH_API_KEY,
 		manualTokenVerificationMetadata: {
-			verifierKey: import.meta.env.PROPELAUTH_VERIFIER_KEY,
-			issuer: import.meta.env.PUBLIC_AUTH_URL,
+			verifierKey: serverEnv.PROPELAUTH_VERIFIER_KEY,
+			issuer: serverEnv.PUBLIC_AUTH_URL,
 		},
 	});
 	const token = request.headers.get('Authorization');

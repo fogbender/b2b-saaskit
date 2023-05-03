@@ -6,13 +6,14 @@ import {
 
 import { BaseElements } from '@propelauth/base-elements';
 import '@propelauth/base-elements/dist/default.css';
+import { env } from '../config';
 
 export function Signup() {
 	const redirectToYourProduct = () => {
 		window.location.href = '/';
 	};
 	return (
-		<AuthProvider authUrl={import.meta.env.PUBLIC_AUTH_URL}>
+		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<BetaComponentLibraryProvider elements={BaseElements}>
 				<SignupManager
 					onSignupCompleted={redirectToYourProduct}

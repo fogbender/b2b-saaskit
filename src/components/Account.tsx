@@ -7,10 +7,11 @@ import {
 
 import '@propelauth/base-elements/dist/default.css';
 import { useEffect, useState } from 'react';
+import { env } from '../config';
 
 export function Account() {
 	return (
-		<AuthProvider authUrl={import.meta.env.PUBLIC_AUTH_URL}>
+		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<AccountInteral />
 		</AuthProvider>
 	);
