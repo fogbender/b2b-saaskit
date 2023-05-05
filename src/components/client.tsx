@@ -2,13 +2,11 @@ import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-quer
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import wretch from 'wretch';
 
-export const queryClient = new QueryClient();
-
 export { useQuery };
 
-export function QueryProvider(props: { children: React.ReactNode }) {
+export function QueryProvider(props: { queryClient: QueryClient; children: React.ReactNode }) {
 	return (
-		<QueryClientProvider client={queryClient}>
+		<QueryClientProvider client={props.queryClient}>
 			{props.children}
 			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>

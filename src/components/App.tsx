@@ -9,16 +9,17 @@ import {
 import { FogbenderSimpleFloatie } from 'fogbender-react';
 import { useMemo } from 'react';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
-import { QueryProvider, apiServer, queryKeys, useQuery } from './client';
+import { apiServer, queryKeys, useQuery } from './client';
 import type { FogbenderTokenResponse } from '../types/types';
 import { env } from '../config';
+import { trpc, TRPCProvider } from './trpc';
 
 export function App() {
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
-			<QueryProvider>
+			<TRPCProvider>
 				<AccountInteral />
-			</QueryProvider>
+			</TRPCProvider>
 		</AuthProvider>
 	);
 }
@@ -97,6 +98,7 @@ const AppWithOrg = ({
 	auth: UseAuthInfoLoggedInProps;
 	activeOrg: OrgMemberInfo;
 }) => {
+	const helloQuery = trpc.hello.useQuery();
 	const fogbenderQuery = useQuery({
 		queryKey: queryKeys.fogbender(auth.user.userId, activeOrg.orgId),
 		queryFn: () =>
@@ -146,7 +148,7 @@ const AppWithOrg = ({
 			</div>
 			<br />
 			<div>
-				Something here
+				{helloQuery?.data}
 				{token && <FogbenderSimpleFloatie token={token} />}
 			</div>
 		</>
