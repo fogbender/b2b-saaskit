@@ -12,7 +12,6 @@ function validateEnv<
 const x = validateEnv({
 	clientPrefix: 'PUBLIC_',
 	server: {
-		PUBLIC_AUTH_URL: z.string().url(),
 		PROPELAUTH_API_KEY: z.string().min(1),
 		PROPELAUTH_VERIFIER_KEY: z.string().min(1),
 		FOGBENDER_SECRET: z.string().min(1),
