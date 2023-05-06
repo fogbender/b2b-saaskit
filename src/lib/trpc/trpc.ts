@@ -71,6 +71,8 @@ import { parse } from 'cookie';
 import superjson from 'superjson';
 import { unthunk } from 'unthunk';
 import { ZodError } from 'zod';
+import { AUTH_COOKIE_NAME, HTTP_ONLY_AUTH_COOKIE_NAME } from '../../constants';
+import { propelauth } from '../propelauth';
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
 	transformer: superjson,
@@ -126,5 +128,27 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 			resHeaders: ctx.resHeaders,
 			parsedCookies: () => parse(req.headers.get('cookie') || ''),
 		}),
+	});
+});
+
+export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
+	const newCtx = unthunk({
+		accessToken: () => {
+			const { parsedCookies } = ctx;
+			if (parsedCookies[AUTH_COOKIE_NAME] && parsedCookies[HTTP_ONLY_AUTH_COOKIE_NAME]) {
+				const httpOnlyCookie = new URLSearchParams(parsedCookies[HTTP_ONLY_AUTH_COOKIE_NAME]);
+				return httpOnlyCookie.get('accessToken') || undefined;
+			}
+			return;
+		},
+		userPromise: async () => {
+			return await propelauth
+				.validateAccessTokenAndGetUser('Bearer ' + newCtx.accessToken)
+				.then((user) => ({ kind: 'ok' as const, user }))
+				.catch((e) => ({ kind: 'error' as const, error: e.message }));
+		},
+	});
+	return next({
+		ctx: newCtx,
 	});
 });

@@ -4,7 +4,10 @@ import Layout from '../../layouts/Layout.astro';
 import { createCaller } from '../../lib/trpc/root';
 export const prerender = true;
 
-const callerExample = await createCaller({}).hello.hello();
+const callerExample = await createCaller({
+	req: Astro.request,
+	resHeaders: Astro.response.headers,
+}).hello.hello();
 console.log('callerExample', callerExample);
 ---
 
