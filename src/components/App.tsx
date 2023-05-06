@@ -3,11 +3,11 @@ import {
 	useActiveOrg,
 	useAuthInfo,
 	saveOrgSelectionToLocalStorage,
-	OrgMemberInfo,
 	useRedirectFunctions,
-} from '@propelauth/react';
+} from './propelauth';
 import { FogbenderSimpleFloatie } from 'fogbender-react';
 import { useMemo } from 'react';
+import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
 import { apiServer, queryKeys, useQuery } from './client';
 import type { FogbenderTokenResponse } from '../types/types';

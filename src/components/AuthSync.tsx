@@ -1,4 +1,4 @@
-import { useAuthInfo } from '@propelauth/react';
+import { useAuthInfo } from './propelauth';
 import { useMemo, useEffect } from 'react';
 import { trpc } from './trpc';
 import cookie from 'js-cookie';

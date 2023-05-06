@@ -1,8 +1,4 @@
-import {
-	AuthProvider,
-	BetaComponentLibraryProvider,
-	Signup as SignupManager,
-} from '@propelauth/react';
+import { AuthProvider, BetaComponentLibraryProvider, Signup as SignupManager } from './propelauth';
 
 import { BaseElements } from '@propelauth/base-elements';
 import '@propelauth/base-elements/dist/default.css';

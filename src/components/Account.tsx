@@ -1,9 +1,4 @@
-import {
-	AuthProvider,
-	useAuthInfo,
-	useLogoutFunction,
-	useRedirectFunctions,
-} from '@propelauth/react';
+import { AuthProvider, useAuthInfo, useLogoutFunction, useRedirectFunctions } from './propelauth';
 
 import '@propelauth/base-elements/dist/default.css';
 import { useEffect, useState } from 'react';
