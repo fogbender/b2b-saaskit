@@ -1,7 +1,11 @@
 ---
 import { App } from '../../components/App';
 import Layout from '../../layouts/Layout.astro';
+import { createCaller } from '../../lib/trpc/root';
 export const prerender = true;
+
+const callerExample = await createCaller({}).hello.hello();
+console.log('callerExample', callerExample);
 ---
 
 <Layout title="App">

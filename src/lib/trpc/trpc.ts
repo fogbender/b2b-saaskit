@@ -18,10 +18,17 @@
  *
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
+type CreateAstroContextOptions = Partial<{
+	/** The incoming request. */
+	req: Request;
+	/** The outgoing headers. */
+	resHeaders: Headers;
+}>;
 
 /** Replace this with an object if you want to pass things to `createContextInner`. */
-type CreateContextOptions = Record<string, never>;
+type CreateContextOptions = {
+	userId?: string;
+};
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -33,8 +40,8 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
-	return {};
+const createInnerTRPCContext = (opts: CreateContextOptions) => {
+	return opts;
 };
 
 /**
@@ -42,9 +49,14 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * that goes through your tRPC endpoint.
  *
  * @see https://trpc.io/docs/context
+ * @see https://trpc.io/docs/server/context#inner-and-outer-context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-	return createInnerTRPCContext({});
+export const createTRPCContext = (opts: CreateAstroContextOptions) => {
+	const contextInner = createInnerTRPCContext({});
+	return {
+		...contextInner,
+		...opts,
+	};
 };
 
 /**
