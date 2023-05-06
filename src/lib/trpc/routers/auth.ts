@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { serialize, parse } from 'cookie';
+import { serialize } from 'cookie';
 import jwt from 'jsonwebtoken';
 
 import { createTRPCRouter, apiProcedure } from '../trpc';
@@ -16,7 +16,7 @@ export const authRouter = createTRPCRouter({
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
-			const currentCookies = parse(ctx.req.headers.get('cookie') || '');
+			const currentCookies = ctx.parsedCookies;
 			const set = (key: string, value: string) => {
 				ctx.resHeaders.append(
 					'set-cookie',

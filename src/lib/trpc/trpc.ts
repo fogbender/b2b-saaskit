@@ -67,7 +67,9 @@ export const createTRPCContext = (opts: CreateAstroContextOptions) => {
  * errors on the backend.
  */
 import { initTRPC } from '@trpc/server';
+import { parse } from 'cookie';
 import superjson from 'superjson';
+import { unthunk } from 'unthunk';
 import { ZodError } from 'zod';
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
@@ -116,11 +118,13 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 	if (!ctx.req || !ctx.resHeaders) {
 		throw new Error('You are missing `req` or `resHeaders` in your call.');
 	}
+	const req = ctx.req;
 	// context is merged, not replaced
 	return next({
-		ctx: {
-			req: ctx.req,
+		ctx: unthunk({
+			req,
 			resHeaders: ctx.resHeaders,
-		},
+			parsedCookies: () => parse(req.headers.get('cookie') || ''),
+		}),
 	});
 });
