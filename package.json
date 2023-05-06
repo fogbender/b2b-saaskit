@@ -35,6 +35,7 @@
     "jsonwebtoken": "^9.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "unthunk": "^0.0.1",
     "wretch": "^2.5.2"
   },
   "devDependencies": {
