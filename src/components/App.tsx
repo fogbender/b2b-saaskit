@@ -13,11 +13,13 @@ import { apiServer, queryKeys, useQuery } from './client';
 import type { FogbenderTokenResponse } from '../types/types';
 import { env } from '../config';
 import { trpc, TRPCProvider } from './trpc';
+import { AuthSync } from './AuthSync';
 
 export function App() {
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<TRPCProvider>
+				<AuthSync />
 				<AccountInteral />
 			</TRPCProvider>
 		</AuthProvider>

@@ -105,3 +105,22 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+/**
+ * Procedure that requires request and response headers
+ *
+ * This will make sure that you can only call this procedure if you are handing API request and you
+ * will send the response back to the client.
+ */
+export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
+	if (!ctx.req || !ctx.resHeaders) {
+		throw new Error('You are missing `req` or `resHeaders` in your call.');
+	}
+	// context is merged, not replaced
+	return next({
+		ctx: {
+			req: ctx.req,
+			resHeaders: ctx.resHeaders,
+		},
+	});
+});
