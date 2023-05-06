@@ -21,6 +21,11 @@ export const all: APIRoute = ({ request }) => {
 				req,
 			};
 		},
+		onError({ error }) {
+			if (import.meta.env.DEV && error.code === 'INTERNAL_SERVER_ERROR') {
+				throw new Error(error as unknown as string);
+			}
+		},
 	});
 };
 export type AppRouter = typeof router;
