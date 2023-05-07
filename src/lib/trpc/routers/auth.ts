@@ -51,7 +51,7 @@ export const authRouter = createTRPCRouter({
 			const res = await propelauth
 				.validateAccessTokenAndGetUser('Bearer ' + input.accessToken)
 				.then((user) => ({ kind: 'ok' as const, user }))
-				.catch((e) => ({ kind: 'error' as const, error: e.message }));
+				.catch((error) => ({ kind: 'error' as const, error }));
 			if (res.kind === 'error') {
 				reset();
 				throw new TRPCError({
