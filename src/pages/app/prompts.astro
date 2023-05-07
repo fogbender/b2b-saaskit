@@ -1,19 +1,23 @@
 ---
-import { App } from '../../components/App';
+import { Prompts } from '../../components/Prompts';
 import Layout from '../../layouts/Layout.astro';
 import { createCaller } from '../../lib/trpc/root';
-export const prerender = true;
 
-const callerExample = await createCaller({
+export const prerender = false; // to enable cookies
+
+const prompts = await createCaller({
 	req: Astro.request,
 	resHeaders: Astro.response.headers,
-}).hello.hello();
-console.log('callerExample', callerExample);
+}).prompts.getPrompts();
+console.log('callerExample', prompts);
+
+// Create a single supabase client for interacting with your database
 ---
 
-<Layout title="App">
+<Layout title="Your prompts">
 	<main class="container mx-auto my-8">
 		<h1 class="text-4xl">Prompts with Friends</h1>
+		{JSON.stringify(prompts)}
 		<ul
 			class="flex flex-col md:flex-row md:pt-0 md:self-center md:text-base md:w-auto pt-8 text-xl w-full"
 		>
@@ -39,6 +43,6 @@ console.log('callerExample', callerExample);
 				>
 			</li>
 		</ul>
-		<App client:load />
+		<Prompts client:load prompts={prompts} />
 	</main>
 </Layout>

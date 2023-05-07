@@ -1,8 +1,6 @@
 import type { APIRoute } from 'astro';
 import { handleError, initBaseAuth } from '@propelauth/node';
-import jsonwebtoken from 'jsonwebtoken';
-
-import type { FogbenderTokenResponse } from '../../types/types';
+import type { FogbenderAuthResponse } from '../../types/types';
 import { serverEnv } from '../../t3-env';
 
 export const post: APIRoute = async ({ request }) => {
@@ -24,27 +22,17 @@ export const post: APIRoute = async ({ request }) => {
 			throw new Error('No orgId');
 		}
 		// check that we have access to this org
-		const { user, orgMemberInfo } = await propelauth.validateAccessTokenAndGetUserWithOrgInfo(
-			token,
-			{ orgId }
-		);
+		await propelauth.validateAccessTokenAndGetUserWithOrgInfo(token, { orgId });
 
-		const unsignedToken = {
-			userId: user.userId,
-			customerId: orgMemberInfo.orgId,
-		};
-
-		const secret = serverEnv.FOGBENDER_SECRET;
-		const userJWT = jsonwebtoken.sign(unsignedToken, secret, {
-			algorithm: 'HS256',
-		});
-
-		const responseData: FogbenderTokenResponse = {
-			...unsignedToken,
-			userJWT,
+		const responseData: FogbenderAuthResponse = {
+			done: true,
 		};
 		const headers = new Headers();
-		headers.set('Set-Cookie', `fogbender=${userJWT}; Path=/; HttpOnly; Secure; SameSite=Strict`);
+		headers.append(
+			'set-cookie',
+			`b2b_propel_header=${token}; Path=/; HttpOnly; Secure; SameSite=Strict`
+		);
+		headers.append('set-cookie', `b2b_propel_auth=true; Path=/; Secure; SameSite=Strict`);
 		return new Response(JSON.stringify(responseData), { status: 200, headers });
 	} catch (e) {
 		const err = handleError(e, { logError: true, returnDetailedErrorToUser: false });

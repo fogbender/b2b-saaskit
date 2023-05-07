@@ -145,7 +145,7 @@ export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 			return await propelauth
 				.validateAccessTokenAndGetUser('Bearer ' + newCtx.accessToken)
 				.then((user) => ({ kind: 'ok' as const, user }))
-				.catch((e) => ({ kind: 'error' as const, error: e.message }));
+				.catch((error) => ({ kind: 'error' as const, error }));
 		},
 	});
 	return next({

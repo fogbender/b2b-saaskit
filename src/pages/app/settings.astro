@@ -1,17 +1,15 @@
 ---
 import { App } from '../../components/App';
 import Layout from '../../layouts/Layout.astro';
-import { createCaller } from '../../lib/trpc/root';
-export const prerender = true;
+import { getUser } from '../../lib/propelauth';
+export const prerender = false; // to enable cookies
 
-const callerExample = await createCaller({
-	req: Astro.request,
-	resHeaders: Astro.response.headers,
-}).hello.hello();
-console.log('callerExample', callerExample);
+const user = await getUser(Astro.cookies);
+
+console.log(user);
 ---
 
-<Layout title="App">
+<Layout title="Settings">
 	<main class="container mx-auto my-8">
 		<h1 class="text-4xl">Prompts with Friends</h1>
 		<ul
@@ -39,6 +37,6 @@ console.log('callerExample', callerExample);
 				>
 			</li>
 		</ul>
-		<App client:load />
+		<App client:only="react" serverUser={user} />
 	</main>
 </Layout>

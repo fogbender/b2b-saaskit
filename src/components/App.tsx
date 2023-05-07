@@ -10,23 +10,27 @@ import { useMemo } from 'react';
 import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
 import { apiServer, queryKeys, useQuery } from './client';
-import type { FogbenderTokenResponse } from '../types/types';
+// import type { FogbenderTokenResponse } from '../types/types';
 import { env } from '../config';
 import { trpc, TRPCProvider } from './trpc';
 import { AuthSync } from './AuthSync';
+// import { QueryProvider, apiServer, queryKeys, useQuery } from './client';
+import type { FogbenderTokenResponse, FogbenderAuthResponse } from '../types/types';
+// import { env } from '../config';
+import type { ServerUser } from '../lib/propelauth';
 
-export function App() {
+export function App(props: { serverUser?: ServerUser }) {
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<TRPCProvider>
 				<AuthSync />
-				<AccountInteral />
+				<AccountInteral {...props} />
 			</TRPCProvider>
 		</AuthProvider>
 	);
 }
 
-function AccountInteral() {
+function AccountInteral(_props: { serverUser?: ServerUser }) {
 	const activeOrg = useActiveOrg();
 	const auth = useAuthInfo();
 	const { redirectToCreateOrgPage } = useRedirectFunctions();
