@@ -33,7 +33,7 @@ const CounterInteral = ({ counter }: { counter: number }) => {
 				If you are a fan of Theo this would probably look crazy to you.
 				<pre>
 					{`
-// import vercel from '@astrojs/vercel/serverless';
+// import vercel from '@astrojs/vercel/edge';
 
 let i = 0;
 export const helloRouter = createTRPCRouter({

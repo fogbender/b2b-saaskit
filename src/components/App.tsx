@@ -100,7 +100,7 @@ const AppWithOrg = ({
 	auth: UseAuthInfoLoggedInProps;
 	activeOrg: OrgMemberInfo;
 }) => {
-	const helloQuery = trpc.hello.hello.useQuery();
+	const helloQuery = trpc.hello.getCount.useQuery();
 	const fogbenderQuery = useQuery({
 		queryKey: queryKeys.fogbender(auth.user.userId, activeOrg.orgId),
 		queryFn: () =>
