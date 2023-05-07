@@ -1,0 +1,15 @@
+---
+import { Counter } from '../components/Counter';
+import Layout from '../layouts/Layout.astro';
+import { createCaller } from '../lib/trpc/root';
+export const prerender = false;
+
+const counter = await createCaller({}).hello.getCount();
+---
+
+<Layout title="App">
+	<main class="container mx-auto my-8">
+		<h1 class="text-4xl">This should blow your mind a bit :)</h1>
+		<Counter client:load counter={counter} />
+	</main>
+</Layout>
