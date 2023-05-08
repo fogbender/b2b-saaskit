@@ -1,6 +1,8 @@
+import type { AstroGlobal } from 'astro';
 import { createTRPCServerSideHelpers, createTRPCRouter } from './trpc';
 import { helloRouter } from './routers/hello';
 import { authRouter } from './routers/auth';
+import { promptsRouter } from './routers/prompts';
 
 /**
  * This is the primary router for your server.
@@ -10,6 +12,7 @@ import { authRouter } from './routers/auth';
 export const appRouter = createTRPCRouter({
 	hello: helloRouter,
 	auth: authRouter,
+	prompts: promptsRouter,
 });
 
 // export type definition of API
@@ -17,3 +20,9 @@ export type AppRouter = typeof appRouter;
 
 export const createCaller = appRouter.createCaller;
 export const createServerSideHelpers = createTRPCServerSideHelpers(appRouter);
+// short form for cases when you call it from .astro file
+export const createHelpers = (Astro: AstroGlobal) =>
+	createServerSideHelpers({
+		req: Astro.request,
+		resHeaders: Astro.response.headers,
+	});

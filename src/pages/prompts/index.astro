@@ -1,0 +1,14 @@
+---
+import { App } from '../../components/App';
+import Nav from '../../components/prompts/Nav.astro';
+import Layout from '../../layouts/Layout.astro';
+export const prerender = true;
+---
+
+<Layout title="Prompts with Friends">
+	<main class="container mx-auto my-8">
+		<h1 class="text-4xl">Prompts with Friends</h1>
+		<Nav />
+		<App client:load />
+	</main>
+</Layout>
