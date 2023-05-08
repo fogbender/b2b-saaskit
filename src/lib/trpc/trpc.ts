@@ -67,7 +67,7 @@ export const createTRPCContext = (opts: CreateAstroContextOptions) => {
  * errors on the backend.
  */
 import { createServerSideHelpers } from '@trpc/react-query/server';
-import { AnyRouter, initTRPC } from '@trpc/server';
+import { AnyRouter, TRPCError, initTRPC } from '@trpc/server';
 import { parse } from 'cookie';
 import superjson from 'superjson';
 import { unthunk } from 'unthunk';
@@ -134,20 +134,12 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 		throw new Error('You are missing `req` or `resHeaders` in your call.');
 	}
 	const req = ctx.req;
-	// context is merged, not replaced
-	return next({
-		ctx: unthunk({
-			req,
-			resHeaders: ctx.resHeaders,
-			parsedCookies: () => parse(req.headers.get('cookie') || ''),
-		}),
-	});
-});
-
-export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 	const newCtx = unthunk({
+		req,
+		resHeaders: ctx.resHeaders,
+		parsedCookies: () => parse(req.headers.get('cookie') || ''),
 		accessToken: () => {
-			const { parsedCookies } = ctx;
+			const { parsedCookies } = newCtx;
 			if (parsedCookies[AUTH_COOKIE_NAME] && parsedCookies[HTTP_ONLY_AUTH_COOKIE_NAME]) {
 				const httpOnlyCookie = new URLSearchParams(parsedCookies[HTTP_ONLY_AUTH_COOKIE_NAME]);
 				return httpOnlyCookie.get('accessToken') || undefined;
@@ -161,7 +153,24 @@ export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 				.catch((error) => ({ kind: 'error' as const, error }));
 		},
 	});
+	// context is merged, not replaced
 	return next({
 		ctx: newCtx,
+	});
+});
+
+export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
+	const user = await ctx.userPromise;
+	if (user.kind === 'error') {
+		throw new TRPCError({
+			code: 'UNAUTHORIZED',
+			message: 'Could not validate access token.',
+			// optional: pass the original error to retain stack trace
+			cause: user.error,
+		});
+	}
+	// context is merged, not replaced
+	return next({
+		ctx: { user: user.user },
 	});
 });
