@@ -66,7 +66,8 @@ export const createTRPCContext = (opts: CreateAstroContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-import { initTRPC } from '@trpc/server';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import { AnyRouter, initTRPC } from '@trpc/server';
 import { parse } from 'cookie';
 import superjson from 'superjson';
 import { unthunk } from 'unthunk';
@@ -86,6 +87,18 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 		};
 	},
 });
+
+/**
+ * 2.5 ssr helper
+ */
+export const createTRPCServerSideHelpers =
+	<T extends AnyRouter>(router: T) =>
+	(ctx: ReturnType<typeof createTRPCContext>) =>
+		createServerSideHelpers<T>({
+			router,
+			ctx,
+			transformer: superjson,
+		});
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)

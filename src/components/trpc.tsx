@@ -1,5 +1,5 @@
 import { httpBatchLink } from '@trpc/client';
-import { QueryClient } from '@tanstack/react-query';
+import { DehydratedState, QueryClient, Hydrate } from '@tanstack/react-query';
 import { createTRPCReact } from '@trpc/react-query';
 import { useState } from 'react';
 import superjson from 'superjson';
@@ -8,7 +8,13 @@ import { QueryProvider } from './client';
 
 export const trpc = createTRPCReact<AppRouter>();
 
-export function TRPCProvider({ children }: { children: React.ReactNode }) {
+export function TRPCProvider({
+	children,
+	dehydratedState,
+}: {
+	children: React.ReactNode;
+	dehydratedState?: DehydratedState;
+}) {
 	const [queryClient] = useState(() => new QueryClient());
 	const [trpcClient] = useState(() =>
 		trpc.createClient({
@@ -26,9 +32,13 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
 			],
 		})
 	);
+	// TODO: we should be passing dehydratedState to trpcClient not queryClient
+	const state = dehydratedState ? superjson.deserialize(dehydratedState as any) : undefined;
 	return (
 		<trpc.Provider client={trpcClient} queryClient={queryClient}>
-			<QueryProvider queryClient={queryClient}>{children}</QueryProvider>
+			<QueryProvider queryClient={queryClient}>
+				<Hydrate state={state}>{children}</Hydrate>
+			</QueryProvider>
 		</trpc.Provider>
 	);
 }

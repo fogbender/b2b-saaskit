@@ -1,4 +1,4 @@
-import { createTRPCRouter } from './trpc';
+import { createTRPCServerSideHelpers, createTRPCRouter } from './trpc';
 import { helloRouter } from './routers/hello';
 import { authRouter } from './routers/auth';
 
@@ -16,3 +16,4 @@ export const appRouter = createTRPCRouter({
 export type AppRouter = typeof appRouter;
 
 export const createCaller = appRouter.createCaller;
+export const createServerSideHelpers = createTRPCServerSideHelpers(appRouter);
