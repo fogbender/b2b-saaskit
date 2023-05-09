@@ -8,6 +8,7 @@
     "build": "astro check && tsc --noEmit && astro build",
     "preview": "astro preview",
     "fmt": "prettier --write --ignore-unknown .",
+    "migrate": "tsx src/db/scripts/migrate",
     "astro": "astro"
   },
   "dependencies": {

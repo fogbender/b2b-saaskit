@@ -9,12 +9,16 @@ function validateEnv<
 	return opts;
 }
 
+// in case if the script was imported from node like in case of migrations
+const runtimeEnv = import.meta.env || process.env;
+
 const x = validateEnv({
 	clientPrefix: 'PUBLIC_',
 	server: {
 		PROPELAUTH_API_KEY: z.string().min(1),
 		PROPELAUTH_VERIFIER_KEY: z.string().min(1),
 		FOGBENDER_SECRET: z.string().min(1),
+		DATABASE_URL: z.string().min(1),
 		KV_REST_API_URL: z.string().min(1),
 		KV_REST_API_TOKEN: z.string().min(1),
 	},
@@ -23,11 +27,11 @@ const x = validateEnv({
 		PUBLIC_AUTH_URL: z.string().min(1),
 		PUBLIC_FOGBENDER_WIDGET_ID: z.string().min(1),
 	},
-	runtimeEnv: import.meta.env,
+	runtimeEnv,
 	skipValidation:
-		!!import.meta.env.SKIP_ENV_VALIDATION &&
-		import.meta.env.SKIP_ENV_VALIDATION !== 'false' &&
-		import.meta.env.SKIP_ENV_VALIDATION !== '0',
+		!!runtimeEnv.SKIP_ENV_VALIDATION &&
+		runtimeEnv.SKIP_ENV_VALIDATION !== 'false' &&
+		runtimeEnv.SKIP_ENV_VALIDATION !== '0',
 });
 
 // this function would be dead code eliminated

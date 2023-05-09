@@ -1,2 +1,4 @@
 dist
 .vscode
+.vercel
+src/db/migrations
