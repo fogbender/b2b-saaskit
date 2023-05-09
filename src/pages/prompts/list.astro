@@ -17,7 +17,7 @@ const error = await helpers.prompts.getPrompts
 
 if (error instanceof TRPCError) {
 	const httpCode = getHTTPStatusCodeFromError(error);
-	if (httpCode === 401) return Astro.redirect('/login');
+	if (httpCode === 401) return Astro.redirect('/prompts');
 }
 ---
 
