@@ -1,9 +1,14 @@
 ---
 import Nav from '../../components/prompts/Nav.astro';
-import { db } from '../../db/db';
+// import { db } from '../../db/db';
 import { prompts } from '../../db/schema';
 import Layout from '../../layouts/Layout.astro';
 export const prerender = false;
+
+import { drizzle } from 'drizzle-orm/postgres-js';
+import pg from 'postgres';
+
+export const db = drizzle(pg(process.env.DATABASE_URL!));
 
 console.log(db, db.select);
 const x = await db.select().from(prompts);
@@ -14,6 +19,7 @@ console.log(x);
 	<main class="container mx-auto my-8">
 		<h1 class="text-4xl">Prompts with Friends - Settings</h1>
 		<Nav />
+		{Math.random()}
 		{JSON.stringify(x)}
 		No settings yet.
 	</main>
