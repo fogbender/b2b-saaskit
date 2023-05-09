@@ -1,13 +1,20 @@
 ---
 import Nav from '../../components/prompts/Nav.astro';
+import { db } from '../../db/db';
+import { prompts } from '../../db/schema';
 import Layout from '../../layouts/Layout.astro';
-export const prerender = true;
+export const prerender = false;
+
+console.log(db, db.select);
+const x = await db.select().from(prompts);
+console.log(x);
 ---
 
 <Layout title="Settings">
 	<main class="container mx-auto my-8">
 		<h1 class="text-4xl">Prompts with Friends - Settings</h1>
 		<Nav />
+		{JSON.stringify(x)}
 		No settings yet.
 	</main>
 </Layout>

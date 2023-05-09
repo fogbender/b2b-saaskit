@@ -1,3 +1,7 @@
-// import { index, integer, pgTable, serial, text, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text } from 'drizzle-orm/pg-core';
 
-export {};
+export const prompts = pgTable('prompts', {
+	id: serial('id').primaryKey(),
+	prompt: text('prompt').notNull(),
+	userId: text('user_id').notNull(),
+});

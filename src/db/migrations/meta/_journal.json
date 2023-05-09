@@ -1,1 +1,13 @@
-{"version":"5","dialect":"pg","entries":[]}
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1683606743546,
+      "tag": "0000_happy_vampiro",
+      "breakpoints": false
+    }
+  ]
+}
