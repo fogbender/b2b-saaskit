@@ -19,8 +19,6 @@ const x = validateEnv({
 		PROPELAUTH_VERIFIER_KEY: z.string().min(1),
 		FOGBENDER_SECRET: z.string().min(1),
 		DATABASE_URL: z.string().min(1),
-		KV_REST_API_URL: z.string().min(1),
-		KV_REST_API_TOKEN: z.string().min(1),
 	},
 	client: {
 		// PUBLIC_AUTH_URL_WRONG: z.number().min(1),

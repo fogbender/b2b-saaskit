@@ -30,7 +30,7 @@ function Interal() {
 			queryClient.setQueryData(
 				getQueryKey(trpc.prompts.getPrompts, undefined, 'query'),
 				(oldData: typeof promptsQuery.data) =>
-					oldData?.filter((prompt) => prompt.id !== data.promptId)
+					oldData?.filter((prompt) => prompt.promptId !== data.promptId)
 			);
 		},
 		onSettled: () => {
@@ -102,10 +102,10 @@ function Interal() {
 					<Table>
 						{promptsQuery.data?.map((prompt, index) => (
 							<tr
-								key={prompt.id}
+								key={prompt.promptId}
 								className={`${index % 2 === 0 ? undefined : 'bg-gray-50'} ${
 									deletePromptMutation.isLoading &&
-									deletePromptMutation.variables?.promptId === prompt.id
+									deletePromptMutation.variables?.promptId === prompt.promptId
 										? 'opacity-50'
 										: ''
 								}`}
@@ -114,13 +114,13 @@ function Interal() {
 									{prompt.content}
 								</td>
 								<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-									{prompt.user_id}
+									{prompt.userId}
 								</td>
 								<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
 									<button
 										className="text-indigo-600 hover:text-indigo-900"
 										onClick={() => {
-											deletePromptMutation.mutate({ promptId: prompt.id });
+											deletePromptMutation.mutate({ promptId: prompt.promptId });
 										}}
 									>
 										Delete<span className="sr-only">, prompt</span>
