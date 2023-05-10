@@ -1,11 +1,11 @@
-### Step 1: Run with doppler cli
+### Step 1: Secrets management with Doppler
 
-This project uses Doppler (https://doppler.com) to manage secrets. Getting up and running is pretty easy:
+To avoid storing sensitive strings in our repo or in .env files, we're going to use a product called Doppler (https://doppler.com). Dopper is free for up to 5 users.
 
-1. Install the Doppler CLI. It allows you to access and manage your secrets from the command line. To install it, follow the instructions on the Doppler website (https://docs.doppler.com/docs/cli). You are done once you installed `gnupg` and `doppler`.
+1. Install the Doppler CLI by following the instructions on https://docs.doppler.com/docs/cli. Move to next step once once `gnupg` and `doppler` are installed.
 
-2. Run `doppler login` to authenticate with Doppler, you should create an account if you don't have one already.
+2. Run `doppler login` to authenticate with Doppler. Create a new account if you don't already have one.
 
-3. Run `doppler setup` in the root of your project to connect it to Doppler. And select `dev` as the environment.
+3. Run `doppler setup` in the root of the project to connect it to Doppler, then select `dev` for environment.
 
-4. You will learn more about Doppler in the next sections. The last step at the moment is to restart the project with `doppler run yarn dev`, if everything is set up correctly you will see new instructions here in the browser.
+4. Restart the project with `doppler run yarn dev` to move to the next step.
