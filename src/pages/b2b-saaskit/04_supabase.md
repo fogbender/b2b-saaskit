@@ -1,13 +1,22 @@
-### Step 4: Supabase
+### Step 4: Postgres database with Supabase
 
-Supabase is an open source Firebase alternative. It provides a lot of features that you would expect from Firebase like authentication, database, storage, functions, etc. It is open source and you can host it yourself. In this project we are only using it as a Postgres database.
+Supabase (<a href="https://supabase.com" target="_blank">https://supabase.com</a>) is an open source Firebase alternative, providing services like authentication, managed database, storage, functions, etc. In this project, we'll only use Supabase for its managed Postgres database service.
 
-1. Create an account on [Supabase](https://supabase.com/) and create a new project. Name it "b2b localhost", click on "generate a password" link under "Database Password", click "Create new project", keep in mind that it could take a few minutes to create a project.
+Supabase is free for 2 lightweight projects.
 
-1. Click on [this link](https://app.supabase.com/project/_/settings/database) to get into "Project Settings" - "Database". Go to "Connection string" and select "URI" (or "Nodejs"), it will look something like `postgresql://postgres:[YOUR-PASSWORD]@db.xxxxxxxxxxxxxxxxxxxx.supabase.co:5432/postgres` make sure to replace `[YOUR-PASSWORD]` with the actual password, you can alway regenerate it by clicking on "Reset Database Password" right above the "Connection string" field (click "Generage a password" link, then "Copy", then "Reset password").
+1. Create an account on <a href="https://supabase" target="_blank">Supabase</a>, then:
 
-1. Now set `DATABASE_URL` to that value. You can use Doppler UI (`doppler open`) or CLI to do that (`doppler secrets set DATABASE_URL`).
+- Create a new project named "b2b localhost";
+- Click on "generate a password" link under "Database Password";
+- Open a fresh editor buffer and paste the password there;
+- Click "Create new project" - this can take a few minutes to complete.
 
-1. Run migrations with `doppler run yarn migrate` to initialize the database, you should be able to see new tables created in [supabase table editor](https://app.supabase.com/project/_/editor).
+2. Click on <a href="https://app.supabase.com/project/_/settings/database" target="_blank">"Project Settings" - "Database"</a>, navigate to "Connection string" and copy the URI (it will look something like `postgresql://postgres:[YOUR-PASSWORD]@db.xxxxxxxxxxxxxxxxxxxx.supabase.co:5432/postgres`).
 
-1. Now restart `doppler run yarn dev` and you should see the next section of the tutorial.
+3. Paste the URI to the editor buffer from step 1, replace `[YOUR-PASSWORD]` with your password, then copy the resulting string.
+
+4. Run `doppler secrets set DATABASE_URL` and set it the string from step 3.
+
+5. Run `doppler run yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" target="_blank">Supabase table editor</a>.
+
+6. Restart `doppler run yarn dev` to move to the next section of the tutorial.

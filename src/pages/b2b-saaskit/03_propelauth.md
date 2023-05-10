@@ -1,20 +1,13 @@
-### Step 3: PropelAuth
+### Step 3: User authentication with PropelAuth
 
-PropelAuth provides end-to-end managed user authentication specializing in B2B use cases. Your users can manage their own accounts and teams. It also includes multiple authentication options (Google, Github, Microsoft, Slack), 2FA, and SAML.
+PropelAuth <a href="https://propelauth.com" target="_blank">https://propelauth.com</a> provides end-to-end managed user authentication. PropelAuth is a great fit for the B2B SaaS Kit because it ships with organization management features, enabling your users to create teams and manage membership.
 
-1. Create an account on https://propelauth.com and create a new project called "b2b localhost". You can skip most of the steps in the setup wizard for now. And switch right to the "Integrate your Frontend" step ("Integrate your product" - "Frontend integration" in the sidebar)
+PropelAuth is free up to 1000 monthly active users.
 
-1. Set "Primary Frontend Location" type to "localhost" and set the "Your application's primary location" to "http://localhost:3000".
+1. Create an account on <a href="https://propelauth.com" target="_blank">https://propelauth.com</a>, create a new project, click on "(4) Integrate your Frontend", click on "View".
 
-1. Now switch to the "Integrate your Backend" step ("Integrate your product" - "Backend integration" in the sidebar).
+2. Locate and copy the value of "Auth URL" - it should like like `https://123456789.propelauthtest.com`, then run `doppler secrets set PUBLIC_AUTH_URL` and paste the value.
 
-1. Then copy "Auth URL" that should look something like `https://123456789.propelauthtest.com`.
-   Set `PUBLIC_AUTH_URL` to that value. You can use Doppler UI or CLI to do that. To open UI you can run `doppler open`. If you are using CLI you can run `doppler secrets set PUBLIC_AUTH_URL [value]` (pro tip, to makes sure that values are not stored in your shell history you can run `doppler secrets set PUBLIC_AUTH_URL` without specifying the value, then just follow the instructions that the command will print out).
+NOTE: to exit Doppler CLI after setting the value, type Shift+Enter twice, then type "." (period). Run `doppler secrets` to make sure the value of PUBLIC_AUTH_URL looks good - set it again (step 2 above) if you see any extra newlines.
 
-1. Copy "Public (Verifier) Key" and set `PROPELAUTH_VERIFIER_KEY` to that value.
-   You can use Doppler UI (`doppler open`) or CLI to do that (`doppler secrets set PROPELAUTH_VERIFIER_KEY`).
-
-1. Click on "Create New API Key" give it a name "b2b localhost" and copy the key, set `PROPELAUTH_API_KEY` to that value.
-   You can use Doppler UI (`doppler open`) or CLI to do that (`doppler secrets set PROPELAUTH_API_KEY`).
-
-1. Now restart `doppler run yarn dev` and you should see the next section of the tutorial.
+3. Restart `doppler run yarn dev` to move to the next section of the tutorial.

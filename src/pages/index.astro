@@ -53,9 +53,9 @@ const firstFailedCheck = import.meta.env.PROD
 	: checks.find((check) => !check.havePassed())?.stepName;
 ---
 
-<Layout title="Welcome to Prompts with friends.">
+<Layout title="Welcome to Prompts with Friends">
 	<main class="container">
-		<h1>Welcome to <span class="text-gradient">Prompts with friends</span></h1>
+		<h1>Welcome to <span class="text-gradient">Prompts with Friends</span></h1>
 		<div class="instructions prose max-w-none">
 			{firstFailedCheck === '00_prod' && <Prod />}
 			{firstFailedCheck === '01_DOPPLER' && <Doppler />}

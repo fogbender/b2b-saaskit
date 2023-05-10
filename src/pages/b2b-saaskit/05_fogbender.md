@@ -1,13 +1,15 @@
-### Step 5: Fogbender
+### Step 5: Customer support with Fogbender
 
-Fogbender is a customer support tool designed specifically for B2B businesses. With its advanced communication model, Fogbender enables many-to-many conversations, allowing entire teams within customer accounts to collaborate with your support agents, instead of just individual end-users.
+Fogbender (<a href="https://fogbender.com" target="_blank">https://fogbender.com</a>) is a B2B customer support tool that enables users associated with the same customer organization to collaborate in vendor support conversations as a team.
 
-1. Go to the [Embedding instructions page](https://fogbender.com/admin/-/-/settings/embed) and copy `widgetId` and `Secret` from the top of the instructions.
+Fogbender is free for 2 customer-facing agents and unlimited "readers" (agents with read-only access to customer conversations).
 
-1. Now set `PUBLIC_FOGBENDER_WIDGET_ID` to the value of widgetId.
-   You can use Doppler UI (`doppler open`) or CLI to do that (`doppler secrets set PUBLIC_FOGBENDER_WIDGET_ID`).
+1. Open the <a href="https://fogbender.com/admin/-/-/settings/embed" target="_blank">embedding instructions</a> and copy the `widgetId` (look for text with light green background).
 
-1. Secret would be stored in `FOGBENDER_SECRET`.
-   You can use Doppler UI (`doppler open`) or CLI to do that (`doppler secrets set FOGBENDER_SECRET`).
+2. Run `doppler secrets set PUBLIC_FOGBENDER_WIDGET_ID` and paste the widgetId as the value.
 
-1. Now restart `doppler run yarn dev` and you should see the next section of the tutorial.
+3. Go back to the <a href="https://fogbender.com/admin/-/-/settings/embed" target="_blank">embedding instructions</a> and copy the `Secret`.
+
+4. Run `doppler secrets set FOGBENDER_SECRET` and paste the secret as the value.
+
+5. Restart `doppler run yarn dev` to move to the next section of the tutorial.
