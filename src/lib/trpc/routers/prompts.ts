@@ -39,7 +39,8 @@ export const promptsRouter = createTRPCRouter({
 				.select({
 					userId: prompts.userId,
 				})
-				.from(prompts);
+				.from(prompts)
+				.where(eq(prompts.promptId, input.promptId));
 			const prompt = x[0];
 			if (!prompt) {
 				throw new TRPCError({
