@@ -1,8 +1,8 @@
 ### Step 1: Secrets management with Doppler
 
-To avoid storing sensitive strings in our repo or in .env files, we're going to use a product called Doppler (https://doppler.com). Dopper is free for up to 5 users.
+To avoid storing sensitive strings in our repo or in .env files, we'll use a service called <a href="https://doppler.com" target="_blank">Doppler</a>. Dopper is free for up to 5 users.
 
-1. Install the Doppler CLI by following the instructions on https://docs.doppler.com/docs/cli. Move to next step once once `gnupg` and `doppler` are installed.
+1. Install the Doppler CLI by following the instructions on <a href="https://docs.doppler.com/docs/cli" target="_blank">https://docs.doppler.com/docs/cli</a>. Move to next step once once `gnupg` and `doppler` are installed.
 
 2. Run `doppler login` to authenticate with Doppler. Create a new account if you don't already have one.
 
