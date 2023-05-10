@@ -15,6 +15,13 @@
       "when": 1683682442457,
       "tag": "0001_old_virginia_dare",
       "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1683687006827,
+      "tag": "0002_foamy_rafael_vega",
+      "breakpoints": false
     }
   ]
 }

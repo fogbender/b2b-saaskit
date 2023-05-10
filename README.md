@@ -24,7 +24,6 @@ To get started with [Your Project Name], follow these steps:
 2. [Insert step 2]
 3. [Insert step 3]
 
-
 ## License
 
 B2B SaaS Kit is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for more details.

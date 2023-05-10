@@ -1,4 +1,13 @@
-import { boolean, integer, pgEnum, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+	boolean,
+	integer,
+	pgEnum,
+	pgTable,
+	serial,
+	text,
+	timestamp,
+	uniqueIndex,
+} from 'drizzle-orm/pg-core';
 
 // Hello and welcome to the schema file!
 // 1. run `doppler run npx drizzle-kit generate:pg` to generate migrations
@@ -45,8 +54,19 @@ ALTER TABLE default_keys ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "service" ON "public"."default_keys" AS PERMISSIVE FOR ALL TO service_role USING (true);
 ``` */
 
-export const defaultKeys = pgTable('default_keys', {
-	itemId: text('item_id').primaryKey(),
-	itemType: itemTypeEnum('item_type').notNull(),
-	keyId: integer('key_id').references(() => gptKeys.keyId),
-});
+export const defaultKeys = pgTable(
+	'default_keys',
+	{
+		itemId: text('item_id').notNull(),
+		itemType: itemTypeEnum('item_type').notNull(),
+		keyId: integer('key_id').references(() => gptKeys.keyId),
+	},
+	(defaultKeys) => {
+		return {
+			namePopulationIdx: uniqueIndex('name_population_idx').on(
+				defaultKeys.itemId,
+				defaultKeys.itemType
+			),
+		};
+	}
+);

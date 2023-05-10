@@ -1,5 +1,6 @@
 ---
 import Nav from '../../components/prompts/Nav.astro';
+import { Settings } from '../../components/prompts/Settings';
 import Layout from '../../layouts/Layout.astro';
 export const prerender = true;
 ---
@@ -8,6 +9,6 @@ export const prerender = true;
 	<main class="container mx-auto my-8">
 		<h1 class="text-4xl">Prompts with Friends - Settings</h1>
 		<Nav />
-		No settings yet.
+		<Settings client:load />
 	</main>
 </Layout>
