@@ -5,6 +5,7 @@ import { AuthProvider } from '../propelauth';
 import { TRPCProvider, trpc } from '../trpc';
 import { AuthSync } from '../AuthSync';
 import { useReducer } from 'react';
+import arrowDown from '../../assets/arrow-down.svg';
 
 export function Settings() {
 	return (
@@ -167,7 +168,7 @@ function Interal() {
 									<tr>
 										<th
 											scope="col"
-											className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+											className="px-3 pl-4 sm:pl-6 lg:pl-8 py-3.5 text-left text-sm font-semibold text-gray-900"
 										>
 											Key
 										</th>
@@ -293,9 +294,13 @@ const KeySelector = ({
 			<div className="flex flex-row items-center justify-between">
 				<div className="flex flex-col text-start w-full gap-2">{children}</div>
 				<select
-					className={`mt-2 block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-indigo-600 accent-indigo-600 focus:outline-indigo-500 sm:text-sm sm:leading-6 ${
+					className={`mt-2 block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-indigo-600 accent-indigo-600 focus:outline-indigo-500 sm:text-sm sm:leading-6 appearance-none bg-no-repeat ${
 						saveDefaultMutation.isLoading || myDefaultsQuery.isLoading ? 'opacity-50' : ''
 					}`}
+					style={{
+						backgroundImage: 'url(' + arrowDown + ')',
+						backgroundPosition: 'right 8px center',
+					}}
 					value={myDefaultsQuery.data?.[0]?.keyId ?? 0}
 					onChange={(e) => {
 						const keyId = Number(e.target.value);
