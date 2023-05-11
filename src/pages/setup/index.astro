@@ -1,6 +1,6 @@
 ---
+import { websiteTitle } from '../../constants';
 import Layout from '../../layouts/Layout.astro';
-import Prod from './b2b-saaskit/00_production.md';
 import Doppler from './b2b-saaskit/01_doppler.md';
 import DopplerTutorial from './b2b-saaskit/02_doppler_tutorial.md';
 import PropelAuth from './b2b-saaskit/03_propelauth.md';
@@ -8,21 +8,26 @@ import Supabase from './b2b-saaskit/04_supabase.md';
 import Fogbender from './b2b-saaskit/05_fogbender.md';
 import Congrats from './b2b-saaskit/99_congrats.md';
 export const prerender = true;
+
+type AstroComponentFactory = typeof Doppler;
 const checks = [
 	{
-		stepName: '01_DOPPLER',
+		stepName: 'Doppler',
+		content: Doppler,
 		havePassed: () => {
 			return import.meta.env.DOPPLER_PROJECT !== undefined;
 		},
 	},
 	{
-		stepName: '02_DOPPLER_TUTORIAL',
+		stepName: 'Doppler Tutorial',
+		content: DopplerTutorial,
 		havePassed: () => {
 			return import.meta.env.DOPPLER_TUTORIAL !== undefined;
 		},
 	},
 	{
-		stepName: '03_PROPELAUTH',
+		stepName: 'PropelAuth',
+		content: PropelAuth,
 		havePassed: () => {
 			return (
 				import.meta.env.PUBLIC_AUTH_URL !== undefined &&
@@ -32,13 +37,15 @@ const checks = [
 		},
 	},
 	{
-		stepName: '04_SUPABASE',
+		stepName: 'Supabase',
+		content: Supabase,
 		havePassed: () => {
 			return import.meta.env.DATABASE_URL !== undefined;
 		},
 	},
 	{
-		stepName: '05_FOGBENDER',
+		stepName: 'Fogbender',
+		content: Fogbender,
 		havePassed: () => {
 			return (
 				import.meta.env.PUBLIC_FOGBENDER_WIDGET_ID !== undefined &&
@@ -46,31 +53,74 @@ const checks = [
 			);
 		},
 	},
+	{
+		stepName: 'Deploying to Vercel',
+		content: Congrats,
+		havePassed: () => import.meta.env.PROD,
+	},
 ] as const satisfies Readonly<
 	{
 		stepName: string;
+		content: AstroComponentFactory;
 		havePassed: () => boolean;
 	}[]
 >;
-const firstFailedCheck = import.meta.env.PROD
-	? ('00_prod' as const)
-	: checks.find((check) => !check.havePassed())?.stepName;
+const firstFailedCheck = checks.find((check) => !check.havePassed())?.stepName;
 ---
 
-<Layout title="Welcome to Prompts with Friends">
+<Layout title={'Setup your own ' + websiteTitle}>
 	<main class="container">
-		<h1>Welcome to <span class="text-gradient">Prompts with Friends</span></h1>
-		<div class="instructions prose max-w-none">
-			{firstFailedCheck === '00_prod' && <Prod />}
-			{firstFailedCheck === '01_DOPPLER' && <Doppler />}
-			{firstFailedCheck === '02_DOPPLER_TUTORIAL' && <DopplerTutorial />}
-			{firstFailedCheck === '03_PROPELAUTH' && <PropelAuth />}
-			{firstFailedCheck === '04_SUPABASE' && <Supabase />}
-			{firstFailedCheck === '05_FOGBENDER' && <Fogbender />}
-			{firstFailedCheck === undefined && <Congrats />}
+		<h1>Setup your own <span class="text-gradient">{websiteTitle}</span></h1>
+		<div class="instructions sl-waiting">
+			{
+				!import.meta.env.PROD && (
+					<p class="text-gray-600 border-b border-gray-200 pb-2 mb-2">
+						Please note that you are looking at production build of the app, so make necessary
+						changes to the commands depending on if you want to change the production or development
+						build. Keep in mind that changes to production configuration require you to re-deploy
+						the app.
+					</p>
+				)
+			}
+			<h3>Setup steps:</h3>
+			{
+				checks.map((step, i) => {
+					const done = step.havePassed();
+					return (
+						<sl-details open={step.stepName === firstFailedCheck}>
+							<h3 slot="summary" class="text-gray-600">
+								<span class="w-4 inline-block">{i + 1}.</span> {done ? '✅' : ''} {step.stepName}
+							</h3>
+							<div class="prose max-w-none">
+								<step.content />
+							</div>
+						</sl-details>
+					);
+				})
+			}
 		</div>
 	</main>
 </Layout>
+
+<script
+	type="module"
+	src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.4.0/dist/components/details/details.js"
+></script>
+<!-- https://shoelace.style/getting-started/usage?id=waiting-for-components-to-load -->
+<style>
+	.sl-waiting {
+		opacity: 0;
+	}
+
+	:global(.sl-ready) .sl-waiting {
+		opacity: 1;
+		transition: 0.25s opacity;
+	}
+</style>
+<script type="module">
+	await Promise.allSettled([customElements.whenDefined('sl-details')]);
+	document.body.classList.add('sl-ready');
+</script>
 
 <style>
 	main {
