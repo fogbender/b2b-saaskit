@@ -24,7 +24,11 @@ const checks = [
 	{
 		stepName: '03_PROPELAUTH',
 		havePassed: () => {
-			return import.meta.env.PUBLIC_AUTH_URL !== undefined;
+			return (
+				import.meta.env.PUBLIC_AUTH_URL !== undefined &&
+				import.meta.env.PROPELAUTH_API_KEY !== undefined &&
+				import.meta.env.PROPELAUTH_VERIFIER_KEY !== undefined
+			);
 		},
 	},
 	{

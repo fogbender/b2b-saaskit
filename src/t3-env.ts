@@ -15,14 +15,18 @@ const runtimeEnv = import.meta.env || process.env;
 const x = validateEnv({
 	clientPrefix: 'PUBLIC_',
 	server: {
+		// database
+		DATABASE_URL: z.string().min(1),
+		// propel auth
 		PROPELAUTH_API_KEY: z.string().min(1),
 		PROPELAUTH_VERIFIER_KEY: z.string().min(1),
+		// fogbender
 		FOGBENDER_SECRET: z.string().min(1),
-		DATABASE_URL: z.string().min(1),
 	},
 	client: {
-		// PUBLIC_AUTH_URL_WRONG: z.number().min(1),
+		// propel auth
 		PUBLIC_AUTH_URL: z.string().min(1),
+		// fogbender
 		PUBLIC_FOGBENDER_WIDGET_ID: z.string().min(1),
 	},
 	runtimeEnv,
