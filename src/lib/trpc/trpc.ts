@@ -23,6 +23,7 @@ type CreateAstroContextOptions = Partial<{
 	req: Request;
 	/** The outgoing headers. */
 	resHeaders: Headers;
+	astroLocals: AstroGlobal['locals'];
 }>;
 
 /** Replace this with an object if you want to pass things to `createContextInner`. */
@@ -74,6 +75,10 @@ import { unthunk } from 'unthunk';
 import { ZodError } from 'zod';
 import { AUTH_COOKIE_NAME, HTTP_ONLY_AUTH_COOKIE_NAME } from '../../constants';
 import { propelauth } from '../propelauth';
+import { UnauthorizedException } from '@propelauth/node';
+import jwt from 'jsonwebtoken';
+import type { AstroGlobal } from 'astro';
+import { serverEnv } from '../../t3-env';
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
 	transformer: superjson,
@@ -147,10 +152,70 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 			return;
 		},
 		userPromise: async () => {
-			return await propelauth
-				.validateAccessTokenAndGetUser('Bearer ' + newCtx.accessToken)
+			const token = newCtx.accessToken;
+			let forceRefresh = false;
+			console.log('xxxxxxxxxxxxxxxxxxxxx', token);
+			if (newCtx.accessToken) {
+				const decodedJwt = jwt.decode(newCtx.accessToken, { json: true });
+				if (decodedJwt && decodedJwt.iat && Date.now() / 1000 - decodedJwt.iat) {
+					console.log('xxxxxxxxxxxxxxxxxxxxx', Date.now() / 1000 - decodedJwt.iat);
+					forceRefresh = true;
+				}
+			}
+
+			if (!token) {
+				throw new UnauthorizedException('No token');
+			}
+
+			const x = await propelauth
+				.validateAccessTokenAndGetUser('Bearer ' + token)
 				.then((user) => ({ kind: 'ok' as const, user }))
 				.catch((error) => ({ kind: 'error' as const, error }));
+
+			if (
+				(token && forceRefresh) ||
+				(token && x.kind === 'error' && x.error instanceof UnauthorizedException)
+			) {
+				// second chance :)
+				const decodedJwt = jwt.decode(token, { json: true });
+				if (forceRefresh || (decodedJwt && decodedJwt.exp && decodedJwt.exp < Date.now() / 1000)) {
+					// expired, we can still fix this
+					debugger;
+					console.log('decodedJwt', decodedJwt);
+					if (ctx.astroLocals) ctx.astroLocals.lol2 = 'auth';
+					// if (1) return 'hello';
+					throw new Response(
+						`
+<script
+  src="https://www.unpkg.com/@propelauth/javascript@2.0.0/dist/javascript.min.js"
+  integrity="sha384-CnMW/GT96q1vxl3xq1fIbUrmXpDIsXVtY+/FpJW+rMSCgjlOWpbVfs5G0dg2bMN5"
+  crossorigin="anonymous"
+></script>
+<script>
+async function authSync() {
+  try {
+		const authClient = PropelAuth.createClient({authUrl: "${serverEnv.PUBLIC_AUTH_URL}"});
+		const user = await authClient.getAuthenticationInfoOrNull();
+		console.log('x', user);
+		fetch('/api/auth-sync', { body: JSON.stringify({user}), method: 'POST' });
+	} catch (error) {
+		console.error('error', error);
+	}
+}
+authSync();
+</script>
+`,
+						{
+							headers: {
+								'content-type': 'text/html',
+								'x-what-happened': 'auth refresh required',
+							},
+						}
+					);
+					return { kind: 'requiresRefresh' as const };
+				}
+			}
+			return x;
 		},
 	});
 	// context is merged, not replaced
@@ -159,8 +224,18 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 	});
 });
 
+export class AuthRefreshRequiredError extends TRPCError {
+	constructor() {
+		super({
+			code: 'FORBIDDEN',
+			message: 'Access token expired, please refresh.',
+		});
+	}
+}
+
 export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 	const user = await ctx.userPromise;
+	console.log('user', user);
 	if (user.kind === 'error') {
 		throw new TRPCError({
 			code: 'UNAUTHORIZED',
@@ -168,6 +243,9 @@ export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 			// optional: pass the original error to retain stack trace
 			cause: user.error,
 		});
+	}
+	if (user.kind === 'requiresRefresh') {
+		throw new AuthRefreshRequiredError();
 	}
 	// context is merged, not replaced
 	return next({

@@ -23,8 +23,12 @@ export type AppRouter = typeof appRouter;
 export const createCaller = appRouter.createCaller;
 export const createServerSideHelpers = createTRPCServerSideHelpers(appRouter);
 // short form for cases when you call it from .astro file
-export const createHelpers = (Astro: AstroGlobal) =>
-	createServerSideHelpers({
+export const createHelpers = (Astro: AstroGlobal) => {
+	Astro.response.headers.set('x-trpc', 'true');
+	// Astro.response = new Response('123', {});
+	return createServerSideHelpers({
 		req: Astro.request,
 		resHeaders: Astro.response.headers,
+		astroLocals: Astro.locals,
 	});
+};

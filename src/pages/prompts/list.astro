@@ -5,20 +5,13 @@ import { Prompts } from '../../components/prompts/Prompts';
 import Nav from '../../components/prompts/Nav.astro';
 import Layout from '../../layouts/Layout.astro';
 import { createHelpers } from '../../lib/trpc/root';
+import { AuthRefreshRequiredError } from '../../lib/trpc/trpc';
 
 export const prerender = false; // to enable trpc prefetching
 
 const helpers = createHelpers(Astro);
 // prefetch data for client, and redirect to login if not logged in
-const error = await helpers.prompts.getPrompts
-	.fetch()
-	.then(() => {})
-	.catch((error) => error);
-
-if (error instanceof TRPCError) {
-	const httpCode = getHTTPStatusCodeFromError(error);
-	if (httpCode === 401) return Astro.redirect('/prompts');
-}
+await helpers.prompts.getPrompts.fetch();
 ---
 
 <Layout title="Prompts with Friends">

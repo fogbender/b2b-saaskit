@@ -3,13 +3,13 @@ import type { APIRoute } from 'astro';
 import { appRouter } from '../../../lib/trpc/root';
 
 // The Astro API route, handling all incoming HTTP requests.
-export const all: APIRoute = ({ request }) => {
+export const all: APIRoute = ({ request, locals }) => {
 	return fetchRequestHandler({
 		endpoint: '/api/trpc',
 		req: request,
 		router: appRouter,
 		createContext: ({ req, resHeaders }) => {
-			return { req, resHeaders };
+			return { req, resHeaders, astroLocals: locals };
 		},
 		onError({ error }) {
 			if (import.meta.env.DEV && error.code === 'INTERNAL_SERVER_ERROR') {
