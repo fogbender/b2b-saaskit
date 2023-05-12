@@ -81,7 +81,7 @@ const firstFailedCheck = checks.find((check) => !check.havePassed())?.stepName;
 		<h1>Set up your own <span class="text-gradient">{websiteTitle}</span></h1>
 		<div class="instructions sl-waiting">
 			{
-				!import.meta.env.PROD && (
+				import.meta.env.PROD && (
 					<p class="text-gray-600 border-b border-gray-200 pb-2 mb-2">
 						Please note that you are looking at production build of the app, so make necessary
 						changes to the commands depending on if you want to change the production or development
