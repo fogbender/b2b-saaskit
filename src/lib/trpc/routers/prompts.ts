@@ -6,6 +6,7 @@ import { createTRPCRouter, authProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { db } from '../../../db/db';
 import { prompts } from '../../../db/schema';
+import { trackEvent } from '../../posthog';
 
 export const promptsRouter = createTRPCRouter({
 	getPrompts: authProcedure.query(async ({}) => {
@@ -18,6 +19,7 @@ export const promptsRouter = createTRPCRouter({
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
+			trackEvent(ctx.user, 'prompt_created');
 			const promptId = nanoid();
 			await db.insert(prompts).values({
 				promptId,

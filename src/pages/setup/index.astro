@@ -6,6 +6,7 @@ import DopplerTutorial from './b2b-saaskit/02_doppler_tutorial.md';
 import PropelAuth from './b2b-saaskit/03_propelauth.md';
 import Supabase from './b2b-saaskit/04_supabase.md';
 import Fogbender from './b2b-saaskit/05_fogbender.md';
+import Posthog from './b2b-saaskit/06_posthog.md';
 import Congrats from './b2b-saaskit/99_congrats.md';
 export const prerender = true;
 
@@ -54,6 +55,13 @@ const checks = [
 		},
 	},
 	{
+		stepName: 'Posthog (optional)',
+		content: Posthog,
+		havePassed: () => {
+			return import.meta.env.PUBLIC_POSTHOG_KEY !== undefined;
+		},
+	},
+	{
 		stepName: 'Deploying to Vercel',
 		content: Congrats,
 		havePassed: () => import.meta.env.PROD,
@@ -68,9 +76,9 @@ const checks = [
 const firstFailedCheck = checks.find((check) => !check.havePassed())?.stepName;
 ---
 
-<Layout title={'Setup your own ' + websiteTitle}>
+<Layout title={'Set up your own ' + websiteTitle}>
 	<main class="container">
-		<h1>Setup your own <span class="text-gradient">{websiteTitle}</span></h1>
+		<h1>Set up your own <span class="text-gradient">{websiteTitle}</span></h1>
 		<div class="instructions sl-waiting">
 			{
 				!import.meta.env.PROD && (
