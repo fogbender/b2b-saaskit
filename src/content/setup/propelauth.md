@@ -16,4 +16,8 @@ PropelAuth is free up to 1000 monthly active users.
 
 NOTE: to exit Doppler CLI after setting the value, type Shift+Enter twice, then type "." (period). Run `doppler secrets` to make sure the value of PUBLIC_AUTH_URL looks good - set it again (step 2 above) if you see any extra newlines.
 
-3. Restart `doppler run yarn dev` to move to the next section of the tutorial.
+3. Copy "Public (Verifier) Key" and set `PROPELAUTH_VERIFIER_KEY` to that value.
+
+4. Click on "Create New API Key" give it a name "b2b localhost" and copy the key, set `PROPELAUTH_API_KEY` to that value.
+
+5. Restart `doppler run yarn dev` to move to the next section of the tutorial.
