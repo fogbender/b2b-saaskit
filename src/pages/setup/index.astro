@@ -76,9 +76,9 @@ const checks = [
 const firstFailedCheck = checks.find((check) => !check.havePassed())?.stepName;
 ---
 
-<Layout title={'Setup your own ' + websiteTitle}>
+<Layout title={'Set up your own ' + websiteTitle}>
 	<main class="container">
-		<h1>Setup your own <span class="text-gradient">{websiteTitle}</span></h1>
+		<h1>Set up your own <span class="text-gradient">{websiteTitle}</span></h1>
 		<div class="instructions sl-waiting">
 			{
 				!import.meta.env.PROD && (
