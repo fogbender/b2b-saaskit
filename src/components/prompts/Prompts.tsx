@@ -5,15 +5,19 @@ import { AuthProvider } from '../propelauth';
 import { TRPCProvider, trpc } from '../trpc';
 import { AuthSync } from '../AuthSync';
 import { useReducer } from 'react';
+import * as posthogReact from 'posthog-js/react';
+const { PostHogProvider } = posthogReact;
 
 export function Prompts(props: { dehydratedState: DehydratedState }) {
 	return (
-		<TRPCProvider dehydratedState={props.dehydratedState}>
-			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
-				<AuthSync />
-				<Interal />
-			</AuthProvider>
-		</TRPCProvider>
+		<PostHogProvider>
+			<TRPCProvider dehydratedState={props.dehydratedState}>
+				<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
+					<AuthSync />
+					<Interal />
+				</AuthProvider>
+			</TRPCProvider>
+		</PostHogProvider>
 	);
 }
 
