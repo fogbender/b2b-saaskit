@@ -16,6 +16,11 @@ export const post: APIRoute = async ({ request }) => {
 	});
 	const token = request.headers.get('Authorization');
 	try {
+		const secret = serverEnv.FOGBENDER_SECRET;
+		if (!secret) {
+			throw new Error('FOGBENDER_SECRET was not configured');
+		}
+
 		if (!token) {
 			throw new Error('No token');
 		}
@@ -34,7 +39,6 @@ export const post: APIRoute = async ({ request }) => {
 			customerId: orgMemberInfo.orgId,
 		};
 
-		const secret = serverEnv.FOGBENDER_SECRET;
 		const userJWT = jsonwebtoken.sign(unsignedToken, secret, {
 			algorithm: 'HS256',
 		});
