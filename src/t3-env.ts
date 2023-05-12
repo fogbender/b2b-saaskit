@@ -21,13 +21,13 @@ const x = validateEnv({
 		PROPELAUTH_API_KEY: z.string().min(1),
 		PROPELAUTH_VERIFIER_KEY: z.string().min(1),
 		// fogbender
-		FOGBENDER_SECRET: z.string().min(1),
+		FOGBENDER_SECRET: z.string().min(1).optional(),
 	},
 	client: {
 		// propel auth
 		PUBLIC_AUTH_URL: z.string().min(1),
 		// fogbender
-		PUBLIC_FOGBENDER_WIDGET_ID: z.string().min(1),
+		PUBLIC_FOGBENDER_WIDGET_ID: z.string().min(1).optional(),
 		// posthog
 		PUBLIC_POSTHOG_KEY: z.string().min(1).optional(),
 	},

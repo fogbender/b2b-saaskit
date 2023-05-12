@@ -5,15 +5,12 @@ import {
 	saveOrgSelectionToLocalStorage,
 	useRedirectFunctions,
 } from './propelauth';
-import { FogbenderSimpleFloatie } from 'fogbender-react';
-import { useMemo } from 'react';
 import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
-import { apiServer, queryKeys, useQuery } from './client';
-import type { FogbenderTokenResponse } from '../types/types';
 import { env } from '../config';
 import { trpc, TRPCProvider } from './trpc';
 import { AuthSync } from './AuthSync';
+import { SupportWidget } from './fogbender/Support';
 
 export function App() {
 	return (
@@ -101,39 +98,6 @@ const AppWithOrg = ({
 	activeOrg: OrgMemberInfo;
 }) => {
 	const helloQuery = trpc.hello.hello.useQuery();
-	const fogbenderQuery = useQuery({
-		queryKey: queryKeys.fogbender(auth.user.userId, activeOrg.orgId),
-		queryFn: () =>
-			apiServer
-				.url('/api/fogbender')
-				.auth('Bearer ' + auth.accessToken)
-				.json({ orgId: activeOrg.orgId })
-				.post()
-				.unauthorized((e) => {
-					console.error('Failed to get userJWT', e);
-					return { userJWT: undefined };
-				})
-				.json<FogbenderTokenResponse>(),
-		staleTime: Infinity,
-	});
-	const userJWT = fogbenderQuery.data?.userJWT;
-	// token is undefined until we got the userJWT from out backend (because it needs to be signed with fogbender secret)
-	const token = useMemo(() => {
-		if (!userJWT) {
-			return;
-		}
-		return {
-			widgetId: env.PUBLIC_FOGBENDER_WIDGET_ID,
-			customerId: activeOrg.orgId,
-			customerName: activeOrg.orgName,
-			userId: auth.user.userId,
-			userEmail: auth.user.email,
-			userName: auth.user.email, // Don’t know the name? Reuse email here
-			userAvatarUrl: auth.user.pictureUrl,
-			userJWT,
-		};
-	}, [auth.user, activeOrg, fogbenderQuery.data?.userJWT]);
-
 	return (
 		<>
 			<div>
@@ -151,7 +115,7 @@ const AppWithOrg = ({
 			<br />
 			<div>
 				{helloQuery?.data}
-				{token && <FogbenderSimpleFloatie token={token} />}
+				<SupportWidget />
 			</div>
 		</>
 	);
