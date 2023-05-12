@@ -1,5 +1,5 @@
 import { createEnv, LooseOptions, StrictOptions } from '@t3-oss/env-core';
-import { z, ZodType, ZodString } from 'zod';
+import { z, ZodType, ZodString, ZodOptional } from 'zod';
 
 function validateEnv<
 	TPrefix extends string,
@@ -28,6 +28,8 @@ const x = validateEnv({
 		PUBLIC_AUTH_URL: z.string().min(1),
 		// fogbender
 		PUBLIC_FOGBENDER_WIDGET_ID: z.string().min(1),
+		// posthog
+		PUBLIC_POSTHOG_KEY: z.string().min(1).optional(),
 	},
 	runtimeEnv,
 	skipValidation:
@@ -39,7 +41,7 @@ const x = validateEnv({
 // this function would be dead code eliminated
 const client = () => {
 	// add check that values are strings
-	const v = (_: ZodString[]) => {};
+	const v = (_: (ZodString | ZodOptional<ZodString>)[]) => {};
 	// this line will error if the client env is not a string
 	v(Object.values(x.client));
 	// generate type just for the client

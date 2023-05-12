@@ -6,6 +6,7 @@ import DopplerTutorial from './b2b-saaskit/02_doppler_tutorial.md';
 import PropelAuth from './b2b-saaskit/03_propelauth.md';
 import Supabase from './b2b-saaskit/04_supabase.md';
 import Fogbender from './b2b-saaskit/05_fogbender.md';
+import Posthog from './b2b-saaskit/06_posthog.md';
 import Congrats from './b2b-saaskit/99_congrats.md';
 export const prerender = true;
 
@@ -51,6 +52,13 @@ const checks = [
 				import.meta.env.PUBLIC_FOGBENDER_WIDGET_ID !== undefined &&
 				import.meta.env.FOGBENDER_SECRET !== undefined
 			);
+		},
+	},
+	{
+		stepName: 'Posthog (optional)',
+		content: Posthog,
+		havePassed: () => {
+			return import.meta.env.PUBLIC_POSTHOG_KEY !== undefined;
 		},
 	},
 	{
