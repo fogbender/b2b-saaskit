@@ -4,26 +4,32 @@ import { websiteTitle } from '../constants';
 export const prerender = true;
 ---
 
-<Layout title={'Welcome to ' + websiteTitle}>
+<Layout title={'Welcome to the ' + websiteTitle}>
 	<main class="container">
-		<h1>Welcome to <span class="text-gradient">{websiteTitle}</span></h1>
+		<h1>Welcome to the <span class="text-gradient">{websiteTitle}</span></h1>
 		<div class="instructions prose max-w-none">
 			<p class="text-xl">
-				Hello! This website is a showcase of the B2B SaasKit that will allow you to quickly get up
-				and running if you want to build a full stack web app with features like FIXME built in.
+        Friend, hello!
+      </p>
+			<p class="text-xl">
+        <b>B2B SaaS Kit</b> is an instructional bundle for assembling products designed to be used by teams of users (i.e. businesses).
 			</p>
-			<ul>
-				<li>
-					<a href="/setup">Instruction on how to configure your local environment</a>
-				</li>
-				<li>
-					<a href="/prompts">Go to the app and see if you like it</a>
-				</li>
 
-				<li>
-					<a href="https://github.com/fogbender/b2b-saaskit">It's open source! Give us a star ❤️</a>
-				</li>
-			</ul>
+			<p class="text-xl">
+        To see the kit in action, check out <a href="https://promptswithfriends.com" target="_blank">Prompts with Friends</a>&mdash;it's a sample SaaS app that lets you collaborate on GPT prompts with teammates.
+      </p>
+
+			<p class="text-xl">
+        If you'd like to see how it was built, let's get a copy running right here&mdash;on your computer.
+      </p>
+
+			<p class="text-xl">
+        But first, <a href="https://github.com/fogbender/b2b-saaskit" target="_blank">give our open-source repo  a ⭐</a>! If disappointed, you can always unstar it later.
+			</p>
+
+			<p class="text-xl">
+	      <a href="/setup">Let's build</a>
+      </p>
 		</div>
 
 		<style>
