@@ -1,3 +1,9 @@
+---
+title: "Get familiar with Doppler"
+needsEnv: ['DOPPLER_TUTORIAL']
+
+---
+
 ### Step 2: Get familiar with Doppler
 
 Doppler will help your development in three main ways: manage environment variables and avoid storing them as plaintext, manage developer access to secrets, and manage secrets during deployments.

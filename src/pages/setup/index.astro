@@ -1,79 +1,22 @@
 ---
+import { CollectionEntry, getEntryBySlug } from 'astro:content';
 import { websiteTitle } from '../../constants';
 import Layout from '../../layouts/Layout.astro';
-import Doppler from '../../content/setup/doppler.md';
-import DopplerTutorial from '../../content/setup/doppler_tutorial.md';
-import PropelAuth from '../../content/setup/propelauth.md';
-import Supabase from '../../content/setup/supabase.md';
-import Fogbender from '../../content/setup/fogbender.md';
-import Posthog from '../../content/setup/posthog.md';
-import Congrats from '../../content/setup/production.md';
+
 export const prerender = true;
 
-type AstroComponentFactory = typeof Doppler;
-const checks = [
-	{
-		stepName: 'Doppler',
-		content: Doppler,
-		havePassed: () => {
-			return import.meta.env.DOPPLER_PROJECT !== undefined;
-		},
-	},
-	{
-		stepName: 'Doppler Tutorial',
-		content: DopplerTutorial,
-		havePassed: () => {
-			return import.meta.env.DOPPLER_TUTORIAL !== undefined;
-		},
-	},
-	{
-		stepName: 'PropelAuth',
-		content: PropelAuth,
-		havePassed: () => {
-			return (
-				import.meta.env.PUBLIC_AUTH_URL !== undefined &&
-				import.meta.env.PROPELAUTH_API_KEY !== undefined &&
-				import.meta.env.PROPELAUTH_VERIFIER_KEY !== undefined
-			);
-		},
-	},
-	{
-		stepName: 'Supabase',
-		content: Supabase,
-		havePassed: () => {
-			return import.meta.env.DATABASE_URL !== undefined;
-		},
-	},
-	{
-		stepName: 'Fogbender',
-		content: Fogbender,
-		havePassed: () => {
-			return (
-				import.meta.env.PUBLIC_FOGBENDER_WIDGET_ID !== undefined &&
-				import.meta.env.FOGBENDER_SECRET !== undefined
-			);
-		},
-	},
-	{
-		stepName: 'Posthog (optional)',
-		content: Posthog,
-		havePassed: () => {
-			return import.meta.env.PUBLIC_POSTHOG_KEY !== undefined;
-		},
-	},
-	{
-		stepName: 'Deploying to Vercel',
-		content: Congrats,
-		havePassed: () => import.meta.env.PROD,
-	},
-] as const satisfies Readonly<
-	{
-		stepName: string;
-		content: AstroComponentFactory;
-		havePassed: () => boolean;
-	}[]
->;
-const firstFailedCheck = checks.find((check) => !check.havePassed())?.stepName;
+type SetupSlug = CollectionEntry<'setup'>['slug'];
+const checksOrder: SetupSlug[] = [
+	'doppler',
+	'doppler_tutorial',
+	'propelauth',
+	'supabase',
+	'fogbender',
+	'posthog',
+	'production',
+];
+
+let firstFail = ''; // debug with: let firstFail = 'fogbender';
 ---
 
 <Layout title={'Set up your own ' + websiteTitle}>
@@ -92,15 +35,23 @@ const firstFailedCheck = checks.find((check) => !check.havePassed())?.stepName;
 			}
 			<h3>Setup steps:</h3>
 			{
-				checks.map((step, i) => {
-					const done = step.havePassed();
+				checksOrder.map(async (slug, i) => {
+					const step = await getEntryBySlug('setup', slug);
+					const { Content } = await step.render();
+					const havePassed = step.data.needsEnv?.every(
+						(x) => (process.env[x] || import.meta.env[x]) !== undefined
+					);
+					if (!havePassed && firstFail == '') {
+						firstFail = step.slug;
+					}
 					return (
-						<sl-details open={step.stepName === firstFailedCheck}>
+						<sl-details open={firstFail === step.slug}>
 							<h3 slot="summary" class="text-gray-600">
-								<span class="w-4 inline-block">{i + 1}.</span> {done ? '✅' : ''} {step.stepName}
+								<span class="w-4 inline-block">{i + 1}.</span> {havePassed ? '✅ ' : ''}
+								{step.data.title || step.slug}
 							</h3>
 							<div class="prose max-w-none">
-								<step.content />
+								<Content />
 							</div>
 						</sl-details>
 					);

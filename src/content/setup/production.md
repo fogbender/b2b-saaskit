@@ -1,3 +1,9 @@
+---
+title: "Deploy to Vercel"
+needsEnv: ['PROD']
+
+---
+
 ### Configuration and deployment to production
 
 Now that you've got everything running locally, let's configure the production environment and deploy the project to production. For this, we use Vercel (<a href="https://vercel.com" target="_blank">https://vercel.com</a>), a cloud platform for deploying and hosting static sites and serverless functions.

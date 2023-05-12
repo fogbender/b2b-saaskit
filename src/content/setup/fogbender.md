@@ -1,3 +1,9 @@
+---
+title: "Customer support with Fogbender"
+needsEnv: ['DOPPLER_PROJECT']
+
+---
+
 ### Step 5: Customer support with Fogbender
 
 Fogbender (<a href="https://fogbender.com" target="_blank">https://fogbender.com</a>) is a B2B customer support tool that enables users associated with the same customer organization to collaborate in vendor support conversations as a team.
