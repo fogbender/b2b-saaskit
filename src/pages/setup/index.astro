@@ -1,13 +1,13 @@
 ---
 import { websiteTitle } from '../../constants';
 import Layout from '../../layouts/Layout.astro';
-import Doppler from './b2b-saaskit/01_doppler.md';
-import DopplerTutorial from './b2b-saaskit/02_doppler_tutorial.md';
-import PropelAuth from './b2b-saaskit/03_propelauth.md';
-import Supabase from './b2b-saaskit/04_supabase.md';
-import Fogbender from './b2b-saaskit/05_fogbender.md';
-import Posthog from './b2b-saaskit/06_posthog.md';
-import Congrats from './b2b-saaskit/99_congrats.md';
+import Doppler from '../../content/setup/doppler.md';
+import DopplerTutorial from '../../content/setup/doppler_tutorial.md';
+import PropelAuth from '../../content/setup/propelauth.md';
+import Supabase from '../../content/setup/supabase.md';
+import Fogbender from '../../content/setup/fogbender.md';
+import Posthog from '../../content/setup/posthog.md';
+import Congrats from '../../content/setup/production.md';
 export const prerender = true;
 
 type AstroComponentFactory = typeof Doppler;
