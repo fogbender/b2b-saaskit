@@ -1,7 +1,6 @@
 ---
 title: "Deploy to Vercel"
-needsEnv: ['PROD']
-
+needsEnv: ["PROD"]
 ---
 
 ### Configuration and deployment to production
@@ -13,7 +12,6 @@ Now that you've got everything running locally, let's configure the production e
 1. Create a new Fogbender workspace on <a href="https://fogbender.com/admin/-/workspaces" target="_blank">https://fogbender.com/admin/-/workspaces</a>
 2. Copy the new `widgetId`, then save it with `doppler secrets set PUBLIC_FOGBENDER_WIDGET_ID --config prd`
 3. Copy the new `secret`, then save it with `doppler secrets set FOGBENDER_SECRET --config prd`
-
 
 #### Supabase
 

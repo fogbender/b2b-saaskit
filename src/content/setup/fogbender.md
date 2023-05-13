@@ -1,7 +1,6 @@
 ---
 title: "Customer support with Fogbender (optional)"
-needsEnv: ['DOPPLER_PROJECT']
-
+needsEnv: ["DOPPLER_PROJECT"]
 ---
 
 ### Step 5: Customer support with Fogbender

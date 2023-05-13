@@ -1,7 +1,6 @@
 ---
 title: "Get familiar with Doppler"
-needsEnv: ['DOPPLER_TUTORIAL']
-
+needsEnv: ["DOPPLER_TUTORIAL"]
 ---
 
 ### Step 2: Get familiar with Doppler

@@ -1,7 +1,6 @@
 ---
 title: "Secrets management with Doppler"
-needsEnv: ['DOPPLER_PROJECT']
-
+needsEnv: ["DOPPLER_PROJECT"]
 ---
 
 ### Step 1: Secrets management with Doppler

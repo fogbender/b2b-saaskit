@@ -1,7 +1,6 @@
 ---
 title: "Postgres database with Supabase"
-needsEnv: ['DATABASE_URL']
-
+needsEnv: ["DATABASE_URL"]
 ---
 
 ### Step 4: Postgres database with Supabase

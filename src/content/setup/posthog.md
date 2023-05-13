@@ -1,7 +1,6 @@
 ---
 title: "Product analytics with PostHog (optional)"
-needsEnv: ['PUBLIC_POSTHOG_KEY']
-
+needsEnv: ["PUBLIC_POSTHOG_KEY"]
 ---
 
 ### Step 6: Product analytics with PostHog

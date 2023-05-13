@@ -1,7 +1,6 @@
 ---
 title: "User authentication with PropelAuth"
-needsEnv: ['PUBLIC_AUTH_URL', 'PROPELAUTH_VERIFIER_KEY', 'PROPELAUTH_API_KEY']
-
+needsEnv: ["PUBLIC_AUTH_URL", "PROPELAUTH_VERIFIER_KEY", "PROPELAUTH_API_KEY"]
 ---
 
 ### Step 3: User authentication with PropelAuth
