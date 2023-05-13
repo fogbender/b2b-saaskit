@@ -31,8 +31,7 @@ Lastly, build your own product by modifying the app.
 ### Get it running locally
 
 1. Install prerequisites
-
-  * Node.js 18
+   - Node.js 18
 
 2. Clone repo, start app
 
