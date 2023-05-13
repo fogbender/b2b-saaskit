@@ -1,0 +1,70 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { websiteTitle } from '../../constants';
+export const prerender = true;
+---
+
+<Layout title={'Welcome to ' + websiteTitle}>
+	<main class="container">
+		<h1>Welcome to <span class="text-gradient">{websiteTitle}</span></h1>
+		<div class="instructions prose max-w-none">
+			<p class="text-xl">
+				Hello! This website is a showcase of the B2B SaasKit that will allow you to quickly get up
+				and running if you want to build a full stack web app with features like FIXME built in.
+			</p>
+			<ul>
+				<li>
+					<a href="/setup">Instruction on how to configure your local environment</a>
+				</li>
+				<li>
+					<a href="/prompts">Go to the app and see if you like it</a>
+				</li>
+
+				<li>
+					<a href="https://github.com/fogbender/b2b-saaskit">It's open source! Give us a star ❤️</a>
+				</li>
+			</ul>
+		</div>
+
+		<style>
+			main {
+				margin: auto;
+				padding: 1.5rem;
+			}
+			h1 {
+				font-size: 3rem;
+				font-weight: 800;
+				margin: 0;
+			}
+			.text-gradient {
+				background-image: var(--accent-gradient);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-size: 400%;
+				background-position: 0%;
+			}
+			.instructions {
+				line-height: 1.6;
+				margin: 1rem 0;
+				border: 1px solid rgba(var(--accent), 25%);
+				background-color: white;
+				padding: 1rem;
+				border-radius: 0.4rem;
+			}
+		</style>
+		<style is:global>
+			:root {
+				--accent: 124, 58, 237;
+				--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
+			}
+			html {
+				font-family: system-ui, sans-serif;
+				background-color: #f6f6f6;
+			}
+			code {
+				font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+					Bitstream Vera Sans Mono, Courier New, monospace;
+			}
+		</style>
+	</main>
+</Layout>
