@@ -20,13 +20,13 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 ### High-level plan
 
-First, check out https://promptswithfriends.com - it's a web-based SaaS application that was built with the B2B SaaS Kit. Prompts with Friends is a way to collaborate on GPT prompts with others.
+- [ ] First, check out https://promptswithfriends.com - it's a web-based SaaS application that was built with this B2B SaaS Kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others.
 
-Next, get your own copy of Prompts with Friends running locally on your machine.
+- [ ] Next, get your own copy of Prompts with Friends running locally on your machine.
 
-Then, learn how to deploy your version to production.
+- [ ] Then, learn how to deploy your version to production.
 
-Lastly, build your own product by modifying the app.
+- [ ] Lastly, build your own product by modifying the app.
 
 ### Get it running locally
 
@@ -44,10 +44,14 @@ yarn
 yarn dev
 ```
 
-### Follow setup instructions
+3. Open http://localhost:3000 in a browser tab - you should see a page titled "Welcome to Prompts with Friends".
 
-Open http://localhost:3000 in a browser tab and follow setup instructions.
+4. You'll find detailed configuration instructions on http://localhost:3000/setup. Once you're here -
 
+![image](https://github.com/fogbender/b2b-saaskit/assets/41166/0e8015de-7453-499a-90af-ec8e6a5ebcb1)
+
+\- you should be able to have a working copy of _Prompts with Friends_ running on http://localhost:3000/app.
+ 
 ### Deploy to production
 
 ### Make changes
