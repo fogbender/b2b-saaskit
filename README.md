@@ -36,8 +36,10 @@ Lastly, build your own product by modifying the app.
 2. Clone repo, start app
 
 ```
-git clone git@github.com:fogbender/b2b-saaskit.git && cd b2b-saaskit \
-corepack enable && corepack prepare yarn@1.22.19 --activate \
+git clone git@github.com:fogbender/b2b-saaskit.git && cd b2b-saaskit
+
+corepack enable && corepack prepare yarn@1.22.19 --activate
+
 yarn dev
 ```
 
