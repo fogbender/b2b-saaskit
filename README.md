@@ -47,7 +47,7 @@ $ corepack prepare yarn@1.22.19 --activate
 $ yarn dev
 ```
 
-### Follow setup instructions on http://localhost:3000
+### Follow setup instructions
 
 Open http://localhost:3000 in a browser tab and follow setup instructions.
 
