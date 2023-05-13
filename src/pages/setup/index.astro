@@ -22,11 +22,13 @@ let firstFail = ''; // debug with: let firstFail = 'fogbender';
 
 <Layout title={'Set up your own ' + websiteTitle}>
 	<main class="container">
-		<h1>Set up your own <span class="text-gradient">{websiteTitle}</span></h1>
-		<div class="instructions sl-waiting">
+		<h1 class="text-5xl leading-normal font-extrabold">
+			Set up your own <span class="text-gradient">{websiteTitle}</span>
+		</h1>
+		<div class="instructions sl-waiting bg-slate-100">
 			{
 				import.meta.env.PROD && (
-					<p class="text-gray-600 border-b border-gray-200 pb-2 mb-2">
+					<p class="text-gray-600 border-b border-slate-400 pb-2 mb-2">
 						Please note that you are looking at production build of the app, so make necessary
 						changes to the commands depending on if you want to change the production or development
 						build. Keep in mind that changes to production configuration require you to re-deploy
@@ -52,7 +54,7 @@ let firstFail = ''; // debug with: let firstFail = 'fogbender';
 								<span class="w-4 inline-block">{i + 1}.</span> {havePassed ? '✅ ' : ''}
 								{step.data.title || step.slug}
 							</h3>
-							<div class="prose max-w-none">
+							<div class="prose max-w-none bg-white px-4 py-2 my-2 rounded-md">
 								<Content />
 							</div>
 						</sl-details>
@@ -88,11 +90,6 @@ let firstFail = ''; // debug with: let firstFail = 'fogbender';
 		margin: auto;
 		padding: 1.5rem;
 	}
-	h1 {
-		font-size: 3rem;
-		font-weight: 800;
-		margin: 0;
-	}
 	.text-gradient {
 		background-image: var(--accent-gradient);
 		-webkit-background-clip: text;
@@ -104,7 +101,6 @@ let firstFail = ''; // debug with: let firstFail = 'fogbender';
 		line-height: 1.6;
 		margin: 1rem 0;
 		border: 1px solid rgba(var(--accent), 25%);
-		background-color: white;
 		padding: 1rem;
 		border-radius: 0.4rem;
 	}
