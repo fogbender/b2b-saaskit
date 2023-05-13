@@ -38,9 +38,10 @@ let firstFail = ''; // debug with: let firstFail = 'fogbender';
 				checksOrder.map(async (slug, i) => {
 					const step = await getEntryBySlug('setup', slug);
 					const { Content } = await step.render();
-					const havePassed = step.data.needsEnv?.every(
-						(x) => (process.env[x] || import.meta.env[x]) !== undefined
-					);
+					const havePassed = step.data.needsEnv?.every((x) => {
+						const value = process.env[x] || import.meta.env[x];
+						return value !== undefined && value !== false;
+					});
 					if (!havePassed && firstFail == '') {
 						firstFail = step.slug;
 					}
