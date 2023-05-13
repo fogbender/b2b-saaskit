@@ -9,7 +9,11 @@ PropelAuth <a href="https://propelauth.com" target="_blank">https://propelauth.c
 
 PropelAuth is free up to 1000 monthly active users.
 
-1. Create an account on <a href="https://propelauth.com" target="_blank">https://propelauth.com</a>, create a new project, click on "(4) Integrate your Frontend", click on "View".
+1. Create an account on <a href="https://propelauth.com" target="_blank">https://propelauth.com</a>, create a new project, in the sidebar select "Integrate your product" - "Frontend integration".
+
+1. In the "Test" tab "Primary Frontend Location" should be `https://localhost:3000`. Set "Default redirect path after login" to `/app`.
+
+1. Locate the "Integrate your product" - "Integrate your Backend" step.
 
 2. Locate and copy the value of "Auth URL" - it should like like `https://123456789.propelauthtest.com`, then run `doppler secrets set PUBLIC_AUTH_URL` and paste the value.
 

@@ -26,7 +26,11 @@ Note that the PropelAuth free tier has a limit of 2 projects.
 
 1. Create a new PropelAuth project, then locate "Integrate your product" - "Frontend integration".
 
-2. Set "Primary Frontend Location" to the URL you are going to use in production. TODO: question for Yaroslav - how will the reader know the URL at this point?
+1. In the "Test" tab "Primary Frontend Location" change the type to `Vercel` and enter a "Subdomain" (this part is tricky because we haven't deployed to Vercel yet, be creative).
+
+1. Set "Default redirect path after login" to `/app`.
+
+1. Press "Save".
 
 3. Locate the "Integrate your product" - "Integrate your Backend" step.
 
@@ -46,6 +50,14 @@ Note that the PropelAuth free tier has a limit of 2 projects.
 
 2. Link your GitHub project to Vercel. TODO: How?
 
+1. You might need to change "Primary Frontend Location" in PropelAuth to the new Vercel subdomain.
+
 3. Configure Vercel to use production secrets from Doppler by using the <a href="https://www.doppler.com/integrations/vercel" target="_blank">Vercel integration</a>. For additional information, see <a href="https://docs.doppler.com/docs/vercel" target="_blank">https://docs.doppler.com/docs/vercel</a>
 
-4. Deploy your project to Vercel.
+#### Astro
+
+1. Open `astro.config.mjs` and change `site` to your new url (e.g. `https://hotdog-catering.vercel.app`).
+
+1. Consider setting `allowRobots` to `false` in `src/pages/robots.txt.ts` if you don't want Google to index your site yet.
+
+1. Redeploy your project to Vercel for changes to take effect.
