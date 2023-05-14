@@ -9,7 +9,7 @@ PropelAuth <a href="https://propelauth.com" target="_blank">https://propelauth.c
 
 PropelAuth is free up to 1000 monthly active users.
 
-1. Create an account on <a href="https://propelauth.com" target="_blank">https://propelauth.com</a>, create a new project, in the sidebar select "Integrate your product" - "Frontend integration".
+1. Create an account on <a href="https://propelauth.com" target="_blank">https://propelauth.com</a>, create a new project (e.g. `pwf-dev`), in the sidebar select "Integrate your product" - "Frontend integration".
 
 1. In the "Test" tab "Primary Frontend Location" should be `https://localhost:3000`. Set "Default redirect path after login" to `/app`.
 

@@ -1,13 +1,11 @@
 ---
-title: "Deploy to Vercel"
+title: "Production deployment to Vercel"
 needsEnv: ["PROD"]
 ---
 
-### Configuration and deployment to production
+Now that you've got everything running locally, let's deploy the project to production. For this, we'll be using Vercel (<a href="https://vercel.com" target="_blank">https://vercel.com</a>), a cloud platform for deploying and hosting static sites and serverless functions.
 
-Now that you've got everything running locally, let's configure the production environment and deploy the project to production. For this, we use Vercel (<a href="https://vercel.com" target="_blank">https://vercel.com</a>), a cloud platform for deploying and hosting static sites and serverless functions.
-
-#### Fogbender
+#### Fogbender (optional)
 
 1. Create a new Fogbender workspace on <a href="https://fogbender.com/admin/-/workspaces" target="_blank">https://fogbender.com/admin/-/workspaces</a>
 2. Copy the new `widgetId`, then save it with `doppler secrets set PUBLIC_FOGBENDER_WIDGET_ID --config prd`
@@ -22,27 +20,25 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 #### PropelAuth
 
-Note that the PropelAuth free tier has a limit of 2 projects.
+1. Create a new PropelAuth project (e.g., `pwf-prod`), then locate "Integrate your product" - "Frontend integration".
 
-1. Create a new PropelAuth project, then locate "Integrate your product" - "Frontend integration".
+1. Under "Test" / "Primary Frontend Location", change **Type** to `Vercel`, then come up with a value for "Subdomain" - this can be any string (e.g., `pwf-2023-may-13-435pm`), as long as `https://[subdomain].vercel.app` resolves to 404: NOT_FOUND.
 
-1. In the "Test" tab "Primary Frontend Location" change the type to `Vercel` and enter a "Subdomain" (this part is tricky because we haven't deployed to Vercel yet, be creative).
+1. Set "Default redirect path after login" to `/app`
 
-1. Set "Default redirect path after login" to `/app`.
+1. Press "Save"
 
-1. Press "Save".
+3. Locate the "Integrate your product" - "Backend integration" page
 
-3. Locate the "Integrate your product" - "Integrate your Backend" step.
+4. Copy "Auth URL", then save it with `doppler secrets set PUBLIC_AUTH_URL --config prd`
 
-4. Copy "Auth URL", then save it with `doppler secrets set PUBLIC_AUTH_URL --config prd`.
+5. Copy "Public (Verifier) Key", then save it with `doppler secrets set PROPELAUTH_VERIFIER_KEY --config prd`
 
-5. Copy "Public (Verifier) Key", then save it with `doppler secrets set PROPELAUTH_VERIFIER_KEY --config prd`).
-
-6. Click on "Create New API Key" give it a name (e.g. PWF Prod), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`).
+6. Click on "Create New API Key", give the key a name (e.g., `pwf-prod`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`
 
 #### Check build
 
-1. Make sure you can still build the project locally with `doppler run --config prd yarn build`.
+1. Make sure you can still build the project locally with `doppler run --config prd yarn build`
 
 #### Publish to GitHub, deploy to Vercel
 
@@ -50,14 +46,14 @@ Note that the PropelAuth free tier has a limit of 2 projects.
 
 2. Link your GitHub project to Vercel. TODO: How?
 
-1. You might need to change "Primary Frontend Location" in PropelAuth to the new Vercel subdomain.
+1. Note that if your Vercel subdomain ended up being different from the one used in the 2nd step of PropelAuth settings above, make  sure to update "Primary Frontend Location" in PropelAuth to your actual Vercel subdomain
 
 3. Configure Vercel to use production secrets from Doppler by using the <a href="https://www.doppler.com/integrations/vercel" target="_blank">Vercel integration</a>. For additional information, see <a href="https://docs.doppler.com/docs/vercel" target="_blank">https://docs.doppler.com/docs/vercel</a>
 
 #### Astro
 
-1. Open `astro.config.mjs` and change `site` to your new url (e.g. `https://hotdog-catering.vercel.app`).
+1. Open `astro.config.mjs` and change `site` to your new url (e.g., `https://hotdog-catering.vercel.app`)
 
-1. Consider setting `allowRobots` to `false` in `src/pages/robots.txt.ts` if you don't want Google to index your site yet.
+1. Consider setting `allowRobots` to `false` in `src/pages/robots.txt.ts` in case you're not ready for search engines to index your site
 
-1. Redeploy your project to Vercel for changes to take effect.
+1. Redeploy your project to Vercel for the changes to take effect
