@@ -3,7 +3,10 @@ title: "Production deployment to Vercel"
 needsEnv: ["PROD"]
 ---
 
-Now that you've got everything running locally, let's deploy the project to production. For this, we'll be using Vercel (<a href="https://vercel.com" target="_blank">https://vercel.com</a>), a cloud platform for deploying and hosting static sites and serverless functions.
+You have set up everything! Now go play with the app at <a href="http://localhost:3000/app" target="_blank">http://localhost:3000/app</a>.
+You should be seeing the same app as we have on <a href="https://promptswithfirends.com/app" target="_blank">https://promptswithfirends.com/app</a> (except for the data, of course).
+
+The good next step after this is to deploy your version of the app to production. For this, we'll be using Vercel (<a href="https://vercel.com" target="_blank">https://vercel.com</a>), a cloud platform for deploying and hosting static sites and serverless functions.
 
 #### Fogbender (optional)
 
