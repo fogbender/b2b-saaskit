@@ -70,3 +70,16 @@ export const defaultKeys = pgTable(
 		};
 	}
 );
+
+/* ```sql
+ALTER TABLE surveys ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."surveys" AS PERMISSIVE FOR ALL TO service_role USING (true);
+``` */
+
+export const surveys = pgTable('surveys', {
+	id: serial('id').primaryKey(),
+	rating: integer('rating').notNull(),
+	isPublic: boolean('is_public').default(false).notNull(),
+	comments: text('comments'),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+});
