@@ -1,0 +1,28 @@
+---
+import { createStaticHandler } from 'react-router-dom/server';
+
+import { Survey, routes } from '../../components/survey/Survey';
+import Layout from '../../layouts/Layout.astro';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+	return [
+		//
+		{ params: { step: undefined } },
+		{ params: { step: 'rate-experience' } },
+		{ params: { step: 'optional-comments' } },
+		{ params: { step: 'thank-you' } },
+	];
+}
+const { query } = createStaticHandler(routes());
+const context = await query(Astro.request);
+if (context instanceof Response) {
+	throw new Error('Unexpected response');
+}
+console.log(context);
+---
+
+<Layout title="Survey">
+	<Survey client:load context={context} />
+</Layout>
