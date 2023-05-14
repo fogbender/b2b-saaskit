@@ -56,32 +56,6 @@ yarn dev
 
 ### Make changes
 
-## Third-party services overview
-
-### Secrets management
-
-### User authentication
-
-### Database
-
-### Product analytics
-
-### Customer support
-
-### Hosting and deployment infrastructure
-
-### Other services to consider
-
-- Error tracking
-- Backend monitoring
-- Incident response
-
-## 
-
-## Prompts with Friends frontend teardown
-
-## Prompts with Friends backend teardown
-
 ## License
 
 B2B SaaS Kit is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for more details.
