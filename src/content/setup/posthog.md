@@ -3,8 +3,6 @@ title: "Product analytics with PostHog (optional)"
 needsEnv: ["PUBLIC_POSTHOG_KEY"]
 ---
 
-### Step 6: Product analytics with PostHog
-
 PostHog (<a href="https://posthog.com/" target="_blank">https://posthog.com/</a>) is an open-source product analytics platform that helps engineers understand user behavior.
 
 PostHog is free for 1 project and up to 1 million events per month.

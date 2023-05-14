@@ -3,8 +3,6 @@ title: "Postgres database with Supabase"
 needsEnv: ["DATABASE_URL"]
 ---
 
-### Step 4: Postgres database with Supabase
-
 Supabase (<a href="https://supabase.com" target="_blank">https://supabase.com</a>) is an open source Firebase alternative, providing services like authentication, managed database, storage, functions, etc. In this project, we'll only use Supabase for its managed Postgres database service.
 
 Supabase is free for 2 lightweight projects.
