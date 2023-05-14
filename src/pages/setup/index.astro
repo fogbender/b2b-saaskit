@@ -18,6 +18,22 @@ const checksOrder: SetupSlug[] = [
 ];
 
 let firstFail = ''; // debug with: let firstFail = 'fogbender';
+
+const parsedSteps: {
+	havePassed: boolean;
+	step: CollectionEntry<'setup'>;
+}[] = [];
+for (const slug of checksOrder) {
+	const step = await getEntryBySlug('setup', slug);
+	const havePassed = step.data.needsEnv?.every((x) => {
+		const value = process.env[x] || import.meta.env[x];
+		return value !== undefined && value !== false;
+	});
+	if (!havePassed && firstFail == '') {
+		firstFail = step.slug;
+	}
+	parsedSteps.push({ havePassed, step });
+}
 ---
 
 <Layout title={'Set up your own ' + websiteTitle}>
@@ -38,16 +54,8 @@ let firstFail = ''; // debug with: let firstFail = 'fogbender';
 			}
 			<h3>Setup steps:</h3>
 			{
-				checksOrder.map(async (slug, i) => {
-					const step = await getEntryBySlug('setup', slug);
+				parsedSteps.map(async ({ havePassed, step }, i) => {
 					const { Content } = await step.render();
-					const havePassed = step.data.needsEnv?.every((x) => {
-						const value = process.env[x] || import.meta.env[x];
-						return value !== undefined && value !== false;
-					});
-					if (!havePassed && firstFail == '') {
-						firstFail = step.slug;
-					}
 					return (
 						<sl-details open={firstFail === step.slug}>
 							<h3 slot="summary" class="text-gray-600">
