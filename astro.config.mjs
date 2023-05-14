@@ -7,5 +7,5 @@ export default defineConfig({
 	integrations: [react()],
 	output: 'server',
 	adapter: vercel(),
-	site: 'https://promptswithfriends.com',
+	site: process.env.SITE_URL,
 });
