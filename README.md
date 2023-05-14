@@ -1,6 +1,6 @@
 # Welcome to the B2B SaaS Kit!
 
-The B2B SaaS Kit is a springboard for developers looking to quickly stand up a SaaS product where the customer can be a team of users (i.e., a business).
+The B2B SaaS Kit is an open-source springboard for developers looking to quickly stand up a SaaS product where the customer can be a team of users (i.e., a business).
 
 The kit uses TypeScript, Astro, React, Tailwind CSS, and a number of third-party services that take care of essential, yet peripheral requirements, such as secrets management, user authentication, a database, product analytics, customer support, and deployment infrastructure.
 
@@ -20,13 +20,13 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 ### High-level plan
 
-- First, check out https://promptswithfriends.com - it's a web-based SaaS application that was built with this B2B SaaS Kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others.
+- First, check out https://promptswithfriends.com - a web-based SaaS application that was built with this B2B SaaS Kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others
 
-- Next, get your own copy of Prompts with Friends running locally on your machine.
+- Next, get your own copy of _Prompts with Friends_ running locally on your machine
 
-- Then, learn how to deploy your version to production.
+- Then, learn how to deploy your version to production
 
-- Lastly, build your own product by modifying the app.
+- Lastly, build your own product by modifying the app
 
 ### Get it running locally
 
