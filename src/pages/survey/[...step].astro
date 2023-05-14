@@ -1,0 +1,18 @@
+---
+import { Account } from '../../components/Account';
+import Layout from '../../layouts/Layout.astro';
+export const prerender = true;
+export function getStaticPaths() {
+	return [
+		//
+		{ params: { step: undefined } },
+		{ params: { step: 'rate-experience' } },
+		{ params: { step: 'optional-comments' } },
+		{ params: { step: 'thank-you' } },
+	];
+}
+---
+
+<Layout title="Survey">
+	<Account client:load />
+</Layout>
