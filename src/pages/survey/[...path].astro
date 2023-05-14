@@ -1,0 +1,20 @@
+---
+import { Survey } from '../../components/survey/Survey';
+import Layout from '../../layouts/Layout.astro';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+	return [
+		{ params: { path: undefined } },
+		{ params: { path: 'rate-experience' } },
+		{ params: { path: 'optional-comments' } },
+		{ params: { path: 'thank-you' } },
+		{ params: { path: 'published' } },
+	];
+}
+---
+
+<Layout title="Survey">
+	<Survey client:only="react" />
+</Layout>
