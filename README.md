@@ -76,7 +76,7 @@ yarn dev
 - Backend monitoring
 - Incident response
 
-## Custom code
+## 
 
 ## Prompts with Friends frontend teardown
 
