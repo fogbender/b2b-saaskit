@@ -44,14 +44,14 @@ yarn
 yarn dev
 ```
 
-3. Open http://localhost:3000 in a browser tab - you should see a page titled "Welcome to Prompts with Friends".
+3. Open http://localhost:3000 in a browser tab - you should see a page titled "Welcome to Prompts with Friends"
 
 4. You'll find detailed configuration instructions on http://localhost:3000/setup. Once you're here -
 
 ![image](https://github.com/fogbender/b2b-saaskit/assets/41166/0e8015de-7453-499a-90af-ec8e6a5ebcb1)
 
-\- you should be able to have a working copy of _Prompts with Friends_ running on http://localhost:3000/app.
- 
+\- you should be able to have a working copy of _Prompts with Friends_ running on http://localhost:3000/app
+
 ### Deploy to production
 
 ### Make changes
