@@ -51,7 +51,6 @@ for (const slug of checksOrder) {
 					</p>
 				)
 			}
-			<h3>Setup steps:</h3>
 			{
 				parsedSteps.map(async ({ havePassed, step }, i) => {
 					const { Content } = await step.render();
