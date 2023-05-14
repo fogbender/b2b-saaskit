@@ -20,4 +20,5 @@ export default defineConfig({
 			sourcemap: true /* B2B:CONFIG consider disabling sourcemaps for production */,
 		},
 	},
+	srcDir: 'src/b2bsaaskit',
 });
