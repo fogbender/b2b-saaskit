@@ -28,13 +28,13 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Press "Save"
 
-3. Locate the "Integrate your product" - "Backend integration" page
+1. Locate the "Integrate your product" - "Backend integration" page
 
-4. Copy "Auth URL", then save it with `doppler secrets set PUBLIC_AUTH_URL --config prd`
+1. Copy "Auth URL", then save it with `doppler secrets set PUBLIC_AUTH_URL --config prd`
 
-5. Copy "Public (Verifier) Key", then save it with `doppler secrets set PROPELAUTH_VERIFIER_KEY --config prd`
+1. Copy "Public (Verifier) Key", then save it with `doppler secrets set PROPELAUTH_VERIFIER_KEY --config prd`
 
-6. Click on "Create New API Key", give the key a name (e.g., `pwf-prod`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`
+1. Click on "Create New API Key", give the key a name (e.g., `pwf-prod`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`
 
 #### Check build
 
@@ -46,9 +46,9 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 2. Link your GitHub project to Vercel. TODO: How?
 
-1. Note that if your Vercel subdomain ended up being different from the one used in the 2nd step of PropelAuth settings above, make  sure to update "Primary Frontend Location" in PropelAuth to your actual Vercel subdomain
+3. Note that if your Vercel subdomain ended up being different from the one used in the 2nd step of PropelAuth settings above, make sure to update "Primary Frontend Location" in PropelAuth to your actual Vercel subdomain
 
-3. Configure Vercel to use production secrets from Doppler by using the <a href="https://www.doppler.com/integrations/vercel" target="_blank">Vercel integration</a>. For additional information, see <a href="https://docs.doppler.com/docs/vercel" target="_blank">https://docs.doppler.com/docs/vercel</a>
+4. Configure Vercel to use production secrets from Doppler by using the <a href="https://www.doppler.com/integrations/vercel" target="_blank">Vercel integration</a>. For additional information, see <a href="https://docs.doppler.com/docs/vercel" target="_blank">https://docs.doppler.com/docs/vercel</a>
 
 #### Astro
 

@@ -15,7 +15,7 @@ PropelAuth is free up to 1000 monthly active users.
 
 1. Locate the "Integrate your product" - "Integrate your Backend" step.
 
-2. Locate and copy the value of "Auth URL" - it should like like `https://123456789.propelauthtest.com`, then run `doppler secrets set PUBLIC_AUTH_URL` and paste the value.
+1. Locate and copy the value of "Auth URL" - it should like like `https://123456789.propelauthtest.com`, then run `doppler secrets set PUBLIC_AUTH_URL` and paste the value.
 
 NOTE: to exit Doppler CLI after setting the value, type Shift+Enter twice, then type "." (period). Run `doppler secrets` to make sure the value of PUBLIC_AUTH_URL looks good - set it again (step 2 above) if you see any extra newlines.
 
