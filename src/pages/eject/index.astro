@@ -1,0 +1,101 @@
+---
+import { CollectionEntry, getEntryBySlug } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export const prerender = true;
+
+type SetupSlug = CollectionEntry<'eject'>['slug'];
+const checksOrder: SetupSlug[] = [
+	//
+	'tailwind',
+	'todo',
+];
+
+let firstFail = ''; // debug with: let firstFail = 'fogbender';
+
+const parsedSteps: {
+	step: CollectionEntry<'eject'>;
+}[] = [];
+for (const slug of checksOrder) {
+	const step = await getEntryBySlug('eject', slug);
+	parsedSteps.push({ step });
+}
+---
+
+<Layout title="Cleaning up">
+	<main class="container">
+		<h1 class="text-5xl leading-normal font-extrabold">Cleaning up</h1>
+		<div class="instructions sl-waiting bg-slate-100">
+			{
+				parsedSteps.map(async ({ step }) => {
+					const { Content } = await step.render();
+					return (
+						<sl-details open={firstFail === step.slug}>
+							<h3 slot="summary" class="text-gray-600">
+								🔨 {step.data.title || step.slug}
+							</h3>
+							<div class="prose max-w-none bg-white px-4 py-2 my-2 rounded-md">
+								<Content />
+							</div>
+						</sl-details>
+					);
+				})
+			}
+		</div>
+	</main>
+</Layout>
+
+<script
+	type="module"
+	src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.4.0/dist/components/details/details.js"
+></script>
+<!-- https://shoelace.style/getting-started/usage?id=waiting-for-components-to-load -->
+<style>
+	.sl-waiting {
+		opacity: 0;
+	}
+
+	:global(.sl-ready) .sl-waiting {
+		opacity: 1;
+		transition: 0.25s opacity;
+	}
+</style>
+<script type="module">
+	await Promise.allSettled([customElements.whenDefined('sl-details')]);
+	document.body.classList.add('sl-ready');
+</script>
+
+<style>
+	main {
+		margin: auto;
+		padding: 1.5rem;
+	}
+	.text-gradient {
+		background-image: var(--accent-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-size: 400%;
+		background-position: 0%;
+	}
+	.instructions {
+		line-height: 1.6;
+		margin: 1rem 0;
+		border: 1px solid rgba(var(--accent), 25%);
+		padding: 1rem;
+		border-radius: 0.4rem;
+	}
+</style>
+<style is:global>
+	:root {
+		--accent: 124, 58, 237;
+		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
+	}
+	html {
+		font-family: system-ui, sans-serif;
+		background-color: #f6f6f6;
+	}
+	code {
+		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+			Bitstream Vera Sans Mono, Courier New, monospace;
+	}
+</style>
