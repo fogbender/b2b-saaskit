@@ -3,15 +3,15 @@ title: "Production deployment to Vercel"
 needsEnv: ["PROD"]
 ---
 
-At this point, Prompts with Friends is fully configured on your machine! You can check it out here: <a href="http://localhost:3000/app" target="_blank">http://localhost:3000/app</a>.
+At this point, Prompts with Friends is fully configured on your machine! You can check it out here: <a href="http://localhost:3000/app" >http://localhost:3000/app</a>.
 
-Except for the data, you should see the exact same app we have running on <a href="https://promptswithfirends.com/app" target="_blank">https://promptswithfirends.com/app</a>.
+Except for the data, you should see the exact same app we have running on <a href="https://promptswithfirends.com/app" >https://promptswithfirends.com/app</a>.
 
-A great next step is to learn how to deploy your version of the app to production. For this, we'll be using Vercel (<a href="https://vercel.com" target="_blank">https://vercel.com</a>), a cloud platform for deploying and hosting static sites and serverless functions.
+A great next step is to learn how to deploy your version of the app to production. For this, we'll be using Vercel (<a href="https://vercel.com" >https://vercel.com</a>), a cloud platform for deploying and hosting static sites and serverless functions.
 
 #### Fogbender (optional)
 
-1. Create a new Fogbender workspace on <a href="https://fogbender.com/admin/-/workspaces" target="_blank">https://fogbender.com/admin/-/workspaces</a>
+1. Create a new Fogbender workspace on <a href="https://fogbender.com/admin/-/workspaces" >https://fogbender.com/admin/-/workspaces</a>
 2. Copy the new `widgetId`, then save it with `doppler secrets set PUBLIC_FOGBENDER_WIDGET_ID --config prd`
 3. Copy the new `secret`, then save it with `doppler secrets set FOGBENDER_SECRET --config prd`
 
@@ -20,7 +20,7 @@ A great next step is to learn how to deploy your version of the app to productio
 Note that the Supabase free tier has a limit of 2 projects.
 
 1. Create a new Supabase project and save the new database URL with `doppler secrets set DATABASE_URL --config prd`
-2. Run `doppler run --config prd yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" target="_blank">Supabase table editor</a>.
+2. Run `doppler run --config prd yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>.
 
 #### PropelAuth
 
@@ -52,7 +52,7 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 3. Note that if your Vercel subdomain ended up being different from the one used in the 2nd step of PropelAuth settings above, make sure to update "Primary Frontend Location" in PropelAuth to your actual Vercel subdomain
 
-4. Configure Vercel to use production secrets from Doppler by using the <a href="https://www.doppler.com/integrations/vercel" target="_blank">Vercel integration</a>. For additional information, see <a href="https://docs.doppler.com/docs/vercel" target="_blank">https://docs.doppler.com/docs/vercel</a>
+4. Configure Vercel to use production secrets from Doppler by using the <a href="https://www.doppler.com/integrations/vercel" >Vercel integration</a>. For additional information, see <a href="https://docs.doppler.com/docs/vercel">https://docs.doppler.com/docs/vercel</a>
 
 #### Astro
 

@@ -6,7 +6,7 @@ needsEnv: ["PROD"]
 Note that a custom domain is required for making PropelAuth work with Safari.
 
 1. Buy a domain name
-   - A good place to search for domain names is <a href="https://domainr.com/" target="_blank">https://domainr.com/</a>
+   - A good place to search for domain names is <a href="https://domainr.com/" >https://domainr.com/</a>
 
 #### Vercel
 

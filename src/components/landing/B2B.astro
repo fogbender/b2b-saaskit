@@ -90,7 +90,7 @@ const services: LegoPiece[] = [
 				<div class="flex gap-6 justify-center">
 					{
 						libraries.map((l) => (
-							<a href={l.url} target="_blank">
+							<a href={l.url}>
 								<img
 									class="rounded-xl hover:opacity-50"
 									src={l.imgUrl}
@@ -107,7 +107,7 @@ const services: LegoPiece[] = [
 				<div class="flex gap-6 justify-center">
 					{
 						services.map((l) => (
-							<a href={l.url} target="_blank">
+							<a href={l.url}>
 								<img
 									class="rounded-xl hover:opacity-50 bg-white"
 									src={l.imgUrl}
@@ -125,15 +125,14 @@ const services: LegoPiece[] = [
 			<div class="flex gap-6">
 				<div class="flex-1 text-xl flex flex-col justify-between">
 					<div>
-						To see the kit in action, check out <a
-							href="https://promptswithfriends.com"
-							target="_blank">Prompts with Friends</a
+						To see the kit in action, check out <a href="https://promptswithfriends.com"
+							>Prompts with Friends</a
 						>&mdash;it's a SaaS app built with this kit that lets you collaborate on GPT prompts
 						with teammates.
 					</div>
 
 					<div>
-						But wait! Please <a href="https://github.com/fogbender/b2b-saaskit" target="_blank"
+						But wait! Please <a href="https://github.com/fogbender/b2b-saaskit"
 							>⭐ our open-source repo</a
 						>!
 					</div>
@@ -148,8 +147,7 @@ corepack enable
 corepack prepare yarn@1.22.19 --activate 
 yarn 
 yarn dev</pre>
-					Open <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> and follow the
-					tutorial.
+					Open <a href="http://localhost:3000">http://localhost:3000</a> and follow the tutorial.
 				</div>
 			</div>
 		</div>
