@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import classNames from 'classnames';
+import { useState, useEffect } from 'react';
 import { saveOrgSelectionToLocalStorage, useAuthInfo, useLogoutFunction } from '../propelauth';
 import { env } from '../../config';
+import { SupportWidget } from '../fogbender/Support';
 
 export function AppNav() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,19 +12,58 @@ export function AppNav() {
 	const pictureUrl = user?.pictureUrl || defaultUrl;
 	const logout = useLogoutFunction();
 
+	const [path, setPath] = useState(undefined as undefined | string);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setPath(window.location.pathname);
+		}
+	}, []);
+
+	const activeCls = 'border border-gray-800 rounded-full';
+
 	return (
 		<header className="bg-white shadow-sm py-4 px-5">
 			<div className="container mx-auto flex justify-between items-center">
 				<nav className="flex space-x-4">
-					<a href="/app" className="text-gray-600 hover:text-gray-900">
+					<a
+						href="/app"
+						className={classNames(
+							'text-gray-600 hover:text-gray-900',
+							'px-2 py-1',
+							'/app' === path ? activeCls : 'border border-transparent'
+						)}
+					>
 						Overview
 					</a>
-					<a href="/app/prompts" className="text-gray-600 hover:text-gray-900">
+					<a
+						href="/app/prompts"
+						className={classNames(
+							'text-gray-600 hover:text-gray-900',
+							'px-2 py-1',
+							'/app/prompts' === path && activeCls
+						)}
+					>
 						Prompts
 					</a>
-					<a href="/app/settings" className="text-gray-600 hover:text-gray-900">
+					<a
+						href="/app/settings"
+						className={classNames(
+							'text-gray-600 hover:text-gray-900',
+							'px-2 py-1',
+							'/app/settings' === path && activeCls
+						)}
+					>
 						Settings
 					</a>
+					{path !== '/app/support' && (
+						<a
+							href="/app/support"
+							className="text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1"
+						>
+							Support <SupportWidget isFloatie={false} />
+						</a>
+					)}
 				</nav>
 				<div className="relative inline-block text-left">
 					<img

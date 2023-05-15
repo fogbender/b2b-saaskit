@@ -1,4 +1,15 @@
-import { FogbenderSimpleFloatie } from 'fogbender-react';
+import {
+	FogbenderWidget,
+	FogbenderSimpleFloatie,
+	FogbenderProvider,
+	FogbenderConfig,
+	FogbenderIsConfigured,
+	FogbenderHeadlessWidget,
+	FogbenderUnreadBadge,
+} from 'fogbender-react';
+import { AuthProvider } from '../propelauth';
+import { TRPCProvider, trpc } from '../trpc';
+import { AuthSync } from '../AuthSync';
 import { useMemo } from 'react';
 import type { OrgMemberInfo } from '@propelauth/react';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
@@ -6,14 +17,43 @@ import { apiServer, queryKeys, useQuery } from '../client';
 import type { FogbenderTokenResponse } from '../../types/types';
 import { env } from '../../config';
 import { useActiveOrg, useAuthInfo } from '../propelauth';
+import { AppNav } from '../app/Nav';
 
-export const SupportWidget = () => {
+export const FullPageSupport = () => {
+	return (
+		<TRPCProvider>
+			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
+				<AuthSync />
+				<AppNav />
+				<div className="relative mt-2 border-gray-300">
+					<SupportWidget isFloatie={false} isHeadless={false} />
+				</div>
+			</AuthProvider>
+		</TRPCProvider>
+	);
+};
+
+export const SupportWidget = ({
+	isFloatie = true,
+	isHeadless = true,
+}: {
+	isFloatie: boolean;
+	isHeadless: boolean;
+}) => {
 	const activeOrg = useActiveOrg();
 	const auth = useAuthInfo();
 	const widgetId = env.PUBLIC_FOGBENDER_WIDGET_ID;
 
 	if (widgetId && auth.loading === false && auth.user && activeOrg) {
-		return <Internal auth={auth} activeOrg={activeOrg} widgetId={widgetId} />;
+		return (
+			<Internal
+				auth={auth}
+				activeOrg={activeOrg}
+				widgetId={widgetId}
+				isFloatie={isFloatie}
+				isHeadless={isHeadless}
+			/>
+		);
 	}
 	return null;
 };
@@ -22,10 +62,14 @@ export const Internal = ({
 	auth,
 	activeOrg,
 	widgetId,
+	isFloatie,
+	isHeadless,
 }: {
 	auth: UseAuthInfoLoggedInProps;
 	activeOrg: OrgMemberInfo;
 	widgetId: string;
+	isFloatie: boolean;
+	isHeadless: boolean;
 }) => {
 	const fogbenderQuery = useQuery({
 		queryKey: queryKeys.fogbender(auth.user.userId, activeOrg.orgId),
@@ -60,5 +104,25 @@ export const Internal = ({
 		};
 	}, [auth.user, activeOrg, fogbenderQuery.data?.userJWT]);
 
-	return <>{token && <FogbenderSimpleFloatie token={token} />}</>;
+	return (
+		<>
+			{token && isFloatie ? (
+				<FogbenderSimpleFloatie token={token} />
+			) : (
+				<FogbenderProvider>
+					<FogbenderConfig token={token} />
+					<FogbenderIsConfigured>
+						{isHeadless ? (
+							<>
+								<FogbenderHeadlessWidget />
+								<FogbenderUnreadBadge />
+							</>
+						) : (
+							<FogbenderWidget />
+						)}
+					</FogbenderIsConfigured>
+				</FogbenderProvider>
+			)}
+		</>
+	);
 };

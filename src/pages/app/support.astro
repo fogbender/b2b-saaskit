@@ -1,0 +1,9 @@
+---
+import { FullPageSupport } from '../../components/fogbender/Support';
+import AppLayout from '../../components/app/AppLayout.astro';
+export const prerender = true;
+---
+
+<AppLayout title="Prompts with Friends">
+	<FullPageSupport client:load />
+</AppLayout>
