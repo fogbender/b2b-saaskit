@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { BetaComponentLibraryProvider } from './propelauth';
 import { BaseElements } from '@propelauth/base-elements';
 
@@ -18,19 +18,14 @@ export function PropelAuthCSS({ children }: { children: React.ReactNode }) {
 }
 
 export function IsolateCSS(props: { children: React.ReactNode }) {
-	const containerRef = useRef<HTMLDivElement>(null);
 	const onceRef = useRef(false);
-	const [popupContainer, setPopupContainer] = useState<ShadowRoot>();
-
-	useEffect(() => {
-		const container = containerRef.current;
-		if (container && onceRef.current === false) {
+	const [shadowRoot, setShadowRoot] = useState<ShadowRoot>();
+	const ref = useCallback((ref: HTMLDivElement | null) => {
+		if (ref && onceRef.current === false) {
 			onceRef.current = true;
-			setPopupContainer(container.attachShadow({ mode: 'open' }));
+			setShadowRoot(ref.attachShadow({ mode: 'open' }));
 		}
 	}, []);
 
-	return (
-		<div ref={containerRef}>{popupContainer && createPortal(props.children, popupContainer)}</div>
-	);
+	return <div ref={ref}>{shadowRoot && createPortal(props.children, shadowRoot)}</div>;
 }
