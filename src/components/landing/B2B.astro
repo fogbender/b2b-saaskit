@@ -1,0 +1,198 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const websiteTitle = 'B2B SaaS Kit';
+
+type LegoPiece = {
+	url: string;
+	imgUrl: string;
+	name: string;
+};
+
+const libraries: LegoPiece[] = [
+	{
+		url: 'https://astro.build/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/1632785343433908224/SnMGR19O_400x400.png',
+		name: 'Astro',
+	},
+	{
+		url: 'https://react.dev/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/446356636710363136/OYIaJ1KK_400x400.png',
+		name: 'React',
+	},
+	{
+		url: 'https://tailwindcss.com/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/1468993891584073729/a_op8KnL_400x400.jpg',
+		name: 'Tailwind CSS',
+	},
+];
+
+const services: LegoPiece[] = [
+	{
+		url: 'https://www.doppler.com/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/1443663130840686596/cG41OnYX_400x400.jpg',
+		name: 'Doppler',
+	},
+	{
+		url: 'https://propelauth.com/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/1481731417608318978/H22VYbY0_400x400.jpg',
+		name: 'PropelAuth',
+	},
+	{
+		url: 'https://supabase.com/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/1651226564728700928/h0tz5UT1_400x400.jpg',
+		name: 'Supabase',
+	},
+	{
+		url: 'https://vercel.com/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/1652878800311427073/j0-3owJd_400x400.jpg',
+		name: 'Vercel',
+	},
+	{
+		url: 'https://fogbender.com/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/1312524109218111489/1e7X9EZ5_400x400.png',
+		name: 'Fogbender',
+	},
+	{
+		url: 'https://posthog.com/',
+		imgUrl: 'https://pbs.twimg.com/profile_images/1436032806413606913/NgLRYKqT_400x400.jpg',
+		name: 'PostHog',
+	},
+];
+---
+
+<Layout title={'Welcome to ' + websiteTitle}>
+	<main class="container pb-20">
+		<h1>Welcome to <span class="text-gradient">{websiteTitle}</span></h1>
+		<div class="instructions prose max-w-none">
+			<p class="text-xl">Friend, hello!</p>
+			<p class="text-xl">
+				<b>B2B SaaS Kit</b> is an instructional bundle for assembling products designed to be used by
+				teams of users (i.e., businesses).
+			</p>
+
+			<p class="text-xl">
+				The main goal of the kit is to enable a developer to go from zero to core business logic in
+				a matter of double-digit minutes.
+			</p>
+
+			<p class="text-xl">
+				The secondary goal is to limit the software cost of the product-market-fit search phase for
+				a B2B app to the price of a domain name.
+			</p>
+
+			<p class="text-xl">
+				The kit combines a number of open-source libraries and for-profit services with generous
+				free-forever starter plans to assemble a functional multiplayer product with an SQL backend.
+			</p>
+
+			<div class="bg-gray-100 my-14 py-14 rounded-xl">
+				<div class="flex gap-6 justify-center">
+					{
+						libraries.map((l) => (
+							<a href={l.url} target="_blank">
+								<img
+									class="rounded-xl hover:opacity-50"
+									src={l.imgUrl}
+									alt={l.name}
+									width="100"
+									height="100"
+									title={l.name}
+								/>
+							</a>
+						))
+					}
+				</div>
+
+				<div class="flex gap-6 justify-center">
+					{
+						services.map((l) => (
+							<a href={l.url} target="_blank">
+								<img
+									class="rounded-xl hover:opacity-50 bg-white"
+									src={l.imgUrl}
+									alt={l.name}
+									width="100"
+									height="100"
+									title={l.name}
+								/>
+							</a>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="flex gap-6">
+				<div class="flex-1 text-xl flex flex-col justify-between">
+					<div>
+						To see the kit in action, check out <a
+							href="https://promptswithfriends.com"
+							target="_blank">Prompts with Friends</a
+						>&mdash;it's a SaaS app built with this kit that lets you collaborate on GPT prompts
+						with teammates.
+					</div>
+
+					<div>
+						But wait! Please <a href="https://github.com/fogbender/b2b-saaskit" target="_blank"
+							>⭐ our open-source repo</a
+						>!
+					</div>
+				</div>
+				<div class="flex-1 text-xl">
+					If you'd like to see how it was built, let's get a copy running right here&mdash;on your
+					computer:
+					<pre>
+git clone git@github.com:fogbender/b2b-saaskit.git 
+cd b2b-saaskit 
+corepack enable 
+corepack prepare yarn@1.22.19 --activate 
+yarn 
+yarn dev</pre>
+					Open <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> and follow the
+					tutorial.
+				</div>
+			</div>
+		</div>
+
+		<style>
+			main {
+				margin: auto;
+				padding: 1.5rem;
+			}
+			h1 {
+				font-size: 3rem;
+				font-weight: 800;
+				margin: 0;
+			}
+			.text-gradient {
+				background-image: var(--accent-gradient);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-size: 400%;
+				background-position: 0%;
+			}
+			.instructions {
+				line-height: 1.6;
+				margin: 1rem 0;
+				border: 1px solid rgba(var(--accent), 25%);
+				background-color: white;
+				padding: 1rem;
+				border-radius: 0.4rem;
+			}
+		</style>
+		<style is:global>
+			:root {
+				--accent: 124, 58, 237;
+				--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
+			}
+			html {
+				font-family: system-ui, sans-serif;
+				background-color: #f6f6f6;
+			}
+			code {
+				font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+					Bitstream Vera Sans Mono, Courier New, monospace;
+			}
+		</style>
+	</main>
+</Layout>
