@@ -1,6 +1,5 @@
 import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
-import src from '@propelauth/base-elements/dist/default.css';
 import { BetaComponentLibraryProvider } from './propelauth';
 import { BaseElements } from '@propelauth/base-elements';
 
@@ -8,7 +7,10 @@ export function PropelAuthCSS({ children }: { children: React.ReactNode }) {
 	return (
 		<BetaComponentLibraryProvider elements={BaseElements}>
 			<IsolateCSS>
-				<style>{src}</style>
+				<link
+					rel="stylesheet"
+					href="https://unpkg.com/@propelauth/base-elements@0.0.16/dist/default.css"
+				/>
 				{children}
 			</IsolateCSS>
 		</BetaComponentLibraryProvider>
