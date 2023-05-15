@@ -5,25 +5,35 @@ export const prerender = true;
 ---
 
 <Layout title={'Welcome to ' + websiteTitle}>
-	<main class="container">
-		<h1>Welcome to <span class="text-gradient">{websiteTitle}</span></h1>
+	<main class="container max-w-5xl mx-auto">
+		<h1 class="text-center"><span class="text-gradient">{websiteTitle}</span></h1>
 		<div class="instructions prose max-w-none">
 			<p class="text-xl">
-				Hello! This website is a showcase of the B2B SaasKit that will allow you to quickly get up
-				and running if you want to build a full stack web app with features like FIXME built in.
+				<i>Prompts with Friends</i> is a new way to collaborate on GPT prompts with friends or colleagues.
 			</p>
-			<ul>
-				<li>
-					<a href="/setup">Instruction on how to configure your local environment</a>
-				</li>
-				<li>
-					<a href="/app">Go to the app and see if you like it</a>
-				</li>
+			<p class="text-xl">
+				This app is a showcase for the <a href="https://b2bsaaskit.com">B2B SaaS Kit</a>&mdash;a kit
+				for assembling multiplayer (i.e, team-based) SaaS applications by leveraging a combination
+				of open-source and commercial technologies.
+			</p>
+			<p class="text-xl">
+				All commercial technologies used offer free-forever starter plans&mdash;it cost $13 (the
+				domain name) in software licensing fees to develop <i>Prompts with Friends</i>.
+			</p>
 
-				<li>
-					<a href="https://github.com/fogbender/b2b-saaskit">It's open source! Give us a star ❤️</a>
-				</li>
-			</ul>
+			<div
+				class="cursor-pointer max-w-max text-xl bg-lime-600 px-5 py-3 rounded-full hover:bg-lime-700"
+			>
+				<a class="text-white no-underline" href="/app">Get started</a>
+			</div>
+
+			<p class="text-xl">
+				Getting help: <a href="https://github.com/fogbender/b2b-saaskit/issues/new"
+					>open an issue on GitHub</a
+				> or ping <a href="https://twitter.com/jlarky">@JLarky</a> and <a
+					href="https://twitter.com/abs">@abs</a
+				> on Twitter.
+			</p>
 		</div>
 
 		<style>
@@ -45,9 +55,7 @@ export const prerender = true;
 			}
 			.instructions {
 				line-height: 1.6;
-				margin: 1rem 0;
-				border: 1px solid rgba(var(--accent), 25%);
-				background-color: white;
+				margin: 3rem 0;
 				padding: 1rem;
 				border-radius: 0.4rem;
 			}
