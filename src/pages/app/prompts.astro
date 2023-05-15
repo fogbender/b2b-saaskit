@@ -1,9 +1,8 @@
 ---
 import { TRPCError } from '@trpc/server';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
-import { Prompts } from '../../components/prompts/Prompts';
-import Nav from '../../components/prompts/Nav.astro';
-import Layout from '../../layouts/Layout.astro';
+import { Prompts } from '../../components/app/Prompts';
+import AppLayout from '../../components/app/AppLayout.astro';
 import { createHelpers } from '../../lib/trpc/root';
 
 export const prerender = false; // to enable trpc prefetching
@@ -17,14 +16,10 @@ const error = await helpers.prompts.getPrompts
 
 if (error instanceof TRPCError) {
 	const httpCode = getHTTPStatusCodeFromError(error);
-	if (httpCode === 401) return Astro.redirect('/prompts');
+	if (httpCode === 401) return Astro.redirect('/app');
 }
 ---
 
-<Layout title="Prompts with Friends">
-	<main class="container mx-auto my-8">
-		<h1 class="text-4xl">Prompts with Friends / List</h1>
-		<Nav />
-		<Prompts client:load dehydratedState={helpers.dehydrate()} />
-	</main>
-</Layout>
+<AppLayout title="Prompts with Friends">
+	<Prompts client:load dehydratedState={helpers.dehydrate()} />
+</AppLayout>

@@ -4,26 +4,30 @@ import {
 	useAuthInfo,
 	saveOrgSelectionToLocalStorage,
 	useRedirectFunctions,
-} from './propelauth';
+} from '../propelauth';
 import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
-import { env } from '../config';
-import { trpc, TRPCProvider } from './trpc';
-import { AuthSync } from './AuthSync';
-import { SupportWidget } from './fogbender/Support';
+import { env } from '../../config';
+import { TRPCProvider } from '../trpc';
+import { AuthSync } from '../AuthSync';
+import { SupportWidget } from '../fogbender/Support';
+import { LoginInternal } from '../Login';
+import { AppNav } from './Nav';
+import { Layout } from './Layout';
 
 export function App() {
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<TRPCProvider>
 				<AuthSync />
-				<AccountInteral />
+				<AppNav />
+				<AppInteral />
 			</TRPCProvider>
 		</AuthProvider>
 	);
 }
 
-function AccountInteral() {
+function AppInteral() {
 	const activeOrg = useActiveOrg();
 	const auth = useAuthInfo();
 	const { redirectToCreateOrgPage } = useRedirectFunctions();
@@ -34,13 +38,10 @@ function AccountInteral() {
 	if (auth.user === null) {
 		return (
 			<>
-				<h1 className="text-2xl font-bold text-center">Not logged in</h1>
-				<a href="/login" className="px-4 py-2 bg-blue-500 text-white rounded">
-					Login
-				</a>
-				<a href="/signup" className="ml-2 px-4 py-2 bg-blue-500 text-white rounded">
-					Sign up
-				</a>
+				<div className="text-center my-10">
+					<h1 className="text-2xl font-bold text-center mb-4">You need to login to continue</h1>
+					<LoginInternal />
+				</div>
 			</>
 		);
 	}
@@ -97,26 +98,17 @@ const AppWithOrg = ({
 	auth: UseAuthInfoLoggedInProps;
 	activeOrg: OrgMemberInfo;
 }) => {
-	const helloQuery = trpc.hello.hello.useQuery();
 	return (
-		<>
-			<div>
+		<Layout title="Your activity">
+			<div className="mt-4">
 				Hello, {auth.user.email} ({activeOrg.orgName})
-				<button
-					className="px-4 py-2 bg-blue-500 text-white rounded ml-2"
-					onClick={() => {
-						saveOrgSelectionToLocalStorage('');
-						window.location.reload();
-					}}
-				>
-					Switch org
-				</button>
 			</div>
-			<br />
-			<div>
-				{helloQuery?.data}
-				<SupportWidget />
+			<div className="mt-4">
+				<a href="/app/prompts" className="px-4 py-2 bg-indigo-500 text-white rounded">
+					Go to prompts
+				</a>
 			</div>
-		</>
+			<SupportWidget />
+		</Layout>
 	);
 };

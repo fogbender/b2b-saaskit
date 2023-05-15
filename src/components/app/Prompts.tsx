@@ -5,12 +5,15 @@ import { AuthProvider } from '../propelauth';
 import { TRPCProvider, trpc } from '../trpc';
 import { AuthSync } from '../AuthSync';
 import { useReducer } from 'react';
+import { AppNav } from './Nav';
+import { Layout } from './Layout';
 
 export function Prompts(props: { dehydratedState: DehydratedState }) {
 	return (
 		<TRPCProvider dehydratedState={props.dehydratedState}>
 			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 				<AuthSync />
+				<AppNav />
 				<Interal />
 			</AuthProvider>
 		</TRPCProvider>
@@ -39,8 +42,8 @@ function Interal() {
 	});
 	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, false);
 	return (
-		<>
-			<div className="px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
+		<Layout title="Prompts with Friends / List">
+			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
 				<div className="sm:flex sm:items-center">
 					<div className="sm:flex-auto">
 						<h1 className="text-base font-semibold leading-6 text-gray-900">
@@ -131,7 +134,7 @@ function Interal() {
 					</Table>
 				)}
 			</div>
-		</>
+		</Layout>
 	);
 }
 

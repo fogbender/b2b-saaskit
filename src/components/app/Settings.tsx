@@ -6,12 +6,15 @@ import { TRPCProvider, trpc } from '../trpc';
 import { AuthSync } from '../AuthSync';
 import { useReducer } from 'react';
 import arrowDown from '../../assets/arrow-down.svg';
+import { Layout } from './Layout';
+import { AppNav } from './Nav';
 
 export function Settings() {
 	return (
 		<TRPCProvider>
 			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 				<AuthSync />
+				<AppNav />
 				<Interal />
 			</AuthProvider>
 		</TRPCProvider>
@@ -45,8 +48,8 @@ function Interal() {
 
 	const [showAddKey, toggleShowAddKey] = useReducer((state) => !state, false);
 	return (
-		<>
-			<div className="px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
+		<Layout title="Prompts with Friends / Settings">
+			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
 				<div className="flex flex-col items-center justify-center w-full">
 					<div className="flex flex-col text-start w-full gap-2">
 						<div className="sm:flex sm:items-center">
@@ -266,7 +269,7 @@ function Interal() {
 					</div>
 				</div>
 			</div>
-		</>
+		</Layout>
 	);
 }
 

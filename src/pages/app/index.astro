@@ -1,7 +1,8 @@
 ---
-import { App } from '../../components/App';
-import Layout from '../../layouts/Layout.astro';
+import { App } from '../../components/app/App';
+import AppLayout from '../../components/app/AppLayout.astro';
 import { createCaller } from '../../lib/trpc/root';
+
 export const prerender = true;
 
 const callerExample = await createCaller({
@@ -11,9 +12,6 @@ const callerExample = await createCaller({
 console.log('callerExample', callerExample);
 ---
 
-<Layout title="App">
-	<main class="container mx-auto my-8">
-		<h1 class="text-4xl">Welcome to the app</h1>
-		<App client:load />
-	</main>
-</Layout>
+<AppLayout title="App">
+	<App client:load />
+</AppLayout>

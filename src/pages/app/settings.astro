@@ -1,0 +1,9 @@
+---
+import { Settings } from '../../components/app/Settings';
+import AppLayout from '../../components/app/AppLayout.astro';
+export const prerender = true;
+---
+
+<AppLayout title="Prompts with Friends">
+	<Settings client:load />
+</AppLayout>

@@ -6,7 +6,7 @@ import { env } from '../config';
 
 export function Signup() {
 	const redirectToYourProduct = () => {
-		window.location.href = '/';
+		window.location.href = '/app';
 	};
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
@@ -15,6 +15,9 @@ export function Signup() {
 					onSignupCompleted={redirectToYourProduct}
 					onRedirectToPasswordlessLogin={() => {
 						window.location.href = '/login-passwordless';
+					}}
+					onRedirectToLogin={() => {
+						window.location.href = '/login';
 					}}
 				/>
 			</BetaComponentLibraryProvider>
