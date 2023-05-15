@@ -14,13 +14,13 @@ The kit is designed with two primary goals in mind:
 
 "B2B" means "business-to-business". In the simplest terms, a B2B product is a product where post-signup, a user can create an organization, invite others, and do something as a team.
 
-B2B companies are fairly common - for example, over 40% of <a href="https://www.ycombinator.com/companies" target="_blank">Y Combinator-funded startups</a> self-identify as B2B - but B2B-specific starter kits appear to be quite rare, hence this effort.
+B2B companies are fairly common - for example, over 40% of <a href="https://www.ycombinator.com/companies" >Y Combinator-funded startups</a> self-identify as B2B - but B2B-specific starter kits appear to be quite rare, hence this effort.
 
 ## Get started
 
 ### High-level plan
 
-- First, check out https://promptswithfriends.com - a web-based SaaS application that was built with this B2B SaaS Kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others
+- First, check out https://PromptsWithFriends.com - a web-based SaaS application that was built with this B2B SaaS Kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others
 
 - Next, get your own copy of _Prompts with Friends_ running locally on your machine
 
@@ -31,16 +31,17 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 ### Get it running locally
 
 1. Install prerequisites
+
    - Node.js 18
 
 2. Clone repo, start app
 
 ```
-git clone git@github.com:fogbender/b2b-saaskit.git 
-cd b2b-saaskit 
-corepack enable 
-corepack prepare yarn@1.22.19 --activate 
-yarn 
+git clone git@github.com:fogbender/b2b-saaskit.git
+cd b2b-saaskit
+corepack enable
+corepack prepare yarn@1.22.19 --activate
+yarn
 yarn dev
 ```
 

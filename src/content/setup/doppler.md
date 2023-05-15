@@ -3,13 +3,13 @@ title: "Secrets management with Doppler"
 needsEnv: ["SITE_URL"]
 ---
 
-Doppler (<a href="https://doppler.com" target="_blank">doppler.com</a>) will help your development in three main ways: manage environment variables and avoid storing them as plaintext, manage developer access to secrets, and manage secrets during deployments. Dopper is free for up to 5 users.
+Doppler (<a href="https://doppler.com" >doppler.com</a>) will help your development in three main ways: manage environment variables and avoid storing them as plaintext, manage developer access to secrets, and manage secrets during deployments. Dopper is free for up to 5 users.
 
 Instead of creating `.env` files and storing secrets there, we'll use the Doppler CLI.
 
 Keep in mind that you have the option of using the web interface as well (or instead). To open the web interface, run `doppler open` on the command line.
 
-1. Install the Doppler CLI by following the instructions on <a href="https://docs.doppler.com/docs/cli" target="_blank">https://docs.doppler.com/docs/cli</a>. Continue once `gnupg` and `doppler` are installed
+1. Install the Doppler CLI by following the instructions on <a href="https://docs.doppler.com/docs/cli" >https://docs.doppler.com/docs/cli</a>. Continue once `gnupg` and `doppler` are installed
 
 1. Run `doppler login` to authenticate with Doppler. Create a new account if you don't already have one
 
