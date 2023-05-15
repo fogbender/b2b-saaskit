@@ -247,7 +247,11 @@ function Published() {
 				Add your own comment!
 			</Link>
 			<div className="my-4 w-full sm:w-[500px] lg:w-[800px]">
-				<h3 className="text-xl mb-2">Comments</h3>
+				<h3 className="text-xl mb-2">
+					{!postSurveyMutation.isLoading && postSurveyMutation.data?.length === 0
+						? 'No comments yet'
+						: 'Comments'}
+				</h3>
 				<ul className="list-disc list-inside">
 					{postSurveyMutation.isLoading && <li>Loading...</li>}
 					{postSurveyMutation.data?.map((survey) => (
