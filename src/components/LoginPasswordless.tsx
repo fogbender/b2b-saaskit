@@ -1,15 +1,14 @@
-import { AuthProvider, BetaComponentLibraryProvider, LoginPasswordless } from './propelauth';
+import { AuthProvider, LoginPasswordless } from './propelauth';
 
-import { BaseElements } from '@propelauth/base-elements';
-import '@propelauth/base-elements/dist/default.css';
 import { env } from '../config';
+import { PropelAuthCSS } from './PropelAuthCSS';
 
 export function Login() {
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
-			<BetaComponentLibraryProvider elements={BaseElements}>
+			<PropelAuthCSS>
 				<LoginPasswordless />
-			</BetaComponentLibraryProvider>
+			</PropelAuthCSS>
 		</AuthProvider>
 	);
 }

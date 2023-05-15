@@ -1,8 +1,7 @@
-import { AuthProvider, BetaComponentLibraryProvider, LoginManager } from './propelauth';
+import { AuthProvider, LoginManager } from './propelauth';
 
-import { BaseElements } from '@propelauth/base-elements';
-import '@propelauth/base-elements/dist/default.css';
 import { env } from '../config';
+import { PropelAuthCSS } from './PropelAuthCSS';
 
 export function Login() {
 	return (
@@ -17,7 +16,7 @@ export function LoginInternal() {
 		window.location.href = '/app';
 	};
 	return (
-		<BetaComponentLibraryProvider elements={BaseElements}>
+		<PropelAuthCSS>
 			<LoginManager
 				onLoginCompleted={redirectToYourProduct}
 				onRedirectToPasswordlessLogin={() => {
@@ -27,6 +26,6 @@ export function LoginInternal() {
 					window.location.href = '/signup';
 				}}
 			/>
-		</BetaComponentLibraryProvider>
+		</PropelAuthCSS>
 	);
 }
