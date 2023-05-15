@@ -86,7 +86,7 @@ const services: LegoPiece[] = [
 				free-forever starter plans to assemble a functional multiplayer product with an SQL backend.
 			</p>
 
-			<div class="bg-gray-100 my-14 py-14 rounded-xl">
+			<div class="bg-gray-100 my-14 py-14 px-4 rounded-xl">
 				<div class="flex gap-6 justify-center">
 					{
 						libraries.map((l) => (
@@ -122,7 +122,7 @@ const services: LegoPiece[] = [
 				</div>
 			</div>
 
-			<div class="flex gap-6">
+			<div class="flex flex-col lg:flex-row gap-6">
 				<div class="flex-1 text-xl flex flex-col justify-between">
 					<div>
 						To see the kit in action, check out <a href="https://promptswithfriends.com"
@@ -139,8 +139,10 @@ const services: LegoPiece[] = [
 				</div>
 				<div class="flex-1 text-xl">
 					If you'd like to see how it was built, let's get a copy running right here&mdash;on your
-					computer:
-					<pre>
+					computer. You'll need Node.js 18 to get going. Then, run this in the terminal:
+
+					<pre
+						class="text-xs md:text-base">
 git clone git@github.com:fogbender/b2b-saaskit.git 
 cd b2b-saaskit 
 corepack enable 
