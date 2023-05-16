@@ -1,4 +1,5 @@
 import posthog from 'posthog-js';
+
 import { env } from '../../config';
 
 if (env.PUBLIC_POSTHOG_KEY) {

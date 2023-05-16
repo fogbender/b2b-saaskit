@@ -1,9 +1,9 @@
-import type { APIRoute } from 'astro';
 import { handleError, initBaseAuth } from '@propelauth/node';
+import type { APIRoute } from 'astro';
 import jsonwebtoken from 'jsonwebtoken';
 
-import type { FogbenderTokenResponse } from '../../types/types';
 import { serverEnv } from '../../t3-env';
+import type { FogbenderTokenResponse } from '../../types/types';
 
 export const post: APIRoute = async ({ request }) => {
 	const propelauth = initBaseAuth({
@@ -24,10 +24,12 @@ export const post: APIRoute = async ({ request }) => {
 		if (!token) {
 			throw new Error('No token');
 		}
+
 		const { orgId } = await request.json();
 		if (!orgId) {
 			throw new Error('No orgId');
 		}
+
 		// check that we have access to this org
 		const { user, orgMemberInfo } = await propelauth.validateAccessTokenAndGetUserWithOrgInfo(
 			token,

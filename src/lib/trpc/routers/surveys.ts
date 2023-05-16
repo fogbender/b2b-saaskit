@@ -1,10 +1,10 @@
-import { z } from 'zod';
-import { desc, eq } from 'drizzle-orm';
-
-import { createTRPCRouter, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
+import { desc, eq } from 'drizzle-orm';
+import { z } from 'zod';
+
 import { db } from '../../../db/db';
 import { surveys } from '../../../db/schema';
+import { createTRPCRouter, publicProcedure } from '../trpc';
 
 export const surveysRouter = createTRPCRouter({
 	getPublic: publicProcedure.query(async ({}) => {
@@ -46,6 +46,7 @@ export const surveysRouter = createTRPCRouter({
 					message: 'Failed to create a survey.',
 				});
 			}
+
 			return survey.id;
 		}),
 });

@@ -32,13 +32,13 @@ export function requireActiveOrg() {
 
 export {
 	AuthProvider,
+	BetaComponentLibraryProvider,
+	LoginManager,
+	LoginPasswordless,
+	saveOrgSelectionToLocalStorage,
+	Signup,
 	useActiveOrg,
 	useAuthInfo,
-	saveOrgSelectionToLocalStorage,
-	useRedirectFunctions,
-	BetaComponentLibraryProvider,
-	Signup,
-	LoginPasswordless,
 	useLogoutFunction,
-	LoginManager,
+	useRedirectFunctions,
 };

@@ -1,10 +1,11 @@
 export function parseJwt(token: string) {
-	var base64Url = token.split('.')[1];
+	const base64Url = token.split('.')[1];
 	if (!base64Url) {
 		return;
 	}
-	var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-	var jsonPayload = decodeURIComponent(
+
+	const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+	const jsonPayload = decodeURIComponent(
 		window
 			.atob(base64)
 			.split('')
@@ -18,6 +19,7 @@ export function parseJwt(token: string) {
 		if (typeof parsed === 'object' && parsed !== null) {
 			return parsed as Record<string, unknown>;
 		}
+
 		console.error('Could not parse JWT payload', parsed);
 		return;
 	} catch (e) {

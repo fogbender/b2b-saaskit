@@ -1,19 +1,20 @@
-import {
-	AuthProvider,
-	useActiveOrg,
-	useAuthInfo,
-	saveOrgSelectionToLocalStorage,
-	useRedirectFunctions,
-} from '../propelauth';
 import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
+
 import { env } from '../../config';
-import { TRPCProvider } from '../trpc';
 import { AuthSync } from '../AuthSync';
 import { SupportWidget } from '../fogbender/Support';
 import { LoginInternal } from '../Login';
-import { AppNav } from './Nav';
+import {
+	AuthProvider,
+	saveOrgSelectionToLocalStorage,
+	useActiveOrg,
+	useAuthInfo,
+	useRedirectFunctions,
+} from '../propelauth';
+import { TRPCProvider } from '../trpc';
 import { Layout } from './Layout';
+import { AppNav } from './Nav';
 
 export function App() {
 	return (
@@ -35,6 +36,7 @@ function AppInteral() {
 	if (auth.loading === true) {
 		return <div className="container my-10 mx-4">Loading...</div>;
 	}
+
 	if (auth.user === null) {
 		return (
 			<>
@@ -45,6 +47,7 @@ function AppInteral() {
 			</>
 		);
 	}
+
 	if (!activeOrg) {
 		const orgs = auth.orgHelper.getOrgs();
 		if (orgs.length === 0) {
@@ -64,6 +67,7 @@ function AppInteral() {
 				</>
 			);
 		}
+
 		return (
 			<>
 				<h1 className="text-2xl font-bold text-center">Please select an organization</h1>
@@ -88,6 +92,7 @@ function AppInteral() {
 			</>
 		);
 	}
+
 	return <AppWithOrg auth={auth} activeOrg={activeOrg} />;
 }
 

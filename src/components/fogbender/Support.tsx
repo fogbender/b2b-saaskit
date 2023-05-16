@@ -1,23 +1,24 @@
-import {
-	FogbenderWidget,
-	FogbenderSimpleFloatie,
-	FogbenderProvider,
-	FogbenderConfig,
-	FogbenderIsConfigured,
-	FogbenderHeadlessWidget,
-	FogbenderUnreadBadge,
-} from 'fogbender-react';
-import { AuthProvider } from '../propelauth';
-import { TRPCProvider } from '../trpc';
-import { AuthSync } from '../AuthSync';
-import { useMemo } from 'react';
 import type { OrgMemberInfo } from '@propelauth/react';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
-import { apiServer, queryKeys, useQuery } from '../client';
-import type { FogbenderTokenResponse } from '../../types/types';
+import {
+	FogbenderConfig,
+	FogbenderHeadlessWidget,
+	FogbenderIsConfigured,
+	FogbenderProvider,
+	FogbenderSimpleFloatie,
+	FogbenderUnreadBadge,
+	FogbenderWidget,
+} from 'fogbender-react';
+import { useMemo } from 'react';
+
 import { env } from '../../config';
-import { useActiveOrg, useAuthInfo } from '../propelauth';
+import type { FogbenderTokenResponse } from '../../types/types';
 import { AppNav } from '../app/Nav';
+import { AuthSync } from '../AuthSync';
+import { apiServer, queryKeys, useQuery } from '../client';
+import { AuthProvider } from '../propelauth';
+import { useActiveOrg, useAuthInfo } from '../propelauth';
+import { TRPCProvider } from '../trpc';
 
 export const FullPageSupport = () => {
 	return (
@@ -42,6 +43,7 @@ export const SupportWidget = ({ kind }: { kind: 'widget' | 'floatie' | 'badge' }
 		if (kind !== 'widget') {
 			return null;
 		}
+
 		return (
 			<div className="container mt-8 mx-auto">
 				<h3 className="text-2xl font-bold">Prompts with Friends / Support</h3>
@@ -69,6 +71,7 @@ export const SupportWidget = ({ kind }: { kind: 'widget' | 'floatie' | 'badge' }
 			/>
 		);
 	}
+
 	return null;
 };
 
@@ -106,6 +109,7 @@ export const Internal = ({
 		if (!userJWT) {
 			return;
 		}
+
 		return {
 			widgetId,
 			customerId: activeOrg.orgId,

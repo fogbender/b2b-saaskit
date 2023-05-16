@@ -1,6 +1,5 @@
-import { AuthProvider, LoginPasswordless } from './propelauth';
-
 import { env } from '../config';
+import { AuthProvider, LoginPasswordless } from './propelauth';
 import { PropelAuthCSS } from './PropelAuthCSS';
 
 export function Login() {

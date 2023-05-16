@@ -1,12 +1,13 @@
 import { DehydratedState, useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
-import { env } from '../../config';
-import { AuthProvider, requireActiveOrg } from '../propelauth';
-import { TRPCProvider, trpc } from '../trpc';
-import { AuthSync } from '../AuthSync';
 import { useReducer, useRef } from 'react';
-import { AppNav } from './Nav';
+
+import { env } from '../../config';
+import { AuthSync } from '../AuthSync';
+import { AuthProvider, requireActiveOrg } from '../propelauth';
+import { trpc, TRPCProvider } from '../trpc';
 import { Layout } from './Layout';
+import { AppNav } from './Nav';
 
 export function Prompts(props: { dehydratedState: DehydratedState }) {
 	return (
@@ -40,7 +41,7 @@ function Interal() {
 		},
 	});
 	const runPromptMutation = trpc.prompts.runPrompt.useMutation();
-	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, !!!!!!!!!false);
+	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, !false);
 	const { activeOrg } = requireActiveOrg();
 	const orgId = activeOrg?.orgId || '';
 	const promptsQuery = trpc.prompts.getPrompts.useQuery(
@@ -97,6 +98,7 @@ function Interal() {
 										return;
 									}
 								}
+
 								addPromptMutation.mutate(
 									{ orgId, prompt, response },
 									{

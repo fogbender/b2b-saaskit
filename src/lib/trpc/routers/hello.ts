@@ -1,4 +1,4 @@
-import { createTRPCRouter, apiProcedure, publicProcedure } from '../trpc';
+import { apiProcedure, createTRPCRouter, publicProcedure } from '../trpc';
 
 let i = 0;
 export const helloRouter = createTRPCRouter({
@@ -7,6 +7,7 @@ export const helloRouter = createTRPCRouter({
 		if (res.kind === 'ok') {
 			return `Oh, so cool, you are already signed in! ${res.user.userId}`;
 		}
+
 		return 'Something from the server';
 	}),
 	getCount: publicProcedure.query(async () => {

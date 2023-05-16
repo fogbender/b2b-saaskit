@@ -1,12 +1,12 @@
-import { AuthProvider, Signup as SignupManager } from './propelauth';
-
 import { env } from '../config';
+import { AuthProvider, Signup as SignupManager } from './propelauth';
 import { PropelAuthCSS } from './PropelAuthCSS';
 
 export function Signup() {
 	const redirectToYourProduct = () => {
 		window.location.href = '/app';
 	};
+
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<PropelAuthCSS>

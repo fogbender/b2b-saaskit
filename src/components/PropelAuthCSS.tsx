@@ -1,7 +1,8 @@
-import { createPortal } from 'react-dom';
-import { useCallback, useRef, useState } from 'react';
-import { BetaComponentLibraryProvider } from './propelauth';
 import { BaseElements } from '@propelauth/base-elements';
+import { useCallback, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+
+import { BetaComponentLibraryProvider } from './propelauth';
 
 export function PropelAuthCSS({ children }: { children: React.ReactNode }) {
 	return (

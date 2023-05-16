@@ -1,10 +1,11 @@
 import type { AstroGlobal } from 'astro';
-import { createTRPCServerSideHelpers, createTRPCRouter } from './trpc';
-import { helloRouter } from './routers/hello';
+
 import { authRouter } from './routers/auth';
+import { helloRouter } from './routers/hello';
 import { promptsRouter } from './routers/prompts';
 import { settingsRouter } from './routers/settings';
 import { surveysRouter } from './routers/surveys';
+import { createTRPCRouter, createTRPCServerSideHelpers } from './trpc';
 
 /**
  * This is the primary router for your server.

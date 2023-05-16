@@ -1,8 +1,9 @@
 ---
 import { TRPCError } from '@trpc/server';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
-import { Prompts } from '../../components/app/Prompts';
+
 import AppLayout from '../../components/app/AppLayout.astro';
+import { Prompts } from '../../components/app/Prompts';
 import { createHelpers } from '../../lib/trpc/root';
 
 export const prerender = false; // to enable trpc prefetching

@@ -1,4 +1,5 @@
 import { initBaseAuth } from '@propelauth/node';
+
 import { serverEnv } from '../t3-env';
 
 export const propelauth = initBaseAuth({
