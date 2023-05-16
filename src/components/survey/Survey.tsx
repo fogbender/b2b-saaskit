@@ -1,14 +1,15 @@
 import { StrictMode, useEffect, useState } from 'react';
 import {
-	Link,
 	createBrowserRouter,
-	RouterProvider,
-	useNavigate,
-	useLocation,
-	useSearchParams,
+	Link,
 	Navigate,
+	RouterProvider,
+	useLocation,
+	useNavigate,
+	useSearchParams,
 } from 'react-router-dom';
-import { TRPCProvider, trpc } from '../trpc';
+
+import { trpc, TRPCProvider } from '../trpc';
 
 export const routes = () => [
 	{
@@ -137,9 +138,11 @@ function OptionalComments() {
 	if (validRating === undefined) {
 		return <Navigate to="/survey/rate-experience" />;
 	}
+
 	if (postSurveyMutation.isSuccess) {
 		return <Navigate to="/survey/thank-you" />;
 	}
+
 	return (
 		<div className="flex flex-col items-center justify-center h-screen">
 			<h2 className="text-2xl mb-4">Any comments or suggestions?</h2>

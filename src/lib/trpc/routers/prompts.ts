@@ -1,12 +1,12 @@
-import { z } from 'zod';
-import { nanoid } from 'nanoid';
-import { eq } from 'drizzle-orm';
-
-import { createTRPCRouter, authProcedure, orgProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
+import { eq } from 'drizzle-orm';
+import { nanoid } from 'nanoid';
+import { z } from 'zod';
+
 import { db } from '../../../db/db';
 import { gptKeys, prompts } from '../../../db/schema';
 import { trackEvent } from '../../posthog';
+import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
 export const promptsRouter = createTRPCRouter({
 	getPrompts: orgProcedure.query(async ({ ctx }) => {
@@ -60,6 +60,7 @@ export const promptsRouter = createTRPCRouter({
 					message: 'You can only delete your own prompts.',
 				});
 			}
+
 			await db.delete(prompts).where(eq(prompts.promptId, input.promptId));
 			return input;
 		}),
@@ -86,6 +87,7 @@ export const promptsRouter = createTRPCRouter({
 					message: 'No OpenAI key found for this organization.',
 				});
 			}
+
 			await db
 				.update(gptKeys)
 				.set({
@@ -118,10 +120,12 @@ export const promptsRouter = createTRPCRouter({
 			if (error) {
 				return { error: error.message };
 			}
+
 			const choice = choices[0];
 			if (!choice) {
 				return { error: 'No response from OpenAI' };
 			}
+
 			return { message: choice.message.content };
 		}),
 });

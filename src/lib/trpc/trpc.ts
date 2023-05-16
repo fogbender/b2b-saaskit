@@ -66,13 +66,14 @@ export const createTRPCContext = (opts: CreateAstroContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-import { z } from 'zod';
 import { createServerSideHelpers } from '@trpc/react-query/server';
-import { AnyRouter, TRPCError, initTRPC } from '@trpc/server';
+import { AnyRouter, initTRPC, TRPCError } from '@trpc/server';
 import { parse } from 'cookie';
 import superjson from 'superjson';
 import { unthunk } from 'unthunk';
+import { z } from 'zod';
 import { ZodError } from 'zod';
+
 import { AUTH_COOKIE_NAME, HTTP_ONLY_AUTH_COOKIE_NAME } from '../../constants';
 import { propelauth } from '../propelauth';
 
@@ -134,6 +135,7 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 	if (!ctx.req || !ctx.resHeaders) {
 		throw new Error('You are missing `req` or `resHeaders` in your call.');
 	}
+
 	const req = ctx.req;
 	const newCtx = unthunk({
 		req,
@@ -145,6 +147,7 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 				const httpOnlyCookie = new URLSearchParams(parsedCookies[HTTP_ONLY_AUTH_COOKIE_NAME]);
 				return httpOnlyCookie.get('accessToken') || undefined;
 			}
+
 			return;
 		},
 		userOrgId: () => {
@@ -153,6 +156,7 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 				const publicCookie = new URLSearchParams(parsedCookies[AUTH_COOKIE_NAME]);
 				return publicCookie.get('orgId') || undefined;
 			}
+
 			return;
 		},
 		userPromise: async () => {
@@ -178,6 +182,7 @@ export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 			cause: user.error,
 		});
 	}
+
 	// context is merged, not replaced
 	return next({
 		ctx: { user: user.user },
@@ -198,6 +203,7 @@ export const orgProcedure = authProcedure
 				}
 			}
 		}
+
 		throw new TRPCError({
 			code: 'FORBIDDEN',
 			message: `This route requires user access to the organization ${requiredOrgId}.`,

@@ -1,6 +1,5 @@
-import { AuthProvider, LoginManager } from './propelauth';
-
 import { env } from '../config';
+import { AuthProvider, LoginManager } from './propelauth';
 import { PropelAuthCSS } from './PropelAuthCSS';
 
 export function Login() {
@@ -15,6 +14,7 @@ export function LoginInternal() {
 	const redirectToYourProduct = () => {
 		window.location.href = '/app';
 	};
+
 	return (
 		<PropelAuthCSS>
 			<LoginManager

@@ -1,5 +1,6 @@
-import type { APIRoute } from 'astro';
 import { handleError, initBaseAuth } from '@propelauth/node';
+import type { APIRoute } from 'astro';
+
 import { serverEnv } from '../../../t3-env';
 
 export const get: APIRoute = async ({ params, request }) => {
@@ -16,10 +17,12 @@ export const get: APIRoute = async ({ params, request }) => {
 		if (!token) {
 			throw new Error('No token');
 		}
+
 		const { orgId } = params;
 		if (!orgId) {
 			throw new Error('No orgId');
 		}
+
 		// check that we have access to this org
 		await propelauth.validateAccessTokenAndGetUserWithOrgInfo(token, { orgId });
 		// get users in org

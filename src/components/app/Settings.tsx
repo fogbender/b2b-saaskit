@@ -1,10 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
-import { env } from '../../config';
-import { AuthProvider, requireActiveOrg } from '../propelauth';
-import { TRPCProvider, trpc } from '../trpc';
-import { AuthSync } from '../AuthSync';
 import { useReducer } from 'react';
+
+import { env } from '../../config';
+import { AuthSync } from '../AuthSync';
+import { AuthProvider, requireActiveOrg } from '../propelauth';
+import { trpc, TRPCProvider } from '../trpc';
 import { Layout } from './Layout';
 import { AppNav } from './Nav';
 
