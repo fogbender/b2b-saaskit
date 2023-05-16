@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 
 const setupCollection = defineCollection({
 	schema: z.object({
-		title: z.string(),
+		title: z.string().optional(),
 		needsEnv: z.array(z.string()),
 	}),
 });
