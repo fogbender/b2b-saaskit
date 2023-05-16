@@ -8,7 +8,7 @@ import {
 	FogbenderUnreadBadge,
 } from 'fogbender-react';
 import { AuthProvider } from '../propelauth';
-import { TRPCProvider, trpc } from '../trpc';
+import { TRPCProvider } from '../trpc';
 import { AuthSync } from '../AuthSync';
 import { useMemo } from 'react';
 import type { OrgMemberInfo } from '@propelauth/react';
@@ -26,20 +26,14 @@ export const FullPageSupport = () => {
 				<AuthSync />
 				<AppNav />
 				<div className="relative mt-2 border-gray-300">
-					<SupportWidget isFloatie={false} isHeadless={false} />
+					<SupportWidget kind="widget" />
 				</div>
 			</AuthProvider>
 		</TRPCProvider>
 	);
 };
 
-export const SupportWidget = ({
-	isFloatie = true,
-	isHeadless = true,
-}: {
-	isFloatie: boolean;
-	isHeadless: boolean;
-}) => {
+export const SupportWidget = ({ kind }: { kind: 'widget' | 'floatie' | 'badge' }) => {
 	const activeOrg = useActiveOrg();
 	const auth = useAuthInfo();
 	const widgetId = env.PUBLIC_FOGBENDER_WIDGET_ID;
@@ -50,8 +44,8 @@ export const SupportWidget = ({
 				auth={auth}
 				activeOrg={activeOrg}
 				widgetId={widgetId}
-				isFloatie={isFloatie}
-				isHeadless={isHeadless}
+				isFloatie={kind === 'floatie'}
+				isHeadless={kind === 'badge'}
 			/>
 		);
 	}

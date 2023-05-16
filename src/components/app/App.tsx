@@ -108,7 +108,7 @@ const AppWithOrg = ({
 					Go to prompts
 				</a>
 			</div>
-			<SupportWidget />
+			<SupportWidget kind="floatie" />
 		</Layout>
 	);
 };

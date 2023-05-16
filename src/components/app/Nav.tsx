@@ -61,7 +61,7 @@ export function AppNav() {
 							href="/app/support"
 							className="text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1 border border-transparent"
 						>
-							Support <SupportWidget isFloatie={false} />
+							Support <SupportWidget kind="badge" />
 						</a>
 					)}
 				</nav>
