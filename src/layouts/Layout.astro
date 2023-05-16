@@ -10,7 +10,7 @@ const { title } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="min-h-screen">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -19,7 +19,7 @@ const { title } = Astro.props;
 		<title>{title}</title>
 		<Posthog />
 	</head>
-	<body class="min-h-screen">
+	<body>
 		<slot />
 	</body>
 </html>

@@ -1,63 +1,78 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { websiteTitle } from '../../constants';
+import b2b7logo from '../../assets/b2b7.svg';
+import free from '../../assets/free.svg';
 export const prerender = true;
 ---
 
 <Layout title={'Welcome to ' + websiteTitle}>
-	<main class="container max-w-5xl mx-auto">
-		<h1 class="text-center"><span class="text-gradient">{websiteTitle}</span></h1>
-		<div class="instructions prose max-w-none">
-			<p class="text-xl">
-				<i>Prompts with Friends</i> is a new way to collaborate on GPT prompts with friends or colleagues.
-			</p>
-			<p class="text-xl">
-				This app is a showcase for the <a href="https://b2bsaaskit.com">B2B SaaS Kit</a>&mdash;a kit
-				for assembling multiplayer (i.e, team-based) SaaS applications by leveraging a combination
-				of open-source and commercial technologies.
-			</p>
-			<p class="text-xl">
-				All commercial technologies used offer free-forever starter plans&mdash;it cost $13 (the
-				domain name) in software licensing fees to develop <i>Prompts with Friends</i>.
-			</p>
-
-			<div
-				class="cursor-pointer max-w-max text-xl bg-lime-600 px-5 py-3 rounded-full hover:bg-lime-700"
-			>
-				<a class="text-white no-underline" href="/app">Get started</a>
+	<main class="container max-w-[40rem] mx-auto">
+		<div class="flex gap-6 items-center mt-28">
+			<div class="w-[5.75rem]">
+				<img src={b2b7logo} alt="B2B7 Logo" />
 			</div>
+			<div class="flex flex-col">
+				<span class="uppercase font-bold text-4xl">Prompts</span>
+				<span class="italic text-2xl">with friends</span>
+			</div>
+		</div>
 
-			<p class="text-xl">
-				Getting help: <a href="https://github.com/fogbender/b2b-saaskit/issues/new"
-					>open an issue on GitHub</a
-				> or ping <a href="https://twitter.com/jlarky">@JLarky</a> and <a
-					href="https://twitter.com/abs">@abs</a
-				> on Twitter.
-			</p>
+		<div class="mt-16 ml-[7.25rem] text-[1.75rem] leading-7">
+			Prompts with Friends is a new way to&nbsp;collaborate on GPT prompts with friends or
+			colleagues
+		</div>
+
+		<div class="mt-[3.75rem] ml-[7.25rem] text-lg leading-[1.875rem]">
+			This app is a showcase for the <a href="https://b2bsaaskit.com">B2B SaaS Kit</a>&mdash;a kit
+			for assembling multiplayer (i.e, team-based) SaaS applications by leveraging a combination of
+			open-source and commercial technologies.
+		</div>
+
+		<div class="mt-[3.75rem] flex gap-6">
+			<div class="min-w-[5.75rem] flex justify-end">
+				<img class="h-10 w-10" src={free} alt="Free as in beer" />
+			</div>
+			<div class="text-lg leading-[1.875rem]">
+				All commercial technologies used offer free-forever starter plans&mdash;it cost $13 (the
+				domain name) in software licensing fees to develop Prompts with Friends.
+			</div>
+		</div>
+
+		<div class="mt-[3.75rem] ml-[7.25rem] relative flex gap-6 items-center group">
+			<a
+				href="/app"
+				class="no-underline uppercase bg-black py-2 px-8 text-white visited:text-white max-w-max text-lg drop-shadow-[6px_6px_0_rgba(211,211,211)] hover:text-yellow-300"
+			>
+				Get started
+			</a>
+			<div
+				class="text-yellow-300 drop-shadow-[6px_6px_0_rgba(211,211,211)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+			>
+				:)
+			</div>
+		</div>
+
+		<div class="mt-[3.75rem] ml-[7.25rem] text-lg leading-[1.875rem]">
+			Getting help: <a href="https://github.com/fogbender/b2b-saaskit/issues/new"
+				>open an issue on GitHub</a
+			> or ping <a href="https://twitter.com/jlarky">@JLarky</a> and <a
+				href="https://twitter.com/abs">@abs</a
+			> on Twitter
 		</div>
 
 		<style>
+			a {
+				color: #0029ff;
+				text-decoration: underline;
+			}
+
+			a:visited {
+				color: #bc48d9;
+			}
+
 			main {
 				margin: auto;
-				padding: 1.5rem;
-			}
-			h1 {
-				font-size: 3rem;
-				font-weight: 800;
-				margin: 0;
-			}
-			.text-gradient {
-				background-image: var(--accent-gradient);
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;
-				background-size: 400%;
-				background-position: 0%;
-			}
-			.instructions {
-				line-height: 1.6;
-				margin: 3rem 0;
-				padding: 1rem;
-				border-radius: 0.4rem;
 			}
 		</style>
 		<style is:global>
