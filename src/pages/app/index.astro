@@ -13,5 +13,5 @@ console.log('callerExample', callerExample);
 ---
 
 <AppLayout title="App">
-	<App client:load />
+	<App client:load path={Astro.url.pathname} />
 </AppLayout>

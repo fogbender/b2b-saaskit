@@ -1,8 +1,10 @@
+import classNames from 'clsx';
 import { useState } from 'react';
 import { saveOrgSelectionToLocalStorage, useAuthInfo, useLogoutFunction } from '../propelauth';
 import { env } from '../../config';
+import { SupportWidget } from '../fogbender/Support';
 
-export function AppNav() {
+export function AppNav({ path }: { path: string }) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const auth = useAuthInfo();
 	const user = auth.loading === false ? auth.user : undefined;
@@ -10,19 +12,50 @@ export function AppNav() {
 	const pictureUrl = user?.pictureUrl || defaultUrl;
 	const logout = useLogoutFunction();
 
+	const activeCls = 'border border-gray-800 rounded-full';
+
 	return (
 		<header className="bg-white shadow-sm py-4 px-5">
 			<div className="container mx-auto flex justify-between items-center">
 				<nav className="flex space-x-4">
-					<a href="/app" className="text-gray-600 hover:text-gray-900">
+					<a
+						href="/app"
+						className={classNames(
+							'text-gray-600 hover:text-gray-900',
+							'px-2 py-1',
+							'/app' === path ? activeCls : 'border border-transparent'
+						)}
+					>
 						Overview
 					</a>
-					<a href="/app/prompts" className="text-gray-600 hover:text-gray-900">
+					<a
+						href="/app/prompts"
+						className={classNames(
+							'text-gray-600 hover:text-gray-900',
+							'px-2 py-1',
+							'/app/prompts' === path ? activeCls : 'border border-transparent'
+						)}
+					>
 						Prompts
 					</a>
-					<a href="/app/settings" className="text-gray-600 hover:text-gray-900">
+					<a
+						href="/app/settings"
+						className={classNames(
+							'text-gray-600 hover:text-gray-900',
+							'px-2 py-1',
+							'/app/settings' === path ? activeCls : 'border border-transparent'
+						)}
+					>
 						Settings
 					</a>
+					{path !== '/app/support' && (
+						<a
+							href="/app/support"
+							className="text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1 border border-transparent"
+						>
+							Support <SupportWidget kind="badge" />
+						</a>
+					)}
 				</nav>
 				<div className="relative inline-block text-left">
 					<img

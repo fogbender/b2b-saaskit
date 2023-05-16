@@ -9,12 +9,12 @@ import arrowDown from '../../assets/arrow-down.svg';
 import { Layout } from './Layout';
 import { AppNav } from './Nav';
 
-export function Settings() {
+export function Settings({ path }: { path: string }) {
 	return (
 		<TRPCProvider>
 			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 				<AuthSync />
-				<AppNav />
+				<AppNav path={path} />
 				<Interal />
 			</AuthProvider>
 		</TRPCProvider>
