@@ -1,4 +1,5 @@
 import {
+	//
 	boolean,
 	integer,
 	pgEnum,
@@ -6,7 +7,6 @@ import {
 	serial,
 	text,
 	timestamp,
-	uniqueIndex,
 } from 'drizzle-orm/pg-core';
 
 // Hello and welcome to the schema file!
@@ -46,30 +46,6 @@ export const gptKeys = pgTable('gpt_keys', {
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	lastUsedAt: timestamp('last_used_at'),
 });
-
-export const itemTypeEnum = pgEnum('item_type', ['user', 'org']);
-
-/* ```sql
-ALTER TABLE default_keys ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "service" ON "public"."default_keys" AS PERMISSIVE FOR ALL TO service_role USING (true);
-``` */
-
-export const defaultKeys = pgTable(
-	'default_keys',
-	{
-		itemId: text('item_id').notNull(),
-		itemType: itemTypeEnum('item_type').notNull(),
-		keyId: integer('key_id').references(() => gptKeys.keyId),
-	},
-	(defaultKeys) => {
-		return {
-			namePopulationIdx: uniqueIndex('name_population_idx').on(
-				defaultKeys.itemId,
-				defaultKeys.itemType
-			),
-		};
-	}
-);
 
 /* ```sql
 ALTER TABLE surveys ENABLE ROW LEVEL SECURITY;
