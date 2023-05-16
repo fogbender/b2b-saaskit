@@ -5,6 +5,8 @@ import { createCaller } from '../../lib/trpc/root';
 
 export const prerender = true;
 
+await import('./_envCheck');
+
 const callerExample = await createCaller({
 	req: Astro.request,
 	resHeaders: Astro.response.headers,

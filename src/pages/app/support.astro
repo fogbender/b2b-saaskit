@@ -1,7 +1,10 @@
 ---
 import { FullPageSupport } from '../../components/fogbender/Support';
 import AppLayout from '../../components/app/AppLayout.astro';
+
 export const prerender = true;
+
+await import('./_envCheck');
 ---
 
 <AppLayout title="Prompts with Friends">
