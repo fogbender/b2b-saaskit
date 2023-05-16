@@ -41,7 +41,7 @@ export function AppNav() {
 						className={classNames(
 							'text-gray-600 hover:text-gray-900',
 							'px-2 py-1',
-							'/app/prompts' === path && activeCls
+							'/app/prompts' === path ? activeCls : 'border border-transparent'
 						)}
 					>
 						Prompts
@@ -51,7 +51,7 @@ export function AppNav() {
 						className={classNames(
 							'text-gray-600 hover:text-gray-900',
 							'px-2 py-1',
-							'/app/settings' === path && activeCls
+							'/app/settings' === path ? activeCls : 'border border-transparent'
 						)}
 					>
 						Settings
@@ -59,7 +59,7 @@ export function AppNav() {
 					{path !== '/app/support' && (
 						<a
 							href="/app/support"
-							className="text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1"
+							className="text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1 border border-transparent"
 						>
 							Support <SupportWidget isFloatie={false} />
 						</a>
