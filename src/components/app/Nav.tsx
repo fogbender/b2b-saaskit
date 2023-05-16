@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { useState, useEffect } from 'react';
 import { saveOrgSelectionToLocalStorage, useAuthInfo, useLogoutFunction } from '../propelauth';
 import { env } from '../../config';
