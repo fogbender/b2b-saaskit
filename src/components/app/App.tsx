@@ -15,12 +15,12 @@ import { LoginInternal } from '../Login';
 import { AppNav } from './Nav';
 import { Layout } from './Layout';
 
-export function App({ path }: { path: string }) {
+export function App() {
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<TRPCProvider>
 				<AuthSync />
-				<AppNav path={path} />
+				<AppNav />
 				<AppInteral />
 			</TRPCProvider>
 		</AuthProvider>

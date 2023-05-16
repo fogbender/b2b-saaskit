@@ -8,12 +8,12 @@ import { useReducer } from 'react';
 import { AppNav } from './Nav';
 import { Layout } from './Layout';
 
-export function Prompts(props: { dehydratedState: DehydratedState; path: string }) {
+export function Prompts(props: { dehydratedState: DehydratedState }) {
 	return (
 		<TRPCProvider dehydratedState={props.dehydratedState}>
 			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 				<AuthSync />
-				<AppNav path={props.path} />
+				<AppNav />
 				<Interal />
 			</AuthProvider>
 		</TRPCProvider>

@@ -1,16 +1,24 @@
 import classNames from 'clsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { saveOrgSelectionToLocalStorage, useAuthInfo, useLogoutFunction } from '../propelauth';
 import { env } from '../../config';
 import { SupportWidget } from '../fogbender/Support';
 
-export function AppNav({ path }: { path: string }) {
+export function AppNav() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const auth = useAuthInfo();
 	const user = auth.loading === false ? auth.user : undefined;
 	const defaultUrl = 'https://img.propelauth.com/2a27d237-db8c-4f82-84fb-5824dfaedc87.png';
 	const pictureUrl = user?.pictureUrl || defaultUrl;
 	const logout = useLogoutFunction();
+
+	const [path, setPath] = useState(undefined as undefined | string);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setPath(window.location.pathname);
+		}
+	}, []);
 
 	const activeCls = 'border border-gray-800 rounded-full';
 
