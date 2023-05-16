@@ -33,7 +33,7 @@ function AppInteral() {
 	const { redirectToCreateOrgPage } = useRedirectFunctions();
 
 	if (auth.loading === true) {
-		return <>Loading...</>;
+		return <div className="my-10 ml-10">Loading...</div>;
 	}
 	if (auth.user === null) {
 		return (
