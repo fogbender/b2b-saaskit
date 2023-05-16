@@ -56,14 +56,16 @@ export function AppNav() {
 					>
 						Settings
 					</a>
-					{path !== '/app/support' && (
-						<a
-							href="/app/support"
-							className="text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1 border border-transparent"
-						>
-							Support <SupportWidget kind="badge" />
-						</a>
-					)}
+					<a
+						href="/app/support"
+						className={classNames(
+							'text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1',
+							'/app/support' === path ? activeCls : 'border border-transparent'
+						)}
+					>
+						Support
+						{path !== '/app/support' && <SupportWidget kind="badge" />}
+					</a>
 				</nav>
 				<div className="relative inline-block text-left">
 					<img
