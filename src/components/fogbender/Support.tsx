@@ -38,7 +38,27 @@ export const SupportWidget = ({ kind }: { kind: 'widget' | 'floatie' | 'badge' }
 	const auth = useAuthInfo();
 	const widgetId = env.PUBLIC_FOGBENDER_WIDGET_ID;
 
-	if (widgetId && auth.loading === false && auth.user && activeOrg) {
+	if (!widgetId) {
+		if (kind !== 'widget') {
+			return null;
+		}
+		return (
+			<div className="container mt-8 mx-auto">
+				<h3 className="text-2xl font-bold">Prompts with Friends / Support</h3>
+				<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
+					<p className="prose">
+						Hi! This section is only available if you have set up your{' '}
+						<code>PUBLIC_FOGBENDER_WIDGET_ID</code> and <code>FOGBENDER_SECRET</code>.
+					</p>
+					<a href="/setup" className="text-blue-600 hover:text-blue-800 hover:underline">
+						Set up your Fogbender widget
+					</a>
+				</div>
+			</div>
+		);
+	}
+
+	if (auth.loading === false && auth.user && activeOrg) {
 		return (
 			<Internal
 				auth={auth}
