@@ -5,5 +5,5 @@ export const prerender = true;
 ---
 
 <AppLayout title="Prompts with Friends">
-	<Settings client:load />
+	<Settings client:load path={Astro.url.pathname} />
 </AppLayout>

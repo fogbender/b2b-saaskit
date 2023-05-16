@@ -19,12 +19,12 @@ import { env } from '../../config';
 import { useActiveOrg, useAuthInfo } from '../propelauth';
 import { AppNav } from '../app/Nav';
 
-export const FullPageSupport = () => {
+export const FullPageSupport = ({ path }: { path: string }) => {
 	return (
 		<TRPCProvider>
 			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 				<AuthSync />
-				<AppNav />
+				<AppNav path={path} />
 				<div className="relative mt-2 border-gray-300">
 					<SupportWidget kind="widget" />
 				</div>

@@ -5,5 +5,5 @@ export const prerender = true;
 ---
 
 <AppLayout title="Prompts with Friends">
-	<FullPageSupport client:load />
+	<FullPageSupport client:load path={Astro.url.pathname} />
 </AppLayout>
