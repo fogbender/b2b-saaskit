@@ -1,12 +1,19 @@
 import classNames from 'clsx';
-import { useState, useEffect } from 'react';
-import { saveOrgSelectionToLocalStorage, useAuthInfo, useLogoutFunction } from '../propelauth';
+import { useState, useEffect, useRef } from 'react';
+import {
+	requireActiveOrg,
+	saveOrgSelectionToLocalStorage,
+	useLogoutFunction,
+	useRedirectFunctions,
+} from '../propelauth';
 import { env } from '../../config';
 import { SupportWidget } from '../fogbender/Support';
 
 export function AppNav() {
+	const menuRef = useRef<HTMLDivElement>(null);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const auth = useAuthInfo();
+	const { auth, activeOrg } = requireActiveOrg();
+	const { redirectToOrgPage, redirectToAccountPage } = useRedirectFunctions();
 	const user = auth.loading === false ? auth.user : undefined;
 	const defaultUrl = 'https://img.propelauth.com/2a27d237-db8c-4f82-84fb-5824dfaedc87.png';
 	const pictureUrl = user?.pictureUrl || defaultUrl;
@@ -19,6 +26,27 @@ export function AppNav() {
 			setPath(window.location.pathname);
 		}
 	}, []);
+
+	useEffect(() => {
+		const closeMenu = (e: { target: EventTarget | null }) => {
+			if (e.target instanceof Node && menuRef.current?.contains(e.target) === false) {
+				setIsMenuOpen(false);
+			}
+		};
+		const handleEscape = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				setIsMenuOpen(false);
+			}
+		};
+		if (isMenuOpen) {
+			document.addEventListener('click', closeMenu);
+			document.addEventListener('keydown', handleEscape);
+		}
+		return () => {
+			document.removeEventListener('click', closeMenu);
+			document.removeEventListener('keydown', handleEscape);
+		};
+	}, [isMenuOpen]);
 
 	const activeCls = 'border border-gray-800 rounded-full';
 
@@ -67,14 +95,21 @@ export function AppNav() {
 						{path !== '/app/support' && <SupportWidget kind="badge" />}
 					</a>
 				</nav>
-				<div className="relative inline-block text-left">
-					<img
-						src={pictureUrl}
-						alt="User Image"
-						className="object-contain h-8 w-8 rounded-full cursor-pointer"
-						id="userMenuButton"
+				<div className="relative inline-block text-left" ref={menuRef}>
+					<button
+						className="rounded-full flex items-center"
+						type="button"
+						aria-expanded={isMenuOpen}
+						aria-haspopup="true"
 						onClick={() => setIsMenuOpen(!isMenuOpen)}
-					/>
+					>
+						<img
+							src={pictureUrl}
+							alt="User Image"
+							className="object-contain h-8 w-8 rounded-full"
+							id="userMenuButton"
+						/>
+					</button>
 
 					<div
 						className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
@@ -87,11 +122,28 @@ export function AppNav() {
 						<div className="py-1" role="none">
 							<a
 								href={env.PUBLIC_AUTH_URL + '/account'}
+								onClick={(e) => {
+									e.preventDefault();
+									redirectToAccountPage();
+								}}
 								className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 								role="menuitem"
 							>
 								Account
 							</a>
+							{activeOrg && (
+								<a
+									href={env.PUBLIC_AUTH_URL + '/org'}
+									onClick={(e) => {
+										e.preventDefault();
+										redirectToOrgPage();
+									}}
+									className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+									role="menuitem"
+								>
+									Your Team ({activeOrg.orgName})
+								</a>
+							)}
 							<button
 								onClick={() => {
 									saveOrgSelectionToLocalStorage('');

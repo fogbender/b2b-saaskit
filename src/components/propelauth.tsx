@@ -21,7 +21,9 @@ export function requireActiveOrg() {
 	useEffect(() => {
 		if (auth.loading === false) {
 			if (!auth.user || !activeOrg) {
-				window.location.href = '/app';
+				if (window.location.pathname !== '/app') {
+					window.location.pathname = '/app';
+				}
 			}
 		}
 	}, [auth, activeOrg]);
