@@ -66,6 +66,7 @@ export const createTRPCContext = (opts: CreateAstroContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
+import { z } from 'zod';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import { AnyRouter, TRPCError, initTRPC } from '@trpc/server';
 import { parse } from 'cookie';
@@ -174,3 +175,21 @@ export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 		ctx: { user: user.user },
 	});
 });
+
+export const orgProcedure = authProcedure
+	.use(async ({ ctx, rawInput, next }) => {
+		const { orgId: requiredOrgId } = z.object({ orgId: z.string() }).parse(rawInput);
+		for (const orgId in ctx.user.orgIdToOrgMemberInfo) {
+			const orgMemberInfo = ctx.user.orgIdToOrgMemberInfo[orgId];
+			if (orgMemberInfo?.orgId === requiredOrgId) {
+				return next({
+					ctx: { requiredOrgId },
+				});
+			}
+		}
+		throw new TRPCError({
+			code: 'FORBIDDEN',
+			message: `This route requires user access to the organization ${requiredOrgId}.`,
+		});
+	})
+	.input(z.object({ orgId: z.string() }));

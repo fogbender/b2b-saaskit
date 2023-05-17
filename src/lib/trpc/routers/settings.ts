@@ -1,47 +1,38 @@
 import { z } from 'zod';
 import { eq } from 'drizzle-orm';
 
-import { createTRPCRouter, authProcedure } from '../trpc';
+import { createTRPCRouter, authProcedure, orgProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { db } from '../../../db/db';
 import { gptKeys } from '../../../db/schema';
 import type { User } from '@propelauth/node';
 
 export const settingsRouter = createTRPCRouter({
-	getKeys: authProcedure
-		.input(
-			z.object({
-				orgId: z.string(),
+	getKeys: orgProcedure.query(async ({ ctx }) => {
+		return await db
+			.select({
+				keyId: gptKeys.keyId,
+				keyType: gptKeys.keyType,
+				createdAt: gptKeys.createdAt,
+				lastUsedAt: gptKeys.lastUsedAt,
+				keyPublic: gptKeys.keyPublic,
+				isShared: gptKeys.isShared,
 			})
-		)
-		.query(async ({ ctx, input }) => {
-			requireOrg(ctx, input.orgId);
-			return await db
-				.select({
-					keyId: gptKeys.keyId,
-					keyType: gptKeys.keyType,
-					createdAt: gptKeys.createdAt,
-					lastUsedAt: gptKeys.lastUsedAt,
-					keyPublic: gptKeys.keyPublic,
-					isShared: gptKeys.isShared,
-				})
-				.from(gptKeys)
-				.where(eq(gptKeys.orgId, input.orgId))
-				.orderBy(gptKeys.createdAt);
-		}),
-	createKey: authProcedure
+			.from(gptKeys)
+			.where(eq(gptKeys.orgId, ctx.requiredOrgId))
+			.orderBy(gptKeys.createdAt);
+	}),
+	createKey: orgProcedure
 		.input(
 			z.object({
-				orgId: z.string(),
 				keySecret: z.string(),
 				keyType: z.enum(['gpt-3', 'gpt-4']),
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
-			requireOrg(ctx, input.orgId);
 			let keyId: number | undefined;
 			await db.transaction(async (trx) => {
-				await trx.delete(gptKeys).where(eq(gptKeys.orgId, input.orgId));
+				await trx.delete(gptKeys).where(eq(gptKeys.orgId, ctx.requiredOrgId));
 				const y = await trx
 					.insert(gptKeys)
 					.values({
@@ -49,7 +40,7 @@ export const settingsRouter = createTRPCRouter({
 						keySecret: input.keySecret,
 						keyPublic: input.keySecret.slice(0, 3) + '...' + input.keySecret.slice(-4),
 						keyType: input.keyType,
-						orgId: input.orgId,
+						orgId: ctx.requiredOrgId,
 						isShared: true,
 					})
 					.returning({ id: gptKeys.keyId });
@@ -102,18 +93,4 @@ export const settingsRouter = createTRPCRouter({
 
 function canOnlyChangeOwnKey(ctx: { user: User }, item: { userId: string; orgId: string }) {
 	return item?.userId === ctx.user.userId;
-}
-
-function requireOrg(ctx: { user: User }, requiredOrgId: string) {
-	for (const orgId in ctx.user.orgIdToOrgMemberInfo) {
-		const orgMemberInfo = ctx.user.orgIdToOrgMemberInfo[orgId];
-		console.log(orgMemberInfo);
-		if (orgMemberInfo?.orgId === requiredOrgId) {
-			return orgMemberInfo;
-		}
-	}
-	throw new TRPCError({
-		code: 'FORBIDDEN',
-		message: 'You can only view key of your own org.',
-	});
 }
