@@ -7,7 +7,7 @@ export const prerender = true;
 ---
 
 <Layout title={'Welcome to ' + websiteTitle}>
-	<main class="container max-w-[40rem] mx-auto">
+	<main class="container max-w-[40rem] px-8 md:px-0 md:mx-auto">
 		<div class="flex gap-6 items-center mt-28">
 			<div class="w-[5.75rem]">
 				<img class="w-[5.75rem] h-[5.75rem]" src={b2b7logo} alt="B2B7 Logo" />
@@ -18,19 +18,19 @@ export const prerender = true;
 			</div>
 		</div>
 
-		<div class="mt-16 ml-[7.25rem] text-[1.75rem] leading-7">
+		<div class="mt-16 ml-0 md:ml-[7.25rem] text-[1.75rem] leading-7">
 			Prompts with Friends is a new way to&nbsp;collaborate on GPT prompts with friends or
 			colleagues
 		</div>
 
-		<div class="mt-[3.75rem] ml-[7.25rem] text-lg leading-[1.875rem]">
+		<div class="mt-[3.75rem] ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem]">
 			This app is a showcase for the <a href="https://b2bsaaskit.com">B2B SaaS Kit</a>&mdash;a kit
 			for assembling multiplayer (i.e, team-based) SaaS applications by leveraging a combination of
 			open-source and commercial technologies.
 		</div>
 
 		<div class="mt-[3.75rem] flex gap-6">
-			<div class="min-w-[5.75rem] flex justify-end">
+			<div class="min-w-fit md:min-w-[5.75rem] flex justify-end">
 				<img class="h-10 w-10" src={free} alt="Free as in beer" />
 			</div>
 			<div class="text-lg leading-[1.875rem]">
@@ -40,7 +40,9 @@ export const prerender = true;
 			</div>
 		</div>
 
-		<div class="mt-[3.75rem] ml-[7.25rem] relative flex gap-6 items-center group">
+		<div
+			class="mt-[3.75rem] mx-auto md:ml-[7.25rem] relative flex gap-6 items-center group justify-center md:justify-start"
+		>
 			<a
 				href="/app"
 				class="no-underline uppercase bg-black py-2 px-8 text-white visited:text-white max-w-max text-lg drop-shadow-[6px_6px_0_rgba(211,211,211)] hover:text-yellow-300"
@@ -48,13 +50,13 @@ export const prerender = true;
 				Get started
 			</a>
 			<div
-				class="text-yellow-300 drop-shadow-[6px_6px_0_rgba(211,211,211)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+				class="hidden md:block text-yellow-300 drop-shadow-[6px_6px_0_rgba(211,211,211)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
 			>
 				:)
 			</div>
 		</div>
 
-		<div class="mt-[3.75rem] ml-[7.25rem] text-lg leading-[1.875rem]">
+		<div class="mt-[3.75rem] ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem]">
 			Getting help: <a href="https://github.com/fogbender/b2b-saaskit/issues/new"
 				>open an issue on GitHub</a
 			> or ping <a href="https://twitter.com/jlarky">@JLarky</a> and <a
