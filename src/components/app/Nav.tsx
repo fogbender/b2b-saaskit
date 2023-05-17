@@ -25,7 +25,7 @@ export function AppNav() {
 	return (
 		<header className="bg-white shadow-sm py-4 px-5">
 			<div className="container mx-auto flex justify-between items-center">
-				<nav className="flex space-x-4">
+				<nav className="flex flex-wrap space-x-4">
 					<a
 						href="/app"
 						className={classNames(
@@ -71,7 +71,7 @@ export function AppNav() {
 					<img
 						src={pictureUrl}
 						alt="User Image"
-						className="h-8 w-8 rounded-full cursor-pointer"
+						className="object-contain h-8 w-8 rounded-full cursor-pointer"
 						id="userMenuButton"
 						onClick={() => setIsMenuOpen(!isMenuOpen)}
 					/>
