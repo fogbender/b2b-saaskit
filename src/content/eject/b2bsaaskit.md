@@ -1,16 +1,16 @@
 ---
-title: B2B SaasKit (WIP)
+title: Removing kit assets
 ---
 
-Files that are only used to make the template nicer for a newcomer, but are not needed for the actual project.
+## The landing page
 
-#### Landing page
+We've got some landing page complexity here, since we're using the same codebase for three websites: https://b2bsaaskit.com, https://PromptsWithFriends.com, and the instructons on https://localhost:3000.
 
-That's where the initial instructions for localhost and landing pages (promptswithfriends.com and b2bsaaskit.com) are located. You can remove it and replace it with your own landing page.
+To replace our mess with a single landing page, do this:
 
 - `rm src/assets/free.svg src/assets/b2b7.svg`
 - `rm src/components/landing/Prod.astro src/components/landing/B2B.astro src/components/landing/Dev.astro`
-- replace `src/pages/index.astro` with:
+- Replace `src/pages/index.astro` with:
 
 ```
 ---
@@ -26,14 +26,14 @@ export const prerender = true;
 </Layout>
 ```
 
-#### Favicon
+## Favicon
 
-- replace `public/favicon.ico` with your `.ico` file
-- update `<link rel="icon" type="image/svg+xml" href={pwf} />` with your icon in `src/layouts/Layout.astro`
+- Replace `public/favicon.ico` with your `.ico` file
+- In `src/layouts/Layout.astro`, update `<link rel="icon" type="image/svg+xml" href={pwf} />` with your .ico file
 
-#### Environment variables checker
+## Environment variables checker
 
 - `rm src/pages/app/_envCheck.ts`
-- remove `await import('./_envCheck');` from files in `src/pages/app/`
+- Remove `await import('./_envCheck');` from files in `src/pages/app/`
 
 WIP
