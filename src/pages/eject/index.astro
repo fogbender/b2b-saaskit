@@ -23,28 +23,36 @@ for (const slug of checksOrder) {
 
 <Layout title="Cleaning up">
 	<main class="container">
-		<h1 class="text-5xl leading-normal font-extrabold">Cleaning up</h1>
+		<h1 class="text-5xl leading-normal font-extrabold">
+			<a class="text-blue-500" href="/">Home</a> / Kit cleanup
+		</h1>
 		<div class="instructions sl-waiting bg-slate-100">
-			<p class="text-gray-600 border-b border-slate-400 pb-2 mb-2">
-				We think that we chose the best tools to get you started as quickly as possible. But we know
-				that it's impossible to fit everyone's needs. So here we provide instructions on how to
-				remove the dependencies or services that you don't need.
+			<p class="text-gray-600 pb-10 mb-2 text-xl">
+				While we tried to choose the best tools to get you started with your own project as quickly
+				as possible, you might want to swap some components with your favorites. Furthermore, this
+				repo contains a number of files your own project will not need. In this section, we'll
+				explain how to clean things up.
 			</p>
-			{
-				parsedSteps.map(async ({ step }) => {
-					const { Content } = await step.render();
-					return (
-						<sl-details data-id={step.id}>
-							<h3 slot="summary" class="text-gray-600">
-								🔨 {step.data.title || step.slug}
-							</h3>
-							<div class="prose max-w-none bg-white px-4 py-2 my-2 rounded-md">
-								<Content />
-							</div>
-						</sl-details>
-					);
-				})
-			}
+			<div class="flex flex-col gap-4">
+				{
+					parsedSteps.map(async ({ step }) => {
+						const { Content } = await step.render();
+						return (
+							<sl-details data-id={step.id}>
+								<h3 slot="summary" class="text-gray-600 font-medium flex gap-3 text-2xl">
+									<>
+										<span>🔨</span>
+										<span>{step.data.title || step.slug}</span>
+									</>
+								</h3>
+								<div class="prose max-w-none bg-white px-4 py-2 my-2 rounded-md">
+									<Content />
+								</div>
+							</sl-details>
+						);
+					})
+				}
+			</div>
 		</div>
 	</main>
 </Layout>
