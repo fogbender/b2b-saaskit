@@ -26,6 +26,11 @@ export const prerender = true;
 </Layout>
 ```
 
+#### Favicon
+
+- replace `public/favicon.ico` with your `.ico` file
+- update `<link rel="icon" type="image/svg+xml" href={pwf} />` with your icon in `src/layouts/Layout.astro`
+
 #### Environment variables checker
 
 - `rm src/pages/app/_envCheck.ts`
