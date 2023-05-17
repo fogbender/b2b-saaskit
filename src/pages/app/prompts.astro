@@ -12,7 +12,7 @@ await import('./_envCheck');
 const helpers = createHelpers(Astro);
 // prefetch data for client, and redirect to login if not logged in
 const error = await helpers.prompts.getPrompts
-	.fetch()
+	.fetch({})
 	.then(() => {})
 	.catch((error) => error);
 

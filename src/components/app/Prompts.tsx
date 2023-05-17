@@ -44,7 +44,7 @@ function Interal() {
 	const { activeOrg } = requireActiveOrg();
 	const orgId = activeOrg?.orgId || '';
 	const promptsQuery = trpc.prompts.getPrompts.useQuery(
-		{ orgId },
+		{},
 		{
 			enabled: !!orgId,
 			staleTime: 1000,

@@ -147,6 +147,14 @@ export const apiProcedure = publicProcedure.use(async ({ ctx, next }) => {
 			}
 			return;
 		},
+		userOrgId: () => {
+			const { parsedCookies } = newCtx;
+			if (newCtx.accessToken) {
+				const publicCookie = new URLSearchParams(parsedCookies[AUTH_COOKIE_NAME]);
+				return publicCookie.get('orgId') || undefined;
+			}
+			return;
+		},
 		userPromise: async () => {
 			return await propelauth
 				.validateAccessTokenAndGetUser('Bearer ' + newCtx.accessToken)
@@ -178,13 +186,16 @@ export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 
 export const orgProcedure = authProcedure
 	.use(async ({ ctx, rawInput, next }) => {
-		const { orgId: requiredOrgId } = z.object({ orgId: z.string() }).parse(rawInput);
-		for (const orgId in ctx.user.orgIdToOrgMemberInfo) {
-			const orgMemberInfo = ctx.user.orgIdToOrgMemberInfo[orgId];
-			if (orgMemberInfo?.orgId === requiredOrgId) {
-				return next({
-					ctx: { requiredOrgId },
-				});
+		const { orgId: inputOrgId } = z.object({ orgId: z.string().optional() }).parse(rawInput);
+		const requiredOrgId = inputOrgId || ctx.userOrgId;
+		if (requiredOrgId) {
+			for (const orgId in ctx.user.orgIdToOrgMemberInfo) {
+				const orgMemberInfo = ctx.user.orgIdToOrgMemberInfo[orgId];
+				if (orgMemberInfo?.orgId === requiredOrgId) {
+					return next({
+						ctx: { requiredOrgId },
+					});
+				}
 			}
 		}
 		throw new TRPCError({
@@ -192,4 +203,4 @@ export const orgProcedure = authProcedure
 			message: `This route requires user access to the organization ${requiredOrgId}.`,
 		});
 	})
-	.input(z.object({ orgId: z.string() }));
+	.input(z.object({ orgId: z.string().optional() }));

@@ -13,6 +13,7 @@ export const authRouter = createTRPCRouter({
 			z.object({
 				isLoggedIn: z.boolean(),
 				accessToken: z.string().optional(),
+				orgId: z.string(),
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -63,6 +64,7 @@ export const authRouter = createTRPCRouter({
 			}
 			const publicCookie = {
 				userId: res.user.userId,
+				orgId: input.orgId || '',
 				exp: String(decodedJwt.exp),
 			};
 			const httpOnlyCookie = {
