@@ -1,10 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import { env } from '../../config';
-import { AuthProvider, useActiveOrg, useAuthInfo } from '../propelauth';
+import { AuthProvider, requireActiveOrg } from '../propelauth';
 import { TRPCProvider, trpc } from '../trpc';
 import { AuthSync } from '../AuthSync';
-import { useEffect, useReducer } from 'react';
+import { useReducer } from 'react';
 import { Layout } from './Layout';
 import { AppNav } from './Nav';
 
@@ -21,17 +21,9 @@ export function Settings() {
 }
 
 function Interal() {
-	const auth = useAuthInfo();
-	const activeOrg = useActiveOrg();
-	useEffect(() => {
-		if (auth.loading === false) {
-			if (!auth.user || !activeOrg) {
-				window.location.href = '/app';
-			}
-		}
-	}, [auth, activeOrg]);
+	const { activeOrg } = requireActiveOrg();
 	const orgId = activeOrg?.orgId;
-	const keyQuery = trpc.settings.getKeys.useQuery(
+	const keysQuery = trpc.settings.getKeys.useQuery(
 		{ orgId: orgId || '' },
 		{
 			enabled: !!orgId,
@@ -48,7 +40,7 @@ function Interal() {
 		onSuccess: (data) => {
 			queryClient.setQueryData(
 				getQueryKey(trpc.settings.getKeys, undefined, 'query'),
-				(oldData: typeof keyQuery.data) => oldData?.filter((item) => item.keyId !== data.keyId)
+				(oldData: typeof keysQuery.data) => oldData?.filter((item) => item.keyId !== data.keyId)
 			);
 		},
 		onSettled: () => {
@@ -91,7 +83,7 @@ function Interal() {
 									className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 									onClick={toggleShowAddKey}
 								>
-									{showAddKey ? 'Cancel' : keyQuery.data?.length ? 'Replace Key' : 'Add Key'}
+									{showAddKey ? 'Cancel' : keysQuery.data?.length ? 'Replace Key' : 'Add Key'}
 								</button>
 							</div>
 						</div>
@@ -149,7 +141,7 @@ function Interal() {
 								>
 									{addKeyMutation.isLoading
 										? 'Storing...'
-										: keyQuery.data?.length
+										: keysQuery.data?.length
 										? 'Replace'
 										: 'Store'}
 								</button>
@@ -207,14 +199,14 @@ function Interal() {
 									</tr>
 								</thead>
 								<tbody className="divide-y divide-gray-200 bg-white">
-									{keyQuery.isLoading && (
+									{keysQuery.isLoading && (
 										<tr>
 											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 												Loading...
 											</td>
 										</tr>
 									)}
-									{!keyQuery.isLoading && keyQuery.data?.length === 0 && (
+									{!keysQuery.isLoading && keysQuery.data?.length === 0 && (
 										<tr>
 											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 												No keys are configured,{' '}
@@ -232,7 +224,7 @@ function Interal() {
 											</td>
 										</tr>
 									)}
-									{keyQuery.data?.map((key, index) => (
+									{keysQuery.data?.map((key, index) => (
 										<tr
 											key={key.keyId}
 											className={`${index % 2 === 0 ? undefined : 'bg-gray-50'} ${
