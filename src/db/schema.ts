@@ -23,7 +23,9 @@ CREATE POLICY "service" ON "public"."prompts" AS PERMISSIVE FOR ALL TO service_r
 export const prompts = pgTable('prompts', {
 	promptId: text('id').primaryKey(),
 	userId: text('user_id').notNull(),
+	orgId: text('org_id').notNull(),
 	content: text('content').notNull(),
+	response: text('response').notNull().default(''),
 	privacyLevel: text('privacy_level').notNull(),
 	createdAt: timestamp('created_at').notNull(),
 });

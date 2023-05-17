@@ -36,6 +36,13 @@
       "when": 1684208257416,
       "tag": "0004_equal_champions",
       "breakpoints": false
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1684303389486,
+      "tag": "0005_premium_tarot",
+      "breakpoints": false
     }
   ]
 }

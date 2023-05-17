@@ -1,10 +1,10 @@
 import { DehydratedState, useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import { env } from '../../config';
-import { AuthProvider } from '../propelauth';
+import { AuthProvider, requireActiveOrg } from '../propelauth';
 import { TRPCProvider, trpc } from '../trpc';
 import { AuthSync } from '../AuthSync';
-import { useReducer } from 'react';
+import { useReducer, useRef } from 'react';
 import { AppNav } from './Nav';
 import { Layout } from './Layout';
 
@@ -21,7 +21,6 @@ export function Prompts(props: { dehydratedState: DehydratedState }) {
 }
 
 function Interal() {
-	const promptsQuery = trpc.prompts.getPrompts.useQuery(undefined, { staleTime: 1000 });
 	const queryClient = useQueryClient();
 	const addPromptMutation = trpc.prompts.createPrompt.useMutation({
 		onSettled: () => {
@@ -40,17 +39,36 @@ function Interal() {
 			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getPrompts));
 		},
 	});
-	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, false);
+	const runPromptMutation = trpc.prompts.runPrompt.useMutation();
+	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, !!!!!!!!!false);
+	const { activeOrg } = requireActiveOrg();
+	const orgId = activeOrg?.orgId || '';
+	const promptsQuery = trpc.prompts.getPrompts.useQuery(
+		{ orgId },
+		{
+			enabled: !!orgId,
+			staleTime: 1000,
+		}
+	);
+	const keysQuery = trpc.settings.getKeys.useQuery(
+		{ orgId },
+		{
+			enabled: !!orgId,
+		}
+	);
+	const hasKey = keysQuery.data?.length !== 0;
+	const runRef = useRef<HTMLButtonElement>(null);
+
 	return (
 		<Layout title="Prompts with Friends / List">
 			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
 				<div className="sm:flex sm:items-center">
 					<div className="sm:flex-auto">
 						<h1 className="text-base font-semibold leading-6 text-gray-900">
-							List of all public prompts
+							List of your team's prompts
 						</h1>
 						<p className="mt-2 text-sm text-gray-700">
-							List of all public prompts that are available to all users.
+							List of all the prompts that your team has created
 						</p>
 					</div>
 					<div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -72,11 +90,19 @@ function Interal() {
 								const form = e.currentTarget;
 								const formData = new FormData(form);
 								const prompt = formData.get('prompt') as string;
+								const response = (formData.get('response') as string) || '';
+								if (runRef.current) {
+									if (!runRef.current.disabled) {
+										runRef.current.click();
+										return;
+									}
+								}
 								addPromptMutation.mutate(
-									{ prompt },
+									{ orgId, prompt, response },
 									{
 										onSuccess: () => {
 											form.reset();
+											runPromptMutation.reset();
 										},
 									}
 								);
@@ -85,21 +111,77 @@ function Interal() {
 							<label className="text-gray-800" htmlFor="prompt">
 								Prompt
 							</label>
-							<input
+							<textarea
 								className="border border-gray-300 rounded-md p-2"
-								type="text"
+								rows={5}
 								name="prompt"
 								autoFocus
+								onChange={() => {
+									runPromptMutation.reset();
+								}}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' && e.metaKey) {
+										e.currentTarget.form?.requestSubmit();
+									}
+								}}
 							/>
-							<button className="bg-blue-500 text-white py-2 px-4 rounded-md" type="submit">
-								Create
-							</button>
+							{runPromptMutation.data?.message && (
+								<input type="hidden" name="response" value={runPromptMutation.data.message} />
+							)}
+							{runPromptMutation.data?.message && (
+								<textarea
+									className="border border-gray-300 rounded-md p-2 disabled:opacity-50"
+									rows={5}
+									disabled
+									value={runPromptMutation.data.message}
+								/>
+							)}
+							<div className="flex gap-2 flex-col sm:flex-row">
+								<button
+									ref={runRef}
+									className="w-full bg-blue-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
+									type="button"
+									disabled={!hasKey || runPromptMutation.isLoading || runPromptMutation.isSuccess}
+									onClick={(e) => {
+										const form = e.currentTarget.form;
+										const formData = new FormData(form!);
+										const prompt = formData.get('prompt') as string;
+										runPromptMutation.mutate({ orgId, prompt });
+									}}
+								>
+									Run{runPromptMutation.isLoading ? 'ning' : ''}
+								</button>
+								<button
+									className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md"
+									type="submit"
+								>
+									{runPromptMutation.data?.message ? 'Store' : 'Create'}
+								</button>
+							</div>
+							{!hasKey && (
+								<div className="text-sm text-gray-500">
+									You need to have a key{' '}
+									<a className="text-blue-500 hover:underline" href="/app/settings">
+										set up
+									</a>{' '}
+									to run a prompt
+								</div>
+							)}
+							{runPromptMutation.error && (
+								<div className="text-sm text-red-500">{runPromptMutation.error.message}</div>
+							)}
+							{runPromptMutation.data?.error && (
+								<div className="text-sm text-red-500">{runPromptMutation.data?.error}</div>
+							)}
+							{addPromptMutation.error && (
+								<div className="text-sm text-red-500">{addPromptMutation.error.message}</div>
+							)}
 						</form>
 					</>
 				)}
 				{promptsQuery.data?.length === 0 ? (
 					<div className="-mx-4 mt-8 px-4 py-3 text-sm text-gray-700 border border-gray-300 rounded-md">
-						No prompts, be first to create one.
+						No prompts, be first to create one
 					</div>
 				) : (
 					<Table>
@@ -117,7 +199,15 @@ function Interal() {
 									{prompt.content}
 								</td>
 								<td className="px-3 py-4 text-sm text-gray-500">{prompt.userId}</td>
-								<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
+								<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8 gap-2 flex">
+									<button
+										className="text-indigo-600 hover:text-indigo-900"
+										onClick={() => {
+											deletePromptMutation.mutate({ promptId: prompt.promptId });
+										}}
+									>
+										Run<span className="sr-only">, prompt</span>
+									</button>
 									<button
 										className="text-indigo-600 hover:text-indigo-900"
 										onClick={() => {
