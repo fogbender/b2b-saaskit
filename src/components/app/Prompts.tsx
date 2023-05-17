@@ -113,12 +113,10 @@ function Interal() {
 										: ''
 								}`}
 							>
-								<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
+								<td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 									{prompt.content}
 								</td>
-								<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-									{prompt.userId}
-								</td>
+								<td className="px-3 py-4 text-sm text-gray-500">{prompt.userId}</td>
 								<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
 									<button
 										className="text-indigo-600 hover:text-indigo-900"
@@ -141,7 +139,7 @@ function Interal() {
 const Table = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<div className="mt-8 flow-root">
-			<div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+			<div className="">
 				<div className="inline-block min-w-full py-2 align-middle">
 					<table className="min-w-full divide-y divide-gray-300">
 						<thead>
