@@ -12,8 +12,6 @@ const checksOrder: SetupSlug[] = [
 	'todo',
 ];
 
-let firstFail = ''; // debug with: let firstFail = 'fogbender';
-
 const parsedSteps: {
 	step: CollectionEntry<'eject'>;
 }[] = [];
@@ -27,11 +25,16 @@ for (const slug of checksOrder) {
 	<main class="container">
 		<h1 class="text-5xl leading-normal font-extrabold">Cleaning up</h1>
 		<div class="instructions sl-waiting bg-slate-100">
+			<p class="text-gray-600 border-b border-slate-400 pb-2 mb-2">
+				We think that we chose the best tools to get you started as quickly as possible. But we know
+				that it's impossible to fit everyone's needs. So here we provide instructions on how to
+				remove the dependencies or services that you don't need.
+			</p>
 			{
 				parsedSteps.map(async ({ step }) => {
 					const { Content } = await step.render();
 					return (
-						<sl-details open={firstFail === step.slug}>
+						<sl-details data-id={step.id}>
 							<h3 slot="summary" class="text-gray-600">
 								🔨 {step.data.title || step.slug}
 							</h3>
@@ -100,3 +103,30 @@ for (const slug of checksOrder) {
 			Bitstream Vera Sans Mono, Courier New, monospace;
 	}
 </style>
+
+<script>
+	const ls_key = 'eject_section_open';
+	const open = localStorage.getItem(ls_key);
+	if (open) {
+		document.querySelectorAll('sl-details').forEach((el) => {
+			if (el instanceof HTMLElement) {
+				const id = el.dataset.id;
+				if (id === open) {
+					el.setAttribute('open', 'true');
+				}
+			}
+		});
+	}
+	document.addEventListener('sl-show', (event) => {
+		const id = event.target instanceof HTMLElement && event.target?.dataset?.id;
+		if (id) {
+			localStorage.setItem(ls_key, id);
+		}
+	});
+	document.addEventListener('sl-hide', (event) => {
+		const id = event.target instanceof HTMLElement && event.target?.dataset?.id;
+		if (id) {
+			localStorage.removeItem(ls_key);
+		}
+	});
+</script>
