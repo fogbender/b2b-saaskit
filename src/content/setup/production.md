@@ -40,6 +40,14 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Click on "Create New API Key", give the key a name (e.g., `pwf-prod`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`
 
+#### Posthog (optional)
+
+1. Since free PostHog is limited to only one project on a free tier, use the same values for production and the local version.
+
+1. Get existing `PUBLIC_POSTHOG_KEY` with `doppler secrets get PUBLIC_POSTHOG_KEY`
+
+1. Set it for production with `doppler secrets set PUBLIC_POSTHOG_KEY --config prd`
+
 #### Check build
 
 1. Make sure you can still build the project locally with `doppler run --config prd yarn build`
