@@ -61,30 +61,13 @@ function Interal() {
 	const runButtonRef = useRef<HTMLButtonElement>(null);
 	const storeButtonRef = useRef<HTMLButtonElement>(null);
 
-	const [promptButtonsDisabled, setPromptButtonsDisabled] = useState(true);
+	const [promptValue, setPromptValue] = useState('');
+
+	const promptButtonsDisabled = promptValue === '';
 
 	return (
 		<Layout title="Prompts with Friends / Prompts">
-			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
-				<div className="sm:flex sm:items-center">
-					<div className="sm:flex-auto">
-						<h1 className="text-base font-semibold leading-6 text-gray-900">
-							List of your team's prompts
-						</h1>
-						<p className="mt-2 text-sm text-gray-700">
-							List of all the prompts that your team has created
-						</p>
-					</div>
-					<div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-						<button
-							type="button"
-							className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-							onClick={toggleShowAddPrompt}
-						>
-							{showAddPrompt ? 'Cancel' : 'Add Prompt'}
-						</button>
-					</div>
-				</div>
+			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8 flex flex-col gap-10">
 				{showAddPrompt && (
 					<>
 						<form
@@ -101,6 +84,7 @@ function Interal() {
 										{ orgId, prompt, response },
 										{
 											onSuccess: () => {
+												setPromptValue('');
 												form.reset();
 												runPromptMutation.reset();
 											},
@@ -118,12 +102,13 @@ function Interal() {
 								Prompt
 							</label>
 							<textarea
+								value={promptValue}
 								className="border border-gray-300 rounded-md p-2"
 								rows={5}
 								name="prompt"
 								autoFocus
 								onChange={(e) => {
-									setPromptButtonsDisabled(e.target.value === '');
+									setPromptValue(e.target.value);
 									runPromptMutation.reset();
 								}}
 								onKeyDown={(e) => {
@@ -143,10 +128,10 @@ function Interal() {
 									value={runPromptMutation.data.message}
 								/>
 							)}
-							<div className="flex gap-2 flex-col sm:flex-row">
+							<div className="flex gap-2 flex-col sm:flex-row justify-around">
 								<button
 									ref={runButtonRef}
-									className="w-full bg-blue-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
+									className="w-32 bg-blue-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
 									type="button"
 									disabled={
 										promptButtonsDisabled ||
@@ -166,10 +151,20 @@ function Interal() {
 								<button
 									ref={storeButtonRef}
 									disabled={promptButtonsDisabled}
-									className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
+									className="w-32 bg-indigo-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
 									type="submit"
 								>
 									{runPromptMutation.data?.message ? 'Store' : 'Create'}
+								</button>
+								<button
+									type="button"
+									className="w-32 block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+									onClick={() => {
+										setPromptValue('');
+										toggleShowAddPrompt();
+									}}
+								>
+									Cancel
 								</button>
 							</div>
 							{!hasKey && (
@@ -193,11 +188,39 @@ function Interal() {
 						</form>
 					</>
 				)}
-				{!showAddPrompt && promptsQuery.data?.length === 0 ? (
-					<div className="mt-8 px-4 py-3 text-sm text-gray-700 border border-gray-300 rounded-md">
-						No prompts yet! <button onClick={toggleShowAddPrompt}>Click here to add one</button>
+				{!showAddPrompt && (
+					<div className="">
+						<button
+							type="button"
+							className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							onClick={toggleShowAddPrompt}
+						>
+							Add Prompt
+						</button>
 					</div>
-				) : (
+				)}
+
+				{!showAddPrompt && promptsQuery.data?.length === 0 && (
+					<div className="flex flex-col text-sm text-gray-700 gap-3">
+						<div>No prompts yet!</div>
+						<div>Press ☝️ button to create one</div>
+					</div>
+				)}
+
+				{(promptsQuery.data?.length || 0) > 0 && (
+					<div className="sm:flex sm:items-center">
+						<div className="flex flex-col gap-2">
+							<h1 className="text-base font-semibold leading-6 text-gray-900">
+								List of your team's prompts
+							</h1>
+							<p className="text-sm text-gray-700">
+								List of all the prompts that your team has created
+							</p>
+						</div>
+					</div>
+				)}
+
+				{(promptsQuery.data?.length || 0) > 0 && (
 					<Table>
 						{promptsQuery.data?.map((prompt, index) => (
 							<tr
@@ -242,7 +265,7 @@ function Interal() {
 
 const Table = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<div className="mt-8 flow-root">
+		<div className="flow-root">
 			<div className="">
 				<div className="inline-block min-w-full py-2 align-middle">
 					<table className="min-w-full divide-y divide-gray-300">
