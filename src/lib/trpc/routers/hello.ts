@@ -10,10 +10,10 @@ export const helloRouter = createTRPCRouter({
 
 		return 'Something from the server';
 	}),
-	getCount: publicProcedure.query(async () => {
+	getCount: publicProcedure.query(() => {
 		return i;
 	}),
-	increment: publicProcedure.mutation(async () => {
+	increment: publicProcedure.mutation(() => {
 		return ++i;
 	}),
 });
