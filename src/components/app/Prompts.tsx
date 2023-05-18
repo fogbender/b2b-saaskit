@@ -1,6 +1,6 @@
 import { DehydratedState, useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
-import { useReducer, useRef } from 'react';
+import { useReducer, useRef, useState } from 'react';
 
 import { env } from '../../config';
 import { AuthSync } from '../AuthSync';
@@ -58,10 +58,13 @@ function Interal() {
 		}
 	);
 	const hasKey = keysQuery.data?.length !== 0;
-	const runRef = useRef<HTMLButtonElement>(null);
+	const runButtonRef = useRef<HTMLButtonElement>(null);
+	const storeButtonRef = useRef<HTMLButtonElement>(null);
+
+	const [promptButtonsDisabled, setPromptButtonsDisabled] = useState(true);
 
 	return (
-		<Layout title="Prompts with Friends / List">
+		<Layout title="Prompts with Friends / Prompts">
 			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
 				<div className="sm:flex sm:items-center">
 					<div className="sm:flex-auto">
@@ -92,22 +95,23 @@ function Interal() {
 								const formData = new FormData(form);
 								const prompt = formData.get('prompt') as string;
 								const response = (formData.get('response') as string) || '';
-								if (runRef.current) {
-									if (!runRef.current.disabled) {
-										runRef.current.click();
+
+								if (storeButtonRef.current === document.activeElement) {
+									addPromptMutation.mutate(
+										{ orgId, prompt, response },
+										{
+											onSuccess: () => {
+												form.reset();
+												runPromptMutation.reset();
+											},
+										}
+									);
+								} else if (runButtonRef.current) {
+									if (!runButtonRef.current.disabled) {
+										runButtonRef.current.click();
 										return;
 									}
 								}
-
-								addPromptMutation.mutate(
-									{ orgId, prompt, response },
-									{
-										onSuccess: () => {
-											form.reset();
-											runPromptMutation.reset();
-										},
-									}
-								);
 							}}
 						>
 							<label className="text-gray-800" htmlFor="prompt">
@@ -118,7 +122,8 @@ function Interal() {
 								rows={5}
 								name="prompt"
 								autoFocus
-								onChange={() => {
+								onChange={(e) => {
+									setPromptButtonsDisabled(e.target.value === '');
 									runPromptMutation.reset();
 								}}
 								onKeyDown={(e) => {
@@ -140,10 +145,15 @@ function Interal() {
 							)}
 							<div className="flex gap-2 flex-col sm:flex-row">
 								<button
-									ref={runRef}
+									ref={runButtonRef}
 									className="w-full bg-blue-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
 									type="button"
-									disabled={!hasKey || runPromptMutation.isLoading || runPromptMutation.isSuccess}
+									disabled={
+										promptButtonsDisabled ||
+										!hasKey ||
+										runPromptMutation.isLoading ||
+										runPromptMutation.isSuccess
+									}
 									onClick={(e) => {
 										const form = e.currentTarget.form;
 										const formData = new FormData(form!);
@@ -154,7 +164,9 @@ function Interal() {
 									Run{runPromptMutation.isLoading ? 'ning' : ''}
 								</button>
 								<button
-									className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md"
+									ref={storeButtonRef}
+									disabled={promptButtonsDisabled}
+									className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
 									type="submit"
 								>
 									{runPromptMutation.data?.message ? 'Store' : 'Create'}
@@ -181,9 +193,9 @@ function Interal() {
 						</form>
 					</>
 				)}
-				{promptsQuery.data?.length === 0 ? (
-					<div className="-mx-4 mt-8 px-4 py-3 text-sm text-gray-700 border border-gray-300 rounded-md">
-						No prompts, be first to create one
+				{!showAddPrompt && promptsQuery.data?.length === 0 ? (
+					<div className="mt-8 px-4 py-3 text-sm text-gray-700 border border-gray-300 rounded-md">
+						No prompts yet! <button onClick={toggleShowAddPrompt}>Click here to add one</button>
 					</div>
 				) : (
 					<Table>
