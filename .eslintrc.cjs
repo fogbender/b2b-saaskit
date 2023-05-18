@@ -39,7 +39,7 @@ module.exports = {
 	root: true,
 	rules: {
 		'simple-import-sort/imports': 'error',
-		'no-empty-pattern': 'off',
+		'no-empty-pattern':'off',
 		'simple-import-sort/exports': 'error',
 		'deprecation/deprecation': 'error',
 
@@ -53,7 +53,7 @@ module.exports = {
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-unused-vars': 'off',
 		'@typescript-eslint/no-non-null-assertion': 'off',
-		'@typescript-eslint/no-empty-function': 'off',
+		'@typescript-eslint/no-empty-function':'off',
 		'typescript-sort-keys/interface': 'off',
 
 		'padding-line-between-statements': 'off',

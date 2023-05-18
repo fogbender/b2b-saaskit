@@ -9,7 +9,7 @@ import {
 	useSearchParams,
 } from 'react-router-dom';
 
-import { trpc, TRPCProvider } from '../trpc';
+import { trpc,TRPCProvider } from '../trpc';
 
 export const routes = () => [
 	{

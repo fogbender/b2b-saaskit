@@ -1,4 +1,4 @@
-import { DehydratedState, Hydrate, QueryClient } from '@tanstack/react-query';
+import { DehydratedState, Hydrate,QueryClient } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
 import { useState } from 'react';

@@ -5,7 +5,7 @@ import { useReducer } from 'react';
 import { env } from '../../config';
 import { AuthSync } from '../AuthSync';
 import { AuthProvider, requireActiveOrg } from '../propelauth';
-import { trpc, TRPCProvider } from '../trpc';
+import { trpc,TRPCProvider } from '../trpc';
 import { Layout } from './Layout';
 import { AppNav } from './Nav';
 

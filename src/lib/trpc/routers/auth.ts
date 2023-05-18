@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { AUTH_COOKIE_NAME, HTTP_ONLY_AUTH_COOKIE_NAME } from '../../../constants';
 import { propelauth } from '../../propelauth';
-import { apiProcedure, createTRPCRouter } from '../trpc';
+import { apiProcedure,createTRPCRouter } from '../trpc';
 
 export const authRouter = createTRPCRouter({
 	authSync: apiProcedure
