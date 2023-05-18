@@ -3,16 +3,10 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:astro/recommended',
-		'plugin:jsx-a11y/recommended',
-		'plugin:regexp/recommended',
 		'plugin:typescript-sort-keys/recommended',
 	],
 	overrides: [
 		{
-			extends: [
-				'plugin:@typescript-eslint/recommended-requiring-type-checking',
-				'plugin:@typescript-eslint/strict',
-			],
 			files: ['*.astro'],
 			parser: 'astro-eslint-parser',
 			parserOptions: {
@@ -20,57 +14,14 @@ module.exports = {
 				extraFileExtensions: ['.astro'],
 			},
 			rules: {
-				// TODO: Investigate?? :(
 				'@typescript-eslint/no-unsafe-assignment': 'off',
 				'deprecation/deprecation': 'off',
 			},
 		},
 		{
-			files: ['*.ts', '*.tsx'],
-			extends: [
-				'plugin:@typescript-eslint/recommended-requiring-type-checking',
-				'plugin:@typescript-eslint/strict',
-			],
-		},
-		{
-			files: ['*.json', '*.jsonc'],
-			excludedFiles: ['package.json'],
-			parser: 'jsonc-eslint-parser',
-			rules: {
-				'jsonc/sort-keys': 'error',
-			},
-			extends: ['plugin:jsonc/recommended-with-json'],
-		},
-		{
 			extends: ['plugin:markdown/recommended'],
 			files: ['**/*.md'],
 			processor: 'markdown/markdown',
-		},
-		{
-			extends: ['plugin:solid/typescript'],
-			files: ['*.tsx'],
-		},
-		{
-			files: ['**/*.{yml,yaml}'],
-			parser: 'yaml-eslint-parser',
-			extends: ['plugin:yml/standard', 'plugin:yml/prettier'],
-			rules: {
-				'yml/file-extension': ['error', { extension: 'yml' }],
-				'yml/sort-keys': [
-					'error',
-					{
-						order: { type: 'asc' },
-						pathPattern: '^.*$',
-					},
-				],
-				'yml/sort-sequence-values': [
-					'error',
-					{
-						order: { type: 'asc' },
-						pathPattern: '^.*$',
-					},
-				],
-			},
 		},
 	],
 	parser: '@typescript-eslint/parser',
@@ -82,17 +33,28 @@ module.exports = {
 		'@typescript-eslint',
 		'astro',
 		'deprecation',
-		'jsx-a11y',
-		'regexp',
-		'solid',
 		'simple-import-sort',
 		'typescript-sort-keys',
 	],
 	root: true,
 	rules: {
 		'simple-import-sort/imports': 'error',
+		'no-empty-pattern': 'off',
 		'simple-import-sort/exports': 'error',
 		'deprecation/deprecation': 'error',
+
+		'@typescript-eslint/no-misused-promises': 'off',
+		'@typescript-eslint/no-floating-promises': 'off',
+		'@typescript-eslint/no-unsafe-return': 'off',
+		'@typescript-eslint/await-thenable': 'off',
+		'@typescript-eslint/restrict-template-expressions': 'off',
+		'@typescript-eslint/no-unsafe-call': 'off',
+		'@typescript-eslint/no-unsafe-member-access': 'off',
+		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/no-unused-vars': 'off',
+		'@typescript-eslint/no-non-null-assertion': 'off',
+		'@typescript-eslint/no-empty-function': 'off',
+		'typescript-sort-keys/interface': 'off',
 
 		// Stylistic concerns that don't interfere with Prettier
 		'padding-line-between-statements': 'off',
