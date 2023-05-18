@@ -179,7 +179,7 @@ function OptionalComments() {
 				{postSurveyMutation.isError && (
 					<p className="mb-2 rounded-md bg-red-100 p-2 text-red-500">
 						Error!{' '}
-						{postSurveyMutation.error?.data?.code === 'BAD_REQUEST'
+						{postSurveyMutation.error.data?.code === 'BAD_REQUEST'
 							? 'Invlid form data'
 							: 'Unknown error'}
 					</p>
