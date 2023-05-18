@@ -1,3 +1,4 @@
+/.astro
 dist
 .vscode
 .vercel
