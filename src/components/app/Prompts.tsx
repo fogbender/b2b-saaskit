@@ -41,7 +41,7 @@ function Interal() {
 		},
 	});
 	const runPromptMutation = trpc.prompts.runPrompt.useMutation();
-	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, !false);
+	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, false);
 	const { activeOrg } = requireActiveOrg();
 	const orgId = activeOrg?.orgId || '';
 	const promptsQuery = trpc.prompts.getPrompts.useQuery(
