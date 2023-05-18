@@ -56,8 +56,8 @@ module.exports = {
 		'@typescript-eslint/no-empty-function': 'off',
 		'typescript-sort-keys/interface': 'off',
 
-		// Stylistic concerns that don't interfere with Prettier
 		'padding-line-between-statements': 'off',
+
 		'@typescript-eslint/padding-line-between-statements': [
 			'error',
 			{ blankLine: 'always', next: '*', prev: 'block-like' },
