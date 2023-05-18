@@ -83,7 +83,7 @@ function validateRating(rating: string) {
 
 function RateExperience() {
 	const state = useLocation().state as { rating?: string };
-	const rating = state?.rating ?? '';
+	const rating = state.rating ?? '';
 	const navigate = useNavigate();
 	const validRating = validateRating(rating);
 
