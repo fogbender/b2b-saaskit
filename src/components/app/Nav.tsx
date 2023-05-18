@@ -1,13 +1,14 @@
 import classNames from 'clsx';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import { env } from '../../config';
+import { SupportWidget } from '../fogbender/Support';
 import {
 	requireActiveOrg,
 	saveOrgSelectionToLocalStorage,
 	useLogoutFunction,
 	useRedirectFunctions,
 } from '../propelauth';
-import { env } from '../../config';
-import { SupportWidget } from '../fogbender/Support';
 
 export function AppNav() {
 	const menuRef = useRef<HTMLDivElement>(null);
@@ -33,15 +34,18 @@ export function AppNav() {
 				setIsMenuOpen(false);
 			}
 		};
+
 		const handleEscape = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') {
 				setIsMenuOpen(false);
 			}
 		};
+
 		if (isMenuOpen) {
 			document.addEventListener('click', closeMenu);
 			document.addEventListener('keydown', handleEscape);
 		}
+
 		return () => {
 			document.removeEventListener('click', closeMenu);
 			document.removeEventListener('keydown', handleEscape);

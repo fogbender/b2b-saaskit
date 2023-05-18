@@ -1,5 +1,6 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 import type { APIRoute } from 'astro';
+
 import { appRouter } from '../../../lib/trpc/root';
 
 // The Astro API route, handling all incoming HTTP requests.

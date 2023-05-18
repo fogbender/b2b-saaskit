@@ -1,11 +1,11 @@
-import { z } from 'zod';
-import { eq } from 'drizzle-orm';
-
-import { createTRPCRouter, authProcedure, orgProcedure } from '../trpc';
+import type { User } from '@propelauth/node';
 import { TRPCError } from '@trpc/server';
+import { eq } from 'drizzle-orm';
+import { z } from 'zod';
+
 import { db } from '../../../db/db';
 import { gptKeys } from '../../../db/schema';
-import type { User } from '@propelauth/node';
+import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
 export const settingsRouter = createTRPCRouter({
 	getKeys: orgProcedure.query(async ({ ctx }) => {
@@ -54,6 +54,7 @@ export const settingsRouter = createTRPCRouter({
 					message: 'Failed to store the key',
 				});
 			}
+
 			return keyId;
 		}),
 	deleteKey: authProcedure
@@ -84,6 +85,7 @@ export const settingsRouter = createTRPCRouter({
 					message: 'You can only delete your own prompts.',
 				});
 			}
+
 			await db.transaction(async (trx) => {
 				await trx.delete(gptKeys).where(eq(gptKeys.keyId, input.keyId));
 			});

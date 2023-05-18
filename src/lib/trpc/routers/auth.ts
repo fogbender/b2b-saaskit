@@ -1,11 +1,11 @@
 import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
 import { serialize } from 'cookie';
 import jwt from 'jsonwebtoken';
+import { z } from 'zod';
 
-import { createTRPCRouter, apiProcedure } from '../trpc';
-import { propelauth } from '../../propelauth';
 import { AUTH_COOKIE_NAME, HTTP_ONLY_AUTH_COOKIE_NAME } from '../../../constants';
+import { propelauth } from '../../propelauth';
+import { apiProcedure, createTRPCRouter } from '../trpc';
 
 export const authRouter = createTRPCRouter({
 	authSync: apiProcedure
@@ -30,16 +30,19 @@ export const authRouter = createTRPCRouter({
 					})
 				);
 			};
+
 			const reset = () => {
 				if (currentCookies[AUTH_COOKIE_NAME] || currentCookies[HTTP_ONLY_AUTH_COOKIE_NAME]) {
 					set(AUTH_COOKIE_NAME, '');
 					set(HTTP_ONLY_AUTH_COOKIE_NAME, '');
 				}
 			};
+
 			if (!input.isLoggedIn || !input.accessToken) {
 				reset();
 				return 'session cleared';
 			}
+
 			const decodedJwt = jwt.decode(input.accessToken);
 			// console.log(decodedJwt);
 			if (!decodedJwt || typeof decodedJwt === 'string') {
@@ -49,6 +52,7 @@ export const authRouter = createTRPCRouter({
 					message: 'Could not decode access token.',
 				});
 			}
+
 			const res = await propelauth
 				.validateAccessTokenAndGetUser('Bearer ' + input.accessToken)
 				.then((user) => ({ kind: 'ok' as const, user }))
@@ -62,6 +66,7 @@ export const authRouter = createTRPCRouter({
 					cause: res.error,
 				});
 			}
+
 			const publicCookie = {
 				userId: res.user.userId,
 				orgId: input.orgId || '',

@@ -1,5 +1,5 @@
 import { createEnv, LooseOptions, StrictOptions } from '@t3-oss/env-core';
-import { z, ZodType, ZodString, ZodOptional } from 'zod';
+import { z, ZodOptional, ZodString, ZodType } from 'zod';
 
 function validateEnv<
 	TPrefix extends string,
@@ -42,11 +42,13 @@ const x = validateEnv({
 const client = () => {
 	// add check that values are strings
 	const v = (_: (ZodString | ZodOptional<ZodString>)[]) => {};
+
 	// this line will error if the client env is not a string
 	v(Object.values(x.client));
 	// generate type just for the client
 	return z.object(x.client);
 };
+
 export type ClientEnv = z.infer<ReturnType<typeof client>>;
 
 // export env for server code

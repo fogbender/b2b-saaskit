@@ -1,8 +1,9 @@
+import { DehydratedState, Hydrate, QueryClient } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
-import { DehydratedState, QueryClient, Hydrate } from '@tanstack/react-query';
 import { createTRPCReact } from '@trpc/react-query';
 import { useState } from 'react';
 import superjson from 'superjson';
+
 import type { AppRouter } from '../lib/trpc/root';
 import { QueryProvider } from './client';
 
