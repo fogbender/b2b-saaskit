@@ -48,6 +48,12 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Set it for production with `doppler secrets set PUBLIC_POSTHOG_KEY --config prd`
 
+#### OpenAI (optional)
+
+1. Create a new API key on <a href="https://platform.openai.com/account/api-keys">https://platform.openai.com/account/api-keys</a> named "b2b_prod", then copy it
+
+1. Save it with `doppler secrets set OPENAI_API_KEY --config prd`
+
 #### Check build
 
 1. Make sure you can still build the project locally with `doppler run --config prd yarn build`
