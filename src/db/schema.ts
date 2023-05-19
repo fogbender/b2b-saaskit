@@ -14,6 +14,7 @@ import {
 // 2. (IMPORTANT) if you are creating new tables you would need to manually
 //    edit SQL file to add row level security policies
 // 3. once this is done, run `doppler run yarn migrate` to apply the migration
+// 4. don't forget to run `doppler run yarn migrate --config prd` to apply migrations in production
 
 /* ```sql
 ALTER TABLE prompts ENABLE ROW LEVEL SECURITY;
@@ -47,6 +48,17 @@ export const gptKeys = pgTable('gpt_keys', {
 	isShared: boolean('is_shared').default(false).notNull(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	lastUsedAt: timestamp('last_used_at'),
+});
+
+/* ```sql
+ALTER TABLE shared_key_ratelimit ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."shared_key_ratelimit" AS PERMISSIVE FOR ALL TO service_role USING (true);
+``` */
+
+export const sharedKeyRatelimit = pgTable('shared_key_ratelimit', {
+	limitId: text('id').primaryKey(),
+	value: integer('value').notNull(),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
 /* ```sql
