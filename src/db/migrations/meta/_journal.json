@@ -43,6 +43,13 @@
       "when": 1684303389486,
       "tag": "0005_premium_tarot",
       "breakpoints": false
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1684464191794,
+      "tag": "0006_good_george_stacy",
+      "breakpoints": false
     }
   ]
 }

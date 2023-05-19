@@ -22,6 +22,8 @@ const x = validateEnv({
 		PROPELAUTH_VERIFIER_KEY: z.string().min(1),
 		// fogbender
 		FOGBENDER_SECRET: z.string().min(1).optional(),
+		// optional OpenAI API key
+		OPENAI_API_KEY: z.string().min(1).optional(),
 	},
 	client: {
 		// propel auth

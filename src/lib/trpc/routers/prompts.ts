@@ -1,10 +1,11 @@
 import { TRPCError } from '@trpc/server';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
 import { db } from '../../../db/db';
-import { gptKeys, prompts } from '../../../db/schema';
+import { gptKeys, prompts, sharedKeyRatelimit } from '../../../db/schema';
+import { serverEnv } from '../../../t3-env';
 import { trackEvent } from '../../posthog';
 import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
@@ -81,28 +82,46 @@ export const promptsRouter = createTRPCRouter({
 				.where(eq(gptKeys.orgId, ctx.requiredOrgId))
 				.orderBy(gptKeys.createdAt);
 			const key = keys[0];
-			if (!key) {
-				throw new TRPCError({
-					code: 'NOT_FOUND',
-					message: 'No OpenAI key found for this organization.',
-				});
+
+			if (key) {
+				await db
+					.update(gptKeys)
+					.set({
+						lastUsedAt: new Date(),
+					})
+					.where(eq(gptKeys.keyId, key.keyId));
 			}
 
-			await db
-				.update(gptKeys)
-				.set({
-					lastUsedAt: new Date(),
-				})
-				.where(eq(gptKeys.keyId, key.keyId));
-			console.log('runPrompt', input);
+			let secretKey: string;
+			if (key) {
+				secretKey = key.keySecret;
+			} else {
+				if (!serverEnv.OPENAI_API_KEY) {
+					throw new TRPCError({
+						code: 'NOT_FOUND',
+						message: 'No OpenAI key found for this organization.',
+					});
+				} else {
+					const remaining = await rateLimitUpsert(ctx.user.userId, Date.now());
+					if (remaining > 0) {
+						secretKey = serverEnv.OPENAI_API_KEY;
+					} else {
+						throw new TRPCError({
+							code: 'TOO_MANY_REQUESTS',
+							message: 'You have exceeded the rate limit for this key.',
+						});
+					}
+				}
+			}
+
 			const res = await fetch('https://api.openai.com/v1/chat/completions', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${key.keySecret}`,
+					Authorization: `Bearer ${secretKey}`,
 				},
 				body: JSON.stringify({
-					model: key.keyType === 'gpt-4' ? 'gpt-4' : 'gpt-3.5-turbo',
+					model: key?.keyType === 'gpt-4' ? 'gpt-4' : 'gpt-3.5-turbo',
 					messages: [
 						{
 							role: 'user',
@@ -128,4 +147,65 @@ export const promptsRouter = createTRPCRouter({
 
 			return { message: choice.message.content };
 		}),
+
+	getDefaultKey: authProcedure.query(async ({ ctx }) => {
+		if (serverEnv.OPENAI_API_KEY) {
+			const usage = await db
+				.select({
+					value: sharedKeyRatelimit.value,
+				})
+				.from(sharedKeyRatelimit)
+				.where(eq(sharedKeyRatelimit.limitId, rateLimitSharedKeyId(ctx.user.userId, Date.now())));
+			const spent = usage[0]?.value ?? 0;
+			return {
+				isSet: true,
+				canUse: spent < limit,
+				requestsRemaining: limit - spent,
+				resetsAt: new Date(rateLimitSharedKeyResetsAt(Date.now())),
+			};
+		}
+
+		return { isSet: false };
+	}),
 });
+
+// const period = 1000 * 5; // 5 seconds
+const period = 1000 * 60 * 60 * 24; // 24 hours
+const limit = 3;
+
+function rateLimitSharedKeyId(userId: string, currentTimestamp: number) {
+	return `shared_key:${userId}:${Math.floor(currentTimestamp / period)}`;
+}
+
+function rateLimitSharedKeyResetsAt(currentTimestamp: number) {
+	return Math.ceil(currentTimestamp / period) * period;
+}
+
+/**
+ * @returns the number of requests remaining
+ */
+async function rateLimitUpsert(userId: string, currentTimestamp: number) {
+	// will do UPSERT
+	const result = await db
+		.insert(sharedKeyRatelimit)
+		.values({
+			limitId: rateLimitSharedKeyId(userId, currentTimestamp),
+			value: 1,
+		})
+		.onConflictDoUpdate({
+			target: sharedKeyRatelimit.limitId,
+			set: {
+				value: sql`${sharedKeyRatelimit.value} + 1`,
+			},
+		})
+		.returning({
+			value: sharedKeyRatelimit.value,
+		});
+	const first = result[0];
+	if (!first) {
+		throw new Error('No result from UPSERT');
+	}
+
+	// +1 to get the value that we had before the UPSERT
+	return limit - first.value + 1;
+}
