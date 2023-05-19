@@ -3,10 +3,15 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:astro/recommended',
+		'plugin:jsx-a11y/recommended',
 		'plugin:typescript-sort-keys/recommended',
 	],
 	overrides: [
 		{
+			extends: [
+				'plugin:@typescript-eslint/recommended-requiring-type-checking',
+				'plugin:@typescript-eslint/strict',
+			],
 			files: ['*.astro'],
 			parser: 'astro-eslint-parser',
 			parserOptions: {
@@ -14,9 +19,36 @@ module.exports = {
 				extraFileExtensions: ['.astro'],
 			},
 			rules: {
+				'@typescript-eslint/consistent-type-definitions': 'off',
+				'@typescript-eslint/no-empty-function': 'off',
 				'@typescript-eslint/no-unsafe-assignment': 'off',
+				'@typescript-eslint/no-unsafe-return': 'off',
 				'deprecation/deprecation': 'off',
 			},
+		},
+		{
+			files: ['*.ts', '*.tsx'],
+			extends: [
+				'plugin:@typescript-eslint/recommended-requiring-type-checking',
+				'plugin:@typescript-eslint/strict',
+			],
+			rules: {
+				'@typescript-eslint/consistent-type-definitions': 'off',
+				'@typescript-eslint/prefer-nullish-coalescing': 'off',
+				'@typescript-eslint/no-unsafe-return': 'off',
+				'@typescript-eslint/no-floating-promises': 'off',
+				'@typescript-eslint/no-unsafe-assignment': 'off',
+				'@typescript-eslint/no-misused-promises': 'off',
+			},
+		},
+		{
+			files: ['*.json', '*.jsonc'],
+			excludedFiles: ['package.json'],
+			parser: 'jsonc-eslint-parser',
+			rules: {
+				'jsonc/sort-keys': 'error',
+			},
+			extends: ['plugin:jsonc/recommended-with-json'],
 		},
 		{
 			extends: ['plugin:markdown/recommended'],
@@ -33,32 +65,19 @@ module.exports = {
 		'@typescript-eslint',
 		'astro',
 		'deprecation',
+		'jsx-a11y',
 		'simple-import-sort',
 		'typescript-sort-keys',
 	],
 	root: true,
 	rules: {
-		'simple-import-sort/imports': 'error',
-		'no-empty-pattern': 'off',
-		'simple-import-sort/exports': 'error',
-		'deprecation/deprecation': 'error',
-
-		'@typescript-eslint/no-misused-promises': 'off',
-		'@typescript-eslint/no-floating-promises': 'off',
-		'@typescript-eslint/no-unsafe-return': 'off',
-		'@typescript-eslint/await-thenable': 'off',
-		'@typescript-eslint/restrict-template-expressions': 'off',
-		'@typescript-eslint/no-unsafe-call': 'off',
-		'@typescript-eslint/no-unsafe-member-access': 'off',
-		'@typescript-eslint/no-explicit-any': 'off',
-		'@typescript-eslint/no-unused-vars': 'off',
-		'@typescript-eslint/no-non-null-assertion': 'off',
 		'@typescript-eslint/no-empty-function': 'off',
-		'typescript-sort-keys/interface': 'off',
-		'no-empty-pattern': 'error',
-
-		// Stylistic concerns that don't interfere with Prettier
-		'padding-line-between-statements': 'off',
 		'@typescript-eslint/padding-line-between-statements': 'off',
+		'deprecation/deprecation': 'error',
+		'jsx-a11y/no-autofocus': 'off',
+		'no-empty-pattern': 'off',
+		'padding-line-between-statements': 'off',
+		'simple-import-sort/exports': 'error',
+		'simple-import-sort/imports': 'error',
 	},
 };
