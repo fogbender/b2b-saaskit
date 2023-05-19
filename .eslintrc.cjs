@@ -55,6 +55,7 @@ module.exports = {
 		'@typescript-eslint/no-non-null-assertion': 'off',
 		'@typescript-eslint/no-empty-function': 'off',
 		'typescript-sort-keys/interface': 'off',
+		'no-empty-pattern': 'error',
 
 		// Stylistic concerns that don't interfere with Prettier
 		'padding-line-between-statements': 'off',

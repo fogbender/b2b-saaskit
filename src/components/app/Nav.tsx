@@ -109,7 +109,7 @@ export function AppNav() {
 					>
 						<img
 							src={pictureUrl}
-							alt="User Image"
+							alt="current user"
 							className="object-contain h-8 w-8 rounded-full"
 							id="userMenuButton"
 						/>

@@ -7,7 +7,7 @@ import { surveys } from '../../../db/schema';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 
 export const surveysRouter = createTRPCRouter({
-	getPublic: publicProcedure.query(async ({}) => {
+	getPublic: publicProcedure.query(async () => {
 		return await db
 			.select({
 				id: surveys.id,

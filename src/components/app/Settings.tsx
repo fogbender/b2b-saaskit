@@ -211,8 +211,7 @@ function Interal() {
 										<tr>
 											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 												No keys are configured,{' '}
-												<a
-													href="#"
+												<button
 													className="text-blue-500 hover:text-blue-700 underline"
 													onClick={(e) => {
 														e.preventDefault();
@@ -220,7 +219,7 @@ function Interal() {
 													}}
 												>
 													add one
-												</a>{' '}
+												</button>{' '}
 												to start using prompts.
 											</td>
 										</tr>
