@@ -34,6 +34,7 @@ export function TRPCProvider({
 		})
 	);
 	// TODO: we should be passing dehydratedState to trpcClient not queryClient
+	//eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
 	const state = dehydratedState ? superjson.deserialize(dehydratedState as any) : undefined;
 	return (
 		<trpc.Provider client={trpcClient} queryClient={queryClient}>

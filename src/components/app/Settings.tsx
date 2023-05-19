@@ -95,6 +95,7 @@ function Interal() {
 									e.preventDefault();
 									const form = e.currentTarget;
 									const formData = new FormData(form);
+									//eslint-disable-next-line @typescript-eslint/no-explicit-any , @typescript-eslint/no-unsafe-argument
 									addKeyMutation.mutate(Object.fromEntries(formData.entries()) as any, {
 										onSuccess: () => {
 											form.reset();

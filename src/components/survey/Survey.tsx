@@ -151,6 +151,7 @@ function OptionalComments() {
 					e.preventDefault();
 					const form = e.currentTarget;
 					const formData = Object.fromEntries(new FormData(form));
+					//eslint-disable-next-line @typescript-eslint/no-explicit-any , @typescript-eslint/no-unsafe-argument
 					postSurveyMutation.mutate(formData as any);
 				}}
 				className="w-full px-8 sm:w-96"

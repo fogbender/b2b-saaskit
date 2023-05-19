@@ -43,6 +43,7 @@ const x = validateEnv({
 // this function would be dead code eliminated
 const client = () => {
 	// add check that values are strings
+	//eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const v = (_: (ZodString | ZodOptional<ZodString>)[]) => {};
 
 	// this line will error if the client env is not a string
