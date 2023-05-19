@@ -1,0 +1,21 @@
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout actions
+        uses: actions/checkout@v3
+      - name: Prepare actions
+        uses: ./.github/actions/prepare
+      - name: Sync astro
+        run: yarn astro sync
+      - name: Linting
+        run: yarn lint
+
+name: Lint
+
+on:
+  pull_request: ~
+
+  push:
+    branches:
+      - main
