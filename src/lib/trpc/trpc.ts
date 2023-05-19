@@ -191,8 +191,8 @@ export const authProcedure = apiProcedure.use(async ({ ctx, next }) => {
 
 export const orgProcedure = authProcedure
 	.use(async ({ ctx, rawInput, next }) => {
-		const { orgId: inputOrgId } = z.object({ orgId: z.string().optional() }).parse(rawInput);
-		const requiredOrgId = inputOrgId || ctx.userOrgId;
+		const options = z.object({ orgId: z.string().optional() }).safeParse(rawInput);
+		const requiredOrgId = (options.success && options.data.orgId) || ctx.userOrgId;
 		if (requiredOrgId) {
 			for (const orgId in ctx.user.orgIdToOrgMemberInfo) {
 				const orgMemberInfo = ctx.user.orgIdToOrgMemberInfo[orgId];
@@ -209,4 +209,4 @@ export const orgProcedure = authProcedure
 			message: `This route requires user access to the organization ${requiredOrgId}.`,
 		});
 	})
-	.input(z.object({ orgId: z.string().optional() }));
+	.input(z.object({ orgId: z.string().optional() }).optional());
