@@ -1,5 +1,6 @@
 /.astro
 dist
+.eslintrc.cjs
 .vscode
 .vercel
 src/db/migrations
