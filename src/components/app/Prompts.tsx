@@ -40,7 +40,11 @@ function Interal() {
 			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getPrompts));
 		},
 	});
-	const runPromptMutation = trpc.prompts.runPrompt.useMutation();
+	const runPromptMutation = trpc.prompts.runPrompt.useMutation({
+		onSettled: () => {
+			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getDefaultKey));
+		},
+	});
 	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, false);
 	const { activeOrg } = requireActiveOrg();
 	const orgId = activeOrg?.orgId || '';
@@ -57,13 +61,18 @@ function Interal() {
 			enabled: !!orgId,
 		}
 	);
-	const hasKey = keysQuery.data?.length !== 0;
+	const hasKey = (keysQuery.data?.length || 0) !== 0;
 	const runButtonRef = useRef<HTMLButtonElement>(null);
 	const storeButtonRef = useRef<HTMLButtonElement>(null);
 
 	const [promptValue, setPromptValue] = useState('');
 
 	const promptButtonsDisabled = promptValue === '';
+
+	const defaultKeyQuery = trpc.prompts.getDefaultKey.useQuery(undefined, {
+		enabled: !!orgId && keysQuery.isSuccess && !hasKey,
+	});
+	const hasAnyKey = hasKey || (defaultKeyQuery.data?.isSet && !!defaultKeyQuery.data.canUse);
 
 	return (
 		<Layout title="Prompts with Friends / Prompts">
@@ -135,7 +144,7 @@ function Interal() {
 									type="button"
 									disabled={
 										promptButtonsDisabled ||
-										!hasKey ||
+										!hasAnyKey ||
 										runPromptMutation.isLoading ||
 										runPromptMutation.isSuccess
 									}
@@ -173,7 +182,16 @@ function Interal() {
 									<a className="text-blue-500 hover:underline" href="/app/settings">
 										set up
 									</a>{' '}
-									to run a prompt
+									to run a prompt{' '}
+									{defaultKeyQuery.data?.isSet && (
+										<>
+											without any limits. You have{' '}
+											<code className="bg-gray-100 p-1 rounded-md">
+												{defaultKeyQuery.data.requestsRemaining}
+											</code>{' '}
+											requests until {defaultKeyQuery.data.resetsAt?.toLocaleString()}
+										</>
+									)}
 								</div>
 							)}
 							{runPromptMutation.error && (
