@@ -4,9 +4,12 @@ import { CollectionEntry, getEntryBySlug } from 'astro:content';
 import { websiteTitle } from '../../constants';
 import Layout from '../../layouts/Layout.astro';
 
+import { SetupStep } from '../../components/setup/SetupStep';
+
 export const prerender = true;
 
 type SetupSlug = CollectionEntry<'setup'>['slug'];
+
 const checksOrder: SetupSlug[] = [
 	'doppler',
 	'propelauth',
@@ -21,56 +24,57 @@ const checksOrder: SetupSlug[] = [
 let firstFail = ''; // debug with: let firstFail = 'fogbender';
 
 const parsedSteps: {
-	havePassed: boolean;
+	stepDone: boolean;
 	step: CollectionEntry<'setup'>;
 }[] = [];
 for (const slug of checksOrder) {
 	const step = await getEntryBySlug('setup', slug);
-	const havePassed = step.data.needsEnv?.every((x) => {
+	const stepDone = step.data.needsEnv?.every((x) => {
 		const value = process.env[x] || import.meta.env[x];
 		return value !== undefined && value !== false;
 	});
-	if (!havePassed && firstFail == '') {
+	if (!stepDone && firstFail == '') {
 		firstFail = step.slug;
 	}
 
-	parsedSteps.push({ havePassed, step });
+	parsedSteps.push({ stepDone, step });
 }
 ---
 
 <Layout title={'Set up your own ' + websiteTitle}>
-	<main class="container">
-		<h1 class="text-5xl leading-normal font-extrabold">
-			<a class="text-blue-600 hover:text-blue-400" href="/">Home</a> /
-			<span>Set up your own <span class="text-gradient">{websiteTitle}</span></span>
-		</h1>
-		<div class="instructions sl-waiting bg-slate-100">
-			{
-				import.meta.env.PROD && (
-					<p class="text-gray-600 border-b border-slate-400 pb-2 mb-2">
-						Please note that you are looking at production build of the app, so make necessary
-						changes to the commands depending on if you want to change the production or development
-						build. Keep in mind that changes to production configuration require you to re-deploy
-						the app.
-					</p>
-				)
-			}
-			{
-				parsedSteps.map(async ({ havePassed, step }, i) => {
-					const { Content } = await step.render();
-					return (
-						<sl-details open={firstFail === step.slug}>
-							<h3 slot="summary" class="text-gray-600">
-								<span class="w-4 inline-block">{i + 1}.</span> {havePassed ? '✅ ' : ''}
-								{step.data.title || step.slug}
-							</h3>
-							<div class="prose max-w-none bg-white px-4 py-2 my-2 rounded-md">
-								<Content />
-							</div>
-						</sl-details>
-					);
-				})
-			}
+	<main class="container max-w-[56rem] pb-10">
+		<div class="flex mt-24 w-full">
+			<div>
+				<a class="text-3xl hover:text-rose-600 text-blue-600" href="/">Home</a>
+			</div>
+			<div class="w-full">
+				<div class="ml-10 leading-8">
+					<div class="text-3xl">Set up your own</div>
+					<div class="text-5xl">Prompts with Friends</div>
+				</div>
+				{
+					import.meta.env.PROD && (
+						<div class="ml-10 mt-14">NOTE: This is the production build of the app</div>
+					)
+				}
+				<div class="mt-14 flex flex-col gap-8 w-full">
+					{
+						parsedSteps.map(async ({ stepDone, step }, i) => {
+							const { Content } = await step.render();
+							return (
+								<SetupStep
+									client:load
+									title={step.data.title || step.slug}
+									stepDone={stepDone}
+									index={i + 1}
+								>
+									<Content />
+								</SetupStep>
+							);
+						})
+					}
+				</div>
+			</div>
 		</div>
 	</main>
 </Layout>
@@ -79,47 +83,13 @@ for (const slug of checksOrder) {
 	type="module"
 	src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.4.0/dist/components/details/details.js"
 ></script>
-<!-- https://shoelace.style/getting-started/usage?id=waiting-for-components-to-load -->
-<style>
-	.sl-waiting {
-		opacity: 0;
-	}
-
-	:global(.sl-ready) .sl-waiting {
-		opacity: 1;
-		transition: 0.25s opacity;
-	}
-</style>
-<script type="module">
-	await Promise.allSettled([customElements.whenDefined('sl-details')]);
-	document.body.classList.add('sl-ready');
-</script>
 
 <style>
 	main {
 		margin: auto;
-		padding: 1.5rem;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
-	}
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		border: 1px solid rgba(var(--accent), 25%);
-		padding: 1rem;
-		border-radius: 0.4rem;
 	}
 </style>
 <style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
 	html {
 		font-family: system-ui, sans-serif;
 		background-color: #f6f6f6;
