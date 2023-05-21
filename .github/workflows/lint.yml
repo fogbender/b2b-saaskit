@@ -10,6 +10,11 @@ jobs:
         run: yarn astro sync
       - name: Linting
         run: yarn lint
+      - uses: mshick/add-pr-comment@v2
+        if: failure()
+        with:
+          message-failure: |
+            Uh oh! ESLint found some issues. Please run `yarn fix` and commit the changes.
 
 name: Lint
 
