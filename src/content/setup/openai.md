@@ -3,11 +3,13 @@ title: "Configure default OpenAI key for PromptsWithFriends (optional)"
 needsEnv: ["OPENAI_API_KEY"]
 ---
 
-OpenAI (<a href="https://openai.com/">https://openai.com/</a>) is a company that provides an API to generate text, images, and more. We use it to generate responses to prompts in PromptsWithFriends. Each customer of PromptsWithFriends needs their own OpenAI API key. But for an easier onboarding experience, the default key can be set for the whole website, and every user would have 3 free API calls per day.
+OpenAI (<a href="https://openai.com/">https://openai.com/</a>) provides APIs for generating text and images.
 
-OpenAI does not offer a free tier, but they do offer a free trial ($5 in free credit that can be used during your first 3 months). This is an optional step since we expect most users to use their own API key and you can use the website even if you don't run the prompt.
+<a href="https://promptswithfriends.com">_Prompts with Friends_</a>, our sample B2B app, uses OpenAI to return responses to prompts and requires each customer organization to provide its own OpenAI API key. However, to ease onboarding, you can specify your OpenAI API key to offer each user 3 free API calls per day.
 
-1. Open <a href="https://platform.openai.com/account/api-keys">API keys</a> and create a new secret key named "b2b_localhost" and copy it.
+OpenAI does not come with a free tier, but all new accounts get a $5 credit that must be used during the initial 3 months.
+
+1. Open <a href="https://platform.openai.com/account/api-keys">API keys</a> and create a new API key named "b2b_localhost", then copy the key
 
 1. Save the API key with `doppler secrets set OPENAI_API_KEY`
 
