@@ -3,14 +3,10 @@ import { useState } from 'react';
 
 export function SetupStep({
 	children,
-	step,
-	stepDone,
-	index,
+	stepTitle,
 }: {
 	children: React.ReactNode;
-	step: { slug: string; data: { title: string } };
-	stepDone: boolean;
-	index: number;
+	stepTitle?: React.ReactNode;
 }) {
 	const [expanded, setExpanded] = useState(false);
 
@@ -28,12 +24,7 @@ export function SetupStep({
 						'flex flex-col gap-6'
 					)}
 				>
-					<div className="flex items-center justify-between">
-						<div className="text-lg font-semibold">
-							{index}. {step.data.title || step.slug}
-						</div>
-						{stepDone && <span>✅</span>}
-					</div>
+					{stepTitle}
 					{expanded && (
 						<div
 							className="ml-2 cursor-auto prose prose-a:text-blue-600 hover:prose-a:text-rose-500 visited:prose-a:text-fuchsia-600"

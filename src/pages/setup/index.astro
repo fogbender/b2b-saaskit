@@ -62,7 +62,13 @@ for (const slug of checksOrder) {
 						parsedSteps.map(async ({ stepDone, step }, i) => {
 							const { Content } = await step.render();
 							return (
-								<SetupStep client:load step={step} stepDone={stepDone} index={i + 1}>
+								<SetupStep client:load>
+									<div slot="step-title" class="flex items-center justify-between">
+										<div class="text-lg font-semibold">
+											{i + 1}. {step.data.title || step.slug}
+										</div>
+										{stepDone && <span>✅</span>}
+									</div>
 									<Content />
 								</SetupStep>
 							);
