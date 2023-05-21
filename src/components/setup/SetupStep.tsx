@@ -3,12 +3,12 @@ import { useState } from 'react';
 
 export function SetupStep({
 	children,
-	step,
+	title,
 	stepDone,
 	index,
 }: {
 	children: React.ReactNode;
-	step: { slug: string; data: { title: string } };
+	title: string;
 	stepDone: boolean;
 	index: number;
 }) {
@@ -30,7 +30,7 @@ export function SetupStep({
 				>
 					<div className="flex items-center justify-between">
 						<div className="text-lg font-semibold">
-							{index}. {step.data.title || step.slug}
+							{index}. {title}
 						</div>
 						{stepDone && <span>✅</span>}
 					</div>
