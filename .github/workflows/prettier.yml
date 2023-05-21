@@ -1,17 +1,15 @@
 jobs:
-  lint:
+  prettier:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout actions
         uses: actions/checkout@v3
       - name: Prepare actions
         uses: ./.github/actions/prepare
-      - name: Sync astro
-        run: yarn astro sync
-      - name: Linting
-        run: yarn lint
+      - name: Prettier
+        run: yarn fmt --check --write=false
 
-name: Lint
+name: Prettier
 
 on:
   pull_request: ~
