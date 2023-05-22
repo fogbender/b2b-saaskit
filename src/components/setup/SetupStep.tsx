@@ -17,7 +17,7 @@ export function SetupStep({
 	return (
 		<div className="w-full">
 			<div
-				className={classNames('w-full flex cursor-pointer', 'items-start', 'relative')}
+				className={classNames('ml-5 md:ml-0 w-full flex cursor-pointer', 'items-start', 'relative')}
 				onClick={() => setExpanded((x) => !x)}
 			>
 				<div className="absolute top-5">{expanded ? <Chevron /> : <ChevronRight />}</div>
