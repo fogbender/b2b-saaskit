@@ -3,6 +3,8 @@ import type { APIRoute } from 'astro';
 
 import { appRouter } from '../../../lib/trpc/root';
 
+export const prerender = false;
+
 // The Astro API route, handling all incoming HTTP requests.
 export const all: APIRoute = ({ request }) => {
 	return fetchRequestHandler({
