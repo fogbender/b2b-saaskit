@@ -12,4 +12,9 @@ export default defineConfig({
 	experimental: {
 		hybridOutput: true,
 	},
+	vite: {
+		optimizeDeps: {
+			exclude: ['@resvg/resvg-js'],
+		},
+	},
 });
