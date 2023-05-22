@@ -1,10 +1,16 @@
 ---
 import AppLayout from '../../components/app/AppLayout.astro';
-import { Settings } from '../../components/app/Settings';
+import { Root } from '../../components/app/Root';
+import { createRouterContext } from '../../lib/router';
 
 await import('./_envCheck');
+
+const res = await createRouterContext(Astro.request);
+if (res.kind === 'response') {
+	return res.response;
+}
 ---
 
-<AppLayout title="Prompts with Friends">
-	<Settings client:load />
+<AppLayout title="Prompts with Friends / Settings">
+	<Root client:load getContext={() => res.context} />
 </AppLayout>
