@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && tsc --noEmit && astro build",
+    "build": "astro build",
+    "ci:check": "astro check && tsc --noEmit",
     "preview": "astro preview",
     "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
     "fmt": "prettier --write --ignore-unknown .",
