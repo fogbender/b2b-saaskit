@@ -1,6 +1,7 @@
 ---
-import { App } from '../../components/app/App';
 import AppLayout from '../../components/app/AppLayout.astro';
+import { Root } from '../../components/app/Root';
+import { createRouterContext } from '../../lib/router';
 import { createCaller } from '../../lib/trpc/root';
 
 await import('./_envCheck');
@@ -10,8 +11,13 @@ const callerExample = await createCaller({
 	resHeaders: Astro.response.headers,
 }).hello.hello();
 console.log('callerExample', callerExample);
+
+const res = await createRouterContext(Astro.request);
+if (res.kind === 'response') {
+	return res.response;
+}
 ---
 
-<AppLayout title="App">
-	<App client:load />
+<AppLayout title="Prompts with Friends">
+	<Root client:load getContext={() => res.context} />
 </AppLayout>

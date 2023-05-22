@@ -3,7 +3,8 @@ import { TRPCError } from '@trpc/server';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
 
 import AppLayout from '../../components/app/AppLayout.astro';
-import { Prompts } from '../../components/app/Prompts';
+import { Root } from '../../components/app/Root';
+import { createRouterContext } from '../../lib/router';
 import { createHelpers } from '../../lib/trpc/root';
 
 export const prerender = false; // to enable trpc prefetching
@@ -23,8 +24,13 @@ if (error instanceof TRPCError) {
 		return Astro.redirect('/app');
 	}
 }
+
+const res = await createRouterContext(Astro.request);
+if (res.kind === 'response') {
+	throw new Response('error');
+}
 ---
 
 <AppLayout title="Prompts with Friends / List">
-	<Prompts client:load dehydratedState={helpers.dehydrate()} />
+	<Root client:load dehydratedState={helpers.dehydrate()} getContext={() => res.context} />
 </AppLayout>

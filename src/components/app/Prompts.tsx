@@ -1,27 +1,12 @@
-import { DehydratedState, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import { useReducer, useRef, useState } from 'react';
 
-import { env } from '../../config';
-import { AuthSync } from '../AuthSync';
-import { AuthProvider, useRequireActiveOrg } from '../propelauth';
-import { trpc, TRPCProvider } from '../trpc';
+import { useRequireActiveOrg } from '../propelauth';
+import { trpc } from '../trpc';
 import { Layout } from './Layout';
-import { AppNav } from './Nav';
 
-export function Prompts(props: { dehydratedState: DehydratedState }) {
-	return (
-		<TRPCProvider dehydratedState={props.dehydratedState}>
-			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
-				<AuthSync />
-				<AppNav />
-				<Interal />
-			</AuthProvider>
-		</TRPCProvider>
-	);
-}
-
-function Interal() {
+export function Prompts() {
 	const queryClient = useQueryClient();
 	const addPromptMutation = trpc.prompts.createPrompt.useMutation({
 		onSettled: () => {
