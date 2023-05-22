@@ -13,24 +13,14 @@ import { useMemo } from 'react';
 
 import { env } from '../../config';
 import type { FogbenderTokenResponse } from '../../types/types';
-import { AppNav } from '../app/Nav';
-import { AuthSync } from '../AuthSync';
 import { apiServer, queryKeys, useQuery } from '../client';
-import { AuthProvider } from '../propelauth';
 import { useActiveOrg, useAuthInfo } from '../propelauth';
-import { TRPCProvider } from '../trpc';
 
 export const FullPageSupport = () => {
 	return (
-		<TRPCProvider>
-			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
-				<AuthSync />
-				<AppNav />
-				<div className="relative mt-2 border-gray-300">
-					<SupportWidget kind="widget" />
-				</div>
-			</AuthProvider>
-		</TRPCProvider>
+		<div className="relative mt-2 border-gray-300">
+			<SupportWidget kind="widget" />
+		</div>
 	);
 };
 
