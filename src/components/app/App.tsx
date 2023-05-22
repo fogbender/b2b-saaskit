@@ -1,7 +1,6 @@
 import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
 
-import { SupportWidget } from '../fogbender/Support';
 import { LoginInternal } from '../Login';
 import {
 	saveOrgSelectionToLocalStorage,
@@ -96,7 +95,6 @@ const AppWithOrg = ({
 					Go to prompts
 				</a>
 			</div>
-			<SupportWidget kind="floatie" />
 		</Layout>
 	);
 };

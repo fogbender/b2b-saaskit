@@ -10,6 +10,7 @@ import {
 	FogbenderWidget,
 } from 'fogbender-react';
 import { useMemo } from 'react';
+import { useMatch } from 'react-router-dom';
 
 import { env } from '../../config';
 import type { FogbenderTokenResponse } from '../../types/types';
@@ -112,10 +113,12 @@ export const Internal = ({
 		};
 	}, [auth.user, activeOrg, fogbenderQuery.data?.userJWT]);
 
+	const isNotFullScreenSupport = null === useMatch('/app/support');
+
 	return (
 		<>
 			{token && isFloatie ? (
-				<FogbenderSimpleFloatie token={token} />
+				<>{isNotFullScreenSupport && <FogbenderSimpleFloatie token={token} />}</>
 			) : (
 				<FogbenderProvider>
 					<FogbenderConfig token={token} />

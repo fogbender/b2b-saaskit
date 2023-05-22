@@ -2,7 +2,7 @@ import { Outlet, RouteObject } from 'react-router-dom';
 
 import { env } from '../../config';
 import { AuthSync } from '../AuthSync';
-import { FullPageSupport } from '../fogbender/Support';
+import { FullPageSupport, SupportWidget } from '../fogbender/Support';
 import { AuthProvider } from '../propelauth';
 import { App } from './App';
 import { AppNav } from './Nav';
@@ -18,6 +18,7 @@ export const routes: RouteObject[] = [
 					<AuthSync />
 					<AppNav />
 					<Outlet />
+					<SupportWidget kind="floatie" />
 				</AuthProvider>
 			);
 		},
