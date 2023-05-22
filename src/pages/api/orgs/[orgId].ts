@@ -3,6 +3,8 @@ import type { APIRoute } from 'astro';
 
 import { serverEnv } from '../../../t3-env';
 
+export const prerender = false;
+
 export const get: APIRoute = async ({ params, request }) => {
 	const propelauth = initBaseAuth({
 		authUrl: serverEnv.PUBLIC_AUTH_URL,

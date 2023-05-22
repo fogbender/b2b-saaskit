@@ -5,8 +5,11 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
 	integrations: [react()],
-	output: 'server',
+	output: 'hybrid',
 	adapter: vercel(),
 	// eslint-disable-next-line no-undef
 	site: process.env.SITE_URL,
+	experimental: {
+		hybridOutput: true,
+	},
 });

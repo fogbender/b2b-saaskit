@@ -1,7 +1,6 @@
 ---
 import Dev from '../components/landing/Dev.astro';
 import Prod from '../components/landing/Prod.astro';
-export const prerender = true;
 ---
 
 {import.meta.env.PROD ? <Prod /> : <Dev />}
