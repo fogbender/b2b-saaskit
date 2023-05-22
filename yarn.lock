@@ -39,12 +39,12 @@
     vscode-languageserver-types "^3.17.1"
     vscode-uri "^3.0.3"
 
-"@astrojs/markdown-remark@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-2.2.0.tgz#46272265b137cd8cc76f36f02c7728d80dc6b14f"
-  integrity sha512-4M1+GzQwDqF0KfX9Ahug43b0avorcK+iTapEaVuNnaCUVS6sZKRkztT3g6hmXiFmGHSL8qYaS9IVEmKtP6hYmw==
+"@astrojs/markdown-remark@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-2.2.1.tgz#ab063b8ae7ee526e1c3fe65b407b44fb4dee860c"
+  integrity sha512-VF0HRv4GpC1XEMLnsKf6jth7JSmlt9qpqP0josQgA2eSpCIAC/Et+y94mgdBIZVBYH/yFnMoIxgKVe93xfO2GA==
   dependencies:
-    "@astrojs/prism" "^2.1.0"
+    "@astrojs/prism" "^2.1.2"
     github-slugger "^1.4.0"
     import-meta-resolve "^2.1.0"
     rehype-raw "^6.1.1"
@@ -58,17 +58,17 @@
     unist-util-visit "^4.1.0"
     vfile "^5.3.2"
 
-"@astrojs/prism@^2.1.0":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/prism/-/prism-2.1.1.tgz#5f6ae1ab5b630889a8850ba2c991888ed92a3c7a"
-  integrity sha512-Gnwnlb1lGJzCQEg89r4/WqgfCGPNFC7Kuh2D/k289Cbdi/2PD7Lrdstz86y1itDvcb2ijiRqjqWnJ5rsfu/QOA==
+"@astrojs/prism@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/prism/-/prism-2.1.2.tgz#7486cb886ba3354e38ef4e58cbbe72f31337689e"
+  integrity sha512-3antim1gb34689GHRQFJ88JEo93HuZKQBnmxDT5W/nxiNz1p/iRxnCTEhIbJhqMOTRbbo5h2ldm5qSxx+TMFQA==
   dependencies:
     prismjs "^1.28.0"
 
-"@astrojs/react@^2.1.1":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-2.1.3.tgz#bb21611383f7195af32e3c327f568835d68ca5f7"
-  integrity sha512-m0PgAEZOF0bZFYwRszCu9DvW62xaExUyuYw/7M9+sOWTr91/t6E6UFuui3h7uNVteFSAeHXoeIGgbUPheR2A5Q==
+"@astrojs/react@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-2.2.0.tgz#d67b31fc6497504182784b68afd0e9bc6d3c896a"
+  integrity sha512-DwwbmSGVKtHwufatZQwmqIor2MN4RXDdAujwerT60m3xgbv8D0v+s6fX/uRJ0ApWYLLFDzJGLhrmI7UhufpmPg==
   dependencies:
     "@babel/core" ">=7.0.0-0 <8.0.0"
     "@babel/plugin-transform-react-jsx" "^7.17.12"
@@ -87,14 +87,15 @@
     undici "^5.22.0"
     which-pm-runs "^1.1.0"
 
-"@astrojs/vercel@^3.2.5":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.3.0.tgz#b02044b6bb0ab1d8cc5f20217571b0a3559dd9d0"
-  integrity sha512-OwbxRL7kw5TFVwPn18/M9Dqp14SrPlEUSqzx+7WSvID/3W/MMuiwC5Ey0CoKUVPYruXxOaacDJKa1bzNoYgV/A==
+"@astrojs/vercel@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.4.0.tgz#d2cb45dc25f93b79678f543185b1b5d69219a170"
+  integrity sha512-pTD7PUos5uoUFZZXooiNN2vcALLQtGF1urtaFCEMWJVbmpYUC8YlA8RsISbF2ICEpTgDWMHttRJE10aCBHrmKA==
   dependencies:
     "@astrojs/webapi" "^2.1.1"
     "@vercel/analytics" "^0.1.8"
     "@vercel/nft" "^0.22.1"
+    esbuild "^0.17.12"
     fast-glob "^3.2.11"
     set-cookie-parser "^2.5.1"
     web-vitals "^3.1.1"
@@ -1229,14 +1230,14 @@ astro-eslint-parser@^0.14.0:
     espree "^9.0.0"
     semver "^7.3.8"
 
-astro@^2.3.2:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.4.5.tgz#2766a0b929a7e2e48169ed31180b6d5175175e90"
-  integrity sha512-osxLnuLXaOX0FjWOVQH8cmK4N/Gdj/ZdEkeyMJWsUss7xQU4Q64tAxB/dAv75f/XZiu+PprmndJkyQ4sYLOv1g==
+astro@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.5.2.tgz#1cedb05a37274fcdadb5388cba71984b84407d9c"
+  integrity sha512-d/t9w1//++BXDiqLByYj0Ko+7cMqBnSTsZH85EGn2/FmOQvNRKgDOOHILPoFlmA4+AzWrtyCg9UCZXdlCH6/og==
   dependencies:
     "@astrojs/compiler" "^1.4.0"
     "@astrojs/language-server" "^1.0.0"
-    "@astrojs/markdown-remark" "^2.2.0"
+    "@astrojs/markdown-remark" "^2.2.1"
     "@astrojs/telemetry" "^2.1.1"
     "@astrojs/webapi" "^2.1.1"
     "@babel/core" "^7.18.2"
@@ -1258,12 +1259,14 @@ astro@^2.3.2:
     devalue "^4.2.0"
     diff "^5.1.0"
     es-module-lexer "^1.1.0"
+    esbuild "^0.17.18"
     estree-walker "3.0.0"
     execa "^6.1.0"
     fast-glob "^3.2.11"
     github-slugger "^2.0.0"
     gray-matter "^4.0.3"
     html-escaper "^3.0.3"
+    js-yaml "^4.1.0"
     kleur "^4.1.4"
     magic-string "^0.27.0"
     mime "^3.0.0"
@@ -2115,7 +2118,7 @@ esbuild@^0.15.18:
     esbuild-windows-64 "0.15.18"
     esbuild-windows-arm64 "0.15.18"
 
-esbuild@^0.17.5, esbuild@~0.17.6:
+esbuild@^0.17.12, esbuild@^0.17.18, esbuild@^0.17.5, esbuild@~0.17.6:
   version "0.17.19"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.17.19.tgz#087a727e98299f0462a3d0bcdd9cd7ff100bd955"
   integrity sha512-XQ0jAPFkK/u3LcVRcvVHQcTIqD6E2H1fvZMA5dQPSOWb3suUbWbfbRf94pjc0bNzRYLfIrDRQXr7X+LHIm5oHw==
