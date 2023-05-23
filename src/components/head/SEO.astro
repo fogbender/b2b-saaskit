@@ -38,7 +38,7 @@ const description = orignalMeta?.description ?? originalDescription ?? websiteDe
 const imageUrl =
 	ogImage ||
 	getGeneratorUrl({
-		origin: Astro.url.origin,
+		origin: 'https://promptswithfriends.com/',
 		title,
 		description,
 	});
