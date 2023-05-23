@@ -61,9 +61,8 @@ for (const slug of checksOrder) {
 							return (
 								<SetupStep
 									client:load
-									title={step.data.title || step.slug}
+									title={`${i + 1}. ${step.data.title || step.slug}`}
 									stepDone={stepDone}
-									index={i + 1}
 								>
 									<Content />
 								</SetupStep>

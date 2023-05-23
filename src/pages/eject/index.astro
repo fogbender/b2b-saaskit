@@ -1,6 +1,7 @@
 ---
 import { CollectionEntry, getEntryBySlug } from 'astro:content';
 
+import { SetupStep } from '../../components/setup/SetupStep';
 import Layout from '../../layouts/Layout.astro';
 
 type SetupSlug = CollectionEntry<'eject'>['slug'];
@@ -21,86 +22,44 @@ for (const slug of checksOrder) {
 ---
 
 <Layout title="Cleaning up">
-	<main class="container">
-		<h1 class="text-5xl leading-normal font-extrabold">
-			<a class="text-blue-500" href="/">Home</a> / Kit cleanup
-		</h1>
-		<div class="instructions sl-waiting bg-slate-100">
-			<p class="text-gray-600 pb-10 mb-2 text-xl">
-				While we tried to choose the best tools to get you started with your own project as quickly
-				as possible, you might want to swap some components with your favorites. Furthermore, this
-				repo contains a number of files your own project will not need. In this section, we'll
-				explain how to clean things up.
-			</p>
-			<div class="flex flex-col gap-4">
-				{
-					parsedSteps.map(async ({ step }) => {
-						const { Content } = await step.render();
-						return (
-							<sl-details data-id={step.id}>
-								<h3 slot="summary" class="text-gray-600 font-medium flex gap-3 text-2xl">
-									<>
-										<span>🔨</span>
-										<span>{step.data.title || step.slug}</span>
-									</>
-								</h3>
-								<div class="prose max-w-none bg-white px-4 py-2 my-2 rounded-md">
+	<main class="container max-w-[56rem] pb-10">
+		<div class="flex flex-col md:flex-row mt-24 w-full">
+			<div class="ml-10 md:ml-0">
+				<a class="text-lg md:text-3xl hover:text-rose-600 text-blue-600" href="/">Home</a>
+			</div>
+			<div class="w-full">
+				<div class="ml-10 leading-8">
+					<div class="text-5xl">Kit cleanup</div>
+				</div>
+				<div class="ml-10 mt-14">
+					While we tried to choose the best tools to get you started with your own project as
+					quickly as possible, you might want to swap some components with your favorites.
+					Furthermore, this repo contains a number of files your own project will not need. In this
+					section, we'll explain how to clean things up.
+				</div>
+				<div class="mt-14 flex flex-col gap-8 w-full">
+					{
+						parsedSteps.map(async ({ step }) => {
+							const { Content } = await step.render();
+							return (
+								<SetupStep client:load title={step.data.title || step.slug}>
 									<Content />
-								</div>
-							</sl-details>
-						);
-					})
-				}
+								</SetupStep>
+							);
+						})
+					}
+				</div>
 			</div>
 		</div>
 	</main>
 </Layout>
 
-<script
-	type="module"
-	src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.4.0/dist/components/details/details.js"
-></script>
-<!-- https://shoelace.style/getting-started/usage?id=waiting-for-components-to-load -->
-<style>
-	.sl-waiting {
-		opacity: 0;
-	}
-
-	:global(.sl-ready) .sl-waiting {
-		opacity: 1;
-		transition: 0.25s opacity;
-	}
-</style>
-<script type="module">
-	await Promise.allSettled([customElements.whenDefined('sl-details')]);
-	document.body.classList.add('sl-ready');
-</script>
-
 <style>
 	main {
 		margin: auto;
-		padding: 1.5rem;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
-	}
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		border: 1px solid rgba(var(--accent), 25%);
-		padding: 1rem;
-		border-radius: 0.4rem;
 	}
 </style>
 <style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
 	html {
 		font-family: system-ui, sans-serif;
 		background-color: #f6f6f6;
@@ -110,30 +69,3 @@ for (const slug of checksOrder) {
 			Bitstream Vera Sans Mono, Courier New, monospace;
 	}
 </style>
-
-<script>
-	const ls_key = 'eject_section_open';
-	const open = localStorage.getItem(ls_key);
-	if (open) {
-		document.querySelectorAll('sl-details').forEach((el) => {
-			if (el instanceof HTMLElement) {
-				const id = el.dataset.id;
-				if (id === open) {
-					el.setAttribute('open', 'true');
-				}
-			}
-		});
-	}
-	document.addEventListener('sl-show', (event) => {
-		const id = event.target instanceof HTMLElement && event.target?.dataset?.id;
-		if (id) {
-			localStorage.setItem(ls_key, id);
-		}
-	});
-	document.addEventListener('sl-hide', (event) => {
-		const id = event.target instanceof HTMLElement && event.target?.dataset?.id;
-		if (id) {
-			localStorage.removeItem(ls_key);
-		}
-	});
-</script>
