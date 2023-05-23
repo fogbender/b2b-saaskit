@@ -4,7 +4,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "npm-run-all --parallel dev1 dev2",
+    "dev1": "astro dev",
+    "dev2": "vite --config qgp.config.mjs",
     "start": "astro dev",
     "build": "astro build",
     "full:check": "yarn fix && yarn ci:check && doppler run --config prd yarn build",
