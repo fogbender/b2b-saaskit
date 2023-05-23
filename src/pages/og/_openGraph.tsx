@@ -18,6 +18,7 @@ export default function OpenGraph({ title, description, originUrl }: OpenGraphPr
 			}}
 		>
 			<img
+				alt="background"
 				src={originUrl + '/og/background.png'}
 				style={{
 					position: 'absolute',
