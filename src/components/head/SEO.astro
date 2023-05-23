@@ -1,0 +1,61 @@
+---
+import { SEO, Props as Meta } from 'astro-seo';
+
+import { getGeneratorUrl } from '../../pages/og/index';
+import { websiteDescription, websiteTitle } from '../../constants';
+
+export interface SeoProps {
+	title?: string;
+	ogType?: 'website' | 'article' | (string & {});
+	meta?: Meta;
+}
+
+const { ogType, title: originalTitle, meta: orignalMeta } = Astro.props;
+
+const title = orignalMeta?.title ?? originalTitle ?? websiteTitle;
+const description = orignalMeta?.description ?? websiteDescription;
+
+console.log('Astro.request.url', Astro.request.url);
+console.log('Astro.request', Astro.request);
+
+const imageUrl = getGeneratorUrl({
+	origin: Astro.request.url,
+	title,
+	description,
+});
+
+const meta = structuredClone(orignalMeta) || {};
+meta.twitter = meta.twitter || {};
+meta.twitter.card = 'summary_large_image';
+meta.twitter.image = imageUrl;
+
+// type
+const basic = meta.openGraph?.basic || { type: ogType ?? 'website', title, image: imageUrl };
+meta.openGraph = meta.openGraph || { basic };
+meta.openGraph.basic.type = meta.openGraph.basic.type ?? ogType ?? 'website';
+// image
+const image = meta.openGraph?.image || { url: imageUrl };
+meta.openGraph.image = image;
+meta.openGraph.image.url = imageUrl;
+meta.openGraph.image.width = 1200;
+meta.openGraph.image.height = 630;
+
+if (title) {
+	meta.title = title;
+	meta.twitter.title = meta.twitter.title ?? title;
+	meta.openGraph.basic.title = meta.openGraph.basic.title ?? title;
+}
+if (description) {
+	meta.description = description;
+	meta.twitter.description = meta.twitter.description ?? description;
+	meta.openGraph.optional = meta.openGraph.optional || {};
+	meta.openGraph.optional.description = meta.openGraph.optional.description ?? description;
+}
+const altText = [title, description].filter(Boolean).join(' - ');
+if (altText) {
+	meta.twitter.imageAlt = altText;
+	meta.openGraph.image.alt = altText;
+}
+---
+
+<SEO {...meta} />
