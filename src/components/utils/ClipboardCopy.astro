@@ -1,0 +1,99 @@
+---
+type CopyClipboard = {
+	text: string | undefined;
+	className?: string;
+	onCopy?: (text: string | undefined, result: boolean) => void;
+	options?: {
+		debug: boolean;
+		message: string;
+		format: string;
+	};
+};
+const onNotFocusClasses = [
+	'text-white',
+	'transition',
+	'duration-100',
+	'ease-linear',
+	'hover:text-red-500',
+];
+const onFocusClasses = ['text-green-500'];
+
+const { className, text, options, onCopy } = Astro.props as CopyClipboard;
+---
+
+<clipboard-copy
+	class:list={['cursor-pointer', className, ...onNotFocusClasses]}
+	text={text}
+	onCopy={onCopy}
+	options={JSON.stringify(options)}
+	onFocusClasses={JSON.stringify(onFocusClasses)}
+	onNotFocusClasses={JSON.stringify(onNotFocusClasses)}
+>
+	<slot />
+</clipboard-copy>
+
+<script>
+	import copy from 'copy-to-clipboard';
+	class ClipboardCopy extends HTMLElement {
+		text: string;
+		options?: { debug: boolean; message: string; format: string };
+		onCopy?: ((text: string | undefined, result: boolean) => void) | undefined;
+		onFocusClasses: string[];
+		onNotFocusClasses: string[];
+		constructor() {
+			super();
+			this.text = this.getAttribute('text') || '';
+
+			this.onFocusClasses = this.parseInput(this.getAttribute('onFocusClasses') || '[]');
+
+			this.onNotFocusClasses = this.parseInput(this.getAttribute('onNotFocusClasses') || '[]');
+
+			this.options = this.parseInput(this.getAttribute('options') || '{}');
+
+			this.onCopy = this.getAttribute('onCopy')
+				? eval(`(${this.getAttribute('onCopy')})`)
+				: undefined;
+
+			this.addEventListener('click', () => {
+				const result = copy(this.text, this.options);
+				this.setCopy();
+				if (this.onCopy) {
+					this.onCopy(this.text, result);
+				}
+			});
+		}
+
+		setCopy() {
+			this.toggleClassNames(this.onNotFocusClasses, this.onFocusClasses);
+			const timer = setTimeout(() => {
+				this.toggleClassNames(this.onFocusClasses, this.onNotFocusClasses);
+			}, 3000);
+			() => clearTimeout(timer);
+		}
+
+		parseInput(input: string) {
+			return JSON.parse(input);
+		}
+
+		toggleClassNames(classesToRemove: string[], classesToAdd: string[]) {
+			this.classList.remove(...classesToRemove);
+			this.classList.add(...classesToAdd);
+		}
+
+		attributeChangedCallback(name: string, _: any, newValue: any) {
+			if (name === 'text') {
+				this.text = newValue || '';
+			} else if (name === 'options') {
+				this.options = JSON.parse(newValue || '{}');
+			} else if (name === 'onCopy') {
+				this.onCopy = newValue ? eval(`(${newValue})`) : undefined;
+			}
+		}
+
+		static get observedAttributes() {
+			return ['text', 'options', 'onCopy'];
+		}
+	}
+
+	customElements.define('clipboard-copy', ClipboardCopy);
+</script>

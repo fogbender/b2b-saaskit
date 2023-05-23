@@ -2,7 +2,8 @@
 import b2b7logo from '../../assets/b2b7.svg';
 import wink from '../../assets/wink.svg';
 import Layout from '../../layouts/Layout.astro';
-
+import ClipboardCopy from '../utils/ClipboardCopy.astro';
+import { ClipboardIcon } from '../utils/Icons';
 const websiteTitle = 'B2B SaaS Kit';
 
 type LegoPiece = {
@@ -133,14 +134,22 @@ const services: LegoPiece[] = [
 				computer. You'll need Node.js 18 to get going. Then, run this in the terminal:
 			</div>
 
-			<pre
-				class="text-xs md:text-base bg-[#6B7280] px-2 py-4 rounded-xl text-sm text-white">
+			<div class="md:text-base bg-[#6B7280] px-2 py-4 rounded-xl text-sm text-white relative">
+				<div class="absolute right-2 top-2">
+					<ClipboardCopy
+						text={`git clone git@github.com:fogbender/b2b-saaskit.git\ncd b2b-saaskit\ncorepack enable\ncorepack prepare yarn@1.22.19 --activate\nyarn\nyarn dev`}
+					>
+						<ClipboardIcon />
+					</ClipboardCopy>
+				</div>
+				<pre>
 git clone git@github.com:fogbender/b2b-saaskit.git 
 cd b2b-saaskit 
 corepack enable 
 corepack prepare yarn@1.22.19 --activate 
 yarn 
 yarn dev</pre>
+			</div>
 
 			<div>
 				Open <a href="http://localhost:3000">http://localhost:3000</a> and follow the tutorial 🤘
