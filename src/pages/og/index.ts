@@ -50,3 +50,23 @@ export const get: APIRoute = async (request) => {
 		},
 	});
 };
+
+export function getGeneratorUrl({
+	origin,
+	title,
+	description,
+}: {
+	origin: string;
+	title: string;
+	description?: string;
+}) {
+	const search = new URLSearchParams();
+	if (title) {
+		search.set('title', title);
+	}
+	if (description) {
+		search.set('description', description);
+	}
+	const imageUrl = new URL('/og?' + search.toString(), origin);
+	return imageUrl.toString();
+}
