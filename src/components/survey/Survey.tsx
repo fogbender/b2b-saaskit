@@ -11,7 +11,7 @@ import {
 
 import { trpc, TRPCProvider } from '../trpc';
 
-export const routes = () => [
+const routes = () => [
 	{
 		path: '/survey',
 		element: <StartSurvey />,

@@ -35,9 +35,11 @@ module.exports = {
 		'deprecation',
 		'simple-import-sort',
 		'typescript-sort-keys',
+		'react-refresh',
 	],
 	root: true,
 	rules: {
+		'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 		'simple-import-sort/imports': 'error',
 		'no-empty-pattern': 'off',
 		'simple-import-sort/exports': 'error',

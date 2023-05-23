@@ -49,6 +49,7 @@
     "eslint-plugin-astro": "^0.27.0",
     "eslint-plugin-deprecation": "^1.4.1",
     "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-react-refresh": "^0.4.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-typescript-sort-keys": "^2.3.0",
     "fogbender-react": "^0.2.11",
