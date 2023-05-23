@@ -5,6 +5,7 @@ import { useReducer, useRef, useState } from 'react';
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
+import { Form, useFetcher } from 'react-router-dom';
 
 export function Prompts() {
 	const queryClient = useQueryClient();
@@ -62,6 +63,7 @@ export function Prompts() {
 	return (
 		<Layout title="Prompts with Friends / Prompts">
 			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8 flex flex-col gap-10">
+				<FilterForm />
 				{showAddPrompt && (
 					<>
 						<form
@@ -298,3 +300,47 @@ const Table = ({ children }: { children: React.ReactNode }) => {
 		</div>
 	);
 };
+
+function FilterForm() {
+	const fetcher = useFetcher();
+
+	return (
+		<fetcher.Form method="post">
+			<select name="sort">
+				<option value="price">Price</option>
+				<option value="stars">Stars</option>
+				<option value="distance">Distance</option>
+			</select>
+
+			<fieldset>
+				<legend>Star Rating</legend>
+				<label>
+					<input type="radio" name="stars" value="5" /> ★★★★★
+				</label>
+				<label>
+					<input type="radio" name="stars" value="4" /> ★★★★
+				</label>
+				<label>
+					<input type="radio" name="stars" value="3" /> ★★★
+				</label>
+				<label>
+					<input type="radio" name="stars" value="2" /> ★★
+				</label>
+				<label>
+					<input type="radio" name="stars" value="1" /> ★
+				</label>
+			</fieldset>
+
+			<fieldset>
+				<legend>Amenities</legend>
+				<label>
+					<input type="checkbox" name="amenities" value="pool" /> Pool
+				</label>
+				<label>
+					<input type="checkbox" name="amenities" value="exercise" /> Exercise Room
+				</label>
+			</fieldset>
+			<button type="submit">Search</button>
+		</fetcher.Form>
+	);
+}

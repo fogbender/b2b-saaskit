@@ -31,6 +31,14 @@ export const routes: RouteObject[] = [
 			},
 			{
 				path: '/app/prompts',
+				loader: async (...args) => {
+					console.log('loader', args);
+					return null;
+				},
+				action: async (...args) => {
+					console.log('action', args);
+					return null;
+				},
 				Component() {
 					return <Prompts />;
 				},
