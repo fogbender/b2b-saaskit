@@ -43,6 +43,7 @@
     "astro-seo": "^0.7.2",
     "clsx": "^1.2.1",
     "cookie": "^0.5.0",
+    "copy-to-clipboard": "^3.3.3",
     "drizzle-kit": "^0.17.6",
     "drizzle-orm": "^0.25.4",
     "eslint": "^8.40.0",
