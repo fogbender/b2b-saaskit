@@ -39,6 +39,7 @@
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
+    "@vitejs/plugin-react": "^4.0.0",
     "astro": "^2.5.2",
     "astro-seo": "^0.7.2",
     "clsx": "^1.2.1",
@@ -64,6 +65,7 @@
     "satori": "^0.8.1",
     "tsx": "^3.12.7",
     "unthunk": "^0.0.1",
+    "vite-plugin-checker": "^0.6.0",
     "wretch": "^2.5.2"
   },
   "devDependencies": {
