@@ -4,7 +4,7 @@ import { useReducer, useRef, useState } from 'react';
 
 import { env } from '../../config';
 import { AuthSync } from '../AuthSync';
-import { AuthProvider, requireActiveOrg } from '../propelauth';
+import { AuthProvider, useRequireActiveOrg } from '../propelauth';
 import { trpc, TRPCProvider } from '../trpc';
 import { Layout } from './Layout';
 import { AppNav } from './Nav';
@@ -46,7 +46,7 @@ function Interal() {
 		},
 	});
 	const [showAddPrompt, toggleShowAddPrompt] = useReducer((state) => !state, false);
-	const { activeOrg } = requireActiveOrg();
+	const { activeOrg } = useRequireActiveOrg();
 	const orgId = activeOrg?.orgId || '';
 	const promptsQuery = trpc.prompts.getPrompts.useQuery(
 		{},

@@ -4,7 +4,7 @@ import { useReducer } from 'react';
 
 import { env } from '../../config';
 import { AuthSync } from '../AuthSync';
-import { AuthProvider, requireActiveOrg } from '../propelauth';
+import { AuthProvider, useRequireActiveOrg } from '../propelauth';
 import { trpc, TRPCProvider } from '../trpc';
 import { Layout } from './Layout';
 import { AppNav } from './Nav';
@@ -22,7 +22,7 @@ export function Settings() {
 }
 
 function Interal() {
-	const { activeOrg } = requireActiveOrg();
+	const { activeOrg } = useRequireActiveOrg();
 	const orgId = activeOrg?.orgId;
 	const keysQuery = trpc.settings.getKeys.useQuery(
 		{ orgId: orgId || '' },

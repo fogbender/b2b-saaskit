@@ -4,16 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 import { env } from '../../config';
 import { SupportWidget } from '../fogbender/Support';
 import {
-	requireActiveOrg,
 	saveOrgSelectionToLocalStorage,
 	useLogoutFunction,
 	useRedirectFunctions,
+	useRequireActiveOrg,
 } from '../propelauth';
 
 export function AppNav() {
 	const menuRef = useRef<HTMLDivElement>(null);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const { auth, activeOrg } = requireActiveOrg();
+	const { auth, activeOrg } = useRequireActiveOrg();
 	const { redirectToOrgPage, redirectToAccountPage } = useRedirectFunctions();
 	const user = auth.loading === false ? auth.user : undefined;
 	const defaultUrl = 'https://img.propelauth.com/2a27d237-db8c-4f82-84fb-5824dfaedc87.png';

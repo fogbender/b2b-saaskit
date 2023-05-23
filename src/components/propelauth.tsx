@@ -15,7 +15,7 @@ const {
 	LoginManager,
 } = propel || propel2;
 
-export function requireActiveOrg() {
+export function useRequireActiveOrg() {
 	const auth = useAuthInfo();
 	const activeOrg = useActiveOrg();
 	useEffect(() => {
