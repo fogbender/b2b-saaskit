@@ -6,6 +6,7 @@ import { getGeneratorUrl } from '../../pages/og/index';
 
 export interface SeoProps {
 	title?: string;
+	description?: string;
 	ogType?:
 		| 'website'
 		| 'article'
@@ -22,10 +23,15 @@ export interface SeoProps {
 	meta?: Meta;
 }
 
-const { ogType, title: originalTitle, meta: orignalMeta } = Astro.props;
+const {
+	ogType,
+	title: originalTitle,
+	meta: orignalMeta,
+	description: originalDescription,
+} = Astro.props;
 
 const title = orignalMeta?.title ?? originalTitle ?? websiteTitle;
-const description = orignalMeta?.description ?? websiteDescription;
+const description = orignalMeta?.description ?? originalDescription ?? websiteDescription;
 
 const imageUrl = getGeneratorUrl({
 	origin: Astro.url.origin,
