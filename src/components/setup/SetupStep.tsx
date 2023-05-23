@@ -5,12 +5,10 @@ export function SetupStep({
 	children,
 	title,
 	stepDone,
-	index,
 }: {
 	children: React.ReactNode;
 	title: string;
 	stepDone?: boolean;
-	index?: number;
 }) {
 	const [expanded, setExpanded] = useState(false);
 
@@ -29,10 +27,7 @@ export function SetupStep({
 					)}
 				>
 					<div className="flex items-center justify-between">
-						<div className="text-lg font-semibold">
-							{index && <span>{index}. </span>}
-							{title}
-						</div>
+						<div className="text-lg font-semibold">{title}</div>
 						{stepDone && <span>✅</span>}
 					</div>
 					{expanded && (
