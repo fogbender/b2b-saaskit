@@ -266,7 +266,12 @@ function Interal() {
 									<button
 										className="text-indigo-600 hover:text-indigo-900"
 										onClick={() => {
-											deletePromptMutation.mutate({ promptId: prompt.promptId });
+											const confirm = window.confirm(
+												'Are you sure you want to delete this prompt?'
+											);
+											if (confirm) {
+												deletePromptMutation.mutate({ promptId: prompt.promptId });
+											}
 										}}
 									>
 										Delete<span className="sr-only">, prompt</span>
