@@ -5,7 +5,10 @@ import { AuthSync } from '../AuthSync';
 import { FullPageSupport, SupportWidget } from '../fogbender/Support';
 import { AuthProvider } from '../propelauth';
 import { App } from './App';
+import { CreatePrompt } from './CreatePrompt';
+import { EditPrompt } from './EditPrompt';
 import { AppNav } from './Nav';
+import { Prompt } from './Prompt';
 import { Prompts } from './Prompts';
 import { Settings } from './Settings';
 
@@ -33,6 +36,24 @@ export const routes: RouteObject[] = [
 				path: '/app/prompts',
 				Component() {
 					return <Prompts />;
+				},
+			},
+			{
+				path: '/app/prompts/:promptId',
+				Component() {
+					return <Prompt />;
+				},
+			},
+			{
+				path: '/app/prompts/:promptId/edit',
+				Component() {
+					return <EditPrompt />;
+				},
+			},
+			{
+				path: '/app/prompts/create',
+				Component() {
+					return <CreatePrompt />;
 				},
 			},
 			{
