@@ -4,33 +4,206 @@ import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
 import { db } from '../../../db/db';
-import { gptKeys, prompts, sharedKeyRatelimit } from '../../../db/schema';
+import { gptKeys, promptLikes, prompts, sharedKeyRatelimit } from '../../../db/schema';
+import { usersToPublicUserInfo } from '../../../pages/api/orgs/[orgId]';
 import { serverEnv } from '../../../t3-env';
 import { trackEvent } from '../../posthog';
-import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
+import { propelauth } from '../../propelauth';
+import {
+	apiProcedure,
+	authProcedure,
+	createTRPCRouter,
+	orgProcedure,
+	publicProcedure,
+} from '../trpc';
+
+const messageSchema = z.object({
+	role: z.union([z.literal('user'), z.literal('assistant'), z.literal('system')]),
+	content: z.string(),
+});
+type Message = z.infer<typeof messageSchema>;
+const visibilitySchema = z.union([
+	z.literal('public'),
+	z.literal('team'),
+	z.literal('unlisted'),
+	z.literal('private'),
+]);
 
 export const promptsRouter = createTRPCRouter({
-	getPrompts: orgProcedure.query(async ({ ctx }) => {
-		return await db.select().from(prompts).where(eq(prompts.orgId, ctx.requiredOrgId));
+	getComments: publicProcedure.input(z.object({ promptId: z.string() })).query(async () => {
+		return {
+			comments: [] as {
+				commentId: string;
+				author: string;
+				content: string;
+			}[],
+		};
 	}),
-	createPrompt: orgProcedure
+	getPrompt: apiProcedure
 		.input(
 			z.object({
-				prompt: z.string(),
-				response: z.string().optional(),
+				promptId: z.string(),
+			})
+		)
+		.query(async ({ input, ctx }) => {
+			const user = await ctx.userPromise;
+			const userId = user.kind === 'ok' ? user.user.userId : undefined;
+			const res = await db
+				.select({
+					promptId: prompts.promptId,
+					userId: prompts.userId,
+					privacyLevel: prompts.privacyLevel,
+					title: prompts.title,
+					description: prompts.description,
+					tags: prompts.tags,
+					template: prompts.template,
+					createdAt: prompts.createdAt,
+					likes: sql<number>`count(${promptLikes.userId})`,
+				})
+				.from(prompts)
+				.leftJoin(promptLikes, eq(promptLikes.promptId, prompts.promptId))
+				.groupBy(prompts.promptId)
+				.where(eq(prompts.promptId, input.promptId));
+			const prompt = res[0];
+			if (!prompt) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: `Prompt ${input.promptId} not found`,
+				});
+			}
+			if (prompt.privacyLevel !== 'public') {
+				throw new TRPCError({
+					code: 'FORBIDDEN',
+					message: `Prompt ${input.promptId} is private`,
+				});
+			}
+			const users = await resolvePropelPublicUsers([prompt.userId]);
+			const author = users.kind === 'ok' ? users.users[prompt.userId] : undefined;
+			if (!author) {
+				console.error('Error fetching users', users);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Error fetching users',
+				});
+			}
+			// TODO: check user and org access
+			const { likes, template, privacyLevel, tags, ...rest } = prompt;
+			const validTemplate = z.array(messageSchema).safeParse(template);
+			const validPrivacyLevel = visibilitySchema.safeParse(privacyLevel);
+			const validTags = z.array(z.string()).safeParse(tags);
+			return {
+				canEdit: prompt.userId === userId,
+				likes,
+				prompt: {
+					...rest,
+					template: validTemplate.success ? validTemplate.data : [],
+					privacyLevel: validPrivacyLevel.success ? validPrivacyLevel.data : 'private',
+					tags: validTags.success ? validTags.data : [],
+				},
+				author,
+			};
+		}),
+	getPrompts: orgProcedure.query(async ({ ctx }) => {
+		const promptsRes = await db.select().from(prompts).where(eq(prompts.orgId, ctx.requiredOrgId));
+		const userIds = new Set<string>();
+		promptsRes.forEach((x) => userIds.add(x.userId));
+		const users = await resolvePropelPublicUsers([...userIds]);
+		if (users.kind === 'error') {
+			console.error('Error fetching users', users.error);
+		}
+		return promptsRes.map((x) => ({
+			promptId: x.promptId,
+			userId: x.userId,
+			title: x.title || 'Outdated Prompt format, please delete',
+			_meta: {
+				user: users.kind === 'ok' ? users.users[x.userId] : undefined,
+			},
+		}));
+	}),
+	updatePrompt: orgProcedure
+		.input(
+			z.object({
+				promptId: z.string(),
+				title: z.string().optional(),
+				description: z.string().optional(),
+				tags: z.array(z.string()),
+				template: z.array(messageSchema),
+				visibility: visibilitySchema,
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
+			const title = input.title || 'Untitled';
+			const description = input.description || '';
+			const tags = (input.tags || []).map((x) => x.trim()).filter((x) => x.length > 0);
+			const template = input.template satisfies Message[];
+			// TODO: check user and org access
+			{
+				const x = await db
+					.select({
+						userId: prompts.userId,
+					})
+					.from(prompts)
+					.where(eq(prompts.promptId, input.promptId));
+				const prompt = x[0];
+				if (!prompt) {
+					throw new TRPCError({
+						code: 'NOT_FOUND',
+						message: 'Prompt not found',
+					});
+				}
+
+				if (prompt?.userId !== ctx.user.userId) {
+					throw new TRPCError({
+						code: 'FORBIDDEN',
+						message: 'You can only update your own prompts.',
+					});
+				}
+			}
+			trackEvent(ctx.user, 'prompt_updated');
+			await db
+				.update(prompts)
+				.set({
+					orgId: ctx.requiredOrgId,
+					userId: ctx.user.userId,
+					privacyLevel: 'public',
+					title,
+					description,
+					tags,
+					template,
+				})
+				.where(eq(prompts.promptId, input.promptId));
+			return input.promptId;
+		}),
+	createPrompt: orgProcedure
+		.input(
+			z.object({
+				title: z.string().optional(),
+				description: z.string().optional(),
+				tags: z.array(z.string()),
+				template: z.array(messageSchema),
+				visibility: visibilitySchema,
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			const title = input.title || 'Untitled';
+			const description = input.description || '';
+			const tags = (input.tags || []).map((x) => x.trim()).filter((x) => x.length > 0);
+			const template = input.template satisfies Message[];
 			trackEvent(ctx.user, 'prompt_created');
 			const promptId = nanoid();
 			await db.insert(prompts).values({
 				orgId: ctx.requiredOrgId,
 				promptId,
-				content: input.prompt,
-				response: input.response,
 				userId: ctx.user.userId,
-				createdAt: new Date(),
 				privacyLevel: 'public',
+				title,
+				description,
+				tags,
+				template,
+			});
+			await db.insert(promptLikes).values({
+				promptId,
+				userId: ctx.user.userId,
 			});
 			return promptId;
 		}),
@@ -63,13 +236,19 @@ export const promptsRouter = createTRPCRouter({
 			}
 
 			await db.delete(prompts).where(eq(prompts.promptId, input.promptId));
+			await db.delete(promptLikes).where(eq(promptLikes.promptId, input.promptId));
 			return input;
 		}),
 	runPrompt: orgProcedure
 		.input(
-			z.object({
-				prompt: z.string(),
-			})
+			z.union([
+				z.object({
+					prompt: z.string(),
+				}),
+				z.object({
+					messages: z.array(z.object({ role: z.string(), content: z.string() })),
+				}),
+			])
 		)
 		.mutation(async ({ ctx, input }) => {
 			const keys = await db
@@ -114,6 +293,9 @@ export const promptsRouter = createTRPCRouter({
 				}
 			}
 
+			const messages =
+				'messages' in input ? input.messages : [{ role: 'user', content: input.prompt }];
+
 			const res = await fetch('https://api.openai.com/v1/chat/completions', {
 				method: 'POST',
 				headers: {
@@ -122,22 +304,17 @@ export const promptsRouter = createTRPCRouter({
 				},
 				body: JSON.stringify({
 					model: key?.keyType === 'gpt-4' ? 'gpt-4' : 'gpt-3.5-turbo',
-					messages: [
-						{
-							role: 'user',
-							content: input.prompt,
-						},
-					],
+					messages,
 				}),
 			});
 			const { error, choices } = (await res.json()) as {
-				error?: { message: string };
+				error?: { message: string; code: string };
 				choices: {
 					message: { content: string };
 				}[];
 			};
 			if (error) {
-				return { error: error.message };
+				return { error: error.message || error.code };
 			}
 
 			const choice = choices[0];
@@ -208,4 +385,20 @@ async function rateLimitUpsert(userId: string, currentTimestamp: number) {
 
 	// +1 to get the value that we had before the UPSERT
 	return limit - first.value + 1;
+}
+
+function resolvePropelAuthUsers(userIds: string[]) {
+	return propelauth
+		.fetchBatchUserMetadataByUserIds(userIds)
+		.then((users) => ({ kind: 'ok' as const, users }))
+		.catch((error) => ({ kind: 'error' as const, error }));
+}
+
+function resolvePropelPublicUsers(userIds: string[]) {
+	return resolvePropelAuthUsers(userIds).then((result) => {
+		if (result.kind === 'ok') {
+			return { ...result, users: usersToPublicUserInfo(result.users) };
+		}
+		return result;
+	});
 }

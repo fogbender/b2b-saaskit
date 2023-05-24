@@ -1,11 +1,11 @@
 export const Layout = (props: {
 	//
-	title: string;
+	title?: string;
 	children: React.ReactNode;
 }) => {
 	return (
 		<div className="container mt-8 px-4">
-			<h3 className="text-2xl font-bold">{props.title}</h3>
+			{props.title && <h3 className="text-2xl font-bold">{props.title}</h3>}
 			{props.children}
 		</div>
 	);
