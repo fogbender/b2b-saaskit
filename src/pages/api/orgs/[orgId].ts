@@ -1,4 +1,4 @@
-import { handleError, initBaseAuth } from '@propelauth/node';
+import { handleError, initBaseAuth, UserMetadata } from '@propelauth/node';
 import type { APIRoute } from 'astro';
 
 import { serverEnv } from '../../../t3-env';
@@ -31,12 +31,7 @@ export const get: APIRoute = async ({ params, request }) => {
 		const orgUsers = await propelauth.fetchUsersInOrg({ orgId });
 
 		const responseData = {
-			users: orgUsers.users.map((x) => {
-				return {
-					userId: x.userId,
-					email: x.email,
-				};
-			}),
+			users: orgUsers.users.map(publicUserInfo),
 		};
 		return new Response(JSON.stringify(responseData), { status: 200 });
 	} catch (e) {
@@ -44,3 +39,12 @@ export const get: APIRoute = async ({ params, request }) => {
 		return new Response(err.message, { status: err.status });
 	}
 };
+
+export function publicUserInfo(user: UserMetadata) {
+	return {
+		userId: user.userId,
+		name: [user.lastName, user.firstName].filter(Boolean).join(' '),
+		pictureUrl: user.pictureUrl,
+		email: user.email,
+	};
+}
