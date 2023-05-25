@@ -10,27 +10,18 @@ import {
 	FogbenderWidget,
 } from 'fogbender-react';
 import { useMemo } from 'react';
+import { useMatch } from 'react-router-dom';
 
 import { env } from '../../config';
 import type { FogbenderTokenResponse } from '../../types/types';
-import { AppNav } from '../app/Nav';
-import { AuthSync } from '../AuthSync';
 import { apiServer, queryKeys, useQuery } from '../client';
-import { AuthProvider } from '../propelauth';
 import { useActiveOrg, useAuthInfo } from '../propelauth';
-import { TRPCProvider } from '../trpc';
 
 export const FullPageSupport = () => {
 	return (
-		<TRPCProvider>
-			<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
-				<AuthSync />
-				<AppNav />
-				<div className="relative mt-2 border-gray-300">
-					<SupportWidget kind="widget" />
-				</div>
-			</AuthProvider>
-		</TRPCProvider>
+		<div className="relative mt-2 border-gray-300">
+			<SupportWidget kind="widget" />
+		</div>
 	);
 };
 
@@ -122,10 +113,12 @@ export const Internal = ({
 		};
 	}, [auth.user, activeOrg, fogbenderQuery.data?.userJWT]);
 
+	const isNotFullScreenSupport = null === useMatch('/app/support');
+
 	return (
 		<>
 			{token && isFloatie ? (
-				<FogbenderSimpleFloatie token={token} />
+				<>{isNotFullScreenSupport && <FogbenderSimpleFloatie token={token} />}</>
 			) : (
 				<FogbenderProvider>
 					<FogbenderConfig token={token} />

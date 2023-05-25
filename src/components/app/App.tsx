@@ -1,34 +1,16 @@
 import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
 
-import { env } from '../../config';
-import { AuthSync } from '../AuthSync';
-import { SupportWidget } from '../fogbender/Support';
 import { LoginInternal } from '../Login';
 import {
-	AuthProvider,
 	saveOrgSelectionToLocalStorage,
 	useActiveOrg,
 	useAuthInfo,
 	useRedirectFunctions,
 } from '../propelauth';
-import { TRPCProvider } from '../trpc';
 import { Layout } from './Layout';
-import { AppNav } from './Nav';
 
 export function App() {
-	return (
-		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
-			<TRPCProvider>
-				<AuthSync />
-				<AppNav />
-				<AppInteral />
-			</TRPCProvider>
-		</AuthProvider>
-	);
-}
-
-function AppInteral() {
 	const activeOrg = useActiveOrg();
 	const auth = useAuthInfo();
 	const { redirectToCreateOrgPage } = useRedirectFunctions();
@@ -113,7 +95,6 @@ const AppWithOrg = ({
 					Go to prompts
 				</a>
 			</div>
-			<SupportWidget kind="floatie" />
 		</Layout>
 	);
 };

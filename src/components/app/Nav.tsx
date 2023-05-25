@@ -1,5 +1,6 @@
 import classNames from 'clsx';
 import { useEffect, useRef, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 import { env } from '../../config';
 import { SupportWidget } from '../fogbender/Support';
@@ -58,46 +59,55 @@ export function AppNav() {
 		<header className="bg-white shadow-sm py-4 px-5">
 			<div className="container mx-auto flex justify-between items-center">
 				<nav className="flex flex-wrap space-x-4">
-					<a
-						href="/app"
-						className={classNames(
-							'text-gray-600 hover:text-gray-900',
-							'px-2 py-1',
-							'/app' === path ? activeCls : 'border border-transparent'
-						)}
+					<NavLink
+						to="/app"
+						end
+						className={({ isActive }) =>
+							classNames(
+								'text-gray-600 hover:text-gray-900',
+								'px-2 py-1',
+								isActive ? activeCls : 'border border-transparent'
+							)
+						}
 					>
 						Overview
-					</a>
-					<a
-						href="/app/prompts"
-						className={classNames(
-							'text-gray-600 hover:text-gray-900',
-							'px-2 py-1',
-							'/app/prompts' === path ? activeCls : 'border border-transparent'
-						)}
+					</NavLink>
+					<NavLink
+						to="/app/prompts"
+						className={({ isActive }) =>
+							classNames(
+								'text-gray-600 hover:text-gray-900',
+								'px-2 py-1',
+								isActive ? activeCls : 'border border-transparent'
+							)
+						}
 					>
 						Prompts
-					</a>
-					<a
-						href="/app/settings"
-						className={classNames(
-							'text-gray-600 hover:text-gray-900',
-							'px-2 py-1',
-							'/app/settings' === path ? activeCls : 'border border-transparent'
-						)}
+					</NavLink>
+					<NavLink
+						to="/app/settings"
+						className={({ isActive }) =>
+							classNames(
+								'text-gray-600 hover:text-gray-900',
+								'px-2 py-1',
+								isActive ? activeCls : 'border border-transparent'
+							)
+						}
 					>
 						Settings
-					</a>
-					<a
-						href="/app/support"
-						className={classNames(
-							'text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1',
-							'/app/support' === path ? activeCls : 'border border-transparent'
-						)}
+					</NavLink>
+					<NavLink
+						to="/app/support"
+						className={({ isActive }) =>
+							classNames(
+								'text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1',
+								isActive ? activeCls : 'border border-transparent'
+							)
+						}
 					>
 						Support
 						{path !== '/app/support' && <SupportWidget kind="badge" />}
-					</a>
+					</NavLink>
 				</nav>
 				<div className="relative inline-block text-left" ref={menuRef}>
 					<button
