@@ -50,6 +50,16 @@ export const routes: RemixBrowserContext & RouteObject[] = [
 			},
 			{
 				path: '/app/prompts/:promptId',
+				loader: async ({ context, params }) => {
+					const promptId = params.promptId;
+					if (promptId) {
+						// pre-fetch in SSR
+						await context?.helpers.prompts.getPrompt.prefetch({ promptId });
+						// pre-fetch in browser
+						await routes.trpcUtils?.prompts.getPrompt.ensureData({ promptId });
+					}
+					return null;
+				},
 				Component() {
 					return <Prompt />;
 				},

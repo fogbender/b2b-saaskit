@@ -14,5 +14,5 @@ if (res.kind === 'response') {
 ---
 
 <AppLayout title={'Prompt / ' + id}>
-	<Root client:load getContext={() => res.context} />
+	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
 </AppLayout>
