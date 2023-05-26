@@ -209,33 +209,33 @@ export const EditPromptControls = ({
 					}}
 				>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50"
 						name="generate"
 						disabled={!hasAnyKey || runPromptMutation.isLoading || runPromptMutation.isSuccess}
 					>
 						Generate response
 					</button>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
 						name="user"
 					>
 						Add new prompt
 					</button>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
 						name="assistant"
 					>
 						Add new response
 					</button>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
 						name="system"
 					>
 						Add new system message
 					</button>
 					{messages[messages.length - 1]?.content === '' && (
 						<button
-							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+							className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
 							name="delete"
 						>
 							Delete
@@ -369,7 +369,7 @@ export const EditPromptControls = ({
 					</fieldset>
 					<fieldset className="mt-8 flex items-center gap-4">
 						<button
-							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 min-w-[6rem]"
+							className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 min-w-[6rem]"
 							type="submit"
 							disabled={addPromptMutation.isLoading || updatePromptMutation.isLoading}
 						>
@@ -378,7 +378,7 @@ export const EditPromptControls = ({
 						</button>
 						{promptId && (
 							<button
-								className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 min-w-[6rem]"
+								className="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 min-w-[6rem]"
 								type="button"
 								disabled={deletePromptMutation.isLoading}
 								onClick={() => {

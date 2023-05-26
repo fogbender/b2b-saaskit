@@ -38,7 +38,7 @@ export function Prompt() {
 	return (
 		<Layout>
 			<div className="flex items-start gap-4 sm:flex-row flex-col">
-				<h3 className="text-2xl font-bold truncate max-w-2xl md:max-w-4xl sm:w-fit w-full">
+				<h3 className="text-2xl font-medium truncate max-w-2xl md:max-w-4xl sm:w-fit w-full">
 					{promptQuery.data ? promptQuery.data.prompt.title : 'Loading...'}
 				</h3>
 				<div className="min-w-fit">
@@ -74,7 +74,7 @@ export function Prompt() {
 				<div className="flex flex-col">
 					<div className="flex flex-row gap-4">
 						<div>
-							<h3 className="text-xl font-bold mb-4">{data?.prompt.title}</h3>
+							<h3 className="text-xl font-medium mb-4">{data?.prompt.title}</h3>
 							<p className="my-4">{data?.prompt.description}</p>
 
 							{data?.prompt.tags && (
@@ -88,13 +88,13 @@ export function Prompt() {
 							)}
 						</div>
 						<div>
-							<h3 className="text-xl font-bold mb-4">
+							<h3 className="text-xl font-medium mb-4">
 								by {data?.author.name || data?.author.email || data?.prompt.userId}
 							</h3>
 							<p className="my-4">Created: {data?.prompt.createdAt.toLocaleString()}</p>
 						</div>
 						<div>
-							<h3 className="text-xl font-bold mb-4">Comments:</h3>
+							<h3 className="text-xl font-medium mb-4">Comments:</h3>
 							{commentsQuery.data?.comments.map((comment) => (
 								<p key={comment.commentId}>{comment.content}</p>
 							))}
@@ -118,7 +118,7 @@ export function Prompt() {
 				</div>
 
 				<div className="flex flex-col">
-					<h3 className="text-xl font-bold mb-4">Quick replay:</h3>
+					<h3 className="text-xl font-medium mb-4">Quick replay:</h3>
 					{data?.prompt.template.map((message, index) => (
 						<p key={index}>
 							{message.role}: {message.content}
@@ -128,7 +128,7 @@ export function Prompt() {
 
 				<div className="flex gap-4">
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
 						onClick={() => {
 							navigate('/app/prompts/create', { state: { prompt: data?.prompt } });
 						}}
@@ -136,7 +136,7 @@ export function Prompt() {
 						Use as a template to create your own prompt
 					</button>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
 						onClick={async () => {
 							if (data?.prompt.template) {
 								const json = JSON.stringify(resolveTemplates(data?.prompt.template));
