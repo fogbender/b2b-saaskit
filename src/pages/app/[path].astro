@@ -1,0 +1,36 @@
+---
+import AppLayout from '../../components/app/AppLayout.astro';
+import { Root } from '../../components/app/Root';
+import { createRouterContext } from '../../lib/router';
+
+export const prerender = true;
+
+await import('./_envCheck');
+
+const res = await createRouterContext(Astro);
+if (res.kind === 'response') {
+	return res.response;
+}
+let title = 'Prompts with Friends';
+for (const id of Object.keys(res.context.loaderData)) {
+	const data = res.context.loaderData[id] as unknown;
+	if (data && typeof data === 'object' && 'title' in data && typeof data.title === 'string') {
+		title = data.title;
+	}
+}
+
+export function getStaticPaths() {
+	return [
+		// { params: { path: undefined } },
+		{ params: { path: 'settings' } },
+		{ params: { path: 'optional-comments' } },
+		{ params: { path: 'thank-you' } },
+		{ params: { path: 'published' } },
+	];
+}
+---
+
+{JSON.stringify(title)}
+<AppLayout title={title}>
+	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
+</AppLayout>

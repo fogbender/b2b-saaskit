@@ -20,6 +20,7 @@ import { Settings } from './Settings';
 export const routes: RemixBrowserContext & RouteObject[] = [
 	{
 		path: '/app',
+		loader: () => ({ sdfvdfv: 1 }),
 		Component() {
 			return (
 				<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
@@ -44,7 +45,7 @@ export const routes: RemixBrowserContext & RouteObject[] = [
 					await context?.helpers.prompts.getPrompts.prefetch({});
 					// pre-fetch in browser
 					await routes.trpcUtils?.prompts.getPrompts.ensureData({});
-					return null;
+					return { title: 'Prompts with Friends / List' };
 				},
 				Component() {
 					return <Prompts />;
@@ -73,6 +74,7 @@ export const routes: RemixBrowserContext & RouteObject[] = [
 				Component() {
 					return <Settings />;
 				},
+				loader: () => ({ title: 'Prompts with Friends / Settings' }),
 			},
 			{
 				path: '/app/support',

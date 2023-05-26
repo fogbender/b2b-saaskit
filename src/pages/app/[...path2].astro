@@ -11,8 +11,16 @@ const res = await createRouterContext(Astro);
 if (res.kind === 'response') {
 	return res.response;
 }
+let title = 'Prompts with Friends';
+for (const id of Object.keys(res.context.loaderData)) {
+	const data = res.context.loaderData[id] as unknown;
+	if (data && typeof data === 'object' && 'title' in data && typeof data.title === 'string') {
+		title = data.title;
+	}
+}
 ---
 
-<AppLayout title="Prompts with Friends / List">
+path2: {JSON.stringify(title)}
+<AppLayout title={title}>
 	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
 </AppLayout>
