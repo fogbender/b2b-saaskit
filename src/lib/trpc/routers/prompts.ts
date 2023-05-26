@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
@@ -58,7 +58,8 @@ export const promptsRouter = createTRPCRouter({
 					tags: prompts.tags,
 					template: prompts.template,
 					createdAt: prompts.createdAt,
-					likes: sql<number>`count(${promptLikes.userId})`,
+					likes: sql<number>`count(${promptLikes.userId})::int`,
+					myLike: sql<boolean>`SUM(CASE WHEN ${promptLikes.userId} = ${userId} THEN 1 ELSE 0 END) > 0`,
 				})
 				.from(prompts)
 				.leftJoin(promptLikes, eq(promptLikes.promptId, prompts.promptId))
@@ -87,13 +88,14 @@ export const promptsRouter = createTRPCRouter({
 				});
 			}
 			// TODO: check user and org access
-			const { likes, template, privacyLevel, tags, ...rest } = prompt;
+			const { likes, template, privacyLevel, tags, myLike, ...rest } = prompt;
 			const validTemplate = z.array(messageSchema).safeParse(template);
 			const validPrivacyLevel = visibilitySchema.safeParse(privacyLevel);
 			const validTags = z.array(z.string()).safeParse(tags);
 			return {
 				canEdit: prompt.userId === userId,
 				likes,
+				myLike,
 				prompt: {
 					...rest,
 					template: validTemplate.success ? validTemplate.data : [],
@@ -344,6 +346,30 @@ export const promptsRouter = createTRPCRouter({
 
 		return { isSet: false };
 	}),
+	likePrompt: authProcedure
+		.input(
+			z.object({
+				promptId: z.string(),
+				unlike: z.boolean().optional(),
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			// you can like any prompt, even if you don't have access to it or it doesn't exist
+			const userId = ctx.user.userId;
+			if (input.unlike) {
+				await db
+					.delete(promptLikes)
+					.where(and(eq(promptLikes.promptId, input.promptId), eq(promptLikes.userId, userId)));
+				return input;
+			} else {
+				await db
+					.insert(promptLikes)
+					.values({ promptId: input.promptId, userId })
+					.onConflictDoNothing();
+
+				return input;
+			}
+		}),
 });
 
 // const period = 1000 * 5; // 5 seconds

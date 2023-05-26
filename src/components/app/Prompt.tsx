@@ -7,6 +7,7 @@ import { resolveTemplates } from './utils';
 export function Prompt() {
 	const navigate = useNavigate();
 	const { promptId } = useParams<{ promptId: string }>();
+	const trpcUtils = trpc.useContext();
 	const promptQuery = trpc.prompts.getPrompt.useQuery(
 		{
 			promptId: promptId!,
@@ -26,11 +27,14 @@ export function Prompt() {
 		}
 	);
 
-	const handleLike = () => {
-		alert('Not implemented yet!');
-	};
+	const likeMutation = trpc.prompts.likePrompt.useMutation({
+		onSettled: () => {
+			trpcUtils?.prompts.getPrompt.invalidate({ promptId });
+		},
+	});
 
 	const data = promptQuery.data;
+
 	return (
 		<Layout>
 			<div className="flex items-start gap-4 sm:flex-row flex-col">
@@ -43,9 +47,26 @@ export function Prompt() {
 							Edit
 						</Link>
 					)}
-					<button className="mr-4" onClick={handleLike}>
-						Likes: {data?.likes}
-					</button>
+					{promptId && (
+						<button
+							className="mr-4"
+							onClick={() => {
+								likeMutation.mutate({ promptId, unlike: data?.myLike });
+								trpcUtils.prompts.getPrompt.setData({ promptId }, (data) => {
+									if (!data) {
+										return data;
+									}
+									return {
+										...data,
+										likes: data.likes + (data?.myLike ? -1 : 1),
+										myLike: !data?.myLike,
+									};
+								});
+							}}
+						>
+							Likes: {data?.likes}
+						</button>
+					)}
 					<button className="ml-4">Share</button>
 				</div>
 			</div>
