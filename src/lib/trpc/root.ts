@@ -31,3 +31,4 @@ export const createHelpers = (Astro: AstroGlobal) =>
 		req: Astro.request,
 		resHeaders: Astro.response.headers,
 	});
+export type Helpers = ReturnType<typeof createHelpers>;

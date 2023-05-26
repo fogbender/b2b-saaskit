@@ -1,9 +1,14 @@
-import { Outlet, RouteObject } from 'react-router-dom';
+import type { QueryClient } from '@tanstack/react-query';
+import { TRPCError } from '@trpc/server';
+import { getHTTPStatusCodeFromError } from '@trpc/server/http';
+import { Outlet, redirect, RouteObject } from 'react-router-dom';
 
 import { env } from '../../config';
+import type { Helpers } from '../../lib/trpc/root';
 import { AuthSync } from '../AuthSync';
 import { FullPageSupport, SupportWidget } from '../fogbender/Support';
 import { AuthProvider } from '../propelauth';
+import type { RouterUtils } from '../trpc';
 import { App } from './App';
 import { CreatePrompt } from './CreatePrompt';
 import { EditPrompt } from './EditPrompt';
@@ -12,7 +17,7 @@ import { Prompt } from './Prompt';
 import { Prompts } from './Prompts';
 import { Settings } from './Settings';
 
-export const routes: RouteObject[] = [
+export const routes: RemixBrowserContext & RouteObject[] = [
 	{
 		path: '/app',
 		Component() {
@@ -34,6 +39,24 @@ export const routes: RouteObject[] = [
 			},
 			{
 				path: '/app/prompts',
+				loader: async ({ context }) => {
+					// pre-fetch in SSR
+					if (import.meta.env.SSR) {
+						const error = await context?.helpers.prompts.getPrompts
+							.fetch({})
+							.then(() => {})
+							.catch((error) => error);
+						if (error instanceof TRPCError) {
+							const httpCode = getHTTPStatusCodeFromError(error);
+							if (httpCode === 401) {
+								return redirect('/app');
+							}
+						}
+					}
+					// pre-fetch in browser
+					await routes.trpcUtils?.prompts.getPrompts.ensureData({});
+					return null;
+				},
 				Component() {
 					return <Prompts />;
 				},
@@ -71,3 +94,24 @@ export const routes: RouteObject[] = [
 		],
 	},
 ];
+
+// browser-only context
+export type RemixBrowserContext = {
+	trpcUtils?: RouterUtils;
+	queryClient?: QueryClient;
+};
+
+// server only context
+export type RemixContext = {
+	helpers: Helpers;
+};
+
+declare module 'react-router-dom' {
+	interface LoaderFunctionArgs {
+		context?: RemixContext;
+	}
+
+	interface ActionFunctionArgs {
+		context?: RemixContext;
+	}
+}

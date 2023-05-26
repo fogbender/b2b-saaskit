@@ -7,7 +7,7 @@ export const prerender = false;
 
 const { id } = Astro.params;
 
-const res = await createRouterContext(Astro.request);
+const res = await createRouterContext(Astro);
 if (res.kind === 'response') {
 	return res.response;
 }

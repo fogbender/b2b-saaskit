@@ -12,7 +12,7 @@ const callerExample = await createCaller({
 }).hello.hello();
 console.log('callerExample', callerExample);
 
-const res = await createRouterContext(Astro.request);
+const res = await createRouterContext(Astro);
 if (res.kind === 'response') {
 	return res.response;
 }

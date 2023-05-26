@@ -5,7 +5,7 @@ import { createRouterContext } from '../../lib/router';
 
 await import('./_envCheck');
 
-const res = await createRouterContext(Astro.request);
+const res = await createRouterContext(Astro);
 if (res.kind === 'response') {
 	return res.response;
 }
