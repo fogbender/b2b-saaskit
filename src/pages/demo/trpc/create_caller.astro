@@ -1,0 +1,17 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { createCaller } from '../../../lib/trpc/root';
+
+export const prerender = false; // to allow dynamic title per user
+
+const callerExample = await createCaller({
+	req: Astro.request,
+	resHeaders: Astro.response.headers,
+}).hello.hello();
+const title = `Create Caller / ${callerExample}`;
+---
+
+<Layout title={title}>
+	I can get some information right from the trpc, for example to set a title.
+	<h1 class="mt-4 text-2xl font-bold">{title}</h1>
+</Layout>

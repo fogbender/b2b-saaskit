@@ -41,18 +41,7 @@ export const routes: RemixBrowserContext & RouteObject[] = [
 				path: '/app/prompts',
 				loader: async ({ context }) => {
 					// pre-fetch in SSR
-					if (import.meta.env.SSR) {
-						const error = await context?.helpers.prompts.getPrompts
-							.fetch({})
-							.then(() => {})
-							.catch((error) => error);
-						if (error instanceof TRPCError) {
-							const httpCode = getHTTPStatusCodeFromError(error);
-							if (httpCode === 401) {
-								return redirect('/app');
-							}
-						}
-					}
+					await context?.helpers.prompts.getPrompts.prefetch({});
 					// pre-fetch in browser
 					await routes.trpcUtils?.prompts.getPrompts.ensureData({});
 					return null;
