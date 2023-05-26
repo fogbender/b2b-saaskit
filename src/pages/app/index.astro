@@ -2,15 +2,8 @@
 import AppLayout from '../../components/app/AppLayout.astro';
 import { Root } from '../../components/app/Root';
 import { createRouterContext } from '../../lib/router';
-import { createCaller } from '../../lib/trpc/root';
 
 await import('./_envCheck');
-
-const callerExample = await createCaller({
-	req: Astro.request,
-	resHeaders: Astro.response.headers,
-}).hello.hello();
-console.log('callerExample', callerExample);
 
 const res = await createRouterContext(Astro);
 if (res.kind === 'response') {
