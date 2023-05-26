@@ -5,6 +5,8 @@ import jsonwebtoken from 'jsonwebtoken';
 import { serverEnv } from '../../t3-env';
 import type { FogbenderTokenResponse } from '../../types/types';
 
+export const prerender = false;
+
 export const post: APIRoute = async ({ request }) => {
 	const propelauth = initBaseAuth({
 		authUrl: serverEnv.PUBLIC_AUTH_URL,
