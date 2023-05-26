@@ -1,0 +1,14 @@
+---
+import AppLayout from '../../../components/app/AppLayout.astro';
+import { Root } from '../../../components/app/Root';
+import { createRouterContext } from '../../../lib/router';
+
+const res = await createRouterContext(Astro);
+if (res.kind === 'response') {
+	return res.response;
+}
+---
+
+<AppLayout title="Prompt / Create">
+	<Root client:load getContext={() => res.context} />
+</AppLayout>
