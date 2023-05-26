@@ -50,6 +50,13 @@
       "when": 1684464191794,
       "tag": "0006_good_george_stacy",
       "breakpoints": false
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1684983225668,
+      "tag": "0007_giant_greymalkin",
+      "breakpoints": false
     }
   ]
 }

@@ -48,3 +48,13 @@ export function publicUserInfo(user: UserMetadata) {
 		email: user.email,
 	};
 }
+
+export type PublicUserInfo = ReturnType<typeof publicUserInfo>;
+
+export function usersToPublicUserInfo(users: { [userId: string]: UserMetadata }): {
+	[userId: string]: PublicUserInfo;
+} {
+	return Object.fromEntries(
+		Object.entries(users).map(([userId, user]) => [userId, publicUserInfo(user)])
+	);
+}

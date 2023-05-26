@@ -36,4 +36,8 @@ export const prerender = true;
 - `rm src/pages/app/_envCheck.ts`
 - Remove `await import('./_envCheck');` from files in `src/pages/app/`
 
+## Demos
+
+- `rm -r src/pages/demo`
+
 WIP

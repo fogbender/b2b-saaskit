@@ -80,7 +80,7 @@ export function Settings() {
 									e.preventDefault();
 									const form = e.currentTarget;
 									const formData = new FormData(form);
-									addKeyMutation.mutate(Object.fromEntries(formData.entries()) as any, {
+									addKeyMutation.mutate(Object.fromEntries(formData) as any, {
 										onSuccess: () => {
 											form.reset();
 										},

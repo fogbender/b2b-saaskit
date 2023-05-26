@@ -2,8 +2,10 @@ import {
 	//
 	boolean,
 	integer,
+	json,
 	pgEnum,
 	pgTable,
+	primaryKey,
 	serial,
 	text,
 	timestamp,
@@ -25,11 +27,32 @@ export const prompts = pgTable('prompts', {
 	promptId: text('id').primaryKey(),
 	userId: text('user_id').notNull(),
 	orgId: text('org_id').notNull(),
-	content: text('content').notNull(),
-	response: text('response').notNull().default(''),
+	content: text('content'), // deprecated
+	response: text('response'), // deprecated
+	template: json('template').notNull().default('{}'),
+	title: text('title').notNull().default(''),
+	description: text('description').notNull().default(''),
+	tags: json('tags').notNull().default('[]'),
 	privacyLevel: text('privacy_level').notNull(),
-	createdAt: timestamp('created_at').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
+
+/* ```sql
+ALTER TABLE prompt_likes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."prompt_likes" AS PERMISSIVE FOR ALL TO service_role USING (true);
+``` */
+export const promptLikes = pgTable(
+	'prompt_likes',
+	{
+		promptId: text('prompt_id').notNull(),
+		userId: text('user_id').notNull(),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+	},
+	(table) => {
+		return { pk: primaryKey(table.promptId, table.userId) };
+	}
+);
 
 export const gptTypeEnum = pgEnum('gpt_type', ['gpt-3', 'gpt-4']);
 

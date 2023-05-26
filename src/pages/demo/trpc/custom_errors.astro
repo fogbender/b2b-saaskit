@@ -1,0 +1,33 @@
+---
+import { TRPCError } from '@trpc/server';
+import { getHTTPStatusCodeFromError } from '@trpc/server/http';
+
+import AppLayout from '../../../components/app/AppLayout.astro';
+import { Root } from '../../../components/app/Root';
+import { createHelpers } from '../../../lib/trpc/root';
+
+export const prerender = false; // to allow dynamic title per user
+
+const helpers = createHelpers(Astro);
+// prefetch data for client, and redirect to login if not logged in
+const error = await helpers.prompts.getPrompts
+	.fetch({})
+	.then(() => {})
+	.catch((error) => error);
+
+if (error instanceof TRPCError) {
+	const httpCode = getHTTPStatusCodeFromError(error);
+	// show error page or redirect instead of rendering the page
+	if (httpCode === 401) {
+		return Astro.redirect('/login');
+	} else {
+		return new Response('Something went wrong', {
+			status: httpCode,
+		});
+	}
+}
+---
+
+<AppLayout title="Prompts with Friends / List">
+	<Root client:load dehydratedState={helpers.dehydrate()} />
+</AppLayout>
