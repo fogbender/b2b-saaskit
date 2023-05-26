@@ -48,3 +48,5 @@ export function TRPCProvider({
 
 export type RouterInput = inferRouterInputs<AppRouter>;
 export type RouterOutput = inferRouterOutputs<AppRouter>;
+
+export type RouterUtils = ReturnType<typeof trpc.useContext>;

@@ -1,36 +1,18 @@
 ---
-import { TRPCError } from '@trpc/server';
-import { getHTTPStatusCodeFromError } from '@trpc/server/http';
-
 import AppLayout from '../../components/app/AppLayout.astro';
 import { Root } from '../../components/app/Root';
 import { createRouterContext } from '../../lib/router';
-import { createHelpers } from '../../lib/trpc/root';
 
 export const prerender = false; // to enable trpc prefetching
 
 await import('./_envCheck');
 
-const helpers = createHelpers(Astro);
-// prefetch data for client, and redirect to login if not logged in
-const error = await helpers.prompts.getPrompts
-	.fetch({})
-	.then(() => {})
-	.catch((error) => error);
-
-if (error instanceof TRPCError) {
-	const httpCode = getHTTPStatusCodeFromError(error);
-	if (httpCode === 401) {
-		return Astro.redirect('/app');
-	}
-}
-
-const res = await createRouterContext(Astro.request);
+const res = await createRouterContext(Astro);
 if (res.kind === 'response') {
-	throw new Response('error');
+	return res.response;
 }
 ---
 
 <AppLayout title="Prompts with Friends / List">
-	<Root client:load dehydratedState={helpers.dehydrate()} getContext={() => res.context} />
+	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
 </AppLayout>
