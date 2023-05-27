@@ -41,7 +41,7 @@ export const routes: RemixBrowserContext & RouteObject[] = [
 					// pre-fetch in SSR
 					await context?.helpers.prompts.getPrompts.prefetch({});
 					// pre-fetch in browser
-					await routes.trpcUtils?.prompts.getPrompts.ensureData({});
+					await routes.trpcUtils?.prompts.getPrompts.ensureData({}).catch(() => {});
 					return null;
 				},
 				Component() {
