@@ -1,13 +1,32 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
-import { defaultPrivacyLevel, Message, PrivacyLevel, PromptState, resolveTemplates } from './utils';
+import {
+	defaultPrivacyLevel,
+	detectTemplates,
+	Message,
+	PrivacyLevel,
+	PromptState,
+	resolveTemplates,
+	updateTemplateValue,
+} from './utils';
+
+const defaultPrompts = [
+	{
+		role: 'system' as const,
+		content: `Talk like a pirate.`,
+	},
+	{
+		role: 'user' as const,
+		content: `Your name is {{name||Brick Tamland}}. You love lamp.`,
+	},
+];
 
 export function CreatePrompt() {
 	const state = useLocation().state as PromptState;
@@ -21,18 +40,7 @@ export function CreatePrompt() {
 				promptTags={state?.prompt?.tags}
 				promptVisibility={defaultPrivacyLevel(state?.prompt?.privacyLevel)}
 				setTitle={setTitle}
-				template={
-					state?.prompt?.template || [
-						{
-							role: 'system',
-							content: `Talk like a pirate.`,
-						},
-						{
-							role: 'user',
-							content: `Your name is {{name||Brick Tamland}}. You love lamp.`,
-						},
-					]
-				}
+				template={state?.prompt?.template || defaultPrompts}
 			/>
 		</Layout>
 	);
@@ -65,6 +73,11 @@ export const EditPromptControls = ({
 			setTitle?.(`Create pro${'o'.repeat(n)}mpt`);
 		}
 	}, [len, initialLen]);
+
+	const templates = useMemo(() => {
+		return detectTemplates(messages);
+	}, [messages]);
+
 	const runPromptMutation = trpc.prompts.runPrompt.useMutation({
 		onSettled: () => {
 			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getDefaultKey));
@@ -254,6 +267,35 @@ export const EditPromptControls = ({
 						<div className="text-sm text-red-500">{runPromptMutation.data?.error}</div>
 					)}
 				</div>
+				{templates.size > 0 && (
+					<div>
+						<div className="text-base font-medium text-gray-900">Template values</div>
+						{[...templates.entries()].map(([key, value]) => (
+							<div key={key} className="mt-4">
+								<label
+									className="block text-sm font-medium text-gray-700 capitalize"
+									htmlFor={'template_' + key}
+								>
+									{key}
+								</label>
+								<div className="mt-1 w-full">
+									<input
+										type="text"
+										name="template"
+										id={'template_' + key}
+										className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+										placeholder="Template value"
+										value={value.values().next().value}
+										onChange={(e) => {
+											const value = e.currentTarget.value;
+											setMessages((data) => updateTemplateValue(data, key, value));
+										}}
+									/>
+								</div>
+							</div>
+						))}
+					</div>
+				)}
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
