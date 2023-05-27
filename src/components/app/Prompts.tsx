@@ -1,5 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { getQueryKey } from '@trpc/react-query';
 import { Link } from 'react-router-dom';
 
 import { useRequireActiveOrg } from '../propelauth';
@@ -7,19 +5,8 @@ import { trpc } from '../trpc';
 import { Layout } from './Layout';
 
 export function Prompts() {
-	const queryClient = useQueryClient();
-	const deletePromptMutation = trpc.prompts.deletePrompt.useMutation({
-		onSuccess: (data) => {
-			queryClient.setQueryData(
-				getQueryKey(trpc.prompts.getPrompts, undefined, 'query'),
-				(oldData: typeof promptsQuery.data) =>
-					oldData?.filter((prompt) => prompt.promptId !== data.promptId)
-			);
-		},
-		onSettled: () => {
-			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getPrompts));
-		},
-	});
+	const trpcUtils = trpc.useContext();
+
 	const { activeOrg } = useRequireActiveOrg();
 	const orgId = activeOrg?.orgId || '';
 	const promptsQuery = trpc.prompts.getPrompts.useQuery(
@@ -29,6 +16,30 @@ export function Prompts() {
 			staleTime: 1000,
 		}
 	);
+	const deletePromptMutation = trpc.prompts.deletePrompt.useMutation({
+		onMutate: async ({ promptId }) => {
+			// cancel any outgoing refetches (so they don't overwrite our optimistic update)
+			await trpcUtils.prompts.getPrompts.cancel({});
+			// snapshot the previous value
+			const previousPrompts = trpcUtils.prompts.getPrompts.getData({});
+			// optimistically update to the new value
+			trpcUtils.prompts.getPrompts.setData({}, (oldData) =>
+				oldData?.filter((prompt) => prompt.promptId !== promptId)
+			);
+			// return a context object with the snapshotted value
+			return { previousPrompts };
+		},
+		// if the mutation fails, use the context returned from onMutate to roll back
+		onError: (_err, _variables, context) => {
+			if (context?.previousPrompts) {
+				trpcUtils.prompts.getPrompts.setData({}, context.previousPrompts);
+			}
+		},
+		// always refetch after error or success:
+		onSettled: () => {
+			trpcUtils.prompts.getPrompts.invalidate({});
+		},
+	});
 
 	return (
 		<Layout title="Prompts with Friends / Prompts">
