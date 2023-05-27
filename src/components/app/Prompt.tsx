@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
-import { resolveTemplates } from './utils';
+import { Message, resolveTemplates } from './utils';
 
 export function Prompt() {
 	const navigate = useNavigate();
@@ -135,23 +135,30 @@ export function Prompt() {
 					>
 						Use as a template to create your own prompt
 					</button>
-					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
-						onClick={async () => {
-							if (data?.prompt.template) {
-								const json = JSON.stringify(resolveTemplates(data?.prompt.template));
-								await navigator.clipboard.writeText(code(json));
-								alert('Copied to clipboard!');
-							}
-						}}
-					>
-						Copy code to embed this prompt on your website
-					</button>
+					<CopyToClipboardBtn messages={data?.prompt.template} />
 				</div>
 			</div>
 		</Layout>
 	);
 }
+
+export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefined }) => {
+	return (
+		<button
+			type="button"
+			className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+			onClick={async () => {
+				if (messages) {
+					const json = JSON.stringify(resolveTemplates(messages));
+					await navigator.clipboard.writeText(code(json));
+					alert('Copied to clipboard!');
+				}
+			}}
+		>
+			Copy code to embed this prompt in your app (node.js)
+		</button>
+	);
+};
 
 const code = (json: string) => {
 	return `import { Configuration, OpenAIApi } from 'openai-edge';

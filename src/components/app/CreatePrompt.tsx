@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
+import { CopyToClipboardBtn } from './Prompt';
 import {
 	defaultPrivacyLevel,
 	detectTemplates,
@@ -240,6 +241,7 @@ export const EditPromptControls = ({
 							Delete
 						</button>
 					)}
+					<CopyToClipboardBtn messages={messages} />
 				</form>
 				<div>
 					{hasKey === false && (
