@@ -47,6 +47,18 @@ export function CreatePrompt() {
 	);
 }
 
+const actions = ['user', 'assistant', 'system', 'delete', 'move up', 'move down'] as const;
+
+const messageKeys = new WeakMap<Message, number>();
+const getMessageKey = (message: Message) => {
+	let key = messageKeys.get(message);
+	if (!key) {
+		key = Math.random();
+		messageKeys.set(message, key);
+	}
+	return key;
+};
+
 export const EditPromptControls = ({
 	promptId,
 	promptName,
@@ -137,7 +149,65 @@ export const EditPromptControls = ({
 				<fieldset>
 					<legend className="text-base font-medium text-gray-900">Chat history</legend>
 					{messages.map((message, index) => (
-						<div className="mt-4" key={index}>
+						<div className="mt-4" key={getMessageKey(message)}>
+							<select
+								className="border border-gray-300 rounded-md cursor-pointer"
+								onChange={(e) => {
+									const value = e.target.value as (typeof actions)[number];
+									if (value === 'delete') {
+										const confirm = window.confirm('Are you sure you want to delete this message?');
+										if (confirm) {
+											setMessages((messages) => messages.filter((_, i) => i !== index));
+										}
+									} else if (value === 'move up') {
+										setMessages((messages) => {
+											const newMessages = [...messages].filter((_, i) => i !== index);
+											newMessages.splice(index - 1, 0, message);
+											return newMessages;
+										});
+									} else if (value === 'move down') {
+										setMessages((messages) => {
+											const newMessages = [...messages].filter((_, i) => i !== index);
+											newMessages.splice(index + 1, 0, message);
+											return newMessages;
+										});
+									} else {
+										setMessages((messages) => {
+											const newMessages = [...messages];
+											const message = newMessages[index];
+											if (message) {
+												message.role = value;
+											}
+											return newMessages;
+										});
+									}
+
+									console.log(e.target.value);
+								}}
+							>
+								<option onClick={(e) => e.preventDefault()}>Perform an action</option>
+								{actions
+									.filter((x) => {
+										if (x === 'move up') {
+											return index > 0;
+										}
+										if (x === 'move down') {
+											return index < messages.length - 1;
+										}
+										return x !== message.role;
+									})
+									.map((action) => (
+										<option value={action} key={action}>
+											{action === 'delete'
+												? 'Delete'
+												: action === 'move up'
+												? 'Move up'
+												: action === 'move down'
+												? 'Move down'
+												: 'Change message type to ' + action}
+										</option>
+									))}
+							</select>
 							<label className="block text-sm font-medium text-gray-700">
 								{message.role === 'user'
 									? 'User'
@@ -166,6 +236,15 @@ export const EditPromptControls = ({
 											runPromptMutation.mutate({
 												messages: resolveTemplates(messages),
 											});
+										} else if (e.key === 'Backspace') {
+											if (e.currentTarget.value === '') {
+												const confirm = window.confirm(
+													'Are you sure you want to delete this message?'
+												);
+												if (confirm) {
+													setMessages((messages) => messages.filter((_, i) => i !== index));
+												}
+											}
 										}
 									}}
 									className={clsx(
@@ -186,10 +265,6 @@ export const EditPromptControls = ({
 					onSubmit={(e) => {
 						e.preventDefault();
 						const { submitter } = e.nativeEvent as any as { submitter: HTMLButtonElement };
-						if (submitter.name === 'delete') {
-							setMessages((messages) => messages.slice(0, -1));
-							return;
-						}
 						if (submitter.name === 'generate') {
 							runPromptMutation.mutate({
 								messages: resolveTemplates(messages),
@@ -211,7 +286,11 @@ export const EditPromptControls = ({
 					<button
 						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50"
 						name="generate"
-						disabled={!hasAnyKey || runPromptMutation.isLoading || runPromptMutation.isSuccess}
+						disabled={
+							!hasAnyKey ||
+							runPromptMutation.isLoading ||
+							!messages.find((x) => x.content.trim().length > 0)
+						}
 					>
 						Generate response
 					</button>
@@ -233,14 +312,6 @@ export const EditPromptControls = ({
 					>
 						Add new system message
 					</button>
-					{messages[messages.length - 1]?.content === '' && (
-						<button
-							className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
-							name="delete"
-						>
-							Delete
-						</button>
-					)}
 					<CopyToClipboardBtn messages={messages} />
 				</form>
 				<div>
