@@ -27,12 +27,10 @@ export const prompts = pgTable('prompts', {
 	promptId: text('id').primaryKey(),
 	userId: text('user_id').notNull(),
 	orgId: text('org_id').notNull(),
-	content: text('content'), // deprecated
-	response: text('response'), // deprecated
-	template: json('template').notNull().default('{}'),
-	title: text('title').notNull().default(''),
+	template: json('template').notNull(),
+	title: text('title').notNull(),
 	description: text('description').notNull().default(''),
-	tags: json('tags').notNull().default('[]'),
+	tags: json('tags').notNull(),
 	privacyLevel: text('privacy_level').notNull(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at').notNull().defaultNow(),

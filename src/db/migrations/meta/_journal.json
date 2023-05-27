@@ -57,6 +57,13 @@
       "when": 1684983225668,
       "tag": "0007_giant_greymalkin",
       "breakpoints": false
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1685146067636,
+      "tag": "0008_dapper_mephistopheles",
+      "breakpoints": false
     }
   ]
 }

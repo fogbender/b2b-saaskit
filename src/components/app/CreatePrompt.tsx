@@ -1,42 +1,102 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
-import { defaultPrivacyLevel, Message, PrivacyLevel, PromptState, resolveTemplates } from './utils';
+import { CopyToClipboardBtn } from './Prompt';
+import {
+	defaultPrivacyLevel,
+	detectTemplates,
+	Message,
+	PrivacyLevel,
+	PromptState,
+	resolveTemplates,
+	updateTemplateValue,
+} from './utils';
+
+const defaultPrompts = {
+	empty: [
+		{
+			role: 'user',
+			content: '',
+		},
+	],
+	pirate: [
+		{
+			role: 'system',
+			content: `Talk like a pirate.`,
+		},
+		{
+			role: 'user',
+			content: `Your name is {{name||Brick Tamland}}. You love lamp.`,
+		},
+	],
+} satisfies { [name: string]: Message[] };
 
 export function CreatePrompt() {
 	const state = useLocation().state as PromptState;
 
 	const [title, setTitle] = useState('Create prompt');
+	const [defaultTemplate, setDefaultTemplate] = useState(
+		state?.prompt?.template || defaultPrompts.empty
+	);
+	const [hasEdits, setHasEdits] = useState(false);
 	return (
-		<Layout title={title}>
+		<Layout>
+			<div className="flex items-center justify-between">
+				<h3 className="text-2xl font-bold">{title}</h3>
+				<select
+					onChange={(e) => {
+						const newTemplate = defaultPrompts[e.target.value as keyof typeof defaultPrompts];
+						if (newTemplate) {
+							const confirmed =
+								!hasEdits ||
+								window.confirm(
+									'Are you sure you want to change the template? This will overwrite your current prompt.'
+								);
+							if (confirmed) {
+								setHasEdits(false);
+								setDefaultTemplate(newTemplate);
+							}
+						}
+					}}
+				>
+					<option>Select a template</option>
+					{Object.keys(defaultPrompts).map((name) => (
+						<option key={name} value={name}>
+							{name}
+						</option>
+					))}
+				</select>
+			</div>
 			<EditPromptControls
 				promptName={state?.prompt?.title}
 				promptDescription={state?.prompt?.description}
 				promptTags={state?.prompt?.tags}
 				promptVisibility={defaultPrivacyLevel(state?.prompt?.privacyLevel)}
 				setTitle={setTitle}
-				template={
-					state?.prompt?.template || [
-						{
-							role: 'system',
-							content: `Talk like a pirate.`,
-						},
-						{
-							role: 'user',
-							content: `Your name is {{name||Brick Tamland}}. You love lamp.`,
-						},
-					]
-				}
+				template={defaultTemplate}
+				setHasEdits={setHasEdits}
 			/>
 		</Layout>
 	);
 }
+
+const actions = ['user', 'assistant', 'system', 'delete', 'move up', 'move down'] as const;
+
+const messageKeys = new WeakMap<Message, number>();
+const getMessageKey = (message: Message) => {
+	let key = messageKeys.get(message);
+	if (!key) {
+		key = Math.random();
+		messageKeys.set(message, key);
+	}
+	return key;
+};
 
 export const EditPromptControls = ({
 	promptId,
@@ -46,6 +106,7 @@ export const EditPromptControls = ({
 	promptVisibility,
 	template: initialMessages,
 	setTitle,
+	setHasEdits,
 }: {
 	promptId?: string; // if present, edit existing prompt
 	promptName?: string;
@@ -54,9 +115,17 @@ export const EditPromptControls = ({
 	promptVisibility?: PrivacyLevel;
 	template: Message[];
 	setTitle?: (title: string) => void;
+	setHasEdits?: (hasEdits: boolean) => void;
 }) => {
 	const queryClient = useQueryClient();
-	const [messages, setMessages] = useState<Message[]>(initialMessages);
+	const [messages, setMessagesOriginal] = useState<Message[]>(initialMessages);
+	useEffect(() => {
+		setMessagesOriginal(initialMessages);
+	}, [initialMessages]);
+	const setMessages: typeof setMessagesOriginal = (action) => {
+		setHasEdits?.(true);
+		setMessagesOriginal(action);
+	};
 	const len = messages.length;
 	const initialLen = initialMessages.length;
 	useEffect(() => {
@@ -65,6 +134,11 @@ export const EditPromptControls = ({
 			setTitle?.(`Create pro${'o'.repeat(n)}mpt`);
 		}
 	}, [len, initialLen]);
+
+	const templates = useMemo(() => {
+		return detectTemplates(messages);
+	}, [messages]);
+
 	const runPromptMutation = trpc.prompts.runPrompt.useMutation({
 		onSettled: () => {
 			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getDefaultKey));
@@ -123,7 +197,67 @@ export const EditPromptControls = ({
 				<fieldset>
 					<legend className="text-base font-medium text-gray-900">Chat history</legend>
 					{messages.map((message, index) => (
-						<div className="mt-4" key={index}>
+						<div className="mt-4" key={getMessageKey(message)}>
+							<select
+								className="border border-gray-300 rounded-md cursor-pointer"
+								onChange={(e) => {
+									const value = e.target.value as (typeof actions)[number];
+									if (value === 'delete') {
+										const confirm = window.confirm('Are you sure you want to delete this message?');
+										if (confirm) {
+											setMessages((messages) => messages.filter((_, i) => i !== index));
+										}
+									} else if (value === 'move up') {
+										setMessages((messages) => {
+											const newMessages = [...messages].filter((_, i) => i !== index);
+											newMessages.splice(index - 1, 0, message);
+											return newMessages;
+										});
+									} else if (value === 'move down') {
+										setMessages((messages) => {
+											const newMessages = [...messages].filter((_, i) => i !== index);
+											newMessages.splice(index + 1, 0, message);
+											return newMessages;
+										});
+									} else {
+										setMessages((messages) => {
+											const key = getMessageKey(message);
+											const newMessages = structuredClone(messages);
+											const x = newMessages[index];
+											if (x) {
+												messageKeys.set(x, key); // to preserve key
+												x.role = value;
+											}
+											return newMessages;
+										});
+									}
+
+									console.log(e.target.value);
+								}}
+							>
+								<option onClick={(e) => e.preventDefault()}>Perform an action</option>
+								{actions
+									.filter((x) => {
+										if (x === 'move up') {
+											return index > 0;
+										}
+										if (x === 'move down') {
+											return index < messages.length - 1;
+										}
+										return x !== message.role;
+									})
+									.map((action) => (
+										<option value={action} key={action}>
+											{action === 'delete'
+												? 'Delete'
+												: action === 'move up'
+												? 'Move up'
+												: action === 'move down'
+												? 'Move down'
+												: 'Change message type to ' + action}
+										</option>
+									))}
+							</select>
 							<label className="block text-sm font-medium text-gray-700">
 								{message.role === 'user'
 									? 'User'
@@ -133,29 +267,17 @@ export const EditPromptControls = ({
 								template
 							</label>
 							<div className="mt-1 w-full">
-								<div
-									contentEditable
-									// suppressContentEditableWarning={true}
-									data-content={message.content}
-									data-role={message.role}
-									data-last={index === messages.length - 1}
-									ref={setValueOnMount}
-									role="textbox"
-									aria-multiline="true"
-									onFocus={(e) => {
-										// https://codepen.io/sinfullycoded/details/oNLBJpm
-										window.getSelection()?.selectAllChildren(e.currentTarget);
-										window.getSelection()?.collapseToEnd();
-									}}
-									onBlur={(e) => {
-										e.currentTarget.innerText = e.currentTarget.innerText || '';
-									}}
-									onInput={(e) => {
-										const newText = e.currentTarget.innerText;
+								<textarea
+									ref={onMount}
+									value={message.content}
+									onChange={(e) => {
+										const newText = e.currentTarget.value;
 										setMessages((messages) => {
-											const newMessages = [...messages];
+											const key = getMessageKey(message);
+											const newMessages = structuredClone(messages);
 											const x = newMessages[index];
 											if (x) {
+												messageKeys.set(x, key); // to preserve the same key
 												x.content = newText;
 											}
 											return newMessages;
@@ -166,6 +288,15 @@ export const EditPromptControls = ({
 											runPromptMutation.mutate({
 												messages: resolveTemplates(messages),
 											});
+										} else if (e.key === 'Backspace') {
+											if (e.currentTarget.value === '') {
+												const confirm = window.confirm(
+													'Are you sure you want to delete this message?'
+												);
+												if (confirm) {
+													setMessages((messages) => messages.filter((_, i) => i !== index));
+												}
+											}
 										}
 									}}
 									className={clsx(
@@ -176,7 +307,7 @@ export const EditPromptControls = ({
 											: '',
 										'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2 min-h-[8rem] resize-y overflow-y-scroll whitespace-pre-wrap'
 									)}
-								></div>
+								></textarea>
 							</div>
 						</div>
 					))}
@@ -186,10 +317,6 @@ export const EditPromptControls = ({
 					onSubmit={(e) => {
 						e.preventDefault();
 						const { submitter } = e.nativeEvent as any as { submitter: HTMLButtonElement };
-						if (submitter.name === 'delete') {
-							setMessages((messages) => messages.slice(0, -1));
-							return;
-						}
 						if (submitter.name === 'generate') {
 							runPromptMutation.mutate({
 								messages: resolveTemplates(messages),
@@ -211,7 +338,11 @@ export const EditPromptControls = ({
 					<button
 						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50"
 						name="generate"
-						disabled={!hasAnyKey || runPromptMutation.isLoading || runPromptMutation.isSuccess}
+						disabled={
+							!hasAnyKey ||
+							runPromptMutation.isLoading ||
+							!messages.find((x) => x.content.trim().length > 0)
+						}
 					>
 						Generate response
 					</button>
@@ -233,14 +364,7 @@ export const EditPromptControls = ({
 					>
 						Add new system message
 					</button>
-					{messages[messages.length - 1]?.content === '' && (
-						<button
-							className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
-							name="delete"
-						>
-							Delete
-						</button>
-					)}
+					<CopyToClipboardBtn messages={messages} />
 				</form>
 				<div>
 					{hasKey === false && (
@@ -268,6 +392,35 @@ export const EditPromptControls = ({
 						<div className="text-sm text-red-500">{runPromptMutation.data?.error}</div>
 					)}
 				</div>
+				{templates.size > 0 && (
+					<div>
+						<div className="text-base font-medium text-gray-900">Template values</div>
+						{[...templates.entries()].map(([key, value]) => (
+							<div key={key} className="mt-4">
+								<label
+									className="block text-sm font-medium text-gray-700 capitalize"
+									htmlFor={'template_' + key}
+								>
+									{key}
+								</label>
+								<div className="mt-1 w-full">
+									<input
+										type="text"
+										name="template"
+										id={'template_' + key}
+										className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+										placeholder="Template value"
+										value={value.values().next().value}
+										onChange={(e) => {
+											const value = e.currentTarget.value;
+											setMessages((data) => updateTemplateValue(data, key, value));
+										}}
+									/>
+								</div>
+							</div>
+						))}
+					</div>
+				)}
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
@@ -417,12 +570,9 @@ export const EditPromptControls = ({
 	);
 };
 
-function setValueOnMount(el: HTMLDivElement | null) {
+function onMount(el: HTMLTextAreaElement | null) {
 	if (el) {
-		el.textContent = el.dataset.content ?? null;
-		if (el.dataset.role === 'user' && el.dataset.last === 'true') {
-			el.focus();
-		}
+		el.setSelectionRange(el.value.length, el.value.length);
 	}
 }
 
