@@ -172,6 +172,7 @@ export const promptsRouter = createTRPCRouter({
 					description,
 					tags,
 					template,
+					updatedAt: new Date(),
 				})
 				.where(eq(prompts.promptId, input.promptId));
 			return input.promptId;
