@@ -18,30 +18,69 @@ import {
 	updateTemplateValue,
 } from './utils';
 
-const defaultPrompts = [
-	{
-		role: 'system' as const,
-		content: `Talk like a pirate.`,
-	},
-	{
-		role: 'user' as const,
-		content: `Your name is {{name||Brick Tamland}}. You love lamp.`,
-	},
-];
+const defaultPrompts = {
+	empty: [
+		{
+			role: 'user',
+			content: '',
+		},
+	],
+	pirate: [
+		{
+			role: 'system',
+			content: `Talk like a pirate.`,
+		},
+		{
+			role: 'user',
+			content: `Your name is {{name||Brick Tamland}}. You love lamp.`,
+		},
+	],
+} satisfies { [name: string]: Message[] };
 
 export function CreatePrompt() {
 	const state = useLocation().state as PromptState;
 
 	const [title, setTitle] = useState('Create prompt');
+	const [defaultTemplate, setDefaultTemplate] = useState(
+		state?.prompt?.template || defaultPrompts.empty
+	);
+	const [hasEdits, setHasEdits] = useState(false);
 	return (
-		<Layout title={title}>
+		<Layout>
+			<div className="flex items-center justify-between">
+				<h3 className="text-2xl font-bold">{title}</h3>
+				<select
+					onChange={(e) => {
+						const newTemplate = defaultPrompts[e.target.value as keyof typeof defaultPrompts];
+						if (newTemplate) {
+							const confirmed =
+								!hasEdits ||
+								window.confirm(
+									'Are you sure you want to change the template? This will overwrite your current prompt.'
+								);
+							if (confirmed) {
+								setHasEdits(false);
+								setDefaultTemplate(newTemplate);
+							}
+						}
+					}}
+				>
+					<option>Select a template</option>
+					{Object.keys(defaultPrompts).map((name) => (
+						<option key={name} value={name}>
+							{name}
+						</option>
+					))}
+				</select>
+			</div>
 			<EditPromptControls
 				promptName={state?.prompt?.title}
 				promptDescription={state?.prompt?.description}
 				promptTags={state?.prompt?.tags}
 				promptVisibility={defaultPrivacyLevel(state?.prompt?.privacyLevel)}
 				setTitle={setTitle}
-				template={state?.prompt?.template || defaultPrompts}
+				template={defaultTemplate}
+				setHasEdits={setHasEdits}
 			/>
 		</Layout>
 	);
@@ -67,6 +106,7 @@ export const EditPromptControls = ({
 	promptVisibility,
 	template: initialMessages,
 	setTitle,
+	setHasEdits,
 }: {
 	promptId?: string; // if present, edit existing prompt
 	promptName?: string;
@@ -75,9 +115,17 @@ export const EditPromptControls = ({
 	promptVisibility?: PrivacyLevel;
 	template: Message[];
 	setTitle?: (title: string) => void;
+	setHasEdits?: (hasEdits: boolean) => void;
 }) => {
 	const queryClient = useQueryClient();
-	const [messages, setMessages] = useState<Message[]>(initialMessages);
+	const [messages, setMessagesOriginal] = useState<Message[]>(initialMessages);
+	useEffect(() => {
+		setMessagesOriginal(initialMessages);
+	}, [initialMessages]);
+	const setMessages: typeof setMessagesOriginal = (action) => {
+		setHasEdits?.(true);
+		setMessagesOriginal(action);
+	};
 	const len = messages.length;
 	const initialLen = initialMessages.length;
 	useEffect(() => {
@@ -173,10 +221,12 @@ export const EditPromptControls = ({
 										});
 									} else {
 										setMessages((messages) => {
-											const newMessages = [...messages];
-											const message = newMessages[index];
-											if (message) {
-												message.role = value;
+											const key = getMessageKey(message);
+											const newMessages = structuredClone(messages);
+											const x = newMessages[index];
+											if (x) {
+												messageKeys.set(x, key); // to preserve key
+												x.role = value;
 											}
 											return newMessages;
 										});
@@ -223,9 +273,11 @@ export const EditPromptControls = ({
 									onChange={(e) => {
 										const newText = e.currentTarget.value;
 										setMessages((messages) => {
-											const newMessages = [...messages];
+											const key = getMessageKey(message);
+											const newMessages = structuredClone(messages);
 											const x = newMessages[index];
 											if (x) {
+												messageKeys.set(x, key); // to preserve the same key
 												x.content = newText;
 											}
 											return newMessages;
