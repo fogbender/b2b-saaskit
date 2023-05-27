@@ -133,25 +133,11 @@ export const EditPromptControls = ({
 								template
 							</label>
 							<div className="mt-1 w-full">
-								<div
-									contentEditable
-									// suppressContentEditableWarning={true}
-									data-content={message.content}
-									data-role={message.role}
-									data-last={index === messages.length - 1}
-									ref={setValueOnMount}
-									role="textbox"
-									aria-multiline="true"
-									onFocus={(e) => {
-										// https://codepen.io/sinfullycoded/details/oNLBJpm
-										window.getSelection()?.selectAllChildren(e.currentTarget);
-										window.getSelection()?.collapseToEnd();
-									}}
-									onBlur={(e) => {
-										e.currentTarget.innerText = e.currentTarget.innerText || '';
-									}}
-									onInput={(e) => {
-										const newText = e.currentTarget.innerText;
+								<textarea
+									ref={onMount}
+									value={message.content}
+									onChange={(e) => {
+										const newText = e.currentTarget.value;
 										setMessages((messages) => {
 											const newMessages = [...messages];
 											const x = newMessages[index];
@@ -176,7 +162,7 @@ export const EditPromptControls = ({
 											: '',
 										'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2 min-h-[8rem] resize-y overflow-y-scroll whitespace-pre-wrap'
 									)}
-								></div>
+								></textarea>
 							</div>
 						</div>
 					))}
@@ -417,12 +403,9 @@ export const EditPromptControls = ({
 	);
 };
 
-function setValueOnMount(el: HTMLDivElement | null) {
+function onMount(el: HTMLTextAreaElement | null) {
 	if (el) {
-		el.textContent = el.dataset.content ?? null;
-		if (el.dataset.role === 'user' && el.dataset.last === 'true') {
-			el.focus();
-		}
+		el.setSelectionRange(el.value.length, el.value.length);
 	}
 }
 
