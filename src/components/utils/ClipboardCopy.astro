@@ -22,7 +22,7 @@ const { className, text, options, onCopy } = Astro.props as CopyClipboard;
 ---
 
 <clipboard-copy
-	class:list={['cursor-pointer', className, ...onNotFocusClasses]}
+	class:list={[className, ...onNotFocusClasses]}
 	text={text}
 	onCopy={onCopy}
 	options={JSON.stringify(options)}
@@ -33,7 +33,6 @@ const { className, text, options, onCopy } = Astro.props as CopyClipboard;
 </clipboard-copy>
 
 <script>
-	import copy from 'copy-to-clipboard';
 	class ClipboardCopy extends HTMLElement {
 		text: string;
 		options?: { debug: boolean; message: string; format: string };
@@ -54,12 +53,9 @@ const { className, text, options, onCopy } = Astro.props as CopyClipboard;
 				? eval(`(${this.getAttribute('onCopy')})`)
 				: undefined;
 
-			this.addEventListener('click', () => {
-				const result = copy(this.text, this.options);
+			this.addEventListener('click', async () => {
+				await navigator.clipboard.writeText(this.text);
 				this.setCopy();
-				if (this.onCopy) {
-					this.onCopy(this.text, result);
-				}
 			});
 		}
 
