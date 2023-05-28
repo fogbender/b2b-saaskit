@@ -4980,7 +4980,7 @@ suf-log@^2.5.3:
   dependencies:
     s.color "0.0.15"
 
-superjson@^1.10.0:
+superjson@^1.10.0, superjson@^1.12.3:
   version "1.12.3"
   resolved "https://registry.yarnpkg.com/superjson/-/superjson-1.12.3.tgz#383aacfd795c6eef24c383c70154c6cbbcbfb31a"
   integrity sha512-0j+U70KUtP8+roVPbwfqkyQI7lBt7ETnuA7KXbTDX3mCKiD/4fXs2ldKSMdt0MCfpTwiMxo20yFU3vu6ewETpQ==
