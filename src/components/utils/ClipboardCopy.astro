@@ -1,6 +1,5 @@
 ---
 type CopyClipboard = {
-	text: string | undefined;
 	className?: string;
 	onCopy?: (text: string | undefined, result: boolean) => void;
 	options?: {
@@ -18,12 +17,11 @@ const onNotFocusClasses = [
 ];
 const onFocusClasses = ['text-green-500'];
 
-const { className, text, options, onCopy } = Astro.props as CopyClipboard;
+const { className, options, onCopy } = Astro.props as CopyClipboard;
 ---
 
 <clipboard-copy
 	class:list={[className, ...onNotFocusClasses]}
-	text={text}
 	onCopy={onCopy}
 	options={JSON.stringify(options)}
 	onFocusClasses={JSON.stringify(onFocusClasses)}
@@ -34,14 +32,12 @@ const { className, text, options, onCopy } = Astro.props as CopyClipboard;
 
 <script>
 	class ClipboardCopy extends HTMLElement {
-		text: string;
 		options?: { debug: boolean; message: string; format: string };
 		onCopy?: ((text: string | undefined, result: boolean) => void) | undefined;
 		onFocusClasses: string[];
 		onNotFocusClasses: string[];
 		constructor() {
 			super();
-			this.text = this.getAttribute('text') || '';
 
 			this.onFocusClasses = this.parseInput(this.getAttribute('onFocusClasses') || '[]');
 
@@ -54,8 +50,14 @@ const { className, text, options, onCopy } = Astro.props as CopyClipboard;
 				: undefined;
 
 			this.addEventListener('click', async () => {
-				await navigator.clipboard.writeText(this.text);
-				this.setCopy();
+				const pre = this.closest(':has(pre)')?.querySelector('pre');
+				if (pre && pre.textContent) {
+					await navigator.clipboard.writeText(pre.textContent);
+					this.setCopy();
+				} else {
+					console.error('No pre found for clipboard-copy', this, pre);
+					throw new Error('No pre found for clipboard-copy');
+				}
 			});
 		}
 
@@ -77,9 +79,7 @@ const { className, text, options, onCopy } = Astro.props as CopyClipboard;
 		}
 
 		attributeChangedCallback(name: string, _: any, newValue: any) {
-			if (name === 'text') {
-				this.text = newValue || '';
-			} else if (name === 'options') {
+			if (name === 'options') {
 				this.options = JSON.parse(newValue || '{}');
 			} else if (name === 'onCopy') {
 				this.onCopy = newValue ? eval(`(${newValue})`) : undefined;
@@ -87,7 +87,7 @@ const { className, text, options, onCopy } = Astro.props as CopyClipboard;
 		}
 
 		static get observedAttributes() {
-			return ['text', 'options', 'onCopy'];
+			return ['options', 'onCopy'];
 		}
 	}
 
