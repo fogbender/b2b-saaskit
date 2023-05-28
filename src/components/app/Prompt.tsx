@@ -92,6 +92,9 @@ export function Prompt() {
 								by {data?.author.name || data?.author.email || data?.prompt.userId}
 							</h3>
 							<p className="my-4">Created: {data?.prompt.createdAt.toLocaleString()}</p>
+							{data?.prompt.createdAt.getTime() !== data?.prompt.updatedAt.getTime() && (
+								<p className="my-4">Updated: {data?.prompt.updatedAt.toLocaleString()}</p>
+							)}
 						</div>
 						<div>
 							<h3 className="text-xl font-medium mb-4">Comments:</h3>

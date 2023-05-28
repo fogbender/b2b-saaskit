@@ -58,6 +58,7 @@ export const promptsRouter = createTRPCRouter({
 					tags: prompts.tags,
 					template: prompts.template,
 					createdAt: prompts.createdAt,
+					updatedAt: prompts.updatedAt,
 					likes: sql<number>`count(${promptLikes.userId})::int`,
 					myLike: sql<boolean>`SUM(CASE WHEN ${promptLikes.userId} = ${userId} THEN 1 ELSE 0 END) > 0`,
 				})
