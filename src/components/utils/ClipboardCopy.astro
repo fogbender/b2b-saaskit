@@ -2,30 +2,17 @@
 type CopyClipboard = {
 	className?: string;
 	onCopy?: (text: string | undefined, result: boolean) => void;
-	options?: {
-		debug: boolean;
-		message: string;
-		format: string;
-	};
 };
-const onNotFocusClasses = [
-	'text-white',
-	'transition',
-	'duration-100',
-	'ease-linear',
-	'hover:text-red-500',
-];
-const onFocusClasses = ['text-green-500'];
 
-const { className, options, onCopy } = Astro.props as CopyClipboard;
+const { className, onCopy } = Astro.props as CopyClipboard;
 ---
 
 <clipboard-copy
-	class:list={[className, ...onNotFocusClasses]}
+	class:list={[
+		'text-white transition duration-100 ease-linear hover:text-red-500 data-[copied]:text-green-500',
+		className,
+	]}
 	onCopy={onCopy}
-	options={JSON.stringify(options)}
-	onFocusClasses={JSON.stringify(onFocusClasses)}
-	onNotFocusClasses={JSON.stringify(onNotFocusClasses)}
 >
 	<slot />
 </clipboard-copy>
@@ -34,14 +21,8 @@ const { className, options, onCopy } = Astro.props as CopyClipboard;
 	class ClipboardCopy extends HTMLElement {
 		options?: { debug: boolean; message: string; format: string };
 		onCopy?: ((text: string | undefined, result: boolean) => void) | undefined;
-		onFocusClasses: string[];
-		onNotFocusClasses: string[];
 		constructor() {
 			super();
-
-			this.onFocusClasses = this.parseInput(this.getAttribute('onFocusClasses') || '[]');
-
-			this.onNotFocusClasses = this.parseInput(this.getAttribute('onNotFocusClasses') || '[]');
 
 			this.options = this.parseInput(this.getAttribute('options') || '{}');
 
@@ -62,11 +43,10 @@ const { className, options, onCopy } = Astro.props as CopyClipboard;
 		}
 
 		setCopy() {
-			this.toggleClassNames(this.onNotFocusClasses, this.onFocusClasses);
-			const timer = setTimeout(() => {
-				this.toggleClassNames(this.onFocusClasses, this.onNotFocusClasses);
+			this.dataset.copied = 'true';
+			setTimeout(() => {
+				delete this.dataset.copied;
 			}, 3000);
-			() => clearTimeout(timer);
 		}
 
 		parseInput(input: string) {
