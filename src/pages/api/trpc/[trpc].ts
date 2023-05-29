@@ -16,7 +16,7 @@ export const all: APIRoute = ({ request }) => {
 		},
 		onError({ error }) {
 			if (import.meta.env.DEV && error.code === 'INTERNAL_SERVER_ERROR') {
-				throw new Error(error as unknown as string);
+				throw error;
 			}
 		},
 	});
