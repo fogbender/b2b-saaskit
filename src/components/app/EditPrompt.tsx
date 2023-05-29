@@ -28,6 +28,8 @@ export function EditPrompt() {
 					template={data.prompt.template}
 				/>
 			)}
+			{promptsQuery.isLoading && <div>Loading...</div>}
+			{promptsQuery.error && <div className="text-red-500">{promptsQuery.error.message}</div>}
 		</Layout>
 	);
 }
