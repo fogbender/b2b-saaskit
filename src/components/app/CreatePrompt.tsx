@@ -77,7 +77,7 @@ export function CreatePrompt() {
 				promptName={state?.prompt?.title}
 				promptDescription={state?.prompt?.description}
 				promptTags={state?.prompt?.tags}
-				promptVisibility={defaultPrivacyLevel(state?.prompt?.privacyLevel)}
+				promptPrivacyLevel={defaultPrivacyLevel(state?.prompt?.privacyLevel)}
 				setTitle={setTitle}
 				template={defaultTemplate}
 				setHasEdits={setHasEdits}
@@ -103,7 +103,7 @@ export const EditPromptControls = ({
 	promptName,
 	promptDescription,
 	promptTags,
-	promptVisibility,
+	promptPrivacyLevel,
 	template: initialMessages,
 	setTitle,
 	setHasEdits,
@@ -112,7 +112,7 @@ export const EditPromptControls = ({
 	promptName?: string;
 	promptDescription?: string;
 	promptTags?: string[];
-	promptVisibility?: PrivacyLevel;
+	promptPrivacyLevel?: PrivacyLevel;
 	template: Message[];
 	setTitle?: (title: string) => void;
 	setHasEdits?: (hasEdits: boolean) => void;
@@ -430,7 +430,7 @@ export const EditPromptControls = ({
 							...(Object.fromEntries(formData) as {
 								title: string;
 								description: string;
-								visibility: PrivacyLevel;
+								privacyLevel: PrivacyLevel;
 							}),
 							tags:
 								formData
@@ -498,22 +498,25 @@ export const EditPromptControls = ({
 							</div>
 						</div>
 						<div className="mt-4">
-							<label className="block text-sm font-medium text-gray-700" htmlFor="promptVisibility">
+							<label
+								className="block text-sm font-medium text-gray-700"
+								htmlFor="promptPrivacyLevel"
+							>
 								Visibility
 							</label>
 							<div className="mt-1 w-full">
 								<select
-									id="promptVisibility"
-									name="visibility"
+									id="promptPrivacyLevel"
+									name="privacyLevel"
 									className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-									defaultValue={promptVisibility}
+									defaultValue={promptPrivacyLevel}
 								>
 									<option value="public">Public (indexed by Google)</option>
-									<option value="team">
-										Team (only members of your organization can access it)
-									</option>
 									<option value="unlisted">
 										Unlisted (only people with the link can access it)
+									</option>
+									<option value="team">
+										Team (only members of your organization can access it)
 									</option>
 									<option value="private">Private (only you can access it)</option>
 								</select>

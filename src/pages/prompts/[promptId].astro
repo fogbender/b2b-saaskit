@@ -1,0 +1,23 @@
+---
+import AppLayout from '../../components/app/AppLayout.astro';
+import { Root } from '../../components/app/Root';
+import { createRouterContext } from '../../lib/router';
+
+export const prerender = false; // to enable dynamic routing
+
+const res = await createRouterContext(Astro);
+if (res.kind === 'response') {
+	return res.response;
+}
+
+const x = await res.helpers.prompts.getPrompt
+	.fetch({ promptId: Astro.params.promptId! })
+	.then((prompt) => ({ kind: 'ok' as const, prompt }))
+	.catch((error) => ({ kind: 'error' as const, error }));
+
+const title = (x.kind === 'ok' && x.prompt.prompt.title) || 'Prompts with Friends';
+---
+
+<AppLayout title={title}>
+	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
+</AppLayout>
