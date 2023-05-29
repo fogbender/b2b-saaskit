@@ -1,8 +1,10 @@
+import type { User } from '@propelauth/node';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
+import type { PrivacyLevel } from '../../../components/app/utils';
 import { db } from '../../../db/db';
 import { gptKeys, promptLikes, prompts, sharedKeyRatelimit } from '../../../db/schema';
 import { usersToPublicUserInfo } from '../../../pages/api/orgs/[orgId]';
@@ -48,11 +50,13 @@ export const promptsRouter = createTRPCRouter({
 		)
 		.query(async ({ input, ctx }) => {
 			const user = await ctx.userPromise;
-			const userId = user.kind === 'ok' ? user.user.userId : undefined;
+			const userData = user.kind === 'ok' ? user.user : undefined;
+			const userId = userData?.userId;
 			const res = await db
 				.select({
 					promptId: prompts.promptId,
 					userId: prompts.userId,
+					orgId: prompts.orgId,
 					privacyLevel: prompts.privacyLevel,
 					title: prompts.title,
 					description: prompts.description,
@@ -69,18 +73,31 @@ export const promptsRouter = createTRPCRouter({
 				.leftJoin(promptLikes, eq(promptLikes.promptId, prompts.promptId))
 				.groupBy(prompts.promptId)
 				.where(eq(prompts.promptId, input.promptId));
-			const prompt = res[0];
-			if (!prompt) {
+			const originalPrompt = res[0];
+			if (!originalPrompt) {
 				throw new TRPCError({
 					code: 'NOT_FOUND',
 					message: `Prompt ${input.promptId} not found`,
 				});
 			}
-			if (prompt.privacyLevel !== 'public') {
-				throw new TRPCError({
-					code: 'FORBIDDEN',
-					message: `Prompt ${input.promptId} is private`,
-				});
+			const validPrivacyLevel = privacyLevelSchema.safeParse(originalPrompt.privacyLevel);
+			const prompt = {
+				...originalPrompt,
+				privacyLevel: validPrivacyLevel.success ? validPrivacyLevel.data : 'private',
+			};
+			const error = checkAccessToPrompt(prompt, userData);
+			if (error) {
+				if (error === 'UNAUTHORIZED') {
+					throw new TRPCError({
+						code: 'UNAUTHORIZED',
+						message: `You need to sign in to access this prompt.`,
+					});
+				} else {
+					throw new TRPCError({
+						code: 'FORBIDDEN',
+						message: `You don't have access to this prompt.`,
+					});
+				}
 			}
 			const users = await resolvePropelPublicUsers([prompt.userId]);
 			const author = users.kind === 'ok' ? users.users[prompt.userId] : undefined;
@@ -91,10 +108,8 @@ export const promptsRouter = createTRPCRouter({
 					message: 'Error fetching users',
 				});
 			}
-			// TODO: check user and org access
-			const { likes, template, privacyLevel, tags, myLike, ...rest } = prompt;
+			const { likes, template, tags, myLike, ...rest } = prompt;
 			const validTemplate = z.array(messageSchema).safeParse(template);
-			const validPrivacyLevel = privacyLevelSchema.safeParse(privacyLevel);
 			const validTags = z.array(z.string()).safeParse(tags);
 			return {
 				canEdit: prompt.userId === userId,
@@ -103,10 +118,11 @@ export const promptsRouter = createTRPCRouter({
 				prompt: {
 					...rest,
 					template: validTemplate.success ? validTemplate.data : [],
-					privacyLevel: validPrivacyLevel.success ? validPrivacyLevel.data : 'private',
 					tags: validTags.success ? validTags.data : [],
 				},
 				author,
+				shareUrl: new URL(ctx.req.url).origin + '/app/prompts/' + prompt.promptId,
+				publicUrl: new URL(ctx.req.url).origin + '/prompts/' + prompt.promptId,
 			};
 		}),
 	getPrompts: orgProcedure.query(async ({ ctx }) => {
@@ -432,4 +448,36 @@ function resolvePropelPublicUsers(userIds: string[]) {
 		}
 		return result;
 	});
+}
+
+function checkAccessToPrompt(
+	prompt: { promptId: string; privacyLevel: PrivacyLevel; userId: string; orgId: string },
+	user: User | undefined
+) {
+	const privacyLevel = prompt.privacyLevel;
+
+	// everyone can access public and unlisted prompts
+	if (privacyLevel === 'public' || privacyLevel === 'unlisted') {
+		return undefined;
+	}
+	// you need to be signed in to access private or team prompts
+	if (!user) {
+		return 'UNAUTHORIZED';
+	}
+	// owners can access their own prompts
+	if (prompt.userId === user.userId) {
+		return undefined;
+	}
+	// no one else can access private prompts
+	if (privacyLevel === 'private') {
+		return 'FORBIDDEN';
+	}
+	// you need to be in the same team to access team prompts
+	if (privacyLevel === 'team') {
+		const hasAccess = user.orgIdToOrgMemberInfo?.[prompt.orgId] !== undefined;
+		if (!hasAccess) {
+			return undefined;
+		}
+	}
+	return 'FORBIDDEN';
 }

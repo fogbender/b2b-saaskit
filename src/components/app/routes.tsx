@@ -17,6 +17,21 @@ import { Settings } from './Settings';
 
 export const routes: RemixBrowserContext & RouteObject[] = [
 	{
+		path: '/prompts/:promptId',
+		loader: async ({ params }) => {
+			const promptId = params.promptId;
+			if (promptId) {
+				// pre-fetch in SSR is done oustide of the loader in .astro file
+				// pre-fetch in browser
+				await routes.trpcUtils?.prompts.getPrompt.ensureData({ promptId }).catch(() => {});
+			}
+			return null;
+		},
+		Component() {
+			return <Prompt />;
+		},
+	},
+	{
 		path: '/app',
 		Component() {
 			return (
@@ -56,7 +71,7 @@ export const routes: RemixBrowserContext & RouteObject[] = [
 						// pre-fetch in SSR
 						await context?.helpers.prompts.getPrompt.prefetch({ promptId });
 						// pre-fetch in browser
-						await routes.trpcUtils?.prompts.getPrompt.ensureData({ promptId });
+						await routes.trpcUtils?.prompts.getPrompt.ensureData({ promptId }).catch(() => {});
 					}
 					return null;
 				},
