@@ -24,7 +24,7 @@ export function EditPrompt() {
 					promptName={data.prompt.title}
 					promptDescription={data.prompt.description}
 					promptTags={data.prompt.tags}
-					promptVisibility={data.prompt.privacyLevel}
+					promptPrivacyLevel={data.prompt.privacyLevel}
 					template={data.prompt.template}
 				/>
 			)}
