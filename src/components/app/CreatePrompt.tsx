@@ -512,11 +512,11 @@ export const EditPromptControls = ({
 									defaultValue={promptPrivacyLevel}
 								>
 									<option value="public">Public (indexed by Google)</option>
-									<option value="team">
-										Team (only members of your organization can access it)
-									</option>
 									<option value="unlisted">
 										Unlisted (only people with the link can access it)
+									</option>
+									<option value="team">
+										Team (only members of your organization can access it)
 									</option>
 									<option value="private">Private (only you can access it)</option>
 								</select>
