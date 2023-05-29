@@ -22,12 +22,13 @@ const messageSchema = z.object({
 	content: z.string(),
 });
 type Message = z.infer<typeof messageSchema>;
-const visibilitySchema = z.union([
+const privacyLevelSchema = z.union([
 	z.literal('public'),
 	z.literal('team'),
 	z.literal('unlisted'),
 	z.literal('private'),
 ]);
+export type PromptPrivacyLevel = z.infer<typeof privacyLevelSchema>;
 
 export const promptsRouter = createTRPCRouter({
 	getComments: publicProcedure.input(z.object({ promptId: z.string() })).query(async () => {
@@ -93,7 +94,7 @@ export const promptsRouter = createTRPCRouter({
 			// TODO: check user and org access
 			const { likes, template, privacyLevel, tags, myLike, ...rest } = prompt;
 			const validTemplate = z.array(messageSchema).safeParse(template);
-			const validPrivacyLevel = visibilitySchema.safeParse(privacyLevel);
+			const validPrivacyLevel = privacyLevelSchema.safeParse(privacyLevel);
 			const validTags = z.array(z.string()).safeParse(tags);
 			return {
 				canEdit: prompt.userId === userId,
@@ -133,7 +134,7 @@ export const promptsRouter = createTRPCRouter({
 				description: z.string().optional(),
 				tags: z.array(z.string()),
 				template: z.array(messageSchema),
-				visibility: visibilitySchema,
+				privacyLevel: privacyLevelSchema,
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -170,7 +171,7 @@ export const promptsRouter = createTRPCRouter({
 				.set({
 					orgId: ctx.requiredOrgId,
 					userId: ctx.user.userId,
-					privacyLevel: 'public',
+					privacyLevel: input.privacyLevel,
 					title,
 					description,
 					tags,
@@ -187,7 +188,7 @@ export const promptsRouter = createTRPCRouter({
 				description: z.string().optional(),
 				tags: z.array(z.string()),
 				template: z.array(messageSchema),
-				visibility: visibilitySchema,
+				privacyLevel: privacyLevelSchema,
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -201,7 +202,7 @@ export const promptsRouter = createTRPCRouter({
 				orgId: ctx.requiredOrgId,
 				promptId,
 				userId: ctx.user.userId,
-				privacyLevel: 'public',
+				privacyLevel: input.privacyLevel,
 				title,
 				description,
 				tags,

@@ -430,7 +430,7 @@ export const EditPromptControls = ({
 							...(Object.fromEntries(formData) as {
 								title: string;
 								description: string;
-								visibility: PrivacyLevel;
+								privacyLevel: PrivacyLevel;
 							}),
 							tags:
 								formData
