@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { trpc } from '../trpc';
@@ -15,6 +16,9 @@ export function Prompt() {
 		{
 			enabled: !!promptId,
 			staleTime: 1000,
+			retry: (retry, error) => {
+				return retry < 3 && !error.data?.code;
+			},
 		}
 	);
 	const commentsQuery = trpc.prompts.getComments.useQuery(
@@ -32,8 +36,47 @@ export function Prompt() {
 			trpcUtils?.prompts.getPrompt.invalidate({ promptId });
 		},
 	});
+	const errorCode = promptQuery.error?.data?.code;
+	// to make error message sticky when react query tries to refetch
+	const [stickyErrorCode, setStickyErrorCode] = useState(errorCode);
+	useEffect(() => {
+		if (errorCode) {
+			setStickyErrorCode(errorCode);
+		}
+	}, [errorCode]);
+	useEffect(() => {
+		if (promptQuery.status === 'success') {
+			setStickyErrorCode(undefined);
+		}
+	}, [promptQuery.status]);
 
 	const data = promptQuery.data;
+
+	if (stickyErrorCode) {
+		if (stickyErrorCode === 'FORBIDDEN') {
+			return (
+				<Layout title="You don't have access to this prompt">
+					You can only view prompts that are public or that you have access to
+				</Layout>
+			);
+		} else if (stickyErrorCode === 'UNAUTHORIZED') {
+			return (
+				<Layout title="You need to be logged in to view this prompt">
+					Unauthorized users can only view public prompts. Please log in to view this prompt.
+				</Layout>
+			);
+		} else if (stickyErrorCode === 'NOT_FOUND') {
+			return (
+				<Layout title="Prompt not found">We couldn't find the prompt you were looking for.</Layout>
+			);
+		} else {
+			return (
+				<Layout title="Error">
+					An error occurred while loading the prompt. Please try again later.
+				</Layout>
+			);
+		}
+	}
 
 	return (
 		<Layout>
