@@ -1,30 +1,41 @@
 ---
-import b2b7logo from '../../assets/b2b7.svg';
-import wink from '../../assets/wink.svg';
+import { Image } from 'astro:assets';
+
+import astro from '../../assets/b2b/astro.png';
+import doppler from '../../assets/b2b/doppler.jpg';
+import fogbender from '../../assets/b2b/fogbender.png?url';
+import posthog from '../../assets/b2b/posthog.jpg';
+import propelauth from '../../assets/b2b/propelauth.jpg';
+import react from '../../assets/b2b/react.png';
+import supabase from '../../assets/b2b/supabase.jpg';
+import tailwind from '../../assets/b2b/tailwind.jpg';
+import vercel from '../../assets/b2b/vercel.jpg';
+import b2b7logo from '../../assets/b2b7.svg?url';
+import wink from '../../assets/wink.svg?url';
 import Layout from '../../layouts/Layout.astro';
 
 const websiteTitle = 'B2B SaaS Kit';
 
 type LegoPiece = {
 	url: string;
-	imgUrl: string;
+	imgUrl: typeof astro | string;
 	name: string;
 };
 
 const libraries: LegoPiece[] = [
 	{
 		url: 'https://astro.build/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1632785343433908224/SnMGR19O_400x400.png',
+		imgUrl: astro,
 		name: 'Astro',
 	},
 	{
 		url: 'https://react.dev/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/446356636710363136/OYIaJ1KK_400x400.png',
+		imgUrl: react,
 		name: 'React',
 	},
 	{
 		url: 'https://tailwindcss.com/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1468993891584073729/a_op8KnL_400x400.jpg',
+		imgUrl: tailwind,
 		name: 'Tailwind CSS',
 	},
 ];
@@ -32,32 +43,32 @@ const libraries: LegoPiece[] = [
 const services: LegoPiece[] = [
 	{
 		url: 'https://www.doppler.com/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1443663130840686596/cG41OnYX_400x400.jpg',
+		imgUrl: doppler,
 		name: 'Doppler',
 	},
 	{
 		url: 'https://propelauth.com/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1481731417608318978/H22VYbY0_400x400.jpg',
+		imgUrl: propelauth,
 		name: 'PropelAuth',
 	},
 	{
 		url: 'https://supabase.com/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1651226564728700928/h0tz5UT1_400x400.jpg',
+		imgUrl: supabase,
 		name: 'Supabase',
 	},
 	{
 		url: 'https://vercel.com/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1652878800311427073/j0-3owJd_400x400.jpg',
+		imgUrl: vercel,
 		name: 'Vercel',
 	},
 	{
 		url: 'https://fogbender.com/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1312524109218111489/1e7X9EZ5_400x400.png',
+		imgUrl: fogbender,
 		name: 'Fogbender',
 	},
 	{
 		url: 'https://posthog.com/',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1436032806413606913/NgLRYKqT_400x400.jpg',
+		imgUrl: posthog,
 		name: 'PostHog',
 	},
 ];
@@ -123,14 +134,27 @@ const services: LegoPiece[] = [
 				{
 					[...libraries, ...services].map((x) => (
 						<a href={x.url}>
-							<img
-								class="rounded-xl hover:opacity-50 bg-white"
-								src={x.imgUrl}
-								alt={x.name}
-								width="92"
-								height="92"
-								title={x.name}
-							/>
+							{typeof x.imgUrl === 'string' ? (
+								<img
+									class="rounded-xl hover:opacity-50 bg-white h-[92px] w-[92px]"
+									src={x.imgUrl}
+									alt={x.name}
+									width={92 * 2}
+									height={92 * 2}
+									title={x.name}
+								/>
+							) : (
+								<Image
+									class="rounded-xl hover:opacity-50 bg-white h-[92px] w-[92px]"
+									src={x.imgUrl}
+									alt={x.name}
+									width={92 * 2}
+									height={92 * 2}
+									title={x.name}
+									loading="eager"
+									decoding="sync"
+								/>
+							)}
 						</a>
 					))
 				}
