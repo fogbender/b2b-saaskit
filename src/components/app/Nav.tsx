@@ -57,16 +57,16 @@ export function AppNav() {
 		<header className="bg-white shadow-sm py-4 px-5">
 			<div className="container mx-auto flex justify-between items-center">
 				<nav className="flex flex-wrap space-x-4">
-					<NavLink to="/app" end className={navLinkClass()}>
+					<NavLink to="/app" end className={navLinkClass}>
 						Overview
 					</NavLink>
-					<NavLink to="/app/prompts" className={navLinkClass()}>
+					<NavLink to="/app/prompts" className={navLinkClass}>
 						Prompts
 					</NavLink>
-					<NavLink to="/app/settings" className={navLinkClass()}>
+					<NavLink to="/app/settings" className={navLinkClass}>
 						Settings
 					</NavLink>
-					<NavLink to="/app/support" className={navLinkClass('flex gap-px')}>
+					<NavLink to="/app/support" className={navLinkClassSupport}>
 						Support
 						{path !== '/app/support' && <SupportWidget kind="badge" />}
 					</NavLink>
@@ -145,15 +145,17 @@ export function AppNav() {
 	);
 }
 
-const activeCls = 'border border-gray-800 rounded-full';
-
-const navLinkClass =
+const getNavLinkClass =
 	(className?: string) =>
 	({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
 		clsx(
 			'text-gray-600 hover:text-gray-900',
 			'px-2 py-1',
+			'border rounded-full',
 			className,
-			isPending ? 'animate-bounce' : '',
-			isActive || isPending ? activeCls : 'border border-transparent'
+			isPending ? 'animate-pulse' : '',
+			isActive || isPending ? 'border-gray-800' : 'border-transparent'
 		);
+
+const navLinkClass = getNavLinkClass();
+const navLinkClassSupport = getNavLinkClass('flex gap-px');
