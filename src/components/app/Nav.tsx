@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import { clsx } from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -53,58 +53,20 @@ export function AppNav() {
 		};
 	}, [isMenuOpen]);
 
-	const activeCls = 'border border-gray-800 rounded-full';
-
 	return (
 		<header className="bg-white shadow-sm py-4 px-5">
 			<div className="container mx-auto flex justify-between items-center">
 				<nav className="flex flex-wrap space-x-4">
-					<NavLink
-						to="/app"
-						end
-						className={({ isActive }) =>
-							classNames(
-								'text-gray-600 hover:text-gray-900',
-								'px-2 py-1',
-								isActive ? activeCls : 'border border-transparent'
-							)
-						}
-					>
+					<NavLink to="/app" end className={navLinkClass()}>
 						Overview
 					</NavLink>
-					<NavLink
-						to="/app/prompts"
-						className={({ isActive }) =>
-							classNames(
-								'text-gray-600 hover:text-gray-900',
-								'px-2 py-1',
-								isActive ? activeCls : 'border border-transparent'
-							)
-						}
-					>
+					<NavLink to="/app/prompts" className={navLinkClass()}>
 						Prompts
 					</NavLink>
-					<NavLink
-						to="/app/settings"
-						className={({ isActive }) =>
-							classNames(
-								'text-gray-600 hover:text-gray-900',
-								'px-2 py-1',
-								isActive ? activeCls : 'border border-transparent'
-							)
-						}
-					>
+					<NavLink to="/app/settings" className={navLinkClass()}>
 						Settings
 					</NavLink>
-					<NavLink
-						to="/app/support"
-						className={({ isActive }) =>
-							classNames(
-								'text-gray-600 hover:text-gray-900 flex gap-px px-2 py-1',
-								isActive ? activeCls : 'border border-transparent'
-							)
-						}
-					>
+					<NavLink to="/app/support" className={navLinkClass('flex gap-px')}>
 						Support
 						{path !== '/app/support' && <SupportWidget kind="badge" />}
 					</NavLink>
@@ -182,3 +144,15 @@ export function AppNav() {
 		</header>
 	);
 }
+
+const activeCls = 'border border-gray-800 rounded-full';
+
+const navLinkClass =
+	(className?: string) =>
+	({ isActive }: { isActive: boolean; isPending: boolean }) =>
+		clsx(
+			'text-gray-600 hover:text-gray-900',
+			'px-2 py-1',
+			className,
+			isActive ? activeCls : 'border border-transparent'
+		);
