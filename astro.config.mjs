@@ -10,6 +10,7 @@ export default defineConfig({
 	// eslint-disable-next-line no-undef
 	site: process.env.SITE_URL,
 	experimental: {
+		assets: true,
 		hybridOutput: true,
 	},
 	vite: {
