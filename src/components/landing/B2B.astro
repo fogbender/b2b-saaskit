@@ -12,14 +12,14 @@ import doppler from '../../assets/b2b/doppler.jpg';
 import propelauth from '../../assets/b2b/propelauth.jpg';
 import supabase from '../../assets/b2b/supabase.jpg';
 import vercel from '../../assets/b2b/vercel.jpg';
-import fogbender from '../../assets/b2b/fogbender.png';
+import fogbender from '../../assets/b2b/fogbender.png?url';
 import posthog from '../../assets/b2b/posthog.jpg';
 
 const websiteTitle = 'B2B SaaS Kit';
 
 type LegoPiece = {
 	url: string;
-	imgUrl: ImageMetadata;
+	imgUrl: ImageMetadata | string;
 	name: string;
 };
 
@@ -135,14 +135,27 @@ const services: LegoPiece[] = [
 				{
 					[...libraries, ...services].map((x) => (
 						<a href={x.url}>
-							<Image
-								class="rounded-xl hover:opacity-50 bg-white h-[92px] w-[92px]"
-								src={x.imgUrl}
-								alt={x.name}
-								width={92 * 2}
-								height={92 * 2}
-								title={x.name}
-							/>
+							{typeof x.imgUrl === 'string' ? (
+								<img
+									class="rounded-xl hover:opacity-50 bg-white h-[92px] w-[92px]"
+									src={x.imgUrl}
+									alt={x.name}
+									width={92 * 2}
+									height={92 * 2}
+									title={x.name}
+								/>
+							) : (
+								<Image
+									class="rounded-xl hover:opacity-50 bg-white h-[92px] w-[92px]"
+									src={x.imgUrl}
+									alt={x.name}
+									width={92 * 2}
+									height={92 * 2}
+									title={x.name}
+									loading="eager"
+									decoding="sync"
+								/>
+							)}
 						</a>
 					))
 				}
