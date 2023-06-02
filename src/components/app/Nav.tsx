@@ -149,10 +149,11 @@ const activeCls = 'border border-gray-800 rounded-full';
 
 const navLinkClass =
 	(className?: string) =>
-	({ isActive }: { isActive: boolean; isPending: boolean }) =>
+	({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
 		clsx(
 			'text-gray-600 hover:text-gray-900',
 			'px-2 py-1',
 			className,
-			isActive ? activeCls : 'border border-transparent'
+			isPending ? 'animate-bounce' : '',
+			isActive || isPending ? activeCls : 'border border-transparent'
 		);
