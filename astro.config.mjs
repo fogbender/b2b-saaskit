@@ -17,5 +17,8 @@ export default defineConfig({
 		optimizeDeps: {
 			exclude: ['@resvg/resvg-js'],
 		},
+		build: {
+			sourcemap: true /* B2B:CONFIG consider disabling sourcemaps for production */,
+		},
 	},
 });
