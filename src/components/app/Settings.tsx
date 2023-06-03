@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import { useReducer } from 'react';
 
+import { env } from '../../config';
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
@@ -55,7 +56,7 @@ export function Settings() {
 									page. Be careful you are going to share access to this token to your whole{' '}
 									<a
 										className="text-blue-500 hover:text-blue-700 underline"
-										href="https://94269089.propelauthtest.com/org"
+										href={env.PUBLIC_AUTH_URL + '/org'}
 									>
 										Team
 									</a>
