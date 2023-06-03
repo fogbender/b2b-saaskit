@@ -42,7 +42,7 @@ for (const slug of checksOrder) {
 						parsedSteps.map(async ({ step }) => {
 							const { Content } = await step.render();
 							return (
-								<SetupStep client:load title={step.data.title || step.slug}>
+								<SetupStep title={step.data.title || step.slug}>
 									<Content />
 								</SetupStep>
 							);
