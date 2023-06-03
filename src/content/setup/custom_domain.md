@@ -42,6 +42,20 @@ Note that a custom domain is required for making PropelAuth work with Safari.
 
 1. Click on "Create New API Key" give it a name (e.g. `pwf-prod-custom-domain`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`
 
+#### PropelAuth GitHub OAuth (optional)
+
+1. In the sidebar, select "Configuration" - "Social Logins", and click on "Sign in with GitHub".
+
+1. You going to see two URLs in the "Authorized redirect URIs" section. Copy the second one that looks like https://auth.yourdomain.com/github/callback, this URL is going to be used in the next step.
+
+1. Open <a href="https://github.com/settings/developers">https://github.com/settings/developers</a>, select "Prompts with Friends" application, then click on it.
+
+1. Set "Homepage URL" to `https://auth.yourdomain.com` (replace `yourdomain.com` with your domain name)
+
+1. Set "Authorization callback URL" to the value from the step 2.
+
+1. Press "Update application"
+
 #### Astro
 
 1. Open `astro.config.mjs` and change `site` to your primary domain
