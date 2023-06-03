@@ -25,6 +25,9 @@ export function LoginInternal() {
 				onRedirectToSignup={() => {
 					window.location.href = '/signup';
 				}}
+				onRedirectToForgotPassword={() => {
+					window.location.href = env.PUBLIC_AUTH_URL + '/forgot_password';
+				}}
 			/>
 		</PropelAuthCSS>
 	);
