@@ -39,35 +39,31 @@ const { title, stepDone, expanded = false } = Astro.props;
 	</setup-step>
 </div>
 <style>
-	[data-icon] {
-		transition: transform 0.2s ease-in-out;
-	}
-	[data-expanded] [data-icon] {
-		transform: rotate(90deg);
-	}
-	details-body {
-		overflow: hidden;
-		max-height: 0;
-		transition: all 0.25s linear;
-	}
-	[data-expanded] details-body {
-		margin-top: 1.5rem;
-		max-height: var(--scroll-height);
+	@supports selector(:has(a, b)) {
+		[data-icon] {
+			transition: transform 0.2s ease-in-out;
+		}
+		:has(input:checked) [data-icon] {
+			transform: rotate(90deg);
+		}
+		details-body {
+			overflow: hidden;
+			max-height: 0;
+			transition: all 0.25s linear;
+		}
+		:has(input:checked) details-body {
+			margin-top: 1.5rem;
+			max-height: var(--scroll-height);
+		}
 	}
 </style>
 <script>
 	import { render } from 'solid-js/web';
 	import { createSignal, createEffect, onCleanup } from 'solid-js';
+	import html from 'solid-js/html';
 
 	const App = (props: { el: SetupStep }) => {
 		const [expanded, setExpanded] = createSignal(false);
-		createEffect(() => {
-			if (expanded()) {
-				props.el.dataset.expanded = '';
-			} else {
-				delete props.el.dataset.expanded;
-			}
-		});
 		createEffect(() => {
 			const run = () => setExpanded((x) => !x);
 			props.el.addEventListener('click', run);
@@ -85,7 +81,7 @@ const { title, stepDone, expanded = false } = Astro.props;
 				onCleanup(() => body.removeEventListener('click', run));
 			}
 		});
-		return null;
+		return html`<input hidden type="checkbox" checked="${expanded}" />`;
 	};
 	class SetupStep extends HTMLElement {
 		cleanup = () => {};
