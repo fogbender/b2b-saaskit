@@ -9,7 +9,7 @@ const { title, stepDone, expanded = false } = Astro.props;
 ---
 
 <div class="w-full">
-	<setup-step class="ml-5 md:ml-0 w-full flex cursor-pointer items-start relative">
+	<setup-step class="ml-5 md:ml-0 w-full flex items-start relative">
 		<div class="absolute top-5" data-icon>
 			<svg class="w-4 h-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path
@@ -21,15 +21,15 @@ const { title, stepDone, expanded = false } = Astro.props;
 			</svg>
 		</div>
 		<div
-			class="flex-1 sm:ml-10 mx-6 p-3 bg-white rounded-xl shadow-[0_3px_10px_rgba(19,29,118,0.1)] flex flex-col max-w-[calc(100%-3rem)]"
+			class="flex-1 sm:ml-10 mx-6 bg-white rounded-xl shadow-[0_3px_10px_rgba(19,29,118,0.1)] flex flex-col max-w-[calc(100%-3rem)]"
 		>
-			<label class="flex items-center justify-between">
+			<label class="p-3 flex items-center justify-between cursor-pointer">
 				<input type="checkbox" hidden checked={expanded} />
 				<div class="text-lg font-semibold">{title}</div>
 				{stepDone && <span>✅</span>}
 			</label>
 			<details-body
-				class="ml-2 cursor-auto prose prose-a:text-blue-600 hover:prose-a:text-rose-500 visited:prose-a:text-fuchsia-600 break-words"
+				class="px-3 ml-2 cursor-auto prose prose-a:text-blue-600 hover:prose-a:text-rose-500 visited:prose-a:text-fuchsia-600 break-words"
 			>
 				<slot />
 			</details-body>
@@ -51,6 +51,7 @@ const { title, stepDone, expanded = false } = Astro.props;
 		}
 		:has(input:checked) details-body {
 			margin-top: 1.5rem;
+			margin-bottom: 1.5rem;
 			max-height: var(--scroll-height);
 		}
 	}
