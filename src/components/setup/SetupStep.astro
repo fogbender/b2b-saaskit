@@ -56,52 +56,26 @@ const { title, stepDone, expanded = false } = Astro.props;
 	}
 </style>
 <script>
-	import { render, style, setAttribute } from 'solid-js/web';
+	import { render, style } from 'solid-js/web';
 	import { createSignal, createEffect, onCleanup } from 'solid-js';
 
-	const App = (props: { el: SetupStep; details: HTMLElement; checkbox: HTMLInputElement }) => {
-		// expand on click, but don't collapse on click inside details
-		const [expanded, setExpanded] = createSignal(false);
-		const handleOnClick = () => setExpanded((x) => !x);
-		props.el.addEventListener('click', handleOnClick);
-		onCleanup(() => props.el.removeEventListener('click', handleOnClick));
-		const preventClick = (e: MouseEvent) => e.stopPropagation();
-		props.details.addEventListener('click', preventClick);
-		onCleanup(() => props.details.removeEventListener('click', preventClick));
-
+	const Details = (props: { details: HTMLElement }) => {
 		// keep max height in sync with the content
 		const [scrollHeight, setScrollHeight] = createSignal(props.details.scrollHeight);
-		createEffect(() => {
-			style(props.details, { '--scroll-height': scrollHeight() + 'px' });
-		});
+		createEffect(() => style(props.details, { '--scroll-height': scrollHeight() + 'px' }));
 		const onResize = () => setScrollHeight(props.details.scrollHeight);
 		window.addEventListener('resize', onResize);
 		onCleanup(() => window.removeEventListener('resize', onResize));
-
-		// let CSS know if we're expanded
-		createEffect(() => {
-			setAttribute(props.checkbox, 'checked', expanded() ? '' : undefined);
-		});
 		return null;
 	};
-	class SetupStep extends HTMLElement {
+	class DetailBody extends HTMLElement {
 		cleanup = () => {};
 		connectedCallback() {
-			const details = this.querySelector('details-body');
-			if (details instanceof HTMLElement) {
-				const checkbox = this.querySelector('input[type=checkbox]');
-				if (checkbox instanceof HTMLInputElement) {
-					this.cleanup = render(() => App({ el: this, details, checkbox }), this);
-				} else {
-					console.error('No <input type="checkbox"> found in <setup-step>');
-				}
-			} else {
-				console.error('No <details-body> found in <setup-step>');
-			}
+			this.cleanup = render(() => Details({ details: this }), this);
 		}
 		disconnectedCallback() {
 			this.cleanup();
 		}
 	}
-	customElements.define('setup-step', SetupStep);
+	customElements.define('details-body', DetailBody);
 </script>
