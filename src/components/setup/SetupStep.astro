@@ -9,10 +9,7 @@ const { title, stepDone, expanded = false } = Astro.props;
 ---
 
 <div class="w-full">
-	<setup-step
-		data-expanded={expanded}
-		class="ml-5 md:ml-0 w-full flex cursor-pointer items-start relative"
-	>
+	<setup-step class="ml-5 md:ml-0 w-full flex cursor-pointer items-start relative">
 		<div class="absolute top-5" data-icon>
 			<svg class="w-4 h-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path
@@ -26,10 +23,11 @@ const { title, stepDone, expanded = false } = Astro.props;
 		<div
 			class="flex-1 sm:ml-10 mx-6 p-3 bg-white rounded-xl shadow-[0_3px_10px_rgba(19,29,118,0.1)] flex flex-col max-w-[calc(100%-3rem)]"
 		>
-			<div class="flex items-center justify-between">
+			<label class="flex items-center justify-between">
+				<input type="checkbox" hidden checked={expanded} />
 				<div class="text-lg font-semibold">{title}</div>
 				{stepDone && <span>✅</span>}
-			</div>
+			</label>
 			<details-body
 				class="ml-2 cursor-auto prose prose-a:text-blue-600 hover:prose-a:text-rose-500 visited:prose-a:text-fuchsia-600 break-words"
 			>
@@ -58,11 +56,10 @@ const { title, stepDone, expanded = false } = Astro.props;
 	}
 </style>
 <script>
-	import { render, style } from 'solid-js/web';
+	import { render, style, setAttribute } from 'solid-js/web';
 	import { createSignal, createEffect, onCleanup } from 'solid-js';
-	import html from 'solid-js/html';
 
-	const App = (props: { el: SetupStep; details: HTMLElement }) => {
+	const App = (props: { el: SetupStep; details: HTMLElement; checkbox: HTMLInputElement }) => {
 		// expand on click, but don't collapse on click inside details
 		const [expanded, setExpanded] = createSignal(false);
 		const handleOnClick = () => setExpanded((x) => !x);
@@ -82,14 +79,22 @@ const { title, stepDone, expanded = false } = Astro.props;
 		onCleanup(() => window.removeEventListener('resize', onResize));
 
 		// let CSS know if we're expanded
-		return html`<input hidden type="checkbox" checked="${expanded}" />`;
+		createEffect(() => {
+			setAttribute(props.checkbox, 'checked', expanded() ? '' : undefined);
+		});
+		return null;
 	};
 	class SetupStep extends HTMLElement {
 		cleanup = () => {};
 		connectedCallback() {
 			const details = this.querySelector('details-body');
 			if (details instanceof HTMLElement) {
-				this.cleanup = render(() => App({ el: this, details }), this);
+				const checkbox = this.querySelector('input[type=checkbox]');
+				if (checkbox instanceof HTMLInputElement) {
+					this.cleanup = render(() => App({ el: this, details, checkbox }), this);
+				} else {
+					console.error('No <input type="checkbox"> found in <setup-step>');
+				}
 			} else {
 				console.error('No <details-body> found in <setup-step>');
 			}
