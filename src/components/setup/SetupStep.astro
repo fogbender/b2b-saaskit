@@ -31,7 +31,7 @@ const { title, stepDone, expanded = false } = Astro.props;
 				{stepDone && <span>✅</span>}
 			</div>
 			<details-body
-				class="ml-2 cursor-auto prose prose-a:text-blue-600 hover:prose-a:text-rose-500 visited:prose-a:text-fuchsia-600"
+				class="ml-2 cursor-auto prose prose-a:text-blue-600 hover:prose-a:text-rose-500 visited:prose-a:text-fuchsia-600 break-words"
 			>
 				<slot />
 			</details-body>
