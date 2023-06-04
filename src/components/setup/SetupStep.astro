@@ -1,15 +1,16 @@
 ---
 export type Props = {
+	id?: string;
 	title: string;
 	stepDone?: boolean;
 	expanded?: boolean;
 };
 
-const { title, stepDone, expanded = false } = Astro.props;
+const { id, title, stepDone, expanded = false } = Astro.props;
 ---
 
 <div class="w-full">
-	<setup-step class="ml-5 md:ml-0 w-full flex items-start relative">
+	<setup-step class="ml-5 md:ml-0 w-full flex items-start relative" data-id={id}>
 		<div class="absolute top-5" data-icon>
 			<svg class="w-4 h-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path
