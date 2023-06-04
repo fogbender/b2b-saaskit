@@ -58,35 +58,41 @@ const { title, stepDone, expanded = false } = Astro.props;
 	}
 </style>
 <script>
-	import { render } from 'solid-js/web';
+	import { render, style } from 'solid-js/web';
 	import { createSignal, createEffect, onCleanup } from 'solid-js';
 	import html from 'solid-js/html';
 
-	const App = (props: { el: SetupStep }) => {
+	const App = (props: { el: SetupStep; details: HTMLElement }) => {
+		// expand on click, but don't collapse on click inside details
 		const [expanded, setExpanded] = createSignal(false);
+		const handleOnClick = () => setExpanded((x) => !x);
+		props.el.addEventListener('click', handleOnClick);
+		onCleanup(() => props.el.removeEventListener('click', handleOnClick));
+		const preventClick = (e: MouseEvent) => e.stopPropagation();
+		props.details.addEventListener('click', preventClick);
+		onCleanup(() => props.details.removeEventListener('click', preventClick));
+
+		// keep max height in sync with the content
+		const [scrollHeight, setScrollHeight] = createSignal(props.details.scrollHeight);
 		createEffect(() => {
-			const run = () => setExpanded((x) => !x);
-			props.el.addEventListener('click', run);
-			return () => props.el.removeEventListener('click', run);
+			style(props.details, { '--scroll-height': scrollHeight() + 'px' });
 		});
-		createEffect(() => {
-			const body = props.el.querySelector('details-body');
-			if (body instanceof HTMLElement) {
-				body.style.setProperty('--scroll-height', body.scrollHeight + 'px');
-				const onResize = () => body.style.setProperty('--scroll-height', body.scrollHeight + 'px');
-				window.addEventListener('resize', onResize);
-				onCleanup(() => window.removeEventListener('resize', onResize));
-				const run = (e: MouseEvent) => e.stopPropagation();
-				body.addEventListener('click', run);
-				onCleanup(() => body.removeEventListener('click', run));
-			}
-		});
+		const onResize = () => setScrollHeight(props.details.scrollHeight);
+		window.addEventListener('resize', onResize);
+		onCleanup(() => window.removeEventListener('resize', onResize));
+
+		// let CSS know if we're expanded
 		return html`<input hidden type="checkbox" checked="${expanded}" />`;
 	};
 	class SetupStep extends HTMLElement {
 		cleanup = () => {};
 		connectedCallback() {
-			this.cleanup = render(() => App({ el: this }), this);
+			const details = this.querySelector('details-body');
+			if (details instanceof HTMLElement) {
+				this.cleanup = render(() => App({ el: this, details }), this);
+			} else {
+				console.error('No <details-body> found in <setup-step>');
+			}
 		}
 		disconnectedCallback() {
 			this.cleanup();
