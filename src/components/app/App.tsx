@@ -9,11 +9,13 @@ import {
 	useRedirectFunctions,
 } from '../propelauth';
 import { Layout } from './Layout';
+import { useNavigateToReturnUrl } from './utils';
 
 export function App() {
 	const activeOrg = useActiveOrg();
 	const auth = useAuthInfo();
 	const { redirectToCreateOrgPage } = useRedirectFunctions();
+	useNavigateToReturnUrl();
 
 	if (auth.loading === true) {
 		return <div className="container my-10 mx-4">Loading...</div>;

@@ -1,8 +1,10 @@
 import { env } from '../config';
+import { usePersistReturnUrl, useRedirectToYourProduct } from './app/utils';
 import { AuthProvider, LoginManager } from './propelauth';
 import { PropelAuthCSS } from './PropelAuthCSS';
 
 export function Login() {
+	usePersistReturnUrl();
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
 			<LoginInternal />
@@ -11,9 +13,7 @@ export function Login() {
 }
 
 export function LoginInternal() {
-	const redirectToYourProduct = () => {
-		window.location.href = '/app';
-	};
+	const { redirectToYourProduct } = useRedirectToYourProduct();
 
 	return (
 		<PropelAuthCSS>

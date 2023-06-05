@@ -1,11 +1,11 @@
 import { env } from '../config';
+import { usePersistReturnUrl, useRedirectToYourProduct } from './app/utils';
 import { AuthProvider, Signup as SignupManager } from './propelauth';
 import { PropelAuthCSS } from './PropelAuthCSS';
 
 export function Signup() {
-	const redirectToYourProduct = () => {
-		window.location.href = '/app';
-	};
+	usePersistReturnUrl();
+	const { redirectToYourProduct } = useRedirectToYourProduct();
 
 	return (
 		<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
