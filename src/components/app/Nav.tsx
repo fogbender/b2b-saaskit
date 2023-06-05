@@ -10,6 +10,7 @@ import {
 	useRedirectFunctions,
 	useRequireActiveOrg,
 } from '../propelauth';
+import { rad, radEventListener } from 'rad-event-listener';
 
 export function AppNav() {
 	const menuRef = useRef<HTMLDivElement>(null);
@@ -30,27 +31,25 @@ export function AppNav() {
 	}, []);
 
 	useEffect(() => {
-		const closeMenu = (e: { target: EventTarget | null }) => {
-			if (e.target instanceof Node && menuRef.current?.contains(e.target) === false) {
-				setIsMenuOpen(false);
-			}
-		};
-
-		const handleEscape = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				setIsMenuOpen(false);
-			}
-		};
-
 		if (isMenuOpen) {
-			document.addEventListener('click', closeMenu);
-			document.addEventListener('keydown', handleEscape);
+			const cleanup = radEventListener(document, 'click', (e) => {
+				if (e.target instanceof Node && menuRef.current?.contains(e.target) === false) {
+					setIsMenuOpen(false);
+				}
+			});
+			const cleanup2 = rad(document, (add) =>
+				add('keydown', (e) => {
+					if (e.key === 'Escape') {
+						setIsMenuOpen(false);
+					}
+				})
+			);
+			return () => {
+				cleanup();
+				cleanup2();
+			};
 		}
-
-		return () => {
-			document.removeEventListener('click', closeMenu);
-			document.removeEventListener('keydown', handleEscape);
-		};
+		return;
 	}, [isMenuOpen]);
 
 	return (
