@@ -30,27 +30,29 @@ export function AppNav() {
 	}, []);
 
 	useEffect(() => {
-		const closeMenu = (e: { target: EventTarget | null }) => {
-			if (e.target instanceof Node && menuRef.current?.contains(e.target) === false) {
-				setIsMenuOpen(false);
-			}
-		};
-
-		const handleEscape = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				setIsMenuOpen(false);
-			}
-		};
-
 		if (isMenuOpen) {
-			document.addEventListener('click', closeMenu);
-			document.addEventListener('keydown', handleEscape);
+			const controller = new AbortController();
+			document.addEventListener(
+				'click',
+				(e) => {
+					if (e.target instanceof Node && menuRef.current?.contains(e.target) === false) {
+						setIsMenuOpen(false);
+					}
+				},
+				{ signal: controller.signal }
+			);
+			document.addEventListener(
+				'keydown',
+				(e) => {
+					if (e.key === 'Escape') {
+						setIsMenuOpen(false);
+					}
+				},
+				{ signal: controller.signal }
+			);
+			return () => controller.abort();
 		}
-
-		return () => {
-			document.removeEventListener('click', closeMenu);
-			document.removeEventListener('keydown', handleEscape);
-		};
+		return;
 	}, [isMenuOpen]);
 
 	return (
