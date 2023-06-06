@@ -16,12 +16,14 @@ const x = await res.helpers.prompts.getPrompt
 	.then((prompt) => ({ kind: 'ok' as const, prompt }))
 	.catch((error) => ({ kind: 'error' as const, error }));
 
-const title = (x.kind === 'ok' && x.prompt.prompt.title) || 'Prompts with Friends';
-const { description, chatTemplate } = (() => {
+const { title, description, chatTemplate } = (() => {
 	if (x.kind !== 'ok') {
-		return { description: 'Failed to fetch', chatTemplate: '' };
+		return { title: '', description: 'Failed to fetch', chatTemplate: '' };
 	}
 	const { prompt, author } = x.prompt;
+	if (prompt.privacyLevel !== 'public') {
+		return { title: '', description: '', chatTemplate: '' };
+	}
 	let chatTemplate = '';
 	for (const line of prompt.template) {
 		if (line.content.trim() === '') {
@@ -36,7 +38,8 @@ const { description, chatTemplate } = (() => {
 		}
 	}
 	const authorName = author.name || author.userId;
-	return { description: prompt.description + ' by ' + authorName, chatTemplate };
+	const title = x.prompt.prompt.title.trim() || 'Prompts with Friends';
+	return { title, description: prompt.description + ' by ' + authorName, chatTemplate };
 })();
 function limitText(test: string, limit = 130) {
 	if (test.length > limit + 3) {
