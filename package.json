@@ -61,6 +61,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.11.1",
+    "sanitize-filename": "^1.6.3",
     "satori": "^0.8.1",
     "solid-js": "^1.7.6",
     "tsx": "^3.12.7",
