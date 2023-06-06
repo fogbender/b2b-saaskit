@@ -2,6 +2,7 @@
 import AppLayout from '../../components/app/AppLayout.astro';
 import { Root } from '../../components/app/Root';
 import { createRouterContext } from '../../lib/router';
+import { getGeneratorForPromptUrl } from '../og';
 
 export const prerender = false; // to enable dynamic routing
 
@@ -15,9 +16,51 @@ const x = await res.helpers.prompts.getPrompt
 	.then((prompt) => ({ kind: 'ok' as const, prompt }))
 	.catch((error) => ({ kind: 'error' as const, error }));
 
-const title = (x.kind === 'ok' && x.prompt.prompt.title) || 'Prompts with Friends';
+const { title, description, chatTemplate } = (() => {
+	if (x.kind !== 'ok') {
+		return { title: '', description: 'Failed to fetch', chatTemplate: '' };
+	}
+	const { prompt, author } = x.prompt;
+	if (prompt.privacyLevel !== 'public') {
+		return { title: '', description: '', chatTemplate: '' };
+	}
+	let chatTemplate = '';
+	for (const line of prompt.template) {
+		if (line.content.trim() === '') {
+			continue;
+		}
+		const who = line.role === 'user' ? 'You' : line.role === 'system' ? 'System' : 'Assistant';
+		chatTemplate += `${who}: ${limitText(line.content)}\n`;
+		const newChatTemplate = limitText(chatTemplate, 700);
+		if (newChatTemplate !== chatTemplate) {
+			chatTemplate = newChatTemplate;
+			break;
+		}
+	}
+	const authorName = author.name || author.userId;
+	const title = x.prompt.prompt.title.trim() || 'Prompts with Friends';
+	return {
+		title,
+		description: limitText(prompt.description, 70) + ' by ' + authorName,
+		chatTemplate,
+	};
+})();
+function limitText(test: string, limit = 120) {
+	if (test.length > limit + 3) {
+		return test.slice(0, limit) + '...';
+	}
+	return test;
+}
+const ogImage = getGeneratorForPromptUrl({
+	origin: Astro.url.origin,
+	title: title.repeat(1),
+	description,
+	chatTemplate,
+});
+// private or unlisted prompts should not be indexed
+const noindex = x.kind === 'error' || x.prompt.prompt.privacyLevel !== 'public';
 ---
 
-<AppLayout title={title}>
+<AppLayout title={title} ogImage={ogImage} meta={{ noindex }}>
 	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
 </AppLayout>

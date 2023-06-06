@@ -60,6 +60,7 @@ module.exports = {
 		'no-empty-pattern': 'error',
 
 		// Stylistic concerns that don't interfere with Prettier
+		'no-mixed-spaces-and-tabs': 'off',
 		'padding-line-between-statements': 'off',
 		'@typescript-eslint/padding-line-between-statements': 'off',
 	},

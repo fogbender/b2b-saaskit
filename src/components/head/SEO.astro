@@ -20,6 +20,7 @@ export interface SeoProps {
 		| 'video.other'
 		| 'book'
 		| 'profile';
+	ogImage?: string;
 	meta?: Meta;
 }
 
@@ -28,16 +29,19 @@ const {
 	title: originalTitle,
 	meta: orignalMeta,
 	description: originalDescription,
+	ogImage,
 } = Astro.props;
 
 const title = orignalMeta?.title ?? originalTitle ?? websiteTitle;
 const description = orignalMeta?.description ?? originalDescription ?? websiteDescription;
 
-const imageUrl = getGeneratorUrl({
-	origin: Astro.url.origin,
-	title,
-	description,
-});
+const imageUrl =
+	ogImage ||
+	getGeneratorUrl({
+		origin: Astro.url.origin,
+		title,
+		description,
+	});
 
 const meta = structuredClone(orignalMeta) || {};
 meta.twitter = meta.twitter || {};

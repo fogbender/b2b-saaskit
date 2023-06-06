@@ -9,13 +9,16 @@ import satori from 'satori';
 import { websiteDescription, websiteTitle } from '../../constants';
 import { getFont } from './_getFonts';
 import OpenGraph from './_openGraph';
+import OpenGraphPrompt from './_openGraphPrompt';
 
 export const prerender = false;
 
 export const get: APIRoute = async (request) => {
 	const params = request.url.searchParams;
+	const kind = params.get('kind') as 'prompt' | null;
 	const title = params.get('title') ?? websiteTitle;
 	const description = params.get('description') ?? websiteDescription;
+	const chatTemplate = params.get('chatTemplate');
 
 	const Montserrat = await getFont({
 		family: 'Montserrat',
@@ -23,11 +26,18 @@ export const get: APIRoute = async (request) => {
 	});
 
 	const svg = await satori(
-		OpenGraph({
-			title,
-			description,
-			originUrl: request.url.origin,
-		}),
+		kind === 'prompt'
+			? OpenGraphPrompt({
+					title,
+					description,
+					chatTemplate,
+					originUrl: request.url.origin,
+			  })
+			: OpenGraph({
+					title,
+					description,
+					originUrl: request.url.origin,
+			  }),
 		{
 			width: 1200,
 			height: 630,
@@ -66,6 +76,32 @@ export function getGeneratorUrl({
 	}
 	if (description) {
 		search.set('description', description);
+	}
+	const imageUrl = new URL('/og?' + search.toString(), origin);
+	return imageUrl.toString();
+}
+
+export function getGeneratorForPromptUrl({
+	origin,
+	title,
+	description,
+	chatTemplate,
+}: {
+	origin: string;
+	title: string;
+	description?: string;
+	chatTemplate?: string;
+}) {
+	const search = new URLSearchParams();
+	search.set('kind', 'prompt');
+	if (title) {
+		search.set('title', title);
+	}
+	if (description) {
+		search.set('description', description);
+	}
+	if (chatTemplate) {
+		search.set('chatTemplate', chatTemplate);
 	}
 	const imageUrl = new URL('/og?' + search.toString(), origin);
 	return imageUrl.toString();
