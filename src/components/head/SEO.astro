@@ -77,4 +77,15 @@ if (altText) {
 }
 ---
 
+<div>
+	<iframe class="w-full h-[720px] scale-50 -mb-20 -mt-20" src={'' + imageUrl} alt={altText}
+	></iframe>
+</div>
+<script type="module">
+	// instead of that hard coded thing it should be a script that creates the iframe dynamically along the lines of
+	// const imageUrl = document.querySelector('meta[property="og:image"]').getAttribute('content');
+	// const iframe = document.createElement('iframe');
+	// iframe.classList.add('w-full', 'h-[720px]', 'scale-50', '-mb-20', '-mt-20');
+	// document.body.append(iframe);
+</script>
 <SEO {...meta} />
