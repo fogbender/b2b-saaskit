@@ -85,6 +85,7 @@ export default function OpenGraphPrompt({
 							fontWeight: 600,
 							wordBreak: 'break-word',
 							whiteSpace: 'pre-wrap',
+							width: '1050px',
 						}}
 					>
 						{chatTemplate}

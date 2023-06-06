@@ -41,7 +41,7 @@ const { title, description, chatTemplate } = (() => {
 	const title = x.prompt.prompt.title.trim() || 'Prompts with Friends';
 	return { title, description: prompt.description + ' by ' + authorName, chatTemplate };
 })();
-function limitText(test: string, limit = 130) {
+function limitText(test: string, limit = 120) {
 	if (test.length > limit + 3) {
 		return test.slice(0, limit) + '...';
 	}
