@@ -53,8 +53,10 @@ const ogImage = getGeneratorForPromptUrl({
 	description,
 	chatTemplate,
 });
+// private or unlisted prompts should not be indexed
+const noindex = x.kind === 'error' || x.prompt.prompt.privacyLevel !== 'public';
 ---
 
-<AppLayout title={title} ogImage={ogImage}>
+<AppLayout title={title} ogImage={ogImage} meta={{ noindex }}>
 	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
 </AppLayout>
