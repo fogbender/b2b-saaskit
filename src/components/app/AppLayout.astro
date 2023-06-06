@@ -7,15 +7,15 @@ export type Props = SeoProps;
 ---
 
 <Layout {...Astro.props}>
-	<div class="relative min-h-screen flex flex-col justify-between gap-4">
-		<main class="grow relative">
+	<div class="relative flex min-h-screen flex-col justify-between gap-4">
+		<main class="relative grow">
 			<slot />
 		</main>
 		{
 			Astro.url.pathname !== '/app/support' && (
-				<footer class="border-t border-gray-200 bg-white py-4 px-10 w-full">
+				<footer class="w-full border-t border-gray-200 bg-white px-10 py-4">
 					<div class="container mx-auto px-4 sm:px-20">
-						<div class="flex justify-between items-center">
+						<div class="flex items-center justify-between">
 							<div class="text-sm text-gray-600">
 								&copy; {new Date().getFullYear()} {websiteTitle}
 							</div>

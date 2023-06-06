@@ -192,14 +192,14 @@ export const EditPromptControls = ({
 	});
 
 	return (
-		<div className="mt-4 mb-36 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8 flex flex-col gap-10">
+		<div className="mb-36 mt-4 flex flex-col gap-10 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 			<div className="flex flex-col gap-4">
 				<fieldset>
 					<legend className="text-base font-medium text-gray-900">Chat history</legend>
 					{messages.map((message, index) => (
 						<div className="mt-4" key={getMessageKey(message)}>
 							<select
-								className="border border-gray-300 rounded-md cursor-pointer"
+								className="cursor-pointer rounded-md border border-gray-300"
 								onChange={(e) => {
 									const value = e.target.value as (typeof actions)[number];
 									if (value === 'delete') {
@@ -305,7 +305,7 @@ export const EditPromptControls = ({
 											: message.role === 'assistant'
 											? 'bg-gray-100'
 											: '',
-										'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2 min-h-[8rem] resize-y overflow-y-scroll whitespace-pre-wrap'
+										'block min-h-[8rem] w-full resize-y overflow-y-scroll whitespace-pre-wrap rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
 									)}
 								></textarea>
 							</div>
@@ -313,7 +313,7 @@ export const EditPromptControls = ({
 					))}
 				</fieldset>
 				<form
-					className="flex gap-4 flex-wrap"
+					className="flex flex-wrap gap-4"
 					onSubmit={(e) => {
 						e.preventDefault();
 						const { submitter } = e.nativeEvent as any as { submitter: HTMLButtonElement };
@@ -336,7 +336,7 @@ export const EditPromptControls = ({
 					}}
 				>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50"
+						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
 						name="generate"
 						disabled={
 							!hasAnyKey ||
@@ -347,19 +347,19 @@ export const EditPromptControls = ({
 						Generate response
 					</button>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
 						name="user"
 					>
 						Add new prompt
 					</button>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
 						name="assistant"
 					>
 						Add new response
 					</button>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
 						name="system"
 					>
 						Add new system message
@@ -377,7 +377,7 @@ export const EditPromptControls = ({
 							{defaultKeyData?.isSet && (
 								<>
 									without any limits. You have{' '}
-									<code className="bg-gray-100 p-1 rounded-md">
+									<code className="rounded-md bg-gray-100 p-1">
 										{defaultKeyData.requestsRemaining}
 									</code>{' '}
 									requests until {defaultKeyData.resetsAt?.toLocaleString()}
@@ -398,7 +398,7 @@ export const EditPromptControls = ({
 						{[...templates.entries()].map(([key, value]) => (
 							<div key={key} className="mt-4">
 								<label
-									className="block text-sm font-medium text-gray-700 capitalize"
+									className="block text-sm font-medium capitalize text-gray-700"
 									htmlFor={'template_' + key}
 								>
 									{key}
@@ -408,7 +408,7 @@ export const EditPromptControls = ({
 										type="text"
 										name="template"
 										id={'template_' + key}
-										className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+										className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 										placeholder="Template value"
 										value={value.values().next().value}
 										onChange={(e) => {
@@ -458,7 +458,7 @@ export const EditPromptControls = ({
 									type="text"
 									name="title"
 									id="promptName"
-									className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+									className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 									placeholder="Prompt name"
 									defaultValue={promptName}
 								/>
@@ -476,7 +476,7 @@ export const EditPromptControls = ({
 									type="text"
 									name="description"
 									id="promptDescription"
-									className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+									className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 									placeholder="Prompt description"
 									defaultValue={promptDescription}
 								/>
@@ -491,7 +491,7 @@ export const EditPromptControls = ({
 									type="text"
 									name="tags"
 									id="promptTags"
-									className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+									className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 									placeholder="Prompt tags"
 									defaultValue={promptTags?.join(', ')}
 								/>
@@ -508,7 +508,7 @@ export const EditPromptControls = ({
 								<select
 									id="promptPrivacyLevel"
 									name="privacyLevel"
-									className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+									className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 									defaultValue={promptPrivacyLevel}
 								>
 									<option value="public">Public (indexed by Google)</option>
@@ -525,7 +525,7 @@ export const EditPromptControls = ({
 					</fieldset>
 					<fieldset className="mt-8 flex items-center gap-4">
 						<button
-							className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 min-w-[6rem]"
+							className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
 							type="submit"
 							disabled={addPromptMutation.isLoading || updatePromptMutation.isLoading}
 						>
@@ -534,7 +534,7 @@ export const EditPromptControls = ({
 						</button>
 						{promptId && (
 							<button
-								className="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 min-w-[6rem]"
+								className="min-w-[6rem] rounded bg-red-500 px-4 py-2 font-medium text-white hover:bg-red-700 disabled:opacity-50"
 								type="button"
 								disabled={deletePromptMutation.isLoading}
 								onClick={() => {

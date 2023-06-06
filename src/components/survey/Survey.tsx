@@ -54,17 +54,17 @@ export function Survey() {
 
 function StartSurvey() {
 	return (
-		<div className="flex flex-col items-center justify-center h-screen">
-			<div className="flex mb-4 gap-4">
+		<div className="flex h-screen flex-col items-center justify-center">
+			<div className="mb-4 flex gap-4">
 				<Link
 					to="/survey/rate-experience"
-					className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+					className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
 				>
 					Start survey
 				</Link>
 				<Link
 					to="/survey/published"
-					className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+					className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
 				>
 					Public surveys
 				</Link>
@@ -88,8 +88,8 @@ function RateExperience() {
 	const validRating = validateRating(rating);
 
 	return (
-		<div className="flex flex-col items-center justify-center h-screen">
-			<h2 className="text-2xl mb-4 px-8">Please rate your experience from 1 to 5</h2>
+		<div className="flex h-screen flex-col items-center justify-center">
+			<h2 className="mb-4 px-8 text-2xl">Please rate your experience from 1 to 5</h2>
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
@@ -111,13 +111,13 @@ function RateExperience() {
 							replace: true,
 						})
 					}
-					className="w-full px-3 py-2 mb-4 border border-gray-200 rounded-md"
+					className="mb-4 w-full rounded-md border border-gray-200 px-3 py-2"
 					required
 				/>
 				<button
 					disabled={!validRating}
 					type="submit"
-					className="w-full px-3 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:opacity-50"
+					className="w-full rounded-md bg-blue-500 px-3 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
 				>
 					Next
 				</button>
@@ -144,8 +144,8 @@ function OptionalComments() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center h-screen">
-			<h2 className="text-2xl mb-4">Any comments or suggestions?</h2>
+		<div className="flex h-screen flex-col items-center justify-center">
+			<h2 className="mb-4 text-2xl">Any comments or suggestions?</h2>
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
@@ -158,7 +158,7 @@ function OptionalComments() {
 				<input type="hidden" name="rating" value={rating} />
 				<textarea
 					name="comments"
-					className="w-full px-3 py-2 mb-2 border border-gray-200 rounded-md"
+					className="mb-2 w-full rounded-md border border-gray-200 px-3 py-2"
 					placeholder="optional (max 1000 characters)"
 					onKeyDown={(e) => {
 						if (e.key === 'Enter' && e.metaKey) {
@@ -177,7 +177,7 @@ function OptionalComments() {
 					</label>
 				</fieldset>
 				{postSurveyMutation.isError && (
-					<p className="text-red-500 p-2 mb-2 bg-red-100 rounded-md">
+					<p className="mb-2 rounded-md bg-red-100 p-2 text-red-500">
 						Error!{' '}
 						{postSurveyMutation.error?.data?.code === 'BAD_REQUEST'
 							? 'Invlid form data'
@@ -187,7 +187,7 @@ function OptionalComments() {
 				<button
 					disabled={postSurveyMutation.isLoading || isTooLong}
 					type="submit"
-					className="w-full px-3 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:opacity-50"
+					className="w-full rounded-md bg-blue-500 px-3 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
 				>
 					Submit{postSurveyMutation.isLoading ? 'ting' : ''}
 				</button>
@@ -205,9 +205,9 @@ function OptionalComments() {
 
 function ThankYou() {
 	return (
-		<div className="flex flex-col items-center justify-center h-screen">
-			<h2 className="text-2xl mb-4">Thank you for participating in our survey!</h2>
-			<Link to="/survey" className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
+		<div className="flex h-screen flex-col items-center justify-center">
+			<h2 className="mb-4 text-2xl">Thank you for participating in our survey!</h2>
+			<Link to="/survey" className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
 				Return back to survey home page
 			</Link>
 		</div>
@@ -242,20 +242,20 @@ function Published() {
 
 	return (
 		<div className="flex flex-col items-center justify-center py-20">
-			<h2 className="text-2xl mb-4">Thank you to everyone who participated in the survey</h2>
+			<h2 className="mb-4 text-2xl">Thank you to everyone who participated in the survey</h2>
 			<Link
 				to="/survey/rate-experience"
-				className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+				className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
 			>
 				Add your own comment!
 			</Link>
 			<div className="my-4 w-full sm:w-[500px] lg:w-[800px]">
-				<h3 className="text-xl mb-2">
+				<h3 className="mb-2 text-xl">
 					{!postSurveyMutation.isLoading && postSurveyMutation.data?.length === 0
 						? 'No comments yet'
 						: 'Comments'}
 				</h3>
-				<ul className="list-disc list-inside">
+				<ul className="list-inside list-disc">
 					{postSurveyMutation.isLoading && <li>Loading...</li>}
 					{postSurveyMutation.data?.map((survey) => (
 						<li key={survey.id}>
@@ -270,7 +270,7 @@ function Published() {
 					))}
 				</ul>
 			</div>
-			<Link to="/survey" className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
+			<Link to="/survey" className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
 				Return back to survey home page
 			</Link>
 		</div>

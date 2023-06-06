@@ -38,24 +38,24 @@ export function Settings() {
 	const [showAddKey, toggleShowAddKey] = useReducer((state) => !state, false);
 	return (
 		<Layout title="Prompts with Friends / Settings">
-			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
-				<div className="flex flex-col items-center justify-center w-full">
-					<div className="flex flex-col text-start w-full gap-2">
+			<div className="mt-4 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
+				<div className="flex w-full flex-col items-center justify-center">
+					<div className="flex w-full flex-col gap-2 text-start">
 						<div className="sm:flex sm:items-center">
 							<div className="sm:flex-auto">
-								<h1 className="font-medium text-xl">Configure OpenAI Key</h1>
+								<h1 className="text-xl font-medium">Configure OpenAI Key</h1>
 								<p className="mt-2 text-sm text-gray-700">
 									In order to run prompts you need to provide your own OpenAI key. You can get one
 									by signing up for OpenAI and going to the{' '}
 									<a
-										className="text-blue-500 hover:text-blue-700 underline"
+										className="text-blue-500 underline hover:text-blue-700"
 										href="https://platform.openai.com/account/api-keys"
 									>
 										API Keys
 									</a>{' '}
 									page. Be careful you are going to share access to this token to your whole{' '}
 									<a
-										className="text-blue-500 hover:text-blue-700 underline"
+										className="text-blue-500 underline hover:text-blue-700"
 										href={env.PUBLIC_AUTH_URL + '/org'}
 									>
 										Team
@@ -76,7 +76,7 @@ export function Settings() {
 						</div>
 						{showAddKey && (
 							<form
-								className="flex flex-col gap-2 border border-gray-300 rounded-md p-2 mt-4"
+								className="mt-4 flex flex-col gap-2 rounded-md border border-gray-300 p-2"
 								onSubmit={(e) => {
 									e.preventDefault();
 									const form = e.currentTarget;
@@ -93,7 +93,7 @@ export function Settings() {
 									<span className="text-gray-600">
 										(get{' '}
 										<a
-											className="text-blue-500 hover:text-blue-700 underline"
+											className="text-blue-500 underline hover:text-blue-700"
 											href="https://platform.openai.com/account/api-keys"
 										>
 											here
@@ -103,7 +103,7 @@ export function Settings() {
 								</label>
 								<input type="hidden" name="orgId" value={orgId} />
 								<input
-									className="border border-gray-300 rounded-md p-2"
+									className="rounded-md border border-gray-300 p-2"
 									type="text"
 									id="keySecret"
 									name="keySecret"
@@ -116,13 +116,13 @@ export function Settings() {
 								<select
 									id="keyType"
 									name="keyType"
-									className="mt-2 block rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-indigo-600 accent-indigo-600 focus:outline-indigo-500 sm:text-sm sm:leading-6 h-[42px]"
+									className="mt-2 block h-[42px] rounded-md border-0 px-3 py-1.5 text-gray-900 accent-indigo-600 ring-1 ring-inset ring-gray-300 focus:outline-indigo-500 focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								>
 									<option value="gpt-3">GPT-3</option>
 									<option value="gpt-4">GPT-4</option>
 								</select>
 								<button
-									className="bg-blue-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
+									className="rounded-md bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
 									type="submit"
 									disabled={addKeyMutation.isLoading}
 								>
@@ -143,22 +143,22 @@ export function Settings() {
 							</form>
 						)}
 					</div>
-					<div className="flex flex-col rounded-lg border border-gray-200 w-full mt-4 pb-4 gap-4 space-between divide-y divide-gray-200">
-						<div className="flex flex-row w-full px-6 pt-6 pb-2">
+					<div className="space-between mt-4 flex w-full flex-col gap-4 divide-y divide-gray-200 rounded-lg border border-gray-200 pb-4">
+						<div className="flex w-full flex-row px-6 pb-2 pt-6">
 							<div className="flex flex-col">
-								<h2 className="font-medium text-lg">Organization key</h2>
+								<h2 className="text-lg font-medium">Organization key</h2>
 								<p className="text-sm text-gray-600">
 									You can see here the key that is getting used by default for your organization.
 								</p>
 							</div>
 						</div>
-						<div className="flex flex-row w-full gap-4 space-between overflow-y-auto">
+						<div className="space-between flex w-full flex-row gap-4 overflow-y-auto">
 							<table className="min-w-full divide-y divide-gray-300">
 								<thead>
 									<tr>
 										<th
 											scope="col"
-											className="px-3 pl-4 sm:pl-6 lg:pl-8 py-3.5 text-left text-sm font-semibold text-gray-900"
+											className="px-3 py-3.5 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
 										>
 											Key
 										</th>
@@ -198,7 +198,7 @@ export function Settings() {
 											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 												No keys are configured,{' '}
 												<button
-													className="text-blue-500 hover:text-blue-700 underline"
+													className="text-blue-500 underline hover:text-blue-700"
 													onClick={(e) => {
 														e.preventDefault();
 														toggleShowAddKey();
@@ -232,10 +232,10 @@ export function Settings() {
 											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 												{key.lastUsedAt ? key.lastUsedAt.toLocaleString() : 'Never'}
 											</td>
-											<td className="flex relative whitespace-nowrap py-4 justify-end text-sm font-medium gap-2 pr-4">
+											<td className="relative flex justify-end gap-2 whitespace-nowrap py-4 pr-4 text-sm font-medium">
 												<button
 													type="button"
-													className="text-indigo-600 hover:text-indigo-900 p-1 focus:outline-indigo-500"
+													className="p-1 text-indigo-600 hover:text-indigo-900 focus:outline-indigo-500"
 													onClick={() => {
 														const confirm = window.confirm(
 															'Are you sure you want to delete this key?'

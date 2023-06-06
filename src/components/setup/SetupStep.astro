@@ -10,9 +10,9 @@ const { id, title, stepDone, expanded = false } = Astro.props;
 ---
 
 <div class="w-full">
-	<setup-step class="ml-5 md:ml-0 w-full flex items-start relative" data-id={id}>
+	<setup-step class="relative ml-5 flex w-full items-start md:ml-0" data-id={id}>
 		<div class="absolute top-5" data-icon>
-			<svg class="w-4 h-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg class="h-4 w-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path
 					d="M1 1L8 8L1 15"
 					stroke="black"
@@ -22,15 +22,15 @@ const { id, title, stepDone, expanded = false } = Astro.props;
 			</svg>
 		</div>
 		<div
-			class="flex-1 sm:ml-10 mx-6 bg-white rounded-xl shadow-[0_3px_10px_rgba(19,29,118,0.1)] flex flex-col max-w-[calc(100%-3rem)]"
+			class="mx-6 flex max-w-[calc(100%-3rem)] flex-1 flex-col rounded-xl bg-white shadow-[0_3px_10px_rgba(19,29,118,0.1)] sm:ml-10"
 		>
-			<label class="p-3 flex items-center justify-between cursor-pointer">
+			<label class="flex cursor-pointer items-center justify-between p-3">
 				<input type="checkbox" hidden checked={expanded} />
 				<div class="text-lg font-semibold">{title}</div>
 				{stepDone && <span>✅</span>}
 			</label>
 			<details-body
-				class="px-3 ml-2 cursor-auto prose prose-a:text-blue-600 hover:prose-a:text-rose-500 visited:prose-a:text-fuchsia-600 break-words"
+				class="prose ml-2 cursor-auto break-words px-3 prose-a:text-blue-600 visited:prose-a:text-fuchsia-600 hover:prose-a:text-rose-500"
 			>
 				<slot />
 			</details-body>

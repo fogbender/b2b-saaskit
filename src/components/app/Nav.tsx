@@ -54,8 +54,8 @@ export function AppNav() {
 	}, [isMenuOpen]);
 
 	return (
-		<header className="bg-white shadow-sm py-4 px-5">
-			<div className="container mx-auto flex justify-between items-center">
+		<header className="bg-white px-5 py-4 shadow-sm">
+			<div className="container mx-auto flex items-center justify-between">
 				<nav className="flex flex-wrap space-x-4">
 					<NavLink to="/app" end className={navLinkClass}>
 						Overview
@@ -73,7 +73,7 @@ export function AppNav() {
 				</nav>
 				<div className="relative inline-block text-left" ref={menuRef}>
 					<button
-						className="rounded-full flex items-center"
+						className="flex items-center rounded-full"
 						type="button"
 						aria-expanded={isMenuOpen}
 						aria-haspopup="true"
@@ -82,13 +82,13 @@ export function AppNav() {
 						<img
 							src={pictureUrl}
 							alt="current user"
-							className="object-contain h-8 w-8 rounded-full"
+							className="h-8 w-8 rounded-full object-contain"
 							id="userMenuButton"
 						/>
 					</button>
 
 					<div
-						className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+						className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5"
 						id="userMenu"
 						role="menu"
 						aria-orientation="vertical"
@@ -114,7 +114,7 @@ export function AppNav() {
 										e.preventDefault();
 										redirectToOrgPage();
 									}}
-									className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+									className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
 									role="menuitem"
 								>
 									Your Team ({activeOrg.orgName})
@@ -125,14 +125,14 @@ export function AppNav() {
 									saveOrgSelectionToLocalStorage('');
 									window.location.reload();
 								}}
-								className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+								className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
 								role="menuitem"
 							>
 								Switch Organization
 							</button>
 							<button
 								onClick={() => logout(true)}
-								className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+								className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
 								role="menuitem"
 							>
 								Sign out

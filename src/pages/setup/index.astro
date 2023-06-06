@@ -44,9 +44,9 @@ for (const slug of checksOrder) {
 	description="Instructions how to setup the full project locally"
 >
 	<main class="container max-w-[56rem] pb-10">
-		<div class="flex flex-col md:flex-row mt-24 w-full">
+		<div class="mt-24 flex w-full flex-col md:flex-row">
 			<div class="ml-10 md:ml-0">
-				<a class="text-lg md:text-3xl hover:text-rose-600 text-blue-600" href="/">Home</a>
+				<a class="text-lg text-blue-600 hover:text-rose-600 md:text-3xl" href="/">Home</a>
 			</div>
 			<div class="w-full">
 				<div class="ml-10 leading-8">
@@ -58,7 +58,7 @@ for (const slug of checksOrder) {
 						<div class="ml-10 mt-14">NOTE: This is the production build of the app</div>
 					)
 				}
-				<div class="mt-14 flex flex-col gap-8 w-full">
+				<div class="mt-14 flex w-full flex-col gap-8">
 					{
 						parsedSteps.map(async ({ stepDone, step }, i) => {
 							const { Content } = await step.render();

@@ -5,10 +5,10 @@ import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout title={'Set up your own ' + websiteTitle}>
-	<main class="container max-w-[40rem] px-8 md:px-0 md:mx-auto pb-12">
-		<div class="flex gap-6 items-center mt-28">
+	<main class="container max-w-[40rem] px-8 pb-12 md:mx-auto md:px-0">
+		<div class="mt-28 flex items-center gap-6">
 			<div class="w-[5.75rem]">
-				<img class="w-[5.75rem] h-[5.75rem]" src={b2b7logo} alt="B2B7 Logo" />
+				<img class="h-[5.75rem] w-[5.75rem]" src={b2b7logo} alt="B2B7 Logo" />
 			</div>
 			<div class="flex flex-col">
 				<span class="text-[1.75rem]">Set up your own</span>
@@ -16,17 +16,17 @@ import Layout from '../../layouts/Layout.astro';
 			</div>
 		</div>
 
-		<div class="mt-16 ml-0 md:ml-[7.25rem] text-[1.75rem] leading-8">Developer friend, hello!</div>
+		<div class="ml-0 mt-16 text-[1.75rem] leading-8 md:ml-[7.25rem]">Developer friend, hello!</div>
 
-		<div class="mt-[3.75rem] ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem]">
+		<div class="ml-0 mt-[3.75rem] text-lg leading-[1.875rem] md:ml-[7.25rem]">
 			This is your development copy of <a href="https://promptswithfriends.com/"
 				>PromptsWithFriends.com</a
 			>, designed to showcase the <a href="https://b2bsaaskit.com/">B2B Saas Kit</a>.
 		</div>
 
-		<div class="mt-[3.75rem] ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem]">
+		<div class="ml-0 mt-[3.75rem] text-lg leading-[1.875rem] md:ml-[7.25rem]">
 			<div>Getting started:</div>
-			<ol class="list-decimal text-blue-600 ml-7">
+			<ol class="ml-7 list-decimal text-blue-600">
 				<li>
 					<a href="/setup">Configure Prompts with Friends on your machine 👈</a>
 				</li>
@@ -39,13 +39,13 @@ import Layout from '../../layouts/Layout.astro';
 			</ol>
 		</div>
 
-		<div class="mt-[3.75rem] ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem]">
+		<div class="ml-0 mt-[3.75rem] text-lg leading-[1.875rem] md:ml-[7.25rem]">
 			<div>
 				The kit combines several open-source libraries with a handful of commercial
 				services&mdash;all featuring generous free-forever starter plans&mdash;to spin up a
 				functional multiplayer (i.e., team-based) application:
 			</div>
-			<ul class="list-disc ml-7">
+			<ul class="ml-7 list-disc">
 				<li>
 					<a href="https://astro.build/">Astro</a>, an open-source website assembly framework
 				</li>
@@ -79,13 +79,13 @@ import Layout from '../../layouts/Layout.astro';
 			</ul>
 		</div>
 
-		<div class="mt-[3.75rem] ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem]">
+		<div class="ml-0 mt-[3.75rem] text-lg leading-[1.875rem] md:ml-[7.25rem]">
 			Some of these libraries and services are necessary, others can be can <a href="/eject"
 				>ejected</a
 			>.
 		</div>
 
-		<div class="mt-[3.75rem] ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem]">
+		<div class="ml-0 mt-[3.75rem] text-lg leading-[1.875rem] md:ml-[7.25rem]">
 			Getting help: <a href="https://github.com/fogbender/b2b-saaskit/issues/new"
 				>open an issue on GitHub</a
 			> or ping <a href="https://twitter.com/jlarky">@JLarky</a> and <a

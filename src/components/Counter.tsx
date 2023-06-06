@@ -22,7 +22,7 @@ const CounterInteral = ({ counter }: { counter: number }) => {
 			Count: {keepOld.current}
 			<br />
 			<button
-				className="px-4 py-2 bg-blue-500 text-white rounded"
+				className="rounded bg-blue-500 px-4 py-2 text-white"
 				onClick={() => {
 					incrementMutation.mutate();
 				}}

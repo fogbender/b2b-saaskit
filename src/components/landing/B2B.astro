@@ -78,7 +78,7 @@ const services: LegoPiece[] = [
 	title={websiteTitle}
 	description="Enabling a developer to go from zero to core business logic in a matter of minutes"
 >
-	<main class="container max-w-[42rem] px-8 md:px-0 md:mx-auto pb-12">
+	<main class="container max-w-[42rem] px-8 pb-12 md:mx-auto md:px-0">
 		<a
 			href="https://github.com/fogbender/b2b-saaskit"
 			class="fogbender-github-corner"
@@ -101,16 +101,16 @@ const services: LegoPiece[] = [
 			></a
 		>
 
-		<div class="flex gap-6 items-center mt-28">
+		<div class="mt-28 flex items-center gap-6">
 			<div class="w-[5.75rem]">
-				<img class="w-[92px] h-[84px]" src={wink} alt="Winking fox" />
+				<img class="h-[84px] w-[92px]" src={wink} alt="Winking fox" />
 			</div>
-			<span class="font-bold text-[3.625rem]">B2B SaaS Kit</span>
+			<span class="text-[3.625rem] font-bold">B2B SaaS Kit</span>
 		</div>
 
-		<div class="mt-16 ml-0 md:ml-[7.25rem] text-[1.75rem] leading-7">Friend, hello!</div>
+		<div class="ml-0 mt-16 text-[1.75rem] leading-7 md:ml-[7.25rem]">Friend, hello!</div>
 
-		<div class="mt-8 ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem] flex flex-col gap-8">
+		<div class="ml-0 mt-8 flex flex-col gap-8 text-lg leading-[1.875rem] md:ml-[7.25rem]">
 			<div>
 				<b>B2B SaaS Kit</b> is an instructional bundle for assembling products designed to be used by
 				teams of users (i.e., businesses).
@@ -129,14 +129,14 @@ const services: LegoPiece[] = [
 			</div>
 		</div>
 
-		<div class="mt-8 ml-0 md:ml-[7.25rem]">
+		<div class="ml-0 mt-8 md:ml-[7.25rem]">
 			<div class="flex flex-wrap gap-6">
 				{
 					[...libraries, ...services].map((x) => (
 						<a href={x.url}>
 							{typeof x.imgUrl === 'string' ? (
 								<img
-									class="rounded-xl hover:opacity-50 bg-white h-[92px] w-[92px]"
+									class="h-[92px] w-[92px] rounded-xl bg-white hover:opacity-50"
 									src={x.imgUrl}
 									alt={x.name}
 									width={92 * 2}
@@ -145,7 +145,7 @@ const services: LegoPiece[] = [
 								/>
 							) : (
 								<Image
-									class="rounded-xl hover:opacity-50 bg-white h-[92px] w-[92px]"
+									class="h-[92px] w-[92px] rounded-xl bg-white hover:opacity-50"
 									src={x.imgUrl}
 									alt={x.name}
 									width={92 * 2}
@@ -162,7 +162,7 @@ const services: LegoPiece[] = [
 		</div>
 
 		<div class="mt-[3.75rem] flex gap-6">
-			<div class="min-w-fit md:min-w-[5.75rem] flex justify-end">
+			<div class="flex min-w-fit justify-end md:min-w-[5.75rem]">
 				<img class="h-10 w-10" src={b2b7logo} alt="Free as in beer" />
 			</div>
 			<div class="text-lg leading-[1.875rem]">
@@ -173,14 +173,14 @@ const services: LegoPiece[] = [
 			</div>
 		</div>
 
-		<div class="mt-8 ml-0 md:ml-[7.25rem] text-lg leading-[1.875rem] flex flex-col gap-2">
+		<div class="ml-0 mt-8 flex flex-col gap-2 text-lg leading-[1.875rem] md:ml-[7.25rem]">
 			<div>
 				If you'd like to see how it was built, let's get a copy running right here&mdash;on your
 				computer. You'll need Node.js 18 to get going. Then, run this in the terminal:
 			</div>
 
 			<pre
-				class="text-xs md:text-base bg-[#6B7280] px-2 py-4 rounded-xl text-sm text-white">
+				class="rounded-xl bg-[#6B7280] px-2 py-4 text-sm text-xs text-white md:text-base">
 git clone git@github.com:fogbender/b2b-saaskit.git 
 cd b2b-saaskit 
 corepack enable 
@@ -193,7 +193,7 @@ yarn dev</pre>
 			</div>
 		</div>
 
-		<div class="mt-8 ml-0 md:ml-[7.25rem] text-2xl leading-[1.875rem]">
+		<div class="ml-0 mt-8 text-2xl leading-[1.875rem] md:ml-[7.25rem]">
 			But wait! Please ⭐ <a href="https://github.com/fogbender/b2b-saaskit">our open-source repo</a
 			>!
 		</div>

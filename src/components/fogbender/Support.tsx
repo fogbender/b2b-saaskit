@@ -36,9 +36,9 @@ export const SupportWidget = ({ kind }: { kind: 'widget' | 'floatie' | 'badge' }
 		}
 
 		return (
-			<div className="container mt-8 mx-auto">
+			<div className="container mx-auto mt-8">
 				<h3 className="text-2xl font-bold">Prompts with Friends / Support</h3>
-				<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8">
+				<div className="mt-4 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 					<p className="prose">
 						Hi! This section is only available if you have set up your{' '}
 						<code>PUBLIC_FOGBENDER_WIDGET_ID</code> and <code>FOGBENDER_SECRET</code>.

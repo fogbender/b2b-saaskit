@@ -88,8 +88,8 @@ export function Prompt() {
 
 	return (
 		<Layout>
-			<div className="flex items-start gap-4 sm:flex-row flex-col">
-				<h3 className="text-2xl font-medium truncate max-w-2xl md:max-w-4xl sm:w-fit w-full">
+			<div className="flex flex-col items-start gap-4 sm:flex-row">
+				<h3 className="w-full max-w-2xl truncate text-2xl font-medium sm:w-fit md:max-w-4xl">
 					{promptQuery.data ? promptQuery.data.prompt.title : 'Loading...'}
 				</h3>
 				<div className="min-w-fit">
@@ -118,22 +118,22 @@ export function Prompt() {
 							Likes: {data?.likes}
 						</button>
 					)}
-					<SimpleModalButton className="mr-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+					<SimpleModalButton className="mr-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
 						{data && <ShareDialog response={data} />}
 					</SimpleModalButton>
 				</div>
 			</div>
-			<div className="mt-4 px-4 sm:px-6 lg:px-8 border border-gray-300 rounded-md py-8 flex flex-col gap-10">
+			<div className="mt-4 flex flex-col gap-10 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 				<div className="flex flex-col">
 					<div className="flex flex-row gap-4">
 						<div>
-							<h3 className="text-xl font-medium mb-4">{data?.prompt.title}</h3>
+							<h3 className="mb-4 text-xl font-medium">{data?.prompt.title}</h3>
 							<p className="my-4">{data?.prompt.description}</p>
 
 							{data?.prompt.tags && (
 								<div className="mb-4">
 									{data.prompt.tags.map((tag) => (
-										<span key={tag} className="px-2 py-1 mr-2 bg-blue-500 text-white rounded">
+										<span key={tag} className="mr-2 rounded bg-blue-500 px-2 py-1 text-white">
 											{tag}
 										</span>
 									))}
@@ -141,7 +141,7 @@ export function Prompt() {
 							)}
 						</div>
 						<div>
-							<h3 className="text-xl font-medium mb-4">
+							<h3 className="mb-4 text-xl font-medium">
 								by {data?.author.name || data?.author.email || data?.prompt.userId}
 							</h3>
 							<p className="my-4">Created: {data?.prompt.createdAt.toLocaleString()}</p>
@@ -150,7 +150,7 @@ export function Prompt() {
 							)}
 						</div>
 						<div>
-							<h3 className="text-xl font-medium mb-4">Comments:</h3>
+							<h3 className="mb-4 text-xl font-medium">Comments:</h3>
 							{commentsQuery.data?.comments.map((comment) => (
 								<p key={comment.commentId}>{comment.content}</p>
 							))}
@@ -167,14 +167,14 @@ export function Prompt() {
 									type="text"
 									placeholder="Write a comment..."
 								/>
-								<button className="mb-8 bg-blue-500 text-white rounded p-2">Post Comment</button>
+								<button className="mb-8 rounded bg-blue-500 p-2 text-white">Post Comment</button>
 							</form>
 						</div>
 					</div>
 				</div>
 
 				<div className="flex flex-col">
-					<h3 className="text-xl font-medium mb-4">Quick replay:</h3>
+					<h3 className="mb-4 text-xl font-medium">Quick replay:</h3>
 					{data?.prompt.template.map((message, index) => (
 						<p key={index}>
 							{message.role}: {message.content}
@@ -184,7 +184,7 @@ export function Prompt() {
 
 				<div className="flex gap-4">
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
 						onClick={() => {
 							navigate('/app/prompts/create', { state: { prompt: data?.prompt } });
 						}}
@@ -202,7 +202,7 @@ export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefin
 	return (
 		<button
 			type="button"
-			className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+			className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
 			onClick={async () => {
 				if (messages) {
 					const json = JSON.stringify(resolveTemplates(messages));
@@ -311,18 +311,18 @@ const SimpleModalButton = ({
 				ref={modalRef}
 				onClick={() => setIsModalOpen(false)}
 				className={clsx(
-					'fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50',
+					'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50',
 					isModalOpen ? 'flex' : 'hidden'
 				)}
 			>
 				<div
-					className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto overflow-auto max-h-[90vh]"
+					className="mx-auto max-h-[90vh] max-w-lg overflow-auto rounded bg-white p-6 shadow-lg"
 					onClick={(e) => e.stopPropagation()}
 				>
 					{children}
 					<button
 						onClick={() => setIsModalOpen(false)}
-						className="px-4 py-2 bg-red-500 text-white rounded"
+						className="rounded bg-red-500 px-4 py-2 text-white"
 					>
 						Close
 					</button>
@@ -343,7 +343,7 @@ const ShareDialog = ({ response }: { response: RouterOutput['prompts']['getPromp
 	const privacyLevel = updatePromptMutation.variables?.privacyLevel || promptData.privacyLevel;
 	return (
 		<>
-			<h1 className="text-2xl font-bold mb-4">Share this prompt with your friends</h1>
+			<h1 className="mb-4 text-2xl font-bold">Share this prompt with your friends</h1>
 			<div className="mt-4">
 				<label className="block text-sm font-medium text-gray-700" htmlFor="promptPrivacyLevel">
 					Visibility
@@ -351,7 +351,7 @@ const ShareDialog = ({ response }: { response: RouterOutput['prompts']['getPromp
 				<div className="mt-1 w-full">
 					<select
 						id="promptPrivacyLevel"
-						className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2 disabled:opacity-50"
+						className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 sm:text-sm"
 						value={privacyLevel}
 						disabled={updatePromptMutation.isLoading}
 						onChange={(e) => {
@@ -377,16 +377,16 @@ const ShareDialog = ({ response }: { response: RouterOutput['prompts']['getPromp
 					<label className="block text-sm font-medium text-gray-700" htmlFor="shareUrl">
 						Public URL ({privacyLevel === 'unlisted' ? 'not ' : ''}indexed by Google)
 					</label>
-					<div className="flex flex-row mt-1 gap-4">
+					<div className="mt-1 flex flex-row gap-4">
 						<input
 							id="shareUrl"
-							className="border p-2 w-full rounded"
+							className="w-full rounded border p-2"
 							type="text"
 							value={response.publicUrl}
 							readOnly
 						/>
 						<button
-							className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+							className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
 							onClick={() => {
 								navigator.clipboard.writeText(response.publicUrl);
 							}}
@@ -403,16 +403,16 @@ const ShareDialog = ({ response }: { response: RouterOutput['prompts']['getPromp
 						? '(for you and your team)'
 						: '(for you)'}
 				</label>
-				<div className="flex flex-row mt-1 gap-4">
+				<div className="mt-1 flex flex-row gap-4">
 					<input
 						id="promptUrl"
-						className="border p-2 w-full rounded"
+						className="w-full rounded border p-2"
 						type="text"
 						value={response.shareUrl}
 						readOnly
 					/>
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
 						onClick={() => {
 							navigator.clipboard.writeText(response.shareUrl);
 						}}

@@ -18,14 +18,14 @@ export function App() {
 	useNavigateToReturnUrl();
 
 	if (auth.loading === true) {
-		return <div className="container my-10 mx-4">Loading...</div>;
+		return <div className="container mx-4 my-10">Loading...</div>;
 	}
 
 	if (auth.user === null) {
 		return (
 			<>
-				<div className="text-center my-10">
-					<h1 className="text-2xl font-bold text-center mb-4">You need to login to continue</h1>
+				<div className="my-10 text-center">
+					<h1 className="mb-4 text-center text-2xl font-bold">You need to login to continue</h1>
 					<LoginInternal />
 				</div>
 			</>
@@ -37,12 +37,12 @@ export function App() {
 		if (orgs.length === 0) {
 			return (
 				<>
-					<h1 className="text-2xl font-bold text-center">
+					<h1 className="text-center text-2xl font-bold">
 						Please create or join organization first
 					</h1>
 					<div className="text-center">
 						<button
-							className="px-4 py-2 bg-blue-500 text-white rounded ml-2"
+							className="ml-2 rounded bg-blue-500 px-4 py-2 text-white"
 							onClick={() => redirectToCreateOrgPage()}
 						>
 							Create org
@@ -54,10 +54,10 @@ export function App() {
 
 		return (
 			<>
-				<h1 className="text-2xl font-bold text-center">Please select an organization</h1>
+				<h1 className="text-center text-2xl font-bold">Please select an organization</h1>
 				<div className="text-center">
 					<select
-						className="px-4 py-2  rounded"
+						className="rounded px-4  py-2"
 						onChange={(e) => {
 							saveOrgSelectionToLocalStorage(e.target.value);
 							window.location.reload();
@@ -93,7 +93,7 @@ const AppWithOrg = ({
 				Hello, {auth.user.email} ({activeOrg.orgName})
 			</div>
 			<div className="mt-4">
-				<a href="/app/prompts" className="px-4 py-2 bg-indigo-500 text-white rounded">
+				<a href="/app/prompts" className="rounded bg-indigo-500 px-4 py-2 text-white">
 					Go to prompts
 				</a>
 			</div>
