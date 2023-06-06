@@ -40,6 +40,24 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Click on "Create New API Key", give the key a name (e.g., `pwf-prod`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`
 
+#### PropelAuth GitHub OAuth (optional)
+
+1. In the sidebar, select "Configuration" - "Social Logins", and click on "Sign in with GitHub".
+
+1. Locate "Authorized redirect URIs", this URL is going to be used in the next step.
+
+1. Open <a href="https://github.com/settings/developers">https://github.com/settings/developers</a>, click on "New OAuth App", and fill in the form:
+
+   - "Application name" - "Prompts with Friends"
+   - "Homepage URL" - `https://[subdomain].vercel.app`
+   - "Authorization callback URL" - paste the value from the previous step
+
+1. Leave the rest of the fields blank and click on "Register application"
+
+1. You should see a new OAuth application created. Click on the "Generate a new client secret" button, then copy "Client ID" and the new "Client secret" to the page from step 1.
+
+1. Click enable and save.
+
 #### Posthog (optional)
 
 1. Since free PostHog is limited to only one project on a free tier, use the same values for production and the local version.
