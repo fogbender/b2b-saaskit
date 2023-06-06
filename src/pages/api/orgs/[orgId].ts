@@ -43,7 +43,7 @@ export const get: APIRoute = async ({ params, request }) => {
 export function publicUserInfo(user: UserMetadata) {
 	return {
 		userId: user.userId,
-		name: [user.lastName, user.firstName].filter(Boolean).join(' '),
+		name: [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username,
 		pictureUrl: user.pictureUrl,
 		email: user.email,
 	};
