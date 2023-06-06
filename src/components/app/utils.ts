@@ -1,3 +1,7 @@
+import { useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useAuthInfo } from '../propelauth';
 import type { RouterOutput } from '../trpc';
 
 export type Message = { role: 'user' | 'assistant' | 'system'; content: string };
@@ -52,3 +56,62 @@ export function defaultPrivacyLevel(value: string | undefined): PrivacyLevel {
 export type PrivacyLevel = 'public' | 'team' | 'unlisted' | 'private';
 
 export type PromptState = { prompt?: RouterOutput['prompts']['getPrompt']['prompt'] } | null;
+
+export const useRedirectToLoginPage = () => {
+	const redirectToLogin = useCallback((returnUrl: string) => {
+		const search = new URLSearchParams({ returnUrl });
+		window.location.href = '/login?' + search.toString();
+	}, []);
+	return { redirectToLogin };
+};
+
+export const usePersistReturnUrl = () => {
+	useEffect(() => {
+		if (['/login', '/signup'].includes(window.location.pathname)) {
+			const search = new URLSearchParams(window.location.search);
+			const returnUrl = search.get('returnUrl');
+			if (returnUrl) {
+				sessionStorage.setItem('returnUrl', returnUrl);
+				localStorage.setItem('returnUrl', returnUrl);
+			}
+		}
+	}, []);
+};
+
+export const useRedirectToYourProduct = () => {
+	const redirectToYourProduct = useCallback(() => {
+		const search = new URLSearchParams(window.location.search);
+		const returnUrl =
+			search.get('returnUrl') ||
+			sessionStorage.getItem('returnUrl') ||
+			localStorage.getItem('returnUrl');
+		sessionStorage.removeItem('returnUrl');
+		localStorage.removeItem('returnUrl');
+		console.log('redirecting to ', returnUrl);
+		window.location.href = returnUrl || '/app';
+	}, []);
+	return { redirectToYourProduct };
+};
+
+export const useNavigateToReturnUrl = () => {
+	const auth = useAuthInfo();
+	const navigate = useNavigate();
+	const hasUser = auth.loading === false && auth.user !== null;
+	useEffect(() => {
+		if (!hasUser) {
+			return;
+		}
+		const search = new URLSearchParams(window.location.search);
+		const returnUrl =
+			search.get('returnUrl') ||
+			sessionStorage.getItem('returnUrl') ||
+			localStorage.getItem('returnUrl');
+		sessionStorage.removeItem('returnUrl');
+		localStorage.removeItem('returnUrl');
+		if (!returnUrl) {
+			return;
+		}
+		console.log('navigating to ', returnUrl);
+		navigate(returnUrl);
+	}, [hasUser]);
+};

@@ -5,10 +5,11 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import type { PromptPrivacyLevel } from '../../lib/trpc/routers/prompts';
 import { RouterOutput, trpc } from '../trpc';
 import { Layout } from './Layout';
-import { Message, resolveTemplates } from './utils';
+import { Message, resolveTemplates, useRedirectToLoginPage } from './utils';
 
 export function Prompt() {
 	const navigate = useNavigate();
+	const { redirectToLogin } = useRedirectToLoginPage();
 	const { promptId } = useParams<{ promptId: string }>();
 	const trpcUtils = trpc.useContext();
 	const promptQuery = trpc.prompts.getPrompt.useQuery(
@@ -34,6 +35,11 @@ export function Prompt() {
 	);
 
 	const likeMutation = trpc.prompts.likePrompt.useMutation({
+		onError: (error) => {
+			if (error.data?.code === 'UNAUTHORIZED') {
+				redirectToLogin(window.location.pathname);
+			}
+		},
 		onSettled: () => {
 			trpcUtils?.prompts.getPrompt.invalidate({ promptId });
 		},
@@ -88,7 +94,7 @@ export function Prompt() {
 				</h3>
 				<div className="min-w-fit">
 					{data?.canEdit && (
-						<Link className="mr-4" to="./edit">
+						<Link className="mr-4" to={`/app/prompts/${promptId}/edit`}>
 							Edit
 						</Link>
 					)}
