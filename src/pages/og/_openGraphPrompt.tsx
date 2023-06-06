@@ -6,9 +6,15 @@ type OpenGraphPromptProps = {
 	title: string;
 	description: string;
 	originUrl: string;
+	chatTemplate: string | null;
 };
 
-export default function OpenGraphPrompt({ title, description, originUrl }: OpenGraphPromptProps) {
+export default function OpenGraphPrompt({
+	title,
+	description,
+	originUrl,
+	chatTemplate,
+}: OpenGraphPromptProps) {
 	return (
 		<div
 			style={{
@@ -27,28 +33,29 @@ export default function OpenGraphPrompt({ title, description, originUrl }: OpenG
 			/>
 			<div
 				style={{
+					backgroundColor: '#e9d8f7cc',
 					position: 'absolute',
 					display: 'flex',
 					top: 0,
 					width: '1200px',
-					height: '300px',
+					height: '630px',
 					justifyContent: 'center',
-					alignItems: 'center',
+					alignItems: 'flex-start',
 				}}
 			>
 				<div
 					style={{
 						display: 'flex',
 						flexDirection: 'column',
-						alignItems: 'center',
+						alignItems: 'flex-start',
 						gap: '0.7rem',
-						padding: '1rem',
-						maxWidth: '1200px',
+						padding: '2rem',
+						width: '1200px',
 					}}
 				>
 					<h1
 						style={{
-							textAlign: 'center',
+							textAlign: 'left',
 							fontSize: title.length > 15 ? '70px' : '90px',
 							fontFamily: 'Montserrat',
 							lineHeight: '4rem',
@@ -65,12 +72,23 @@ export default function OpenGraphPrompt({ title, description, originUrl }: OpenG
 							color: '#37007D',
 							fontSize: '40px',
 							fontWeight: 600,
-							textAlign: 'center',
 							wordBreak: 'break-word',
 						}}
 					>
 						{description}
 					</h2>
+					<h3
+						style={{
+							fontFamily: 'Montserrat',
+							color: '#270158',
+							fontSize: '30px',
+							fontWeight: 600,
+							wordBreak: 'break-word',
+							whiteSpace: 'pre-wrap',
+						}}
+					>
+						{chatTemplate}
+					</h3>
 				</div>
 			</div>
 		</div>
