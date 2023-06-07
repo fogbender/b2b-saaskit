@@ -30,7 +30,8 @@ const { title, description, chatTemplate } = (() => {
 			continue;
 		}
 		const who = line.role === 'user' ? 'You' : line.role === 'system' ? 'System' : 'Assistant';
-		chatTemplate += `${who}: ${limitText(line.content)}\n`;
+		const limit = prompt.template.length > 1 ? 120 : 700;
+		chatTemplate += `${who}: ${limitText(line.content, limit)}\n`;
 		const newChatTemplate = limitText(chatTemplate, 700);
 		if (newChatTemplate !== chatTemplate) {
 			chatTemplate = newChatTemplate;
