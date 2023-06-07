@@ -81,7 +81,7 @@ const services: LegoPiece[] = [
 	<main class="container max-w-[42rem] px-8 pb-12 md:mx-auto md:px-0">
 		<a
 			href="https://github.com/fogbender/b2b-saaskit"
-			class="fogbender-github-corner"
+			class="fogbender-github-corner absolute right-0 top-0 z-50 md:fixed"
 			target="_blank"
 			aria-label="View source on GitHub"
 			><svg
@@ -237,4 +237,7 @@ yarn dev</pre>
 			}
 		</style>
 	</main>
+	<script>
+		document.body.classList.add('overscroll-none');
+	</script>
 </Layout>
