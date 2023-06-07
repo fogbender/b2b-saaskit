@@ -32,6 +32,8 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Press "Save"
 
+1. (optional) Locate "Configuration" - "User Schema" in the sidebar. Enable "Profile Picture" (nicer avatars), "Name" (to show it instead of email).
+
 1. Locate the "Integrate your product" - "Backend integration" page
 
 1. Copy "Auth URL", then save it with `doppler secrets set PUBLIC_AUTH_URL --config prd`
