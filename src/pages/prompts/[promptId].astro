@@ -61,6 +61,6 @@ const ogImage = getGeneratorForPromptUrl({
 const noindex = x.kind === 'error' || x.prompt.prompt.privacyLevel !== 'public';
 ---
 
-<AppLayout title={title} ogImage={ogImage} meta={{ noindex }}>
+<AppLayout title={title} description={description} ogImage={ogImage} meta={{ noindex }}>
 	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
 </AppLayout>
