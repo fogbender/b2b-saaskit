@@ -11,7 +11,6 @@ export default defineConfig({
 	site: process.env.SITE_URL,
 	experimental: {
 		assets: true,
-		hybridOutput: true,
 	},
 	vite: {
 		optimizeDeps: {
