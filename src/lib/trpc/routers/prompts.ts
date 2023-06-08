@@ -1,7 +1,7 @@
 import type { User } from '@propelauth/node';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid-deno';
 import { z } from 'zod';
 
 import type { PrivacyLevel } from '../../../components/app/utils';

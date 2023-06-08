@@ -55,6 +55,7 @@
     "fogbender-react": "^0.2.11",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.0",
+    "nanoid-deno": "^0.0.2",
     "postgres": "^3.3.4",
     "posthog-js": "^1.56.0",
     "posthog-node": "^3.1.1",
