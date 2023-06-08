@@ -94,5 +94,5 @@ export const settingsRouter = createTRPCRouter({
 });
 
 function canOnlyChangeOwnKey(ctx: { user: User }, item: { userId: string; orgId: string }) {
-	return item?.userId === ctx.user.userId;
+	return item.userId === ctx.user.userId;
 }

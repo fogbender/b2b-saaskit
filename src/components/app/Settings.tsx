@@ -135,7 +135,7 @@ export function Settings() {
 								{addKeyMutation.isError && (
 									<div>
 										Error!{' '}
-										{addKeyMutation.error?.data?.zodError && (
+										{addKeyMutation.error.data?.zodError && (
 											<pre>{JSON.stringify(addKeyMutation.error.data.zodError, null, 2)}</pre>
 										)}
 									</div>

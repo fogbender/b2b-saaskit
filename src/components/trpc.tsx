@@ -26,7 +26,7 @@ export function TRPCProvider({
 				httpBatchLink({
 					url: '/api/trpc',
 					// You can pass any HTTP headers you wish here
-					async headers() {
+					headers() {
 						return {
 							authorization: 'getAuthCookie()',
 						};
