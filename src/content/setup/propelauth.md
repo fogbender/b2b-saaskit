@@ -11,7 +11,11 @@ PropelAuth is free up to 1000 monthly active users.
 
 1. In the "Test" tab "Primary Frontend Location" should be `https://localhost:3000`. Set "Default redirect path after login" to `/app`
 
-1. Locate the "Integrate your product" - "Integrate your Backend" step
+1. Press "Save"
+
+1. [Optional] Locate "Configuration" - "User Schema" in the sidebar. Enable "Profile Picture" and "Name"
+
+1. Locate the "Integrate your product" - "Backend integration" page
 
 1. Locate and copy the value of "Auth URL" - it should like like `https://123456789.propelauthtest.com`, then run `doppler secrets set PUBLIC_AUTH_URL` and paste the value
 
