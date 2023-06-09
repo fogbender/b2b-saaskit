@@ -13,7 +13,7 @@ PropelAuth is free up to 1000 monthly active users.
 
 1. Press "Save"
 
-1. (optional) Locate "Configuration" - "User Schema" in the sidebar. Enable "Profile Picture", and "Name".
+1. [Optional] Locate "Configuration" - "User Schema" in the sidebar. Enable "Profile Picture" and "Name"
 
 1. Locate the "Integrate your product" - "Backend integration" page
 

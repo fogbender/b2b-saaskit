@@ -32,7 +32,7 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Press "Save"
 
-1. (optional) Locate "Configuration" - "User Schema" in the sidebar. Enable "Profile Picture" (nicer avatars), "Name" (to show it instead of email).
+1. [Optional] Locate "Configuration" - "User Schema" in the sidebar. Enable "Profile Picture" (for nicer avatars) and "Name" (to show name instead of email)
 
 1. Locate the "Integrate your product" - "Backend integration" page
 
