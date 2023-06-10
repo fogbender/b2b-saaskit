@@ -49,7 +49,7 @@ yarn dev
 
 4. You'll find detailed configuration instructions on http://localhost:3000/setup. Once you're here -
 
-![image](https://github.com/fogbender/b2b-saaskit/assets/41166/c02a43c3-03a6-4e7f-8c84-ce4196d6577f)
+<img width="819" alt="image" src="https://github.com/fogbender/b2b-saaskit/assets/41166/a60efadc-0435-4bd9-ae65-ce516e808b02">
 
 \- you should be able to have a working copy of _Prompts with Friends_ running on http://localhost:3000/app
 
