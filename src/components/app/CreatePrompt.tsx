@@ -86,7 +86,7 @@ export function CreatePrompt() {
 					<p>An assistant message is a response from AI.</p>
 					<p>
 						A system message is a set of general instructions to the AI assistant - e.g., "I'm
-						playing a game where every time I respond, I must provude an answer and then follow up
+						playing a game where every time I respond, I must provide an answer and then follow up
 						with my own question related to science, theology, or history."
 					</p>
 				</div>
@@ -213,7 +213,9 @@ export const EditPromptControls = ({
 		<div className="mb-36 mt-4 flex flex-col gap-10">
 			<div className="flex flex-col gap-4">
 				<fieldset className="flex flex-col gap-8">
-					<legend className="text-lg font-medium text-gray-900">Messages</legend>
+					<div>
+						<legend className="text-lg font-medium text-gray-900">Messages</legend>
+					</div>
 					{messages.map((message, index) => (
 						<div className="flex gap-3" key={getMessageKey(message)}>
 							<div className="flex flex-col justify-between">
@@ -224,7 +226,7 @@ export const EditPromptControls = ({
 										? 'Assistant'
 										: 'System') + ': '}
 								</label>
-								<div className="w-32">
+								<div className="flex w-32 flex-col items-start">
 									{actions
 										.filter((x) => {
 											if (x === 'move up') {
@@ -240,21 +242,20 @@ export const EditPromptControls = ({
 												key={action}
 												className="text-sm text-blue-700 hover:text-red-600"
 												onClick={() => {
-													const value = action;
-													if (value === 'delete') {
+													if (action === 'delete') {
 														const confirm = window.confirm(
 															'Are you sure you want to delete this message?'
 														);
 														if (confirm) {
 															setMessages((messages) => messages.filter((_, i) => i !== index));
 														}
-													} else if (value === 'move up') {
+													} else if (action === 'move up') {
 														setMessages((messages) => {
 															const newMessages = [...messages].filter((_, i) => i !== index);
 															newMessages.splice(index - 1, 0, message);
 															return newMessages;
 														});
-													} else if (value === 'move down') {
+													} else if (action === 'move down') {
 														setMessages((messages) => {
 															const newMessages = [...messages].filter((_, i) => i !== index);
 															newMessages.splice(index + 1, 0, message);
@@ -267,7 +268,7 @@ export const EditPromptControls = ({
 															const x = newMessages[index];
 															if (x) {
 																messageKeys.set(x, key); // to preserve key
-																x.role = value;
+																x.role = action;
 															}
 															return newMessages;
 														});

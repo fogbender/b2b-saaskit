@@ -55,7 +55,7 @@ export function AppNav() {
 
 	return (
 		<header className="bg-white px-5 py-4 shadow-sm">
-			<div className="container mx-auto flex items-center justify-between">
+			<div className="container mx-auto flex items-center justify-between text-sm">
 				<nav className="flex flex-wrap space-x-4">
 					<NavLink to="/app" end className={navLinkClass}>
 						Overview
@@ -150,7 +150,7 @@ const getNavLinkClass =
 	({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
 		clsx(
 			'text-gray-600 hover:text-gray-900',
-			'px-2 py-1',
+			'px-2 py-0.5',
 			'border rounded-full',
 			className,
 			isPending ? 'animate-pulse' : '',
