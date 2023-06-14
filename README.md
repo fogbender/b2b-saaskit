@@ -57,6 +57,10 @@ yarn dev
 
 ### Make changes
 
+### Vercel quick start
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffogbender%2Fb2b-saaskit&project-name=my-prompts-with-friends&repository-name=my-prompts-with-friends&demo-title=Prompts%20With%20Friends&demo-description=Built%20with%20B2B%20SaaSKit.%20B2B%20Auth%2C%20OpenAI%2C%20SQL%2C%20Analytics%2C%20Support&demo-url=https%3A%2F%2Fpromptswithfriends.com%2F&demo-image=https%3A%2F%2Fpromptswithfriends.com%2Fog%3Ftitle%3DB2B%2BSaasKit%26description%3Dcreate%2Byour%2Bown%2Bfully%2Bfeatured%2Bapp%2Bin%2Bminutes&integration-ids=oac_UdMtwPpcN7yXVQsZFvMSQFy5)
+
 ## License
 
 B2B SaaS Kit is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for more details.
