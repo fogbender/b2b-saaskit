@@ -40,48 +40,66 @@ const defaultPrompts = {
 export function CreatePrompt() {
 	const state = useLocation().state as PromptState;
 
-	const [title, setTitle] = useState('Create prompt');
+	const [title, setTitle] = useState('Create a prompt');
 	const [defaultTemplate, setDefaultTemplate] = useState(
 		state?.prompt?.template || defaultPrompts.empty
 	);
 	const [hasEdits, setHasEdits] = useState(false);
 	return (
 		<Layout>
-			<div className="flex items-center justify-between">
-				<h3 className="text-2xl font-bold">{title}</h3>
-				<select
-					onChange={(e) => {
-						const newTemplate = defaultPrompts[e.target.value as keyof typeof defaultPrompts];
-						if (newTemplate) {
-							const confirmed =
-								!hasEdits ||
-								window.confirm(
-									'Are you sure you want to change the template? This will overwrite your current prompt.'
-								);
-							if (confirmed) {
-								setHasEdits(false);
-								setDefaultTemplate(newTemplate);
+			<div className="flex flex-col gap-4">
+				<div className="flex items-center justify-between">
+					<h3 className="text-2xl font-bold">{title}</h3>
+					<select
+						className="rounded-md border border-gray-300 p-1 text-sm"
+						onChange={(e) => {
+							const newTemplate = defaultPrompts[e.target.value as keyof typeof defaultPrompts];
+							if (newTemplate) {
+								const confirmed =
+									!hasEdits ||
+									window.confirm(
+										'Are you sure you want to change the template? This will overwrite your current prompt.'
+									);
+								if (confirmed) {
+									setHasEdits(false);
+									setDefaultTemplate(newTemplate);
+								}
 							}
-						}
-					}}
-				>
-					<option>Select a template</option>
-					{Object.keys(defaultPrompts).map((name) => (
-						<option key={name} value={name}>
-							{name}
-						</option>
-					))}
-				</select>
+						}}
+					>
+						<option>Select a template</option>
+						{Object.keys(defaultPrompts).map((name) => (
+							<option key={name} value={name}>
+								{name}
+							</option>
+						))}
+					</select>
+				</div>
+				<div className="flex w-full flex-col gap-4 sm:w-2/3 md:w-1/2">
+					<legend className="text-lg font-medium text-gray-900">Instructions</legend>
+					<p>
+						Each prompt consists of a sequence of messages. Each message is of type to{' '}
+						<span className="italic">system</span>, <span className="italic">user</span>, or{' '}
+						<span className="italic">assistant</span>.
+					</p>
+					<p>A user message is a question or set of instructions to AI from a human.</p>
+					<p>An assistant message is a response from AI.</p>
+					<p>
+						A system message is a set of general instructions to the AI assistant - e.g., "I'm
+						playing a game where every time I respond, I must provude an answer and then follow up
+						with my own question related to science, theology, or history."
+					</p>
+				</div>
+				<EditPromptControls
+					promptName={state?.prompt?.title}
+					promptDescription={state?.prompt?.description}
+					promptTags={state?.prompt?.tags}
+					promptPrivacyLevel={defaultPrivacyLevel(state?.prompt?.privacyLevel)}
+					setTitle={setTitle}
+					template={defaultTemplate}
+					setHasEdits={setHasEdits}
+				/>
 			</div>
-			<EditPromptControls
-				promptName={state?.prompt?.title}
-				promptDescription={state?.prompt?.description}
-				promptTags={state?.prompt?.tags}
-				promptPrivacyLevel={defaultPrivacyLevel(state?.prompt?.privacyLevel)}
-				setTitle={setTitle}
-				template={defaultTemplate}
-				setHasEdits={setHasEdits}
-			/>
 		</Layout>
 	);
 }
@@ -131,7 +149,7 @@ export const EditPromptControls = ({
 	useEffect(() => {
 		const n = Math.max(0, len - initialLen);
 		if (n >= 0) {
-			setTitle?.(`Create pro${'o'.repeat(n)}mpt`);
+			setTitle?.(`Create a pro${'o'.repeat(n)}mpt`);
 		}
 	}, [len, initialLen]);
 
@@ -192,80 +210,81 @@ export const EditPromptControls = ({
 	});
 
 	return (
-		<div className="mb-36 mt-4 flex flex-col gap-10 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
+		<div className="mb-36 mt-4 flex flex-col gap-10">
 			<div className="flex flex-col gap-4">
-				<fieldset>
-					<legend className="text-base font-medium text-gray-900">Chat history</legend>
+				<fieldset className="flex flex-col gap-8">
+					<legend className="text-lg font-medium text-gray-900">Messages</legend>
 					{messages.map((message, index) => (
-						<div className="mt-4" key={getMessageKey(message)}>
-							<select
-								className="cursor-pointer rounded-md border border-gray-300"
-								onChange={(e) => {
-									const value = e.target.value as (typeof actions)[number];
-									if (value === 'delete') {
-										const confirm = window.confirm('Are you sure you want to delete this message?');
-										if (confirm) {
-											setMessages((messages) => messages.filter((_, i) => i !== index));
-										}
-									} else if (value === 'move up') {
-										setMessages((messages) => {
-											const newMessages = [...messages].filter((_, i) => i !== index);
-											newMessages.splice(index - 1, 0, message);
-											return newMessages;
-										});
-									} else if (value === 'move down') {
-										setMessages((messages) => {
-											const newMessages = [...messages].filter((_, i) => i !== index);
-											newMessages.splice(index + 1, 0, message);
-											return newMessages;
-										});
-									} else {
-										setMessages((messages) => {
-											const key = getMessageKey(message);
-											const newMessages = structuredClone(messages);
-											const x = newMessages[index];
-											if (x) {
-												messageKeys.set(x, key); // to preserve key
-												x.role = value;
+						<div className="flex gap-3" key={getMessageKey(message)}>
+							<div className="flex flex-col justify-between">
+								<label className="block text-sm font-medium text-gray-700">
+									{(message.role === 'user'
+										? 'User'
+										: message.role === 'assistant'
+										? 'Assistant'
+										: 'System') + ': '}
+								</label>
+								<div className="w-32">
+									{actions
+										.filter((x) => {
+											if (x === 'move up') {
+												return index > 0;
 											}
-											return newMessages;
-										});
-									}
-
-									console.log(e.target.value);
-								}}
-							>
-								<option onClick={(e) => e.preventDefault()}>Perform an action</option>
-								{actions
-									.filter((x) => {
-										if (x === 'move up') {
-											return index > 0;
-										}
-										if (x === 'move down') {
-											return index < messages.length - 1;
-										}
-										return x !== message.role;
-									})
-									.map((action) => (
-										<option value={action} key={action}>
-											{action === 'delete'
-												? 'Delete'
-												: action === 'move up'
-												? 'Move up'
-												: action === 'move down'
-												? 'Move down'
-												: 'Change message type to ' + action}
-										</option>
-									))}
-							</select>
-							<label className="block text-sm font-medium text-gray-700">
-								{message.role === 'user'
-									? 'User'
-									: message.role === 'assistant'
-									? 'Assistant'
-									: 'System'}{' '}
-								template
-							</label>
+											if (x === 'move down') {
+												return index < messages.length - 1;
+											}
+											return x !== message.role;
+										})
+										.map((action) => (
+											<button
+												key={action}
+												className="text-sm text-blue-700 hover:text-red-600"
+												onClick={() => {
+													const value = action;
+													if (value === 'delete') {
+														const confirm = window.confirm(
+															'Are you sure you want to delete this message?'
+														);
+														if (confirm) {
+															setMessages((messages) => messages.filter((_, i) => i !== index));
+														}
+													} else if (value === 'move up') {
+														setMessages((messages) => {
+															const newMessages = [...messages].filter((_, i) => i !== index);
+															newMessages.splice(index - 1, 0, message);
+															return newMessages;
+														});
+													} else if (value === 'move down') {
+														setMessages((messages) => {
+															const newMessages = [...messages].filter((_, i) => i !== index);
+															newMessages.splice(index + 1, 0, message);
+															return newMessages;
+														});
+													} else {
+														setMessages((messages) => {
+															const key = getMessageKey(message);
+															const newMessages = structuredClone(messages);
+															const x = newMessages[index];
+															if (x) {
+																messageKeys.set(x, key); // to preserve key
+																x.role = value;
+															}
+															return newMessages;
+														});
+													}
+												}}
+											>
+												{action === 'delete'
+													? 'Delete'
+													: action === 'move up'
+													? 'Move up'
+													: action === 'move down'
+													? 'Move down'
+													: 'Change to ' + action}
+											</button>
+										))}
+								</div>
+							</div>
 							<div className="mt-1 w-full">
 								<textarea
 									ref={onMount}
@@ -303,7 +322,7 @@ export const EditPromptControls = ({
 										message.role === 'system'
 											? 'bg-gray-200'
 											: message.role === 'assistant'
-											? 'bg-gray-100'
+											? 'bg-yellow-50'
 											: '',
 										'block min-h-[8rem] w-full resize-y overflow-y-scroll whitespace-pre-wrap rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
 									)}
@@ -313,7 +332,7 @@ export const EditPromptControls = ({
 					))}
 				</fieldset>
 				<form
-					className="flex flex-wrap gap-4"
+					className="flex flex-wrap gap-4 self-center"
 					onSubmit={(e) => {
 						e.preventDefault();
 						const { submitter } = e.nativeEvent as any as { submitter: HTMLButtonElement };
@@ -336,7 +355,7 @@ export const EditPromptControls = ({
 					}}
 				>
 					<button
-						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+						className="cursor-pointer font-medium text-blue-700 hover:text-red-600 disabled:opacity-50"
 						name="generate"
 						disabled={
 							!hasAnyKey ||
@@ -347,24 +366,23 @@ export const EditPromptControls = ({
 						Generate response
 					</button>
 					<button
-						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
+						className="cursor-pointer font-medium text-blue-700 hover:text-red-600"
 						name="user"
 					>
-						Add new prompt
+						+ user message
 					</button>
 					<button
-						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
+						className="cursor-pointer font-medium text-blue-700 hover:text-red-600"
 						name="assistant"
 					>
-						Add new response
+						+ assistant message
 					</button>
 					<button
-						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
+						className="cursor-pointer font-medium text-blue-700 hover:text-red-600"
 						name="system"
 					>
-						Add new system message
+						+ system message
 					</button>
-					<CopyToClipboardBtn messages={messages} />
 				</form>
 				<div>
 					{hasKey === false && (
@@ -394,7 +412,7 @@ export const EditPromptControls = ({
 				</div>
 				{templates.size > 0 && (
 					<div>
-						<div className="text-base font-medium text-gray-900">Template values</div>
+						<div className="text-lg font-medium text-gray-900">Template values</div>
 						{[...templates.entries()].map(([key, value]) => (
 							<div key={key} className="mt-4">
 								<label
@@ -421,153 +439,158 @@ export const EditPromptControls = ({
 						))}
 					</div>
 				)}
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						const form = e.currentTarget;
-						const formData = new FormData(form);
-						const data = {
-							...(Object.fromEntries(formData) as {
-								title: string;
-								description: string;
-								privacyLevel: PrivacyLevel;
-							}),
-							tags:
-								formData
-									.get('tags')
-									?.toString()
-									.split(',')
-									.map((x) => x.trim()) ?? [],
-							template: messages,
-						};
-						if (promptId) {
-							updatePromptMutation.mutate({ promptId, ...data });
-						} else {
-							addPromptMutation.mutate(data);
-						}
-					}}
-				>
-					<fieldset>
-						<legend className="text-base font-medium text-gray-900">Description</legend>
-						<div className="mt-4">
-							<label className="block text-sm font-medium text-gray-700" htmlFor="promptName">
-								Prompt name
-							</label>
-							<div className="mt-1 w-full">
-								<input
-									type="text"
-									name="title"
-									id="promptName"
-									className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-									placeholder="Prompt name"
-									defaultValue={promptName}
-								/>
+				<div className="rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							const form = e.currentTarget;
+							const formData = new FormData(form);
+							const data = {
+								...(Object.fromEntries(formData) as {
+									title: string;
+									description: string;
+									privacyLevel: PrivacyLevel;
+								}),
+								tags:
+									formData
+										.get('tags')
+										?.toString()
+										.split(',')
+										.map((x) => x.trim()) ?? [],
+								template: messages,
+							};
+							if (promptId) {
+								updatePromptMutation.mutate({ promptId, ...data });
+							} else {
+								addPromptMutation.mutate(data);
+							}
+						}}
+					>
+						<fieldset>
+							<legend className="text-lg font-medium text-gray-900">
+								Save, publish, or copy prompt
+							</legend>
+							<div className="mt-4">
+								<label className="block text-sm font-medium text-gray-700" htmlFor="promptName">
+									Name
+								</label>
+								<div className="mt-1 w-full">
+									<input
+										type="text"
+										name="title"
+										id="promptName"
+										className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+										placeholder="Prompt name"
+										defaultValue={promptName}
+									/>
+								</div>
 							</div>
-						</div>
-						<div className="mt-4">
-							<label
-								className="block text-sm font-medium text-gray-700"
-								htmlFor="promptDescription"
-							>
-								Prompt description
-							</label>
-							<div className="mt-1 w-full">
-								<input
-									type="text"
-									name="description"
-									id="promptDescription"
-									className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-									placeholder="Prompt description"
-									defaultValue={promptDescription}
-								/>
-							</div>
-						</div>
-						<div className="mt-4">
-							<label className="block text-sm font-medium text-gray-700" htmlFor="promptTags">
-								Tags, coma separated
-							</label>
-							<div className="mt-1 w-full">
-								<input
-									type="text"
-									name="tags"
-									id="promptTags"
-									className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-									placeholder="Prompt tags"
-									defaultValue={promptTags?.join(', ')}
-								/>
-							</div>
-						</div>
-						<div className="mt-4">
-							<label
-								className="block text-sm font-medium text-gray-700"
-								htmlFor="promptPrivacyLevel"
-							>
-								Visibility
-							</label>
-							<div className="mt-1 w-full">
-								<select
-									id="promptPrivacyLevel"
-									name="privacyLevel"
-									className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-									defaultValue={promptPrivacyLevel}
+							<div className="mt-4">
+								<label
+									className="block text-sm font-medium text-gray-700"
+									htmlFor="promptDescription"
 								>
-									<option value="public">Public (indexed by Google)</option>
-									<option value="unlisted">
-										Unlisted (only people with the link can access it)
-									</option>
-									<option value="team">
-										Team (only members of your organization can access it)
-									</option>
-									<option value="private">Private (only you can access it)</option>
-								</select>
+									Description
+								</label>
+								<div className="mt-1 w-full">
+									<input
+										type="text"
+										name="description"
+										id="promptDescription"
+										className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+										placeholder="Prompt description"
+										defaultValue={promptDescription}
+									/>
+								</div>
 							</div>
-						</div>
-					</fieldset>
-					<fieldset className="mt-8 flex items-center gap-4">
-						<button
-							className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-							type="submit"
-							disabled={addPromptMutation.isLoading || updatePromptMutation.isLoading}
-						>
-							{promptId ? 'Save' : 'Publish'}
-							{addPromptMutation.isLoading || updatePromptMutation.isLoading ? 'ing' : ''}
-						</button>
-						{promptId && (
+							<div className="mt-4">
+								<label className="block text-sm font-medium text-gray-700" htmlFor="promptTags">
+									Tags, coma-separated
+								</label>
+								<div className="mt-1 w-full">
+									<input
+										type="text"
+										name="tags"
+										id="promptTags"
+										className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+										placeholder="Tags"
+										defaultValue={promptTags?.join(', ')}
+									/>
+								</div>
+							</div>
+							<div className="mt-4">
+								<label
+									className="block text-sm font-medium text-gray-700"
+									htmlFor="promptPrivacyLevel"
+								>
+									Visibility
+								</label>
+								<div className="mt-1 w-full">
+									<select
+										id="promptPrivacyLevel"
+										name="privacyLevel"
+										className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+										defaultValue={promptPrivacyLevel}
+									>
+										<option value="public">Public (indexed by Google)</option>
+										<option value="unlisted">
+											Unlisted (only people with the link can access it)
+										</option>
+										<option value="team">
+											Team (only members of your organization can access it)
+										</option>
+										<option value="private">Private (only you can access it)</option>
+									</select>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset className="mt-8 flex items-center gap-4">
 							<button
-								className="min-w-[6rem] rounded bg-red-500 px-4 py-2 font-medium text-white hover:bg-red-700 disabled:opacity-50"
-								type="button"
-								disabled={deletePromptMutation.isLoading}
-								onClick={() => {
-									const confirmed = confirm('Are you sure you want to delete this prompt?');
-									if (confirmed) {
-										deletePromptMutation.mutate({ promptId });
-									}
-								}}
+								className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+								type="submit"
+								disabled={addPromptMutation.isLoading || updatePromptMutation.isLoading}
 							>
-								Delete
-								{deletePromptMutation.isLoading ? 'ing' : ''}
+								{promptId ? 'Save' : 'Publish'}
+								{addPromptMutation.isLoading || updatePromptMutation.isLoading ? 'ing' : ''}
 							</button>
-						)}
-						<span
-							className={clsx(
-								'text-gray-600 opacity-0',
-								saved && saved === promptId ? 'opacity-100' : 'transition-opacity duration-1000'
+							<CopyToClipboardBtn messages={messages} />
+							{promptId && (
+								<button
+									className="min-w-[6rem] rounded bg-red-500 px-4 py-2 font-medium text-white hover:bg-red-700 disabled:opacity-50"
+									type="button"
+									disabled={deletePromptMutation.isLoading}
+									onClick={() => {
+										const confirmed = confirm('Are you sure you want to delete this prompt?');
+										if (confirmed) {
+											deletePromptMutation.mutate({ promptId });
+										}
+									}}
+								>
+									Delete
+									{deletePromptMutation.isLoading ? 'ing' : ''}
+								</button>
 							)}
-						>
-							Saved
-						</span>
-					</fieldset>
-					<div className="mt-4">
-						{addPromptMutation.error && (
-							<div className="text-sm text-red-500">{addPromptMutation.error.message}</div>
-						)}
-					</div>
-					<div className="mt-4">
-						{updatePromptMutation.error && (
-							<div className="text-sm text-red-500">{updatePromptMutation.error.message}</div>
-						)}
-					</div>
-				</form>
+							<span
+								className={clsx(
+									'text-gray-600 opacity-0',
+									saved && saved === promptId ? 'opacity-100' : 'transition-opacity duration-1000'
+								)}
+							>
+								Saved
+							</span>
+						</fieldset>
+						<div className="mt-4">
+							{addPromptMutation.error && (
+								<div className="text-sm text-red-500">{addPromptMutation.error.message}</div>
+							)}
+						</div>
+						<div className="mt-4">
+							{updatePromptMutation.error && (
+								<div className="text-sm text-red-500">{updatePromptMutation.error.message}</div>
+							)}
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	);

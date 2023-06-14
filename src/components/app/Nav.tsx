@@ -117,7 +117,7 @@ export function AppNav() {
 									className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
 									role="menuitem"
 								>
-									Your Team ({activeOrg.orgName})
+									Your organization ({activeOrg.orgName})
 								</a>
 							)}
 							<button
@@ -128,7 +128,7 @@ export function AppNav() {
 								className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
 								role="menuitem"
 							>
-								Switch Organization
+								Switch organization
 							</button>
 							<button
 								onClick={() => logout(true)}

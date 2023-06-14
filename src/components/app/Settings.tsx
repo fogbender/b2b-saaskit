@@ -43,25 +43,27 @@ export function Settings() {
 					<div className="flex w-full flex-col gap-2 text-start">
 						<div className="sm:flex sm:items-center">
 							<div className="sm:flex-auto">
-								<h1 className="text-xl font-medium">Configure OpenAI Key</h1>
-								<p className="mt-2 text-sm text-gray-700">
-									In order to run prompts you need to provide your own OpenAI key. You can get one
-									by signing up for OpenAI and going to the{' '}
+								<h1 className="text-xl font-medium">Configure your OpenAI key</h1>
+								<p className="mt-2 w-full text-sm text-gray-700 md:w-2/3">
+									To run prompts, you need to add your own OpenAI key. You can create a key by
+									signing up for OpenAI and going to the{' '}
 									<a
 										className="text-blue-500 underline hover:text-blue-700"
 										href="https://platform.openai.com/account/api-keys"
 									>
-										API Keys
+										API keys
 									</a>{' '}
-									page. Be careful you are going to share access to this token to your whole{' '}
+									page.
+								</p>
+								<p className="mt-2 w-full text-sm text-gray-700 md:w-2/3">
+									Keep in mind that having your key here will allow anyone in your{' '}
 									<a
 										className="text-blue-500 underline hover:text-blue-700"
 										href={env.PUBLIC_AUTH_URL + '/org'}
 									>
-										Team
-									</a>
-									. Actual token is not going to be shared, just the ability to use it through
-									Prompts with Friends.
+										Prompts with Friends organization
+									</a>{' '}
+									to run OpenAI calls against your OpenAI account budget.
 								</p>
 							</div>
 							<div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -118,7 +120,7 @@ export function Settings() {
 									name="keyType"
 									className="mt-2 block h-[42px] rounded-md border-0 px-3 py-1.5 text-gray-900 accent-indigo-600 ring-1 ring-inset ring-gray-300 focus:outline-indigo-500 focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								>
-									<option value="gpt-3">GPT-3</option>
+									<option value="gpt-3">GPT-3.5</option>
 									<option value="gpt-4">GPT-4</option>
 								</select>
 								<button
@@ -146,9 +148,10 @@ export function Settings() {
 					<div className="space-between mt-4 flex w-full flex-col gap-4 divide-y divide-gray-200 rounded-lg border border-gray-200 pb-4">
 						<div className="flex w-full flex-row px-6 pb-2 pt-6">
 							<div className="flex flex-col">
-								<h2 className="text-lg font-medium">Organization key</h2>
+								<h2 className="text-lg font-medium">Organization OpenAI key</h2>
 								<p className="text-sm text-gray-600">
-									You can see here the key that is getting used by default for your organization.
+									By using this app, everyone in your Prompts with Friends organization can use the
+									OpenAI budget associated with this key
 								</p>
 							</div>
 						</div>
