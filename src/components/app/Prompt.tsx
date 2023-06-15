@@ -211,7 +211,7 @@ export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefin
 				}
 			}}
 		>
-			Copy code to embed this prompt in your app (node.js)
+			Copy code to embed this prompt in your app (Node.js)
 		</button>
 	);
 };
