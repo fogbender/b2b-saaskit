@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import { useMatch } from 'react-router-dom';
 
 import { env } from '../../config';
+import { websiteTitle } from '../../constants';
 import type { FogbenderTokenResponse } from '../../types/types';
 import { apiServer, queryKeys, useQuery } from '../client';
 import { useActiveOrg, useAuthInfo } from '../propelauth';
@@ -37,7 +38,7 @@ export const SupportWidget = ({ kind }: { kind: 'widget' | 'floatie' | 'badge' }
 
 		return (
 			<div className="container mx-auto mt-8">
-				<h3 className="text-2xl font-bold">Prompts with Friends / Support</h3>
+				<h3 className="text-2xl font-bold">{websiteTitle} / Support</h3>
 				<div className="mt-4 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 					<p className="prose">
 						Hi! This section is only available if you have set up your{' '}

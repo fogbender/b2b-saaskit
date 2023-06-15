@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { websiteTitle } from '../../constants';
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
@@ -49,7 +50,9 @@ export function CreatePrompt() {
 		<Layout>
 			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-between">
-					<h3 className="text-2xl font-bold">{title}</h3>
+					<h3 className="text-2xl font-bold">
+						{websiteTitle} / {title}
+					</h3>
 					<select
 						className="rounded-md border border-gray-300 p-1 text-sm"
 						onChange={(e) => {
@@ -104,7 +107,15 @@ export function CreatePrompt() {
 	);
 }
 
-const actions = ['user', 'assistant', 'system', 'delete', 'move up', 'move down'] as const;
+const actions = [
+	'user',
+	'assistant',
+	'system',
+	'delete',
+	'regenerate',
+	'move up',
+	'move down',
+] as const;
 
 const messageKeys = new WeakMap<Message, number>();
 const getMessageKey = (message: Message) => {
@@ -161,22 +172,59 @@ export const EditPromptControls = ({
 		onSettled: () => {
 			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getDefaultKey));
 		},
-		onSuccess(e) {
-			if (e.message) {
-				setMessages((messages) => [
-					...messages,
-					{
-						role: 'assistant',
-						content: e.message,
-					},
-					{
-						role: 'user',
-						content: '',
-					},
-				]);
-			}
-		},
 	});
+
+	const runPromptMutationNewMessage = () =>
+		runPromptMutation.mutate(
+			{
+				messages: resolveTemplates(messages),
+			},
+			{
+				onSuccess(e) {
+					if (e.message) {
+						setMessages((messages) => [
+							...messages,
+							{
+								role: 'assistant',
+								content: e.message,
+							},
+							{
+								role: 'user',
+								content: '',
+							},
+						]);
+					}
+				},
+			}
+		);
+
+	const runPromptMutationRegenerate = (index: number) =>
+		runPromptMutation.mutate(
+			{
+				messages: resolveTemplates(messages.slice(0, index)),
+			},
+			{
+				onSuccess(e) {
+					if (e.message) {
+						setMessages((messages) => {
+							const newMessage = {
+								role: 'assistant',
+								content: e.message,
+							} satisfies Message;
+							const oldMessage = messages[index];
+							if (oldMessage) {
+								const key = getMessageKey(oldMessage);
+								if (key) {
+									messageKeys.set(newMessage, key);
+								}
+							}
+							return messages.slice(0, index).concat(newMessage, messages.slice(index + 1));
+						});
+					}
+				},
+			}
+		);
+
 	const { hasAnyKey, hasKey, defaultKeyData } = useKeys();
 
 	const navigate = useNavigate();
@@ -212,7 +260,8 @@ export const EditPromptControls = ({
 	return (
 		<div className="mb-36 mt-4 flex flex-col gap-10">
 			<div className="flex flex-col gap-4">
-				<fieldset className="flex flex-col gap-8">
+				<InProgress show={runPromptMutation.isLoading} />
+				<fieldset className="flex flex-col gap-8 bg-gradient-to-r">
 					<div>
 						<legend className="text-lg font-medium text-gray-900">Messages</legend>
 					</div>
@@ -235,6 +284,9 @@ export const EditPromptControls = ({
 											if (x === 'move down') {
 												return index < messages.length - 1;
 											}
+											if (x === 'regenerate') {
+												return index > 0 && message.role === 'assistant';
+											}
 											return x !== message.role;
 										})
 										.map((action) => (
@@ -249,6 +301,8 @@ export const EditPromptControls = ({
 														if (confirm) {
 															setMessages((messages) => messages.filter((_, i) => i !== index));
 														}
+													} else if (action === 'regenerate') {
+														runPromptMutationRegenerate(index);
 													} else if (action === 'move up') {
 														setMessages((messages) => {
 															const newMessages = [...messages].filter((_, i) => i !== index);
@@ -277,6 +331,8 @@ export const EditPromptControls = ({
 											>
 												{action === 'delete'
 													? 'Delete'
+													: action === 'regenerate'
+													? 'Regenerate'
 													: action === 'move up'
 													? 'Move up'
 													: action === 'move down'
@@ -305,9 +361,7 @@ export const EditPromptControls = ({
 									}}
 									onKeyDown={(e) => {
 										if (e.key === 'Enter' && e.metaKey) {
-											runPromptMutation.mutate({
-												messages: resolveTemplates(messages),
-											});
+											runPromptMutationNewMessage();
 										} else if (e.key === 'Backspace') {
 											if (e.currentTarget.value === '') {
 												const confirm = window.confirm(
@@ -338,9 +392,7 @@ export const EditPromptControls = ({
 						e.preventDefault();
 						const { submitter } = e.nativeEvent as any as { submitter: HTMLButtonElement };
 						if (submitter.name === 'generate') {
-							runPromptMutation.mutate({
-								messages: resolveTemplates(messages),
-							});
+							runPromptMutationNewMessage();
 							return;
 						}
 						setMessages((messages) => [
@@ -620,3 +672,29 @@ function useKeys() {
 		defaultKeyData,
 	};
 }
+
+const InProgress = ({ show }: { show: boolean }) => {
+	const gradient = `
+	@keyframes gradient {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}`;
+	return (
+		<>
+			<style>{gradient}</style>
+			{show && (
+				<div
+					className="fixed inset-0 bottom-auto
+				h-2 animate-[gradient_3s_ease_infinite] bg-gradient-to-r from-red-500 to-blue-500 bg-[length:200%_200%]"
+				></div>
+			)}
+		</>
+	);
+};

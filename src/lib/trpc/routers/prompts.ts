@@ -11,13 +11,7 @@ import { usersToPublicUserInfo } from '../../../pages/api/orgs/[orgId]';
 import { serverEnv } from '../../../t3-env';
 import { trackEvent } from '../../posthog';
 import { propelauth } from '../../propelauth';
-import {
-	apiProcedure,
-	authProcedure,
-	createTRPCRouter,
-	orgProcedure,
-	publicProcedure,
-} from '../trpc';
+import { apiProcedure, authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
 const messageSchema = z.object({
 	role: z.union([z.literal('user'), z.literal('assistant'), z.literal('system')]),
@@ -33,15 +27,6 @@ const privacyLevelSchema = z.union([
 export type PromptPrivacyLevel = z.infer<typeof privacyLevelSchema>;
 
 export const promptsRouter = createTRPCRouter({
-	getComments: publicProcedure.input(z.object({ promptId: z.string() })).query(async () => {
-		return {
-			comments: [] as {
-				commentId: string;
-				author: string;
-				content: string;
-			}[],
-		};
-	}),
 	getPrompt: apiProcedure
 		.input(
 			z.object({
@@ -264,14 +249,9 @@ export const promptsRouter = createTRPCRouter({
 		}),
 	runPrompt: orgProcedure
 		.input(
-			z.union([
-				z.object({
-					prompt: z.string(),
-				}),
-				z.object({
-					messages: z.array(z.object({ role: z.string(), content: z.string() })),
-				}),
-			])
+			z.object({
+				messages: z.array(z.object({ role: z.string(), content: z.string() })),
+			})
 		)
 		.mutation(async ({ ctx, input }) => {
 			const keys = await db
@@ -316,8 +296,7 @@ export const promptsRouter = createTRPCRouter({
 				}
 			}
 
-			const messages =
-				'messages' in input ? input.messages : [{ role: 'user', content: input.prompt }];
+			const messages = input.messages;
 
 			const res = await fetch('https://api.openai.com/v1/chat/completions', {
 				method: 'POST',
