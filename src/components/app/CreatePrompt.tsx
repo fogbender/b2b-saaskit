@@ -243,9 +243,9 @@ export const EditPromptControls = ({
 												className="text-sm text-blue-700 hover:text-red-600"
 												onClick={() => {
 													if (action === 'delete') {
-														const confirm = window.confirm(
-															'Are you sure you want to delete this message?'
-														);
+														const confirm =
+															message.content.trim() === '' ||
+															window.confirm('Are you sure you want to delete this message?');
 														if (confirm) {
 															setMessages((messages) => messages.filter((_, i) => i !== index));
 														}
