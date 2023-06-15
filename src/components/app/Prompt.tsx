@@ -160,7 +160,7 @@ export function Prompt() {
 							<h3 className="flex items-center">
 								<div className="min-w-[6rem]">Author</div>
 								<div className="font-medium">
-									{data?.author.name || data?.author.email || data?.prompt.userId}
+									{data?.author?.name || data?.author?.email || data?.prompt.userId}
 								</div>
 							</h3>
 							<div className="flex items-center">

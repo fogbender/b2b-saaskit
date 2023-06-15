@@ -16,13 +16,13 @@ const x = await res.helpers.prompts.getPrompt
 	.then((prompt) => ({ kind: 'ok' as const, prompt }))
 	.catch((error) => ({ kind: 'error' as const, error }));
 
-const { title, description, chatTemplate } = (() => {
+const info = (() => {
 	if (x.kind !== 'ok') {
-		return { title: '', description: 'Failed to fetch', chatTemplate: '' };
+		return;
 	}
 	const { prompt, author } = x.prompt;
 	if (prompt.privacyLevel !== 'public') {
-		return { title: '', description: '', chatTemplate: '' };
+		return;
 	}
 	let chatTemplate = '';
 	for (const line of prompt.template) {
@@ -38,12 +38,21 @@ const { title, description, chatTemplate } = (() => {
 			break;
 		}
 	}
-	const authorName = author.name || author.userId;
+	const authorName = author?.name || prompt.userId;
 	const title = x.prompt.prompt.title.trim() || 'Prompts with Friends';
+
+	const description = limitText(prompt.description, 70) + ' by ' + authorName;
+
+	const ogImage = getGeneratorForPromptUrl({
+		origin: Astro.url.origin,
+		title,
+		description,
+		chatTemplate,
+	});
 	return {
 		title,
-		description: limitText(prompt.description, 70) + ' by ' + authorName,
-		chatTemplate,
+		description,
+		ogImage,
 	};
 })();
 function limitText(test: string, limit = 120) {
@@ -52,12 +61,7 @@ function limitText(test: string, limit = 120) {
 	}
 	return test;
 }
-const ogImage = getGeneratorForPromptUrl({
-	origin: Astro.url.origin,
-	title: title.repeat(1),
-	description,
-	chatTemplate,
-});
+const { title, description, ogImage } = info || {};
 // private or unlisted prompts should not be indexed
 const noindex = x.kind === 'error' || x.prompt.prompt.privacyLevel !== 'public';
 ---
