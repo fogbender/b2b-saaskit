@@ -164,22 +164,32 @@ export const EditPromptControls = ({
 		onSettled: () => {
 			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getDefaultKey));
 		},
-		onSuccess(e) {
-			if (e.message) {
-				setMessages((messages) => [
-					...messages,
-					{
-						role: 'assistant',
-						content: e.message,
-					},
-					{
-						role: 'user',
-						content: '',
-					},
-				]);
-			}
-		},
 	});
+
+	const runPromptMutationNewMessage = () =>
+		runPromptMutation.mutate(
+			{
+				messages: resolveTemplates(messages),
+			},
+			{
+				onSuccess(e) {
+					if (e.message) {
+						setMessages((messages) => [
+							...messages,
+							{
+								role: 'assistant',
+								content: e.message,
+							},
+							{
+								role: 'user',
+								content: '',
+							},
+						]);
+					}
+				},
+			}
+		);
+
 	const { hasAnyKey, hasKey, defaultKeyData } = useKeys();
 
 	const navigate = useNavigate();
@@ -308,9 +318,7 @@ export const EditPromptControls = ({
 									}}
 									onKeyDown={(e) => {
 										if (e.key === 'Enter' && e.metaKey) {
-											runPromptMutation.mutate({
-												messages: resolveTemplates(messages),
-											});
+											runPromptMutationNewMessage();
 										} else if (e.key === 'Backspace') {
 											if (e.currentTarget.value === '') {
 												const confirm = window.confirm(
@@ -341,9 +349,7 @@ export const EditPromptControls = ({
 						e.preventDefault();
 						const { submitter } = e.nativeEvent as any as { submitter: HTMLButtonElement };
 						if (submitter.name === 'generate') {
-							runPromptMutation.mutate({
-								messages: resolveTemplates(messages),
-							});
+							runPromptMutationNewMessage();
 							return;
 						}
 						setMessages((messages) => [
