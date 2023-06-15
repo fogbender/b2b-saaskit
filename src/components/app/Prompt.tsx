@@ -139,6 +139,22 @@ export function Prompt() {
 									</div>
 								)}
 							</div>
+							{data && (
+								<div className="flex gap-2">
+									<span>Visibility:</span>
+									<span>{data.prompt.privacyLevel}</span>
+									<span>
+										(
+										<SimpleModalButton
+											title="change"
+											className="!p-0 font-medium text-blue-700 hover:text-rose-600 disabled:opacity-50"
+										>
+											{data && <ShareDialog response={data} />}
+										</SimpleModalButton>
+										)
+									</span>
+								</div>
+							)}
 						</div>
 						<div className="flex w-full flex-col gap-4 md:w-1/2">
 							<h3 className="flex items-center">
@@ -180,6 +196,9 @@ export function Prompt() {
 					>
 						Fork prompt
 					</button>
+					{(data?.prompt?.template?.length || 0) > 0 && (
+						<JsonSnippet messages={data?.prompt?.template || []} />
+					)}
 					<CopyToClipboardBtn messages={data?.prompt.template} />
 				</div>
 			</div>
@@ -199,6 +218,12 @@ const LikesText = ({ data }: { data: { likes: number; myLike: boolean } | undefi
 	);
 };
 
+export const JsonSnippet = ({ messages }: { messages: Message[] }) => {
+	const json = JSON.stringify(resolveTemplates(messages));
+
+	return <code className="rounded bg-gray-800 p-2 text-xs text-white">{json}</code>;
+};
+
 export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefined }) => {
 	return (
 		<button
@@ -212,7 +237,7 @@ export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefin
 				}
 			}}
 		>
-			Copy code to embed this prompt in your app (Node.js)
+			Copy code (Node.js)
 		</button>
 	);
 };
@@ -249,9 +274,11 @@ const focus = (el: Element | undefined | null) => {
  */
 const SimpleModalButton = ({
 	className,
+	title = 'Share',
 	children,
 }: {
 	className?: string;
+	title?: string;
 	children: React.ReactNode;
 }) => {
 	const modalRef = useRef<HTMLDivElement | null>(null);
@@ -306,7 +333,7 @@ const SimpleModalButton = ({
 	return (
 		<>
 			<button className={className} onClick={() => setIsModalOpen((x) => !x)}>
-				Share
+				{title}
 			</button>
 			<div
 				ref={modalRef}
