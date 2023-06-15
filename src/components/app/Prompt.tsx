@@ -91,7 +91,6 @@ export function Prompt() {
 					)}
 					{promptId && (
 						<button
-							className="mr-4"
 							onClick={() => {
 								likeMutation.mutate({ promptId, unlike: data?.myLike });
 								trpcUtils.prompts.getPrompt.setData({ promptId }, (data) => {
@@ -106,7 +105,7 @@ export function Prompt() {
 								});
 							}}
 						>
-							Likes: {data?.likes}
+							<LikesText data={data} />
 						</button>
 					)}
 					<SimpleModalButton className="mr-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
@@ -167,6 +166,18 @@ export function Prompt() {
 		</Layout>
 	);
 }
+
+const LikesText = ({ data }: { data: { likes: number; myLike: boolean } | undefined }) => {
+	const likes = data?.likes || 0;
+	const withoutMyLike = likes - (data?.myLike ? 1 : 0);
+	const showCounter = withoutMyLike > 0;
+	return (
+		<span className="flex">
+			<span aria-label="likes ">{data?.myLike ? '❤️' : '🤍'}</span>
+			<span className={clsx(showCounter ? '' : 'opacity-0', 'min-w-[2.5rem] px-2')}>{likes}</span>
+		</span>
+	);
+};
 
 export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefined }) => {
 	return (
