@@ -292,7 +292,7 @@ export const EditPromptControls = ({
 										.map((action) => (
 											<button
 												key={action}
-												className="text-sm text-blue-700 hover:text-red-600"
+												className="text-sm text-blue-700 hover:text-rose-600"
 												onClick={() => {
 													if (action === 'delete') {
 														const confirm =
@@ -408,7 +408,7 @@ export const EditPromptControls = ({
 					}}
 				>
 					<button
-						className="cursor-pointer font-medium text-blue-700 hover:text-red-600 disabled:opacity-50"
+						className="font-medium text-blue-700 hover:text-rose-600 disabled:opacity-50"
 						name="generate"
 						disabled={
 							!hasAnyKey ||
@@ -418,22 +418,13 @@ export const EditPromptControls = ({
 					>
 						Generate response
 					</button>
-					<button
-						className="cursor-pointer font-medium text-blue-700 hover:text-red-600"
-						name="user"
-					>
+					<button className="font-medium text-blue-700 hover:text-rose-600" name="user">
 						+ user message
 					</button>
-					<button
-						className="cursor-pointer font-medium text-blue-700 hover:text-red-600"
-						name="assistant"
-					>
+					<button className="font-medium text-blue-700 hover:text-rose-600" name="assistant">
 						+ assistant message
 					</button>
-					<button
-						className="cursor-pointer font-medium text-blue-700 hover:text-red-600"
-						name="system"
-					>
+					<button className="font-medium text-blue-700 hover:text-rose-600" name="system">
 						+ system message
 					</button>
 				</form>
