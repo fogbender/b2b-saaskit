@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
+import { Link } from 'react-router-dom';
 
 import { LoginInternal } from '../Login';
 import {
