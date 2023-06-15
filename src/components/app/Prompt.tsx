@@ -24,15 +24,6 @@ export function Prompt() {
 			},
 		}
 	);
-	const commentsQuery = trpc.prompts.getComments.useQuery(
-		{
-			promptId: promptId!,
-		},
-		{
-			enabled: !!promptId,
-			staleTime: 1000,
-		}
-	);
 
 	const likeMutation = trpc.prompts.likePrompt.useMutation({
 		onError: (error) => {
@@ -125,8 +116,8 @@ export function Prompt() {
 			</div>
 			<div className="mt-4 flex flex-col gap-10 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 				<div className="flex flex-col">
-					<div className="flex flex-row gap-4">
-						<div>
+					<div className="flex flex-row flex-wrap gap-4 md:flex-nowrap">
+						<div className="w-full md:w-1/2">
 							<h3 className="mb-4 text-xl font-medium">{data?.prompt.title}</h3>
 							<p className="my-4">{data?.prompt.description}</p>
 
@@ -140,7 +131,7 @@ export function Prompt() {
 								</div>
 							)}
 						</div>
-						<div>
+						<div className="w-full md:w-1/2">
 							<h3 className="mb-4 text-xl font-medium">
 								by {data?.author.name || data?.author.email || data?.prompt.userId}
 							</h3>
@@ -148,27 +139,6 @@ export function Prompt() {
 							{data?.prompt.createdAt.getTime() !== data?.prompt.updatedAt.getTime() && (
 								<p className="my-4">Updated: {data?.prompt.updatedAt.toLocaleString()}</p>
 							)}
-						</div>
-						<div>
-							<h3 className="mb-4 text-xl font-medium">Comments:</h3>
-							{commentsQuery.data?.comments.map((comment) => (
-								<p key={comment.commentId}>{comment.content}</p>
-							))}
-							<form
-								className="flex flex-col"
-								onSubmit={(e) => {
-									e.preventDefault();
-									alert('Not implemented yet!');
-								}}
-							>
-								<input
-									disabled
-									className="border p-2"
-									type="text"
-									placeholder="Write a comment..."
-								/>
-								<button className="mb-8 rounded bg-blue-500 p-2 text-white">Post Comment</button>
-							</form>
 						</div>
 					</div>
 				</div>
