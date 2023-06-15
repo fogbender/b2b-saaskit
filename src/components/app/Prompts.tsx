@@ -65,10 +65,10 @@ export function Prompts() {
 					<div className="sm:flex sm:items-center">
 						<div className="flex flex-col gap-2">
 							<h1 className="text-base font-semibold leading-6 text-gray-900">
-								List of your team's prompts
+								Prompts created by your organization
 							</h1>
 							<p className="text-sm text-gray-700">
-								List of all the prompts that your team has created
+								List of all the prompts created by you and your friends
 							</p>
 						</div>
 					</div>
@@ -145,7 +145,7 @@ const Table = ({ children }: { children: React.ReactNode }) => {
 									scope="col"
 									className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
 								>
-									User
+									Creator
 								</th>
 								<th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6 lg:pr-8">
 									<span className="sr-only">Delete</span>
