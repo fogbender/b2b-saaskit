@@ -80,16 +80,11 @@ export function Prompt() {
 
 	return (
 		<Layout>
-			<div className="flex flex-col items-start gap-4 sm:flex-row">
+			<div className="flex flex-col items-start items-center gap-4 sm:flex-row">
 				<h3 className="w-full max-w-2xl truncate text-2xl font-bold sm:w-fit md:max-w-4xl">
 					{websiteTitle} / {promptQuery.data ? promptQuery.data.prompt.title : 'Loading...'}
 				</h3>
-				<div className="min-w-fit">
-					{data?.canEdit && (
-						<Link className="mr-4" to={`/app/prompts/${promptId}/edit`}>
-							Edit
-						</Link>
-					)}
+				<div className="flex min-w-fit items-center gap-6">
 					{promptId && (
 						<button
 							onClick={() => {
@@ -109,6 +104,14 @@ export function Prompt() {
 							<LikesText data={data} />
 						</button>
 					)}
+					{data?.canEdit && (
+						<Link
+							className="font-medium text-blue-700 hover:text-rose-600 disabled:opacity-50"
+							to={`/app/prompts/${promptId}/edit`}
+						>
+							Edit
+						</Link>
+					)}
 					<SimpleModalButton className="mr-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
 						{data && <ShareDialog response={data} />}
 					</SimpleModalButton>
@@ -117,49 +120,65 @@ export function Prompt() {
 			<div className="mt-4 flex flex-col gap-10 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 				<div className="flex flex-col">
 					<div className="flex flex-row flex-wrap gap-4 md:flex-nowrap">
-						<div className="w-full md:w-1/2">
-							<h3 className="mb-4 text-xl font-medium">{data?.prompt.title}</h3>
-							<p className="my-4">{data?.prompt.description}</p>
+						<div className="flex w-full flex-col gap-4 md:w-1/2">
+							<h3 className="text-xl font-medium">{data?.prompt.title}</h3>
+							<p>{data?.prompt.description}</p>
 
-							{data?.prompt.tags && (
-								<div className="mb-4">
-									{data.prompt.tags.map((tag) => (
-										<span key={tag} className="mr-2 rounded bg-blue-500 px-2 py-1 text-white">
-											{tag}
-										</span>
-									))}
-								</div>
-							)}
+							<div className="flex gap-2">
+								<span>Tags:</span>
+								{data?.prompt.tags && (
+									<div>
+										{data.prompt.tags.map((tag) => (
+											<span
+												key={tag}
+												className="mr-2 rounded-lg bg-gray-400 px-2 py-0.5 text-sm text-white"
+											>
+												{tag}
+											</span>
+										))}
+									</div>
+								)}
+							</div>
 						</div>
-						<div className="w-full md:w-1/2">
-							<h3 className="mb-4 text-xl font-medium">
-								by {data?.author.name || data?.author.email || data?.prompt.userId}
+						<div className="flex w-full flex-col gap-4 md:w-1/2">
+							<h3 className="flex items-center">
+								<div className="min-w-[6rem]">Author</div>
+								<div className="font-medium">
+									{data?.author.name || data?.author.email || data?.prompt.userId}
+								</div>
 							</h3>
-							<p className="my-4">Created: {data?.prompt.createdAt.toLocaleString()}</p>
+							<div className="flex items-center">
+								<div className="min-w-[6rem]">Created</div>
+								<div>{data?.prompt.createdAt.toLocaleString()}</div>
+							</div>
 							{data?.prompt.createdAt.getTime() !== data?.prompt.updatedAt.getTime() && (
-								<p className="my-4">Updated: {data?.prompt.updatedAt.toLocaleString()}</p>
+								<div className="flex items-center">
+									<div className="min-w-[6rem]">Updated</div>
+									<div>{data?.prompt.updatedAt.toLocaleString()}</div>
+								</div>
 							)}
 						</div>
 					</div>
 				</div>
 
 				<div className="flex flex-col">
-					<h3 className="mb-4 text-xl font-medium">Quick replay:</h3>
+					<h3 className="mb-4 text-xl font-medium">Quick replay</h3>
 					{data?.prompt.template.map((message, index) => (
-						<p key={index}>
-							{message.role}: {message.content}
-						</p>
+						<div className="flex" key={index}>
+							<div className="min-w-[6rem] font-medium capitalize">{message.role}</div>
+							<div>{message.content}</div>
+						</div>
 					))}
 				</div>
 
-				<div className="flex gap-4">
+				<div className="flex flex-col items-start gap-4">
 					<button
-						className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
+						className="font-medium text-blue-700 hover:text-rose-600 disabled:opacity-50"
 						onClick={() => {
 							navigate('/app/prompts/create', { state: { prompt: data?.prompt } });
 						}}
 					>
-						Use as a template to create your own prompt
+						Fork prompt
 					</button>
 					<CopyToClipboardBtn messages={data?.prompt.template} />
 				</div>
@@ -184,7 +203,7 @@ export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefin
 	return (
 		<button
 			type="button"
-			className="rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700"
+			className="font-medium text-blue-700 hover:text-rose-600 disabled:opacity-50"
 			onClick={async () => {
 				if (messages) {
 					const json = JSON.stringify(resolveTemplates(messages));
