@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 
+import { websiteTitle } from '../../constants';
 import { trpc } from '../trpc';
 import { EditPromptControls } from './CreatePrompt';
 import { Layout } from './Layout';
@@ -17,7 +18,9 @@ export function EditPrompt() {
 	);
 	const data = promptsQuery.data;
 	return (
-		<Layout title="Edit prompt">
+		<Layout
+			title={`${websiteTitle} / ${data?.prompt.title ? data?.prompt.title + ' / ' : ''}Edit prompt`}
+		>
 			{data && (
 				<EditPromptControls
 					promptId={data.prompt.promptId}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import { websiteTitle } from '../../constants';
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
@@ -42,7 +43,7 @@ export function Prompts() {
 	});
 
 	return (
-		<Layout title="Prompts with Friends / Prompts">
+		<Layout title={`${websiteTitle} / Prompts`}>
 			<div className="mt-4 flex flex-col gap-10 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 				<div className="">
 					<Link

@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+import { websiteTitle } from '../../constants';
 import type { PromptPrivacyLevel } from '../../lib/trpc/routers/prompts';
 import { RouterOutput, trpc } from '../trpc';
 import { Layout } from './Layout';
@@ -80,8 +81,8 @@ export function Prompt() {
 	return (
 		<Layout>
 			<div className="flex flex-col items-start gap-4 sm:flex-row">
-				<h3 className="w-full max-w-2xl truncate text-2xl font-medium sm:w-fit md:max-w-4xl">
-					{promptQuery.data ? promptQuery.data.prompt.title : 'Loading...'}
+				<h3 className="w-full max-w-2xl truncate text-2xl font-bold sm:w-fit md:max-w-4xl">
+					{websiteTitle} / {promptQuery.data ? promptQuery.data.prompt.title : 'Loading...'}
 				</h3>
 				<div className="min-w-fit">
 					{data?.canEdit && (

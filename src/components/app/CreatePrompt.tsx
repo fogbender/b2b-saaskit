@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { websiteTitle } from '../../constants';
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
@@ -49,7 +50,9 @@ export function CreatePrompt() {
 		<Layout>
 			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-between">
-					<h3 className="text-2xl font-bold">{title}</h3>
+					<h3 className="text-2xl font-bold">
+						{websiteTitle} / {title}
+					</h3>
 					<select
 						className="rounded-md border border-gray-300 p-1 text-sm"
 						onChange={(e) => {

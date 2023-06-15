@@ -3,6 +3,7 @@ import { getQueryKey } from '@trpc/react-query';
 import { useReducer } from 'react';
 
 import { env } from '../../config';
+import { websiteTitle } from '../../constants';
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
@@ -37,7 +38,7 @@ export function Settings() {
 
 	const [showAddKey, toggleShowAddKey] = useReducer((state) => !state, false);
 	return (
-		<Layout title="Prompts with Friends / Settings">
+		<Layout title={`${websiteTitle} / Settings`}>
 			<div className="mt-4 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 				<div className="flex w-full flex-col items-center justify-center">
 					<div className="flex w-full flex-col gap-2 text-start">
