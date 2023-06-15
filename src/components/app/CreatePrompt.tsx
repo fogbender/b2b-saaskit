@@ -597,7 +597,11 @@ export const EditPromptControls = ({
 								disabled={addPromptMutation.isLoading || updatePromptMutation.isLoading}
 							>
 								{promptId ? 'Sav' : 'Publish'}
-								{addPromptMutation.isLoading || updatePromptMutation.isLoading ? 'ing' : 'e'}
+								{addPromptMutation.isLoading || updatePromptMutation.isLoading
+									? 'ing'
+									: promptId
+									? 'e'
+									: ''}
 							</button>
 							{promptId && (
 								<button
