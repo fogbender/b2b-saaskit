@@ -249,14 +249,9 @@ export const promptsRouter = createTRPCRouter({
 		}),
 	runPrompt: orgProcedure
 		.input(
-			z.union([
-				z.object({
-					prompt: z.string(),
-				}),
-				z.object({
-					messages: z.array(z.object({ role: z.string(), content: z.string() })),
-				}),
-			])
+			z.object({
+				messages: z.array(z.object({ role: z.string(), content: z.string() })),
+			})
 		)
 		.mutation(async ({ ctx, input }) => {
 			const keys = await db
@@ -301,8 +296,7 @@ export const promptsRouter = createTRPCRouter({
 				}
 			}
 
-			const messages =
-				'messages' in input ? input.messages : [{ role: 'user', content: input.prompt }];
+			const messages = input.messages;
 
 			const res = await fetch('https://api.openai.com/v1/chat/completions', {
 				method: 'POST',
