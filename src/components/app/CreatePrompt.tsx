@@ -107,7 +107,15 @@ export function CreatePrompt() {
 	);
 }
 
-const actions = ['user', 'assistant', 'system', 'delete', 'move up', 'move down'] as const;
+const actions = [
+	'user',
+	'assistant',
+	'system',
+	'delete',
+	'regenerate',
+	'move up',
+	'move down',
+] as const;
 
 const messageKeys = new WeakMap<Message, number>();
 const getMessageKey = (message: Message) => {
@@ -190,6 +198,33 @@ export const EditPromptControls = ({
 			}
 		);
 
+	const runPromptMutationRegenerate = (index: number) =>
+		runPromptMutation.mutate(
+			{
+				messages: resolveTemplates(messages.slice(0, index)),
+			},
+			{
+				onSuccess(e) {
+					if (e.message) {
+						setMessages((messages) => {
+							const newMessage = {
+								role: 'assistant',
+								content: e.message,
+							} satisfies Message;
+							const oldMessage = messages[index];
+							if (oldMessage) {
+								const key = getMessageKey(oldMessage);
+								if (key) {
+									messageKeys.set(newMessage, key);
+								}
+							}
+							return messages.slice(0, index).concat(newMessage, messages.slice(index + 1));
+						});
+					}
+				},
+			}
+		);
+
 	const { hasAnyKey, hasKey, defaultKeyData } = useKeys();
 
 	const navigate = useNavigate();
@@ -225,7 +260,8 @@ export const EditPromptControls = ({
 	return (
 		<div className="mb-36 mt-4 flex flex-col gap-10">
 			<div className="flex flex-col gap-4">
-				<fieldset className="flex flex-col gap-8">
+				<InProgress show={runPromptMutation.isLoading} />
+				<fieldset className="flex flex-col gap-8 bg-gradient-to-r">
 					<div>
 						<legend className="text-lg font-medium text-gray-900">Messages</legend>
 					</div>
@@ -248,6 +284,9 @@ export const EditPromptControls = ({
 											if (x === 'move down') {
 												return index < messages.length - 1;
 											}
+											if (x === 'regenerate') {
+												return index > 0 && message.role === 'assistant';
+											}
 											return x !== message.role;
 										})
 										.map((action) => (
@@ -262,6 +301,8 @@ export const EditPromptControls = ({
 														if (confirm) {
 															setMessages((messages) => messages.filter((_, i) => i !== index));
 														}
+													} else if (action === 'regenerate') {
+														runPromptMutationRegenerate(index);
 													} else if (action === 'move up') {
 														setMessages((messages) => {
 															const newMessages = [...messages].filter((_, i) => i !== index);
@@ -290,6 +331,8 @@ export const EditPromptControls = ({
 											>
 												{action === 'delete'
 													? 'Delete'
+													: action === 'regenerate'
+													? 'Regenerate'
 													: action === 'move up'
 													? 'Move up'
 													: action === 'move down'
@@ -629,3 +672,29 @@ function useKeys() {
 		defaultKeyData,
 	};
 }
+
+const InProgress = ({ show }: { show: boolean }) => {
+	const gradient = `
+	@keyframes gradient {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}`;
+	return (
+		<>
+			<style>{gradient}</style>
+			{show && (
+				<div
+					className="fixed inset-0 bottom-auto
+				h-2 animate-[gradient_3s_ease_infinite] bg-gradient-to-r from-red-500 to-blue-500 bg-[length:200%_200%]"
+				></div>
+			)}
+		</>
+	);
+};
