@@ -180,7 +180,9 @@ export function Prompt() {
 					>
 						Fork prompt
 					</button>
-					{data?.prompt.template.length > 0 && <JsonSnippet messages={data?.prompt.template} />}
+					{(data?.prompt?.template?.length || 0) > 0 && (
+						<JsonSnippet messages={data?.prompt?.template || []} />
+					)}
 					<CopyToClipboardBtn messages={data?.prompt.template} />
 				</div>
 			</div>
