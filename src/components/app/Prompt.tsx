@@ -180,6 +180,7 @@ export function Prompt() {
 					>
 						Fork prompt
 					</button>
+					{data?.prompt.template.length > 0 && <JsonSnippet messages={data?.prompt.template} />}
 					<CopyToClipboardBtn messages={data?.prompt.template} />
 				</div>
 			</div>
@@ -199,6 +200,12 @@ const LikesText = ({ data }: { data: { likes: number; myLike: boolean } | undefi
 	);
 };
 
+export const JsonSnippet = ({ messages }: { messages: Message[] }) => {
+	const json = JSON.stringify(resolveTemplates(messages));
+
+	return <code className="rounded bg-gray-800 p-2 text-xs text-white">{json}</code>;
+};
+
 export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefined }) => {
 	return (
 		<button
@@ -212,7 +219,7 @@ export const CopyToClipboardBtn = ({ messages }: { messages: Message[] | undefin
 				}
 			}}
 		>
-			Copy code to embed this prompt in your app (Node.js)
+			Copy code (Node.js)
 		</button>
 	);
 };

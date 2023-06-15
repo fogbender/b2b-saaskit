@@ -8,7 +8,7 @@ import { websiteTitle } from '../../constants';
 import { useRequireActiveOrg } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
-import { CopyToClipboardBtn } from './Prompt';
+import { CopyToClipboardBtn, JsonSnippet } from './Prompt';
 import {
 	defaultPrivacyLevel,
 	detectTemplates,
@@ -588,16 +588,17 @@ export const EditPromptControls = ({
 								</div>
 							</div>
 						</fieldset>
-						<fieldset className="mt-8 flex items-center gap-4">
+						<fieldset className="mt-8 flex flex-col items-start gap-4">
+							{messages.length > 0 && <JsonSnippet messages={messages} />}
+							{messages.length > 0 && <CopyToClipboardBtn messages={messages} />}
 							<button
 								className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
 								type="submit"
 								disabled={addPromptMutation.isLoading || updatePromptMutation.isLoading}
 							>
-								{promptId ? 'Save' : 'Publish'}
-								{addPromptMutation.isLoading || updatePromptMutation.isLoading ? 'ing' : ''}
+								{promptId ? 'Sav' : 'Publish'}
+								{addPromptMutation.isLoading || updatePromptMutation.isLoading ? 'ing' : 'e'}
 							</button>
-							<CopyToClipboardBtn messages={messages} />
 							{promptId && (
 								<button
 									className="min-w-[6rem] rounded bg-red-500 px-4 py-2 font-medium text-white hover:bg-red-700 disabled:opacity-50"
