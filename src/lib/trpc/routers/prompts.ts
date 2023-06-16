@@ -117,7 +117,8 @@ export const promptsRouter = createTRPCRouter({
 		return promptsRes.map((x) => ({
 			promptId: x.promptId,
 			userId: x.userId,
-			title: x.title || 'Outdated Prompt format, please delete',
+			title: x.title,
+			isPublic: x.privacyLevel === 'public',
 			_meta: {
 				user: users.kind === 'ok' ? users.users[x.userId] : undefined,
 			},
