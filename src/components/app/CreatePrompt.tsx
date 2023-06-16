@@ -505,7 +505,8 @@ export const EditPromptControls = ({
 										.map((x) => x.trim()) ?? [],
 								template: messages,
 							};
-							if (promptId) {
+							const { submitter } = e.nativeEvent as any as { submitter: HTMLButtonElement };
+							if (promptId && submitter.name === 'save') {
 								updatePromptMutation.mutate({ promptId, ...data });
 							} else {
 								addPromptMutation.mutate(data);
@@ -593,13 +594,24 @@ export const EditPromptControls = ({
 						<fieldset className="mt-8 flex flex-col items-start gap-4">
 							{messages.length > 0 && <JsonSnippet messages={messages} />}
 							{messages.length > 0 && <CopyToClipboardBtn messages={messages} />}
+							{promptId && (
+								<button
+									className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+									type="submit"
+									disabled={promptIsBeingSaved}
+									name="save"
+								>
+									{promptId && (updatePromptMutation.isLoading ? 'Saving' : 'Save')}
+								</button>
+							)}
 							<button
 								className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
 								type="submit"
+								name="publish"
 								disabled={promptIsBeingSaved}
 							>
-								{promptId && (promptIsBeingSaved ? 'Saving' : 'Save')}
-								{!promptId && (promptIsBeingSaved ? 'Publishing' : 'Publish')}
+								{promptId && (addPromptMutation.isLoading ? 'Saving' : 'Save as a copy')}
+								{!promptId && (addPromptMutation.isLoading ? 'Publishing' : 'Publish')}
 							</button>
 							{promptId && (
 								<button
