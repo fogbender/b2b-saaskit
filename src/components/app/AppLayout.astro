@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import type { SeoProps } from '../head/SEO.astro';
 
 export type Props = SeoProps;
+const isSupport = Astro.url.pathname === '/app/support' || Astro.url.pathname === '/app/support/';
 ---
 
 <Layout {...Astro.props}>
@@ -12,7 +13,7 @@ export type Props = SeoProps;
 			<slot />
 		</main>
 		{
-			Astro.url.pathname !== '/app/support' && (
+			!isSupport && (
 				<footer class="w-full border-t border-gray-200 bg-white px-10 py-4">
 					<div class="container mx-auto px-4 sm:px-20">
 						<div class="flex items-center justify-between">

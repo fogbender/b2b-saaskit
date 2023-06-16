@@ -8,7 +8,10 @@ export const handler = createStaticHandler(routes);
 
 export async function createRouterContext(astro: AstroGlobal) {
 	const helpers = createHelpers(astro);
-	const contextOrResponse = await handler.query(astro.request, {
+	// Astro doesn't have trailing slash in dev, but has it prod :(
+	const newUrl = astro.request.url.replace(/\/$/, '') || '/';
+	const newReq = new Request(newUrl, astro.request);
+	const contextOrResponse = await handler.query(newReq, {
 		requestContext: {
 			helpers,
 		} satisfies RemixContext,
