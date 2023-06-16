@@ -88,10 +88,6 @@ export const promptsRouter = createTRPCRouter({
 			const author = users.kind === 'ok' ? users.users[prompt.userId] : undefined;
 			if (!author) {
 				console.error('Error fetching users', users);
-				throw new TRPCError({
-					code: 'INTERNAL_SERVER_ERROR',
-					message: 'Error fetching users',
-				});
 			}
 			const { likes, template, tags, myLike, ...rest } = prompt;
 			const validTemplate = z.array(messageSchema).safeParse(template);
