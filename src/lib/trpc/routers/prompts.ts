@@ -11,7 +11,13 @@ import { usersToPublicUserInfo } from '../../../pages/api/orgs/[orgId]';
 import { serverEnv } from '../../../t3-env';
 import { trackEvent } from '../../posthog';
 import { propelauth } from '../../propelauth';
-import { apiProcedure, authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
+import {
+	apiProcedure,
+	authProcedure,
+	createTRPCRouter,
+	orgProcedure,
+	publicProcedure,
+} from '../trpc';
 
 const messageSchema = z.object({
 	role: z.union([z.literal('user'), z.literal('assistant'), z.literal('system')]),
@@ -122,6 +128,19 @@ export const promptsRouter = createTRPCRouter({
 			_meta: {
 				user: users.kind === 'ok' ? users.users[x.userId] : undefined,
 			},
+		}));
+	}),
+	getPublicPrompts: publicProcedure.query(async () => {
+		const promptsRes = await db
+			.select()
+			.from(prompts)
+			.where(eq(prompts.privacyLevel, 'public'))
+			.orderBy(sql`${prompts.createdAt} desc`)
+			.limit(100);
+		return promptsRes.map((x) => ({
+			promptId: x.promptId,
+			title: x.title,
+			isPublic: x.privacyLevel === 'public',
 		}));
 	}),
 	updatePrompt: orgProcedure
