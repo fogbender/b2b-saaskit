@@ -213,7 +213,9 @@ const LikesText = ({ data }: { data: { likes: number; myLike: boolean } | undefi
 	return (
 		<span className="flex">
 			<span aria-label="likes ">{data?.myLike ? '❤️' : '🤍'}</span>
-			<span className={clsx(showCounter ? '' : 'opacity-0', 'min-w-[2.5rem] px-2')}>{likes}</span>
+			<span className={clsx(showCounter ? '' : 'opacity-0', '-mr-6 min-w-[2.5rem] px-2')}>
+				{likes}
+			</span>
 		</span>
 	);
 };
