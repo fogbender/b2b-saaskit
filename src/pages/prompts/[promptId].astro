@@ -67,5 +67,10 @@ const noindex = x.kind === 'error' || x.prompt.prompt.privacyLevel !== 'public';
 ---
 
 <AppLayout title={title} description={description} ogImage={ogImage} meta={{ noindex }}>
+	<header class="container mt-8 px-4">
+		<a href="/prompts" class="px-2 py-0.5 text-gray-600 hover:text-gray-900">
+			Discover other public prompts
+		</a>
+	</header>
 	<Root client:load dehydratedState={res.helpers.dehydrate()} getContext={() => res.context} />
 </AppLayout>

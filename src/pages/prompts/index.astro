@@ -1,0 +1,61 @@
+---
+import AppLayout from '../../components/app/AppLayout.astro';
+import { createCaller } from '../../lib/trpc/root';
+
+export const prerender = false; // to render on the server
+
+const caller = await createCaller({
+	req: Astro.request,
+	resHeaders: Astro.response.headers,
+});
+
+const prompts = await caller.prompts
+	.getPublicPrompts()
+	.then((prompts) => ({ kind: 'ok' as const, prompts }))
+	.catch((error) => ({ kind: 'error' as const, error }));
+---
+
+<AppLayout description="List of all public prompts that users have shared">
+	<header class="container mt-8 px-4">
+		<a href="/prompts" class="px-2 py-0.5 text-gray-600 hover:text-gray-900">
+			Discover other public prompts
+		</a>
+	</header>
+	<div class="container mt-8 px-4">
+		<div class="flex h-10 items-center">
+			<h1 class="w-full max-w-2xl truncate text-2xl font-bold sm:w-fit md:max-w-4xl">
+				Public Prompts
+			</h1>
+		</div>
+		<ul class="ml-4 mt-4 list-disc">
+			{
+				prompts.kind === 'ok' && prompts.prompts.length === 0 && (
+					<li class="mb-2">
+						<p class="block px-2 py-0.5 text-gray-600 hover:text-gray-900">No public prompts yet</p>
+					</li>
+				)
+			}
+			{
+				prompts.kind === 'ok' &&
+					prompts.prompts.map((prompt) => (
+						<li class="mb-2">
+							<a
+								href={`/prompts/${prompt.promptId}`}
+								class="block px-2 py-0.5 text-gray-600 hover:text-gray-900"
+								rel="index follow"
+							>
+								{(prompt.title || '').trim() || 'Untitled'}
+							</a>
+						</li>
+					))
+			}
+			{
+				prompts.kind === 'error' && (
+					<li class="mb-4">
+						<p class="block px-2 py-0.5 text-red-600 hover:text-red-900">{prompts.error.message}</p>
+					</li>
+				)
+			}
+		</ul>
+	</div>
+</AppLayout>

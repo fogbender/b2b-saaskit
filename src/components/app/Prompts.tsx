@@ -93,6 +93,7 @@ export function Prompts() {
 										className="text-indigo-600 underline hover:text-indigo-900"
 									>
 										{prompt.title}
+										{prompt.isPublic ? ' (Public)' : ''}
 									</Link>
 								</td>
 								<td className="px-3 py-4 text-sm text-gray-500">
