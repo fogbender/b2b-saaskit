@@ -78,7 +78,7 @@ const services: LegoPiece[] = [
 	title={websiteTitle}
 	description="Enabling a developer to go from zero to core business logic in a matter of minutes"
 >
-	<main class="container max-w-[42rem] px-8 pb-12 md:mx-auto md:px-0">
+	<main class="container max-w-[42rem] px-8 pb-12 pt-28 md:mx-auto md:px-0">
 		<a
 			href="https://github.com/fogbender/b2b-saaskit"
 			class="fogbender-github-corner absolute right-0 top-0 z-50 md:fixed"
@@ -101,7 +101,7 @@ const services: LegoPiece[] = [
 			></a
 		>
 
-		<div class="mt-28 flex items-center gap-6">
+		<div class="flex items-center gap-6">
 			<div class="w-[5.75rem]">
 				<img class="h-[84px] w-[92px]" src={wink} alt="Winking fox" />
 			</div>
@@ -136,20 +136,20 @@ const services: LegoPiece[] = [
 						<a href={x.url}>
 							{typeof x.imgUrl === 'string' ? (
 								<img
-									class="h-[92px] w-[92px] rounded-xl bg-white hover:opacity-50"
+									class="h-[86px] w-[86px] rounded-xl bg-white hover:opacity-50"
 									src={x.imgUrl}
 									alt={x.name}
-									width={92 * 2}
-									height={92 * 2}
+									width={86 * 2}
+									height={86 * 2}
 									title={x.name}
 								/>
 							) : (
 								<Image
-									class="h-[92px] w-[92px] rounded-xl bg-white hover:opacity-50"
+									class="h-[86px] w-[86px] rounded-xl bg-white hover:opacity-50"
 									src={x.imgUrl}
 									alt={x.name}
-									width={92 * 2}
-									height={92 * 2}
+									width={86 * 2}
+									height={86 * 2}
 									title={x.name}
 									loading="eager"
 									decoding="sync"
@@ -180,7 +180,7 @@ const services: LegoPiece[] = [
 			</div>
 
 			<pre
-				class="rounded-xl bg-[#6B7280] px-2 py-4 text-sm text-xs text-white md:text-base">
+				class="overflow-auto rounded-xl bg-[#6B7280] px-2 py-4 text-sm text-white md:text-base">
 git clone git@github.com:fogbender/b2b-saaskit.git 
 cd b2b-saaskit 
 corepack enable 
