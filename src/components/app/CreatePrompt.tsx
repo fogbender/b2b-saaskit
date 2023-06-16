@@ -248,6 +248,8 @@ export const EditPromptControls = ({
 		},
 	});
 
+	const promptIsBeingSaved = addPromptMutation.isLoading || updatePromptMutation.isLoading;
+
 	const deletePromptMutation = trpc.prompts.deletePrompt.useMutation({
 		onSuccess: () => {
 			navigate(`/app/prompts`);
@@ -256,6 +258,10 @@ export const EditPromptControls = ({
 			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getPrompts));
 		},
 	});
+
+	const [newIsPublic, setNewIsPublic] = useState<boolean | undefined>(undefined);
+
+	const isPublic = newIsPublic === undefined ? promptPrivacyLevel === 'public' : newIsPublic;
 
 	return (
 		<div className="mb-36 mt-4 flex flex-col gap-10">
@@ -503,7 +509,8 @@ export const EditPromptControls = ({
 										.map((x) => x.trim()) ?? [],
 								template: messages,
 							};
-							if (promptId) {
+							const { submitter } = e.nativeEvent as any as { submitter: HTMLButtonElement };
+							if (promptId && submitter.name === 'save') {
 								updatePromptMutation.mutate({ promptId, ...data });
 							} else {
 								addPromptMutation.mutate(data);
@@ -575,6 +582,10 @@ export const EditPromptControls = ({
 										name="privacyLevel"
 										className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 										defaultValue={promptPrivacyLevel}
+										onChange={(e) => {
+											const value = e.currentTarget.value as PrivacyLevel;
+											setNewIsPublic(value === 'public');
+										}}
 									>
 										<option value="public">Public (indexed by Google)</option>
 										<option value="unlisted">
@@ -591,17 +602,33 @@ export const EditPromptControls = ({
 						<fieldset className="mt-8 flex flex-col items-start gap-4">
 							{messages.length > 0 && <JsonSnippet messages={messages} />}
 							{messages.length > 0 && <CopyToClipboardBtn messages={messages} />}
+							{promptId && (
+								<button
+									className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+									type="submit"
+									disabled={promptIsBeingSaved}
+									name="save"
+								>
+									{promptId && (updatePromptMutation.isLoading ? 'Saving' : 'Save')}
+								</button>
+							)}
 							<button
 								className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
 								type="submit"
-								disabled={addPromptMutation.isLoading || updatePromptMutation.isLoading}
+								name="publish"
+								disabled={promptIsBeingSaved}
 							>
-								{promptId ? 'Sav' : 'Publish'}
-								{addPromptMutation.isLoading || updatePromptMutation.isLoading
-									? 'ing'
-									: promptId
-									? 'e'
-									: ''}
+								{isPublic ? (
+									<>
+										{promptId && (addPromptMutation.isLoading ? 'Publishing' : 'Publish as a copy')}
+										{!promptId && (addPromptMutation.isLoading ? 'Publishing' : 'Publish')}
+									</>
+								) : (
+									<>
+										{promptId && (addPromptMutation.isLoading ? 'Saving' : 'Save as a copy')}
+										{!promptId && (addPromptMutation.isLoading ? 'Creating' : 'Create')}
+									</>
+								)}
 							</button>
 							{promptId && (
 								<button
