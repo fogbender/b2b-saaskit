@@ -259,6 +259,10 @@ export const EditPromptControls = ({
 		},
 	});
 
+	const [newIsPublic, setNewIsPublic] = useState<boolean | undefined>(undefined);
+
+	const isPublic = newIsPublic === undefined ? promptPrivacyLevel === 'public' : newIsPublic;
+
 	return (
 		<div className="mb-36 mt-4 flex flex-col gap-10">
 			<div className="flex flex-col gap-4">
@@ -578,6 +582,10 @@ export const EditPromptControls = ({
 										name="privacyLevel"
 										className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 										defaultValue={promptPrivacyLevel}
+										onChange={(e) => {
+											const value = e.currentTarget.value as PrivacyLevel;
+											setNewIsPublic(value === 'public');
+										}}
 									>
 										<option value="public">Public (indexed by Google)</option>
 										<option value="unlisted">
@@ -610,8 +618,17 @@ export const EditPromptControls = ({
 								name="publish"
 								disabled={promptIsBeingSaved}
 							>
-								{promptId && (addPromptMutation.isLoading ? 'Saving' : 'Save as a copy')}
-								{!promptId && (addPromptMutation.isLoading ? 'Publishing' : 'Publish')}
+								{isPublic ? (
+									<>
+										{promptId && (addPromptMutation.isLoading ? 'Publishing' : 'Publish as a copy')}
+										{!promptId && (addPromptMutation.isLoading ? 'Publishing' : 'Publish')}
+									</>
+								) : (
+									<>
+										{promptId && (addPromptMutation.isLoading ? 'Saving' : 'Save as a copy')}
+										{!promptId && (addPromptMutation.isLoading ? 'Creating' : 'Create')}
+									</>
+								)}
 							</button>
 							{promptId && (
 								<button
