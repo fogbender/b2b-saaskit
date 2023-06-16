@@ -248,6 +248,8 @@ export const EditPromptControls = ({
 		},
 	});
 
+	const promptIsBeingSaved = addPromptMutation.isLoading || updatePromptMutation.isLoading;
+
 	const deletePromptMutation = trpc.prompts.deletePrompt.useMutation({
 		onSuccess: () => {
 			navigate(`/app/prompts`);
@@ -594,14 +596,10 @@ export const EditPromptControls = ({
 							<button
 								className="min-w-[6rem] rounded bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
 								type="submit"
-								disabled={addPromptMutation.isLoading || updatePromptMutation.isLoading}
+								disabled={promptIsBeingSaved}
 							>
-								{promptId ? 'Sav' : 'Publish'}
-								{addPromptMutation.isLoading || updatePromptMutation.isLoading
-									? 'ing'
-									: promptId
-									? 'e'
-									: ''}
+								{promptId && (promptIsBeingSaved ? 'Saving' : 'Save')}
+								{!promptId && (promptIsBeingSaved ? 'Publishing' : 'Publish')}
 							</button>
 							{promptId && (
 								<button
