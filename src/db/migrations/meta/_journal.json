@@ -1,1 +1,13 @@
-{"version":"5","dialect":"pg","entries":[]}
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1686972320610,
+      "tag": "0000_yummy_ben_parker",
+      "breakpoints": false
+    }
+  ]
+}
