@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
-import { useReducer } from 'react';
+import { useReducer, useState } from 'react';
 
 import { env } from '../../config';
 import { websiteTitle } from '../../constants';
@@ -37,6 +37,9 @@ export function Settings() {
 	});
 
 	const [showAddKey, toggleShowAddKey] = useReducer((state) => !state, false);
+
+	const [submitOk, setSubmitOk] = useState(false);
+
 	return (
 		<Layout title={`${websiteTitle} / Settings`}>
 			<div className="mt-4 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
@@ -106,6 +109,7 @@ export function Settings() {
 								</label>
 								<input type="hidden" name="orgId" value={orgId} />
 								<input
+									onChange={(e) => setSubmitOk(e.target.value.trim().length > 0)}
 									className="rounded-md border border-gray-300 p-2"
 									type="text"
 									id="keySecret"
@@ -125,15 +129,15 @@ export function Settings() {
 									<option value="gpt-4">GPT-4</option>
 								</select>
 								<button
-									className="rounded-md bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+									className="max-w-min rounded-md bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
 									type="submit"
-									disabled={addKeyMutation.isLoading}
+									disabled={submitOk === false || addKeyMutation.isLoading}
 								>
 									{addKeyMutation.isLoading
-										? 'Storing...'
+										? 'Saving...'
 										: keysQuery.data?.length
 										? 'Replace'
-										: 'Store'}
+										: 'Save'}
 								</button>
 								{addKeyMutation.isError && (
 									<div>
