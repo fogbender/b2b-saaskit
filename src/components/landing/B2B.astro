@@ -13,6 +13,7 @@ import vercel from '../../assets/b2b/vercel.jpg';
 import b2b7logo from '../../assets/b2b7.svg?url';
 import wink from '../../assets/wink.svg?url';
 import Layout from '../../layouts/Layout.astro';
+import ClipboardCopy from '../utils/ClipboardCopy.astro';
 
 const websiteTitle = 'B2B SaaS Kit';
 
@@ -179,14 +180,15 @@ const services: LegoPiece[] = [
 				computer. You'll need Node.js 18 to get going. Then, run this in the terminal:
 			</div>
 
-			<pre
-				class="overflow-auto rounded-xl bg-[#6B7280] px-2 py-4 text-sm text-white md:text-base">
+			<ClipboardCopy>
+				<pre>
 git clone git@github.com:fogbender/b2b-saaskit.git 
 cd b2b-saaskit 
 corepack enable 
 corepack prepare yarn@1.22.19 --activate 
 yarn 
 yarn dev</pre>
+			</ClipboardCopy>
 
 			<div>
 				Open <a href="http://localhost:3000">http://localhost:3000</a> and follow the tutorial 🤘

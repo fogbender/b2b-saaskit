@@ -1,0 +1,82 @@
+---
+export type Props = {};
+
+const {} = Astro.props;
+---
+
+<clipboard-copy class="group/clipboard">
+	<div class="group relative rounded-xl bg-[#6B7280] px-2 py-4 text-sm text-white md:text-base">
+		<button
+			aria-label="Copy"
+			class="focus:shadow-outline-gray absolute right-2 top-2 m-2 inline-block select-none rounded-md border border-solid border-transparent bg-gray-600 p-0 align-middle text-sm font-medium leading-5 text-[#8b949e] transition duration-150 ease-out hover:border-gray-200 hover:bg-gray-500 hover:text-gray-200 focus:border-gray-200 focus:text-gray-200 focus:opacity-100 focus:outline-none active:bg-gray-700 active:text-gray-200 active:opacity-100 group-hover:opacity-100 [@media(hover:hover)]:opacity-50"
+		>
+			<svg
+				width="16"
+				height="16"
+				fill="currentColor"
+				aria-hidden="true"
+				class="m-2 group-[[data-copied]]/clipboard:hidden"
+				data-view-component="true"
+				><path
+					d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"
+				></path><path
+					d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"
+				></path></svg
+			>
+			<svg
+				width="16"
+				height="16"
+				fill="#34b233"
+				aria-hidden="true"
+				class="m-2 hidden group-[[data-copied]]/clipboard:block"
+				data-view-component="true"
+				><path
+					d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"
+				></path></svg
+			>
+		</button>
+		<div class="overflow-x-auto">
+			<slot />
+		</div>
+	</div>
+</clipboard-copy>
+<script>
+	class ClipboardCopy extends HTMLElement {
+		cleanup: undefined | (() => void);
+		constructor() {
+			super();
+
+			this.addEventListener('click', async () => {
+				const pre = this.querySelector('pre');
+				if (pre && pre.textContent) {
+					await navigator.clipboard.writeText(pre.textContent);
+					this.setCopy();
+				} else {
+					console.error('No pre found for clipboard-copy', this, pre);
+					throw new Error('No pre found for clipboard-copy');
+				}
+			});
+		}
+
+		setCopy() {
+			const timer = setTimeout(() => {
+				this.cleanup = undefined;
+				delete this.dataset.copied;
+			}, 3000);
+			if (this.cleanup) {
+				this.cleanup();
+				delete this.dataset.copied;
+				setTimeout(() => {
+					this.dataset.copied = 'true';
+				}, 80);
+			} else {
+				this.dataset.copied = 'true';
+			}
+			this.cleanup = () => {
+				clearTimeout(timer);
+			};
+		}
+	}
+
+	customElements.define('clipboard-copy', ClipboardCopy);
+</script>
