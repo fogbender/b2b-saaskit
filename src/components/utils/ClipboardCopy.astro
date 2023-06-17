@@ -4,11 +4,11 @@ export type Props = {};
 const {} = Astro.props;
 ---
 
-<clipboard-copy class="group/clipboard">
-	<div class="group relative rounded-xl bg-[#6B7280] px-2 py-4 text-sm text-white md:text-base">
+<div class="group relative rounded-xl bg-[#6B7280] px-2 py-4 text-sm text-white md:text-base">
+	<clipboard-copy class="group/clipboard">
 		<button
 			aria-label="Copy"
-			class="focus:shadow-outline-gray absolute right-2 top-2 m-2 inline-block select-none rounded-md border border-solid border-transparent bg-gray-600 p-0 align-middle text-sm font-medium leading-5 text-[#8b949e] transition duration-150 ease-out hover:border-gray-200 hover:bg-gray-500 hover:text-gray-200 focus:border-gray-200 focus:text-gray-200 focus:opacity-100 focus:outline-none active:bg-gray-700 active:text-gray-200 active:opacity-100 group-hover:opacity-100 [@media(hover:hover)]:opacity-50"
+			class="focus:shadow-outline-gray absolute right-2 top-2 m-2 inline-block select-none rounded-md border border-solid border-transparent bg-gray-600 p-0 align-middle text-sm font-medium leading-5 text-[#8b949e] transition duration-150 ease-out hover:border-gray-200 hover:bg-gray-500 hover:text-gray-200 focus:border-gray-200 focus:text-gray-200 focus:opacity-100 focus:outline-none active:bg-gray-700 active:text-gray-200 active:opacity-100 group-hover:opacity-100 [@media(hover:hover)]:opacity-0"
 		>
 			<svg
 				width="16"
@@ -35,11 +35,11 @@ const {} = Astro.props;
 				></path></svg
 			>
 		</button>
-		<div class="overflow-x-auto">
-			<slot />
-		</div>
+	</clipboard-copy>
+	<div class="overflow-x-auto">
+		<slot />
 	</div>
-</clipboard-copy>
+</div>
 <script>
 	class ClipboardCopy extends HTMLElement {
 		cleanup: undefined | (() => void);
@@ -47,7 +47,7 @@ const {} = Astro.props;
 			super();
 
 			this.addEventListener('click', async () => {
-				const pre = this.querySelector('pre');
+				const pre = this.closest(':has(pre)')?.querySelector('pre');
 				if (pre && pre.textContent) {
 					await navigator.clipboard.writeText(pre.textContent);
 					this.setCopy();
