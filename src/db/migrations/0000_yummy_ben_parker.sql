@@ -16,6 +16,9 @@ CREATE TABLE IF NOT EXISTS "gpt_keys" (
 	"last_used_at" timestamp
 );
 
+ALTER TABLE gpt_keys ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."gpt_keys" AS PERMISSIVE FOR ALL TO service_role USING (true);
+
 CREATE TABLE IF NOT EXISTS "prompt_likes" (
 	"prompt_id" text NOT NULL,
 	"user_id" text NOT NULL,
@@ -23,6 +26,9 @@ CREATE TABLE IF NOT EXISTS "prompt_likes" (
 );
 --> statement-breakpoint
 ALTER TABLE "prompt_likes" ADD CONSTRAINT "prompt_likes_prompt_id_user_id" PRIMARY KEY("prompt_id","user_id");
+
+ALTER TABLE prompt_likes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."prompt_likes" AS PERMISSIVE FOR ALL TO service_role USING (true);
 
 CREATE TABLE IF NOT EXISTS "prompts" (
 	"id" text PRIMARY KEY NOT NULL,
@@ -37,11 +43,17 @@ CREATE TABLE IF NOT EXISTS "prompts" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 
+ALTER TABLE prompts ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."prompts" AS PERMISSIVE FOR ALL TO service_role USING (true)
+
 CREATE TABLE IF NOT EXISTS "shared_key_ratelimit" (
 	"id" text PRIMARY KEY NOT NULL,
 	"value" integer NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
+
+ALTER TABLE shared_key_ratelimit ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."shared_key_ratelimit" AS PERMISSIVE FOR ALL TO service_role USING (true);
 
 CREATE TABLE IF NOT EXISTS "surveys" (
 	"id" serial PRIMARY KEY NOT NULL,
@@ -50,3 +62,6 @@ CREATE TABLE IF NOT EXISTS "surveys" (
 	"comments" text,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
+
+ALTER TABLE surveys ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."surveys" AS PERMISSIVE FOR ALL TO service_role USING (true);
