@@ -59,7 +59,7 @@ yarn dev
 
 ### DB migrations (with Drizzle Kit)
 
-To learn about Drizzle, read the docs at https://orm.drizzle.team/kit-docs/overview
+To learn about Drizzle, read the docs at https://orm.drizzle.team/kit-docs/overview.
 
 (Another popular option to manage migrations is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate) - if you'd like to use Prisma instead of Drizzle and need help, please get in touch with us.)
 
@@ -113,11 +113,7 @@ doppler run yarn migrate --config prd
 
 If you made a mistake in a migration step, do this:
 
-Run the following - you'll be able to select the migration to drop via CLI UI:
-
-```sh
-doppler run yarn drizzle-kit drop
-```
+Run `doppler run yarn drizzle-kit drop` and select the migration to drop via CLI UI.
 
 Now, manually return the database to the previous state. For example, drop the `example` table.
 
