@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
 import { websiteTitle } from '../../constants';
@@ -80,12 +81,12 @@ export function Prompts() {
 						{promptsQuery.data?.map((prompt, index) => (
 							<tr
 								key={prompt.promptId}
-								className={`${index % 2 === 0 ? undefined : 'bg-gray-50'} ${
+								className={clsx(
+									index % 2 === 0 && 'bg-gray-50',
 									deletePromptMutation.isLoading &&
-									deletePromptMutation.variables?.promptId === prompt.promptId
-										? 'opacity-50'
-										: ''
-								}`}
+										deletePromptMutation.variables?.promptId === prompt.promptId &&
+										'opacity-50'
+								)}
 							>
 								<td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 									<Link
