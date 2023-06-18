@@ -78,7 +78,7 @@ export const example = pgTable("example", {
 });
 ```
 
-If you try to access the `example` table, you'll get a runtime error. To fix this, you have to run a "migration", which applies a set of updates - which may include some combination of schema and data changes - to the database. Migration-aware databases usually have a utility table with a record of all migration steps that have already been applied. In our example, we'll only cover "forward" migration steps, but most migration systems allow each migration to define "up" and "down" functions - the "down" function is used to "undo" a migration, which might be necessary if application code associated with a forward step gets rolled back.
+If you try to access the `example` table, you'll get a runtime error. To fix this, you have to run a "migration", which applies a set of updates - which may include some combination of schema and data changes - to the database.
 
 Drizzle migrations happen in two steps: the first step generates a migration file, the second step applies the migration to the database.
 
