@@ -57,18 +57,18 @@ yarn dev
 
 ## Working with the codebase
 
-### DB migrations (using Drizzle Kit)
+### DB migrations (with Drizzle Kit)
 
-Read more about Drizzle in the official docs: https://orm.drizzle.team/kit-docs/overview
+To learn about Drizzle, read the docs at https://orm.drizzle.team/kit-docs/overview
 
-Another popular option to manage migrations is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate), talk to us if you'd like to see Prisma support in the kit.
+(Another popular option to manage migrations is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate) - if you'd like to use Prisma instead of Drizzle and need help, please get in touch with us.)
 
 <details>
 <summary>Click to expand</summary>
 
 #### Example: create a new table
 
-First, you would need to make changes in the schema file `src/db/schema.ts`. The changes will only affect your typescript code, not the database. If you try to access that table you will get a runtime error.
+First, you'd have to make a few changes in `src/db/schema.ts`. The changes you make will only affect your TypeScript code, not the actual table data.
 
 ```ts
 export const example = pgTable("example", {
@@ -78,38 +78,52 @@ export const example = pgTable("example", {
 });
 ```
 
-In drizzle migrations happen in two steps, first step generates a migration file, second step applies the migration to the database.
+If you try to access the `example` table, you'll get a runtime error. To fix this, you have to run a "migration", which applies a set of updates - which may include some combination of schema and data changes - to the database. Migration-aware databases usually have a utility table with a record of all migration steps that have already been applied. In our example, we'll only cover "forward" migration steps, but most migration systems allow each migration to define "up" and "down" functions - the "down" function is used to "undo" a migration, which might be necessary if application code associated with a forward step gets rolled back.
+
+Drizzle migrations happen in two steps: the first step generates a migration file, the second step applies the migration to the database.
+
+To generate a migration file, run
 
 ```sh
 doppler run yarn drizzle-kit generate:pg
 ```
 
-Since we are using Supabase Postgres, we need to take care of [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies when creating new tables. So let's open the generated SQL file that will be named something like this `src/db/migrations/1234_some_words.sql`. We need to edit that file before we can apply it to the database. Add this (changing your table name) to the end of the file:
+This will generate a file called something like `src/db/migration/1234_xyz.sql`. Under normal circumstances, you wouldn't have to worry about this file - it will contain an auto-generated set of SQL statements needed to apply the changes expressed in your `schema.ts` to the database. However, since we're using Supabase Postgres, we have to take care of [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies when creating new tables.
+
+To do this, open the migration file and add the following to end, making sure to change `example` to the table name you're using:
 
 ```sql
 ALTER TABLE example ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "service" ON "public"."example" AS PERMISSIVE FOR ALL TO service_role USING (true);
 ```
 
-Finally, the migration itself. This is going to just go through your SQL files and run them in order. That simplicity gives your flexibility to do some sophisticated things, like write manual data migrations or skip some steps if you know that the change is already there in the DB (if you edited it manually for example, or when you are trying to run `CREATE POLICY` command which doesn't have `IF NOT EXISTS` option).
+Finally, run the migration:
 
 ```sh
 doppler run yarn migrate
 ```
 
-The B2B SaasKit doesn't automate production migrations for you, so you would have to manually run it with production config to get the changes to your production database.
+If you open your Postgres console (e.g., Supabase or psql), you'll see the new table.
+
+Migrating your development database will not migrate the production one. To migrate production, run `migrate` with production configuration:
 
 ```sh
 doppler run yarn migrate --config prd
 ```
 
-If you need to redo something you can drop the migration file. Keep in mind that it won't change the state of the database, it will only remove generated migration files.
+If you made a mistake in a migration step, do this:
+
+Run the following - you'll be able to select the migration to drop via CLI UI:
 
 ```sh
 doppler run yarn drizzle-kit drop
 ```
 
-Now if you run `generate:pg` again Drizzle will regenerate the migration files. This could be good if you want to get rid of some intermediate changes you made in your development environment.
+Now, manually return the database to the previous state. For example, drop the `example` table.
+
+Next, update your `schema.ts` file with correct changes.
+
+Finally, run `generate:pg` to regenerate the migration files, and `migrate` to re-apply the migration.
 
 </details>
 
