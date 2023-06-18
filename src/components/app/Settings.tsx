@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
+import clsx from 'clsx';
 import { useReducer, useState } from 'react';
 
 import { env } from '../../config';
@@ -221,12 +222,12 @@ export function Settings() {
 									{keysQuery.data?.map((key, index) => (
 										<tr
 											key={key.keyId}
-											className={`${index % 2 === 0 ? undefined : 'bg-gray-50'} ${
+											className={clsx(
+												index % 2 === 0 && 'bg-gray-50',
 												deleteKeyMutation.isLoading &&
-												deleteKeyMutation.variables?.keyId === key.keyId
-													? 'opacity-50'
-													: ''
-											}`}
+													deleteKeyMutation.variables?.keyId === key.keyId &&
+													'opacity-50'
+											)}
 										>
 											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 												{key.keyPublic}
