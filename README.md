@@ -55,7 +55,63 @@ yarn dev
 
 ### Deploy to production
 
-### Make changes
+## Working with the codebase
+
+### DB migrations
+
+We're using Drizzle Kit to manage database migrations in B2B SaaS Kit. For details on Drizzle, see https://orm.drizzle.team/kit-docs/overview.
+
+Another popular is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate) - if you'd like to use Prisma instead of Drizzle and need help, please get in touch with us.
+
+<details>
+<summary>Click to expand</summary>
+
+#### Example: create a new table
+
+First, you'd have to make a few changes in `src/db/schema.ts`. The changes you make will only affect your TypeScript code, not the actual table data.
+
+```ts
+export const example = pgTable("example", {
+  exampleId: text("id").primaryKey(),
+  value: integer("value").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+```
+
+If you try to access the `example` table, you'll get a runtime error. To fix this, you have to run a "migration", which applies a set of updates - which may include some combination of schema and data changes - to the database.
+
+Drizzle migrations happen in two steps: the first step generates a migration file, the second step applies the migration to the database.
+
+To generate a migration file, run
+
+```sh
+doppler run yarn drizzle-kit generate:pg
+```
+
+This will generate a file called something like `src/db/migration/1234_xyz.sql`. Under normal circumstances, you wouldn't have to worry about this file - it will contain an auto-generated set of SQL statements needed to apply the changes expressed in your `schema.ts` to the database. However, since we're using Supabase Postgres, we have to take care of [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies when creating new tables.
+
+To do this, open the migration file and add the following to end, making sure to change `example` to the table name you're using:
+
+```sql
+ALTER TABLE example ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."example" AS PERMISSIVE FOR ALL TO service_role USING (true);
+```
+
+Finally, run the migration:
+
+```sh
+doppler run yarn migrate
+```
+
+If you open your Postgres console (e.g., Supabase or psql), you'll see the new table.
+
+Migrating your development database will not migrate the production one. To migrate production, run `migrate` with production configuration:
+
+```sh
+doppler run yarn migrate --config prd
+```
+
+</details>
 
 ## License
 
