@@ -57,11 +57,11 @@ yarn dev
 
 ## Working with the codebase
 
-### DB migrations (with Drizzle Kit)
+### DB migrations
 
-To learn about Drizzle, read the docs at https://orm.drizzle.team/kit-docs/overview.
+We're using Drizzle Kit to manage database migrations in B2B SaaS Kit. For details on Drizzle, see https://orm.drizzle.team/kit-docs/overview.
 
-(Another popular option to manage migrations is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate) - if you'd like to use Prisma instead of Drizzle and need help, please get in touch with us.)
+Another popular is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate) - if you'd like to use Prisma instead of Drizzle and need help, please get in touch with us.
 
 <details>
 <summary>Click to expand</summary>
