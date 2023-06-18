@@ -2,8 +2,11 @@
 import { CollectionEntry, getEntryBySlug } from 'astro:content';
 
 import SetupStep from '../../components/setup/SetupStep.astro';
-import { websiteTitle } from '../../constants';
+import { websiteTitle, i } from '../../constants';
 import Layout from '../../layouts/Layout.astro';
+import * as x from 'astro/client/router.js?url';
+
+console.log(123, x);
 
 type SetupSlug = CollectionEntry<'setup'>['slug'];
 
@@ -47,6 +50,19 @@ for (const slug of checksOrder) {
 		<div class="mt-24 flex w-full flex-col md:flex-row">
 			<div class="ml-10 md:ml-0">
 				<a class="text-lg text-blue-600 hover:text-rose-600 md:text-3xl" href="/">Home</a>
+				<a
+					id="test123"
+					class="text-lg text-blue-600 hover:text-rose-600 md:text-3xl"
+					href="/setup"
+					data-router-noscroll
+					data-router-keepfocus>Setup</a
+				>
+				<script>
+					setInterval(() => {
+						document.getElementById('test123').click();
+					}, 1000);
+				</script>
+				{i.current++}
 			</div>
 			<div class="w-full">
 				<div class="ml-10 leading-8">
