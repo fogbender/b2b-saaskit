@@ -111,16 +111,6 @@ Migrating your development database will not migrate the production one. To migr
 doppler run yarn migrate --config prd
 ```
 
-If you made a mistake in a migration step, do this:
-
-Run `doppler run yarn drizzle-kit drop` and select the migration to drop via CLI UI.
-
-Now, manually return the database to the previous state. For example, drop the `example` table.
-
-Next, update your `schema.ts` file with correct changes.
-
-Finally, run `generate:pg` to regenerate the migration files, and `migrate` to re-apply the migration.
-
 </details>
 
 ## License
