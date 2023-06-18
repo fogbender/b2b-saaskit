@@ -204,7 +204,7 @@ export function Settings() {
 									)}
 									{!keysQuery.isLoading && keysQuery.data?.length === 0 && (
 										<tr>
-											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
+											<td className="break-all py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 												No keys are configured,{' '}
 												<button
 													className="text-blue-500 underline hover:text-blue-700"
@@ -229,19 +229,17 @@ export function Settings() {
 													'opacity-50'
 											)}
 										>
-											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
+											<td className="break-all py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 												{key.keyPublic}
 											</td>
-											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-												{key.keyType}
-											</td>
-											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+											<td className="break-all px-3 py-4 text-sm text-gray-500">{key.keyType}</td>
+											<td className="break-all px-3 py-4 text-sm text-gray-500">
 												{key.createdAt.toLocaleString()}
 											</td>
-											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+											<td className="break-all px-3 py-4 text-sm text-gray-500">
 												{key.lastUsedAt ? key.lastUsedAt.toLocaleString() : 'Never'}
 											</td>
-											<td className="relative flex justify-end gap-2 whitespace-nowrap py-4 pr-4 text-sm font-medium">
+											<td className="relative flex justify-end gap-2 break-all py-4 pr-4 text-sm font-medium">
 												<button
 													type="button"
 													className="p-1 text-indigo-600 hover:text-indigo-900 focus:outline-indigo-500"
