@@ -55,8 +55,8 @@ export function AppNav() {
 
 	return (
 		<header className="bg-white px-5 py-4 shadow-sm">
-			<div className="container mx-auto flex items-center justify-between text-sm">
-				<nav className="flex flex-wrap space-x-4">
+			<div className="container mx-auto flex items-center justify-between text-xs sm:text-sm">
+				<nav className="flex flex-wrap space-x-2 sm:space-x-4">
 					<NavLink to="/app" end className={navLinkClass}>
 						Overview
 					</NavLink>

@@ -88,7 +88,7 @@ export function Prompts() {
 										'opacity-50'
 								)}
 							>
-								<td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
+								<td className="break-all py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 									<Link
 										to={`/app/prompts/${prompt.promptId}`}
 										className="text-indigo-600 underline hover:text-indigo-900"
@@ -97,10 +97,10 @@ export function Prompts() {
 										{prompt.isPublic ? ' (Public)' : ''}
 									</Link>
 								</td>
-								<td className="px-3 py-4 text-sm text-gray-500">
+								<td className="break-all px-3 py-4 text-sm text-gray-500">
 									{prompt._meta.user?.name || prompt._meta.user?.email || prompt.userId}
 								</td>
-								<td className="relative flex gap-2 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
+								<td className="relative flex flex-col items-start gap-2 whitespace-nowrap break-all py-4 pl-3 pr-4 text-right text-sm font-medium sm:flex-row sm:gap-6 sm:pr-6 lg:pr-8">
 									<Link
 										to={`/app/prompts/${prompt.promptId}/edit`}
 										className="text-indigo-600 hover:text-indigo-900"
@@ -140,17 +140,20 @@ const Table = ({ children }: { children: React.ReactNode }) => {
 							<tr>
 								<th
 									scope="col"
-									className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
+									className="-rotate-90 pb-8 text-sm font-semibold text-gray-900 sm:rotate-0 sm:break-all sm:pb-2 sm:text-left"
 								>
 									Prompt
 								</th>
 								<th
 									scope="col"
-									className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+									className="-rotate-90 pb-8 text-sm font-semibold text-gray-900 sm:rotate-0 sm:break-all sm:pb-2 sm:text-left"
 								>
 									Creator
 								</th>
-								<th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6 lg:pr-8">
+								<th
+									scope="col"
+									className="-rotate-90 pb-8 text-sm font-semibold text-gray-900 sm:rotate-0 sm:break-all sm:pb-2 sm:text-left"
+								>
 									<span className="sr-only">Delete</span>
 								</th>
 							</tr>
