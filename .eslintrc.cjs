@@ -20,7 +20,7 @@ module.exports = {
 		},
 		{
 			extends: ['plugin:markdown/recommended'],
-			files: ['**/*.md'],
+			files: ['**/*.md', '**/*.md/*.{js,jsx,ts,tsx}'],
 			processor: 'markdown/markdown',
 		},
 	],
