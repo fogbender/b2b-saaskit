@@ -1,3 +1,5 @@
+ ![image](https://github.com/fogbender/b2b-saaskit/assets/41166/d5d4ccdc-9664-42c3-a5b6-4c5cbac58432)
+
 # Welcome to the B2B SaaS Kit!
 
 The B2B SaaS Kit is an open-source springboard for developers looking to quickly stand up a SaaS product where the customer can be a team of users (i.e., a business).
@@ -8,7 +10,7 @@ The kit is designed with two primary goals in mind:
 
 1. Start with a fully-functional, relatively complex application. Then, modify it to become your own product.
 
-2. You should be able to go from zero to idea validation verdict for the cost of a domain name - all the third-party services used by the kit offer meaningful free-forever starter plans.
+2. You should be able to build an app to validate your idea for the cost of a domain name - all the third-party services used by the kit offer meaningful free-forever starter plans.
 
 ## Why "B2B"?
 
@@ -20,7 +22,7 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 ### High-level plan
 
-- First, check out https://PromptsWithFriends.com - a web-based SaaS application that was built with this B2B SaaS Kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others
+- First, check out https://PromptsWithFriends.com - it's an example app built with this B2B SaaS Kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others
 
 - Next, get your own copy of _Prompts with Friends_ running locally on your machine
 
