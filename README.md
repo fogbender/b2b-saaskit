@@ -22,7 +22,7 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 ### High-level plan
 
-- First, check out https://PromptsWithFriends.com - it's an example app built with this B2B SaaS Kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others
+- First, check out https://PromptsWithFriends.com - it's an example app built with this kit. _Prompts with Friends_ is a way to collaborate on GPT prompts with others
 
 - Next, get your own copy of _Prompts with Friends_ running locally on your machine
 
