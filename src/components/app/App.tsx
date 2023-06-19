@@ -101,8 +101,8 @@ const AppWithOrg = ({
 						, our goal was to make it genuinely useful.
 					</p>
 					<p>
-						As it happens, we began building this showcase as the obligatory collaborative
-						note-taking app, but in the process our attention quickly turned to GPT prompt-building.
+						As it happens, this project started off as the obligatory collaborative note-taking app,
+						but in the process our attention quickly turned to GPT prompt-building.
 					</p>
 					<p>
 						What if we came up with a sensible way for teams to work on complex prompts? For
