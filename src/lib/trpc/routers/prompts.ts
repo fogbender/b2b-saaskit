@@ -39,8 +39,6 @@ async function hasActiveSubscription(orgId: string) {
 
 		const res = await Promise.all(
 			mappings.map(async ({ stripeCustomerId }) => {
-				const customer = await stripe.customers.retrieve(stripeCustomerId);
-
 				const subscriptions = await stripe.subscriptions.list({
 					customer: stripeCustomerId,
 				});

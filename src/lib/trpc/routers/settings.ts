@@ -44,7 +44,7 @@ export const settingsRouter = createTRPCRouter({
 
 					return {
 						active,
-						email: customer.email,
+						email: 'email' in customer && customer.email,
 						portalUrl: billingPortalSession.url,
 						cancelAtEpochSec,
 					};

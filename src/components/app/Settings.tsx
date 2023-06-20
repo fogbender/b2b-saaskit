@@ -314,7 +314,7 @@ export function Settings() {
 									</button>
 									{(subscriptions?.length || 0) > 0 && (
 										<div className="flex flex-col gap-4">
-											{subscriptions.map((s, i) => (
+											{subscriptions?.map((s, i) => (
 												<div
 													key={`${s.email}-${i}`}
 													className="flex flex-col rounded-md border border-gray-300 p-4"
