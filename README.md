@@ -1,4 +1,4 @@
- ![image](https://github.com/fogbender/b2b-saaskit/assets/41166/d5d4ccdc-9664-42c3-a5b6-4c5cbac58432)
+![wink](https://github.com/fogbender/b2b-saaskit/assets/41166/4f00bef4-8db5-4568-9fe5-bcbfe08619a5)
 
 # Welcome to the B2B SaaS Kit!
 
