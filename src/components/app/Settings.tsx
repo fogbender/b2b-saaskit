@@ -15,6 +15,7 @@ import { Layout } from './Layout';
 export function Settings() {
 	const { activeOrg } = useRequireActiveOrg();
 	const orgId = activeOrg?.orgId;
+
 	const keysQuery = trpc.settings.getKeys.useQuery(
 		{ orgId: orgId || '' },
 		{
@@ -22,6 +23,15 @@ export function Settings() {
 			staleTime: 1000,
 		}
 	);
+
+	const { data: subscriptions } = trpc.settings.getSubscriptions.useQuery(
+		{ orgId: orgId || '' },
+		{
+			enabled: !!orgId,
+			staleTime: 1000,
+		}
+	);
+
 	const queryClient = useQueryClient();
 	const addKeyMutation = trpc.settings.createKey.useMutation({
 		onSettled: () => {
@@ -62,6 +72,10 @@ export function Settings() {
 
 	return (
 		<Layout title={`${websiteTitle} / Settings`}>
+			<div className="mt-4">
+				In order to run prompts, you can either add your OpenAI key below, or purchase a
+				subscription.
+			</div>
 			<div className="mt-4 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
 				<div className="flex w-full flex-col items-center justify-center">
 					<div className="flex w-full flex-col gap-2 text-start">
@@ -69,10 +83,9 @@ export function Settings() {
 							<div className="sm:flex-auto">
 								<h1 className="text-xl font-medium">Configure your OpenAI key</h1>
 								<p className="mt-2 w-full text-sm text-gray-700 md:w-2/3">
-									To run prompts, you need to add your own OpenAI key. You can create a key by
-									signing up for OpenAI and going to the{' '}
+									Create an OpenAI key by signing up for OpenAI and going to the{' '}
 									<a
-										className="text-blue-500 underline hover:text-blue-700"
+										className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
 										href="https://platform.openai.com/account/api-keys"
 									>
 										API keys
@@ -82,7 +95,7 @@ export function Settings() {
 								<p className="mt-2 w-full text-sm text-gray-700 md:w-2/3">
 									Keep in mind that having your key here will allow anyone in your{' '}
 									<a
-										className="text-blue-500 underline hover:text-blue-700"
+										className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
 										href={env.PUBLIC_AUTH_URL + '/org'}
 									>
 										Prompts with Friends organization
@@ -119,7 +132,7 @@ export function Settings() {
 									<span className="text-gray-600">
 										(get{' '}
 										<a
-											className="text-blue-500 underline hover:text-blue-700"
+											className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
 											href="https://platform.openai.com/account/api-keys"
 										>
 											here
@@ -173,7 +186,7 @@ export function Settings() {
 					<div className="space-between mt-4 flex w-full flex-col gap-4 divide-y divide-gray-200 rounded-lg border border-gray-200 pb-4">
 						<div className="flex w-full flex-row px-6 pb-2 pt-6">
 							<div className="flex flex-col">
-								<h2 className="text-lg font-medium">Organization OpenAI key</h2>
+								<h2 className="text-lg font-medium">Org-wide OpenAI key</h2>
 								<p className="text-sm text-gray-600">
 									By using this app, everyone in your Prompts with Friends organization can use the
 									OpenAI budget associated with this key
@@ -224,7 +237,7 @@ export function Settings() {
 									{!keysQuery.isLoading && keysQuery.data?.length === 0 && (
 										<tr>
 											<td className="break-all py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
-												No keys are configured,{' '}
+												No keys are configured.{' '}
 												<button
 													className="text-blue-700 hover:text-rose-600"
 													onClick={(e) => {
@@ -232,22 +245,9 @@ export function Settings() {
 														toggleShowAddKey();
 													}}
 												>
-													add one
+													Add one
 												</button>{' '}
 												to start using prompts.
-												<br />
-												<br />
-												Or{' '}
-												<button
-													className="text-blue-700 hover:text-rose-600"
-													onClick={() => {
-														if (auth.loading === false && auth.isLoggedIn) {
-															createCheckoutSessionMutation.mutate({ auth });
-														}
-													}}
-												>
-													upgrade
-												</button>
 											</td>
 										</tr>
 									)}
@@ -291,6 +291,57 @@ export function Settings() {
 									))}
 								</tbody>
 							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className="mt-4 rounded-md border border-gray-300 px-4 py-8 sm:px-6 lg:px-8">
+				<div className="flex w-full flex-col items-center justify-center">
+					<div className="flex w-full flex-col gap-2 text-start">
+						<div className="sm:flex sm:items-center">
+							<div className="sm:flex-auto">
+								<h1 className="text-xl font-medium">Subscriptions</h1>
+								<div className="mt-4 flex flex-col gap-4">
+									<button
+										className="block w-60 rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+										onClick={() => {
+											if (auth.loading === false && auth.isLoggedIn) {
+												createCheckoutSessionMutation.mutate({ auth });
+											}
+										}}
+									>
+										Subscribe for $69/month
+									</button>
+									{(subscriptions?.length || 0) > 0 && (
+										<div className="flex flex-col gap-4">
+											{subscriptions.map((s, i) => (
+												<div
+													key={`${s.email}-${i}`}
+													className="flex flex-col rounded-md border border-gray-300 p-4"
+												>
+													<span>{s.email}</span>
+													{s.active ? (
+														<span className="text-green-500">Active</span>
+													) : (
+														<span className="text-rose-500">Inactive</span>
+													)}
+													{s.cancelAtEpochSec && (
+														<span>
+															Will cancel on {new Date(s.cancelAtEpochSec * 1000).toString()}
+														</span>
+													)}
+													<a
+														className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
+														href={s.portalUrl}
+													>
+														Manage
+													</a>
+												</div>
+											))}
+										</div>
+									)}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

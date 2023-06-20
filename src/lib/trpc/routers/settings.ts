@@ -1,13 +1,59 @@
 import type { User } from '@propelauth/node';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
+import Stripe from 'stripe';
 import { z } from 'zod';
 
 import { db } from '../../../db/db';
-import { gptKeys } from '../../../db/schema';
+import { gptKeys, orgStripeCustomerMappings } from '../../../db/schema';
+import { serverEnv } from '../../../t3-env';
 import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
 export const settingsRouter = createTRPCRouter({
+	getSubscriptions: orgProcedure.query(async ({ ctx }) => {
+		const mappings = await db
+			.select()
+			.from(orgStripeCustomerMappings)
+			.where(eq(orgStripeCustomerMappings.orgId, ctx.requiredOrgId));
+
+		if (!serverEnv.STRIPE_SECRET_KEY) {
+			return [];
+		} else {
+			const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+
+			const res = await Promise.all(
+				mappings.map(async ({ stripeCustomerId }) => {
+					const customer = await stripe.customers.retrieve(stripeCustomerId);
+
+					const subscriptions = await stripe.subscriptions.list({
+						customer: stripeCustomerId,
+					});
+
+					const active = subscriptions.data.some((s) => s.status === 'active');
+
+					const subscriptionWithCancel = subscriptions.data.find((s) => s.cancel_at);
+
+					const cancelAtEpochSec = subscriptionWithCancel?.cancel_at;
+
+					const return_url = serverEnv.SITE_URL + '/app/settings';
+
+					const billingPortalSession = await stripe.billingPortal.sessions.create({
+						customer: stripeCustomerId,
+						return_url,
+					});
+
+					return {
+						active,
+						email: customer.email,
+						portalUrl: billingPortalSession.url,
+						cancelAtEpochSec,
+					};
+				})
+			);
+
+			return res;
+		}
+	}),
 	getKeys: orgProcedure.query(async ({ ctx }) => {
 		return await db
 			.select({

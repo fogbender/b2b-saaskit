@@ -2,11 +2,18 @@ import type { User } from '@propelauth/node';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
+import Stripe from 'stripe';
 import { z } from 'zod';
 
 import type { PrivacyLevel } from '../../../components/app/utils';
 import { db } from '../../../db/db';
-import { gptKeys, promptLikes, prompts, sharedKeyRatelimit } from '../../../db/schema';
+import {
+	gptKeys,
+	orgStripeCustomerMappings,
+	promptLikes,
+	prompts,
+	sharedKeyRatelimit,
+} from '../../../db/schema';
 import { usersToPublicUserInfo } from '../../../pages/api/orgs/[orgId]';
 import { serverEnv } from '../../../t3-env';
 import { trackEvent } from '../../posthog';
@@ -18,6 +25,35 @@ import {
 	orgProcedure,
 	publicProcedure,
 } from '../trpc';
+
+async function hasActiveSubscription(orgId: string) {
+	if (!serverEnv.STRIPE_SECRET_KEY) {
+		return false;
+	} else {
+		const mappings = await db
+			.select()
+			.from(orgStripeCustomerMappings)
+			.where(eq(orgStripeCustomerMappings.orgId, orgId));
+
+		const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+
+		const res = await Promise.all(
+			mappings.map(async ({ stripeCustomerId }) => {
+				const customer = await stripe.customers.retrieve(stripeCustomerId);
+
+				const subscriptions = await stripe.subscriptions.list({
+					customer: stripeCustomerId,
+				});
+
+				const active = subscriptions.data.some((s) => s.status === 'active');
+
+				return active;
+			})
+		);
+
+		return res.some((active) => active === true);
+	}
+}
 
 const messageSchema = z.object({
 	role: z.union([z.literal('user'), z.literal('assistant'), z.literal('system')]),
@@ -300,13 +336,17 @@ export const promptsRouter = createTRPCRouter({
 						message: 'No OpenAI key found for this organization',
 					});
 				} else {
+					const hasSubscription = ctx.requiredOrgId && hasActiveSubscription(ctx.requiredOrgId);
+
 					const remaining = await rateLimitUpsert(ctx.user.userId, Date.now());
-					if (remaining > 0) {
+
+					if (hasSubscription || remaining > 0) {
 						secretKey = serverEnv.OPENAI_API_KEY;
 					} else {
 						throw new TRPCError({
 							code: 'TOO_MANY_REQUESTS',
-							message: 'You have exceeded the rate limit for this key.',
+							message:
+								'You have exceeded your daily rate limit. To fix this, add your own OpenAI key or purchase a subscription.',
 						});
 					}
 				}
