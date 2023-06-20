@@ -5,7 +5,9 @@ import { useReducer, useState } from 'react';
 
 import { env } from '../../config';
 import { websiteTitle } from '../../constants';
+import { apiServer, useMutation } from '../client';
 import { useRequireActiveOrg } from '../propelauth';
+import { useAuthInfo } from '../propelauth';
 import { trpc } from '../trpc';
 import { Layout } from './Layout';
 
@@ -40,6 +42,24 @@ export function Settings() {
 	const [showAddKey, toggleShowAddKey] = useReducer((state) => !state, false);
 
 	const [submitOk, setSubmitOk] = useState(false);
+
+	const auth = useAuthInfo();
+
+	const createCheckoutSessionMutation = useMutation({
+		queryKey: 'Checkout session',
+		mutationFn: () =>
+			apiServer
+				.url('/api/create-checkout-session')
+				.auth('Bearer ' + auth.accessToken)
+				.json({ orgId: activeOrg.orgId })
+				.post()
+				.json<{ url: string }>(),
+		staleTime: 0,
+		cacheTime: 0,
+		onSuccess: ({ url }) => {
+			location.assign(url);
+		},
+	});
 
 	return (
 		<Layout title={`${websiteTitle} / Settings`}>
@@ -207,7 +227,7 @@ export function Settings() {
 											<td className="break-all py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
 												No keys are configured,{' '}
 												<button
-													className="text-blue-500 underline hover:text-blue-700"
+													className="text-blue-700 hover:text-rose-600"
 													onClick={(e) => {
 														e.preventDefault();
 														toggleShowAddKey();
@@ -216,6 +236,17 @@ export function Settings() {
 													add one
 												</button>{' '}
 												to start using prompts.
+												<br />
+												<br />
+												Or{' '}
+												<button
+													className="text-blue-700 hover:text-rose-600"
+													onClick={() => {
+														createCheckoutSessionMutation.mutate();
+													}}
+												>
+													upgrade
+												</button>
 											</td>
 										</tr>
 									)}
