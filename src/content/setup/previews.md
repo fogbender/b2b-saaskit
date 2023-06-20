@@ -52,4 +52,4 @@ There are multiple ways of dealing with this, but in this guide we're going to u
 
 #### Vercel
 
-Deploy (or re-deploy) a preview - you will now be able to login with a user from the "Test" environment in your production PropelAuth project
+Assuming you're using GitHub with Vercel, push to a branch and navigate to the preview site by clicking the "View deployment" button in GitHub - you'll now be able to login with a user from the "Test" environment in your production PropelAuth project
