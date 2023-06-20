@@ -92,14 +92,20 @@ doppler run yarn drizzle-kit generate:pg
 
 This will generate a file called something like `src/db/migration/1234_xyz.sql`. Under normal circumstances, you wouldn't have to worry about this file - it will contain an auto-generated set of SQL statements needed to apply the changes expressed in your `schema.ts` to the database. However, since we're using Supabase Postgres, we have to take care of [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies when creating new tables.
 
-To do this, open the migration file and add the following to end, making sure to change `example` to the table name you're using:
+To do this, let's create a custom migration (that's where you can add your own SQL statements):
+
+```sh
+doppler run -- yarn drizzle-kit generate:pg --custom
+```
+
+That command will print out the name of the migration file it created. Open the file and add the following SQL statements:
 
 ```sql
 ALTER TABLE example ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "service" ON "public"."example" AS PERMISSIVE FOR ALL TO service_role USING (true);
 ```
 
-Finally, run the migration:
+Finally, run the migration (which will run two SQL files we just created):
 
 ```sh
 doppler run yarn migrate
