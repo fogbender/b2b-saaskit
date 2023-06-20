@@ -1,6 +1,6 @@
 import { handleError, initBaseAuth } from '@propelauth/node';
 import type { APIRoute } from 'astro';
-import { and, eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
 
 import { db } from '../../db/db';
@@ -33,19 +33,20 @@ export const post: APIRoute = async ({ request }) => {
 		}
 
 		// make sure we have access to org
-		const { user, orgMemberInfo } = await propelauth.validateAccessTokenAndGetUserWithOrgInfo(
-			token,
-			{ orgId }
-		);
+		await propelauth.validateAccessTokenAndGetUserWithOrgInfo(token, { orgId });
 
 		const mappings = await db
 			.select()
 			.from(orgStripeCustomerMappings)
 			.where(eq(orgStripeCustomerMappings.orgId, orgId));
 
-		const customerId = (mappings[0] && mappings[0].stripeCustomerId) || null;
+		const customerId = mappings[0] && mappings[0].stripeCustomerId;
 
-		const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY);
+		if (!serverEnv.STRIPE_SECRET_KEY) {
+			throw new Error('No Stripe secret key');
+		}
+
+		const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
 		const app_url = serverEnv.SITE_URL + '/app';
 		const session = await stripe.checkout.sessions.create({
 			client_reference_id: orgId,
@@ -61,7 +62,7 @@ export const post: APIRoute = async ({ request }) => {
 			cancel_url: app_url,
 		});
 
-		const { url } = session;
+		const { url } = session as { url: string };
 
 		return new Response(JSON.stringify({ url }));
 	} catch (e) {

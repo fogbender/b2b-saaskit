@@ -46,17 +46,16 @@ export function Settings() {
 	const auth = useAuthInfo();
 
 	const createCheckoutSessionMutation = useMutation({
-		queryKey: 'Checkout session',
 		mutationFn: () =>
 			apiServer
 				.url('/api/create-checkout-session')
 				.auth('Bearer ' + auth.accessToken)
-				.json({ orgId: activeOrg.orgId })
+				.json({ orgId: activeOrg?.orgId })
 				.post()
 				.json<{ url: string }>(),
 		staleTime: 0,
 		cacheTime: 0,
-		onSuccess: ({ url }) => {
+		onSuccess: ({ url }: { url: string }) => {
 			location.assign(url);
 		},
 	});
