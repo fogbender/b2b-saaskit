@@ -55,7 +55,7 @@ export function Settings() {
 				.post()
 				.json<{ url: string }>(),
 		cacheTime: 0,
-		onSuccess: ({ url }: { url: string }) => {
+		onSuccess: ({ url }) => {
 			location.assign(url);
 		},
 	});
