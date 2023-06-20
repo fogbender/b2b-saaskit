@@ -1,3 +1,4 @@
+import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import clsx from 'clsx';
@@ -46,14 +47,13 @@ export function Settings() {
 	const auth = useAuthInfo();
 
 	const createCheckoutSessionMutation = useMutation({
-		mutationFn: () =>
+		mutationFn: ({ auth }: { auth: UseAuthInfoLoggedInProps }) =>
 			apiServer
 				.url('/api/create-checkout-session')
 				.auth('Bearer ' + auth.accessToken)
 				.json({ orgId: activeOrg?.orgId })
 				.post()
 				.json<{ url: string }>(),
-		staleTime: 0,
 		cacheTime: 0,
 		onSuccess: ({ url }: { url: string }) => {
 			location.assign(url);
@@ -241,7 +241,9 @@ export function Settings() {
 												<button
 													className="text-blue-700 hover:text-rose-600"
 													onClick={() => {
-														createCheckoutSessionMutation.mutate();
+														if (auth.loading === false && auth.isLoggedIn) {
+															createCheckoutSessionMutation.mutate({ auth });
+														}
 													}}
 												>
 													upgrade
