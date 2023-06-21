@@ -62,7 +62,11 @@ export const post: APIRoute = async ({ request }) => {
 			cancel_url: app_url,
 		});
 
-		const { url } = session as { url: string };
+		const { url } = session;
+
+		if (!url) {
+			throw new Error('No checkout URL');
+		}
 
 		return new Response(JSON.stringify({ url }));
 	} catch (e) {
