@@ -10,7 +10,7 @@ import { serverEnv } from '../../../t3-env';
 import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
 export const settingsRouter = createTRPCRouter({
-	stripeConfigured: orgProcedure.query(({ ctx }) => {
+	stripeConfigured: orgProcedure.query(() => {
 		return serverEnv.STRIPE_SECRET_KEY !== undefined && serverEnv.STRIPE_PRICE_ID !== undefined;
 	}),
 	getSubscriptions: orgProcedure.query(async ({ ctx }) => {
