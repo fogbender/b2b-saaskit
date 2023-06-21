@@ -3,10 +3,15 @@ import Stripe from 'stripe';
 import { serverEnv } from '../t3-env';
 
 export const getStripeConfig = () => {
-	if (serverEnv.STRIPE_SECRET_KEY !== undefined && serverEnv.STRIPE_PRICE_ID !== undefined) {
+	if (
+		serverEnv.STRIPE_SECRET_KEY !== undefined &&
+		serverEnv.STRIPE_PRICE_ID !== undefined &&
+		serverEnv.STRIPE_WEBHOOK_SECRET !== undefined
+	) {
 		return {
 			apiKey: serverEnv.STRIPE_SECRET_KEY,
 			priceId: serverEnv.STRIPE_PRICE_ID,
+			webhookSecret: serverEnv.STRIPE_WEBHOOK_SECRET,
 		};
 	} else {
 		return undefined;
@@ -20,17 +25,14 @@ export const openStripe = ({ apiKey }: { apiKey: string }) =>
 	});
 
 export const constructEvent = async (request: Request) => {
+	const config = getStripeConfig();
 	const sig = request.headers.get('stripe-signature');
-	const endpointSecret = serverEnv.STRIPE_WEBHOOK_SECRET;
-	const apiKey = serverEnv.STRIPE_SECRET_KEY;
 
-	if (sig && endpointSecret && apiKey) {
-		const stripe = openStripe({ apiKey });
-
+	if (sig && config) {
+		const stripe = openStripe(config);
 		const text = await request.text();
-
 		if (text) {
-			return stripe.webhooks.constructEvent(text, sig, endpointSecret);
+			return stripe.webhooks.constructEvent(text, sig, config.webhookSecret);
 		}
 	}
 
