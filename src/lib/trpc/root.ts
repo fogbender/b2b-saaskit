@@ -1,6 +1,7 @@
 import type { AstroGlobal } from 'astro';
 
 import { authRouter } from './routers/auth';
+import { counterRouter } from './routers/counter';
 import { helloRouter } from './routers/hello';
 import { promptsRouter } from './routers/prompts';
 import { settingsRouter } from './routers/settings';
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
 	prompts: promptsRouter,
 	settings: settingsRouter,
 	surveys: surveysRouter,
+	counter: counterRouter,
 });
 
 // export type definition of API
