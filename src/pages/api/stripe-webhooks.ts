@@ -10,10 +10,10 @@ export const prerender = false;
 
 export const post: APIRoute = async ({ request }) => {
 	try {
-		const body = await constructEvent(request);
+		const event = await constructEvent(request);
 
-		if (body.type === 'checkout.session.completed') {
-			const object = body.data.object as Stripe.Checkout.Session;
+		if (event?.type === 'checkout.session.completed') {
+			const object = event.data.object as Stripe.Checkout.Session;
 			const orgId = object.client_reference_id;
 			const stripeCustomerId = object.customer;
 
