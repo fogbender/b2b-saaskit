@@ -14,15 +14,15 @@ export const settingsRouter = createTRPCRouter({
 		return serverEnv.STRIPE_SECRET_KEY !== undefined && serverEnv.STRIPE_PRICE_ID !== undefined;
 	}),
 	getSubscriptions: orgProcedure.query(async ({ ctx }) => {
-		const mappings = await db
-			.select()
-			.from(orgStripeCustomerMappings)
-			.where(eq(orgStripeCustomerMappings.orgId, ctx.requiredOrgId));
-
 		if (!serverEnv.STRIPE_SECRET_KEY) {
 			return [];
 		} else {
 			const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+
+			const mappings = await db
+				.select()
+				.from(orgStripeCustomerMappings)
+				.where(eq(orgStripeCustomerMappings.orgId, ctx.requiredOrgId));
 
 			const res = await Promise.all(
 				mappings.map(async ({ stripeCustomerId }) => {

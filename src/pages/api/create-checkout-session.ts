@@ -22,6 +22,10 @@ export const post: APIRoute = async ({ request }) => {
 	const token = request.headers.get('Authorization');
 
 	try {
+		if (!serverEnv.STRIPE_SECRET_KEY) {
+			throw new Error('No Stripe secret key');
+		}
+
 		if (!token) {
 			throw new Error('No token');
 		}
@@ -41,10 +45,6 @@ export const post: APIRoute = async ({ request }) => {
 			.where(eq(orgStripeCustomerMappings.orgId, orgId));
 
 		const customerId = mappings[0] && mappings[0].stripeCustomerId;
-
-		if (!serverEnv.STRIPE_SECRET_KEY) {
-			throw new Error('No Stripe secret key');
-		}
 
 		const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
 		const app_url = serverEnv.SITE_URL + '/app/settings';
