@@ -1,6 +1,6 @@
 ---
 title: "Payments with Stripe (optional)"
-needsEnv: ["STRIPE_KEY", "STRIPE_PRICE_ID", "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"]
+needsEnv: ["STRIPE_PRICE_ID", "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"]
 ---
 
 Stripe (<a href="https://stripe.com" >https://stripe.com</a>) is a payments platform that makes it relatively easy to manage subscriptions in a B2B product.
@@ -11,9 +11,7 @@ It takes some effort to open a Stripe account, with details falling outside the 
 
 1. While developing locally, you can use Stripe's "Test mode" to avoid experimenting with real customers or payments
 
-1. Locate "Publishable key" and store it with `doppler secrets set STRIPE_KEY`
-
-1. Locate "Secret key" and store it with `doppler secrets set STRIPE_SECRET_KEY`
+1. Navigate to <a href="https://dashboard.stripe.com/test/apikeys">https://dashboard.stripe.com/test/apikeys</a>, locate "Secret key" and store it with `doppler secrets set STRIPE_SECRET_KEY`
 
 1. Create a product of type "subscription" and store its API ID with `doppler secrets set STRIPE_PRICE_ID`
 
@@ -23,4 +21,4 @@ It takes some effort to open a Stripe account, with details falling outside the 
 
 1. Restart `doppler run yarn dev` to move to the next section of the tutorial
 
-At this point, you should be able purchase a (test) subscription on http://localhost:3000/app/settings
+At this point, you should be able purchase a (test) subscription on http://localhost:3000/app/settings. For test card numbers, see <a href="https://stripe.com/docs/testing">https://stripe.com/docs/testing</a>.
