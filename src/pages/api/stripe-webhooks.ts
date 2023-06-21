@@ -6,13 +6,11 @@ import { db } from '../../db/db';
 import { orgStripeCustomerMappings } from '../../db/schema';
 import { constructEvent } from '../../lib/stripe';
 
-// import { serverEnv } from '../../t3-env';
-
 export const prerender = false;
 
 export const post: APIRoute = async ({ request }) => {
 	try {
-		const body = await constructEvent(request, serverEnv.STRIPE_WEBHOOK_SECRET);
+		const body = await constructEvent(request);
 
 		if (body.type === 'checkout.session.completed') {
 			const object = body.data.object as Stripe.Checkout.Session;

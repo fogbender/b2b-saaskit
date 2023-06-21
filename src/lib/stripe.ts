@@ -19,12 +19,10 @@ export const openStripe = ({ apiKey }: { apiKey: string }) =>
 		typescript: true,
 	});
 
-export const constructEvent = async (request: Request, stripeSignature: string) => {
-	const body = await request.text();
+export const constructEvent = async (request: Request) => {
+	const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY);
+	const endpointSecret = serverEnv.STRIPE_WEBHOOK_SECRET;
+	const sig = request.headers.get('stripe-signature');
 
-	return new Stripe.Webhooks().constructEventAsync(
-		body,
-		request.headers.get('stripe-signature')?.split(', ') || [],
-		stripeSignature
-	);
+	return stripe.webhooks.constructEvent(await request.text(), sig, endpointSecret);
 };
