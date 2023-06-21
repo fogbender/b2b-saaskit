@@ -18,3 +18,13 @@ export const openStripe = ({ apiKey }: { apiKey: string }) =>
 		apiVersion: '2022-11-15',
 		typescript: true,
 	});
+
+export const constructEvent = async (request: Request, stripeSignature: string) => {
+	const body = await request.text();
+
+	return new Stripe.Webhooks().constructEventAsync(
+		body,
+		request.headers.get('stripe-signature')?.split(', ') || [],
+		stripeSignature
+	);
+};

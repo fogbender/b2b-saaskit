@@ -1,9 +1,10 @@
 import { handleError } from '@propelauth/node';
-// import Stripe from 'stripe';
 import type { APIRoute } from 'astro';
+import type Stripe from 'stripe';
 
 import { db } from '../../db/db';
 import { orgStripeCustomerMappings } from '../../db/schema';
+import { constructEvent } from '../../lib/stripe';
 
 // import { serverEnv } from '../../t3-env';
 
@@ -11,13 +12,14 @@ export const prerender = false;
 
 export const post: APIRoute = async ({ request }) => {
 	try {
-		const body = await request.json();
+		const body = await constructEvent(request, serverEnv.STRIPE_WEBHOOK_SECRET);
 
 		if (body.type === 'checkout.session.completed') {
-			const orgId = body.data.object.client_reference_id;
-			const stripeCustomerId = body.data.object.customer;
+			const object = body.data.object as Stripe.Checkout.Session;
+			const orgId = object.client_reference_id;
+			const stripeCustomerId = object.customer;
 
-			if (orgId && stripeCustomerId) {
+			if (orgId && stripeCustomerId && typeof stripeCustomerId === 'string') {
 				await db.insert(orgStripeCustomerMappings).values({
 					orgId,
 					stripeCustomerId,
