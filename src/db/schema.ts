@@ -95,6 +95,11 @@ export const surveys = pgTable('surveys', {
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+/* ```sql
+ALTER TABLE org_stripe_customer_mappings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "service" ON "public"."org_stripe_customer_mappings" AS PERMISSIVE FOR ALL TO service_role USING (true);
+``` */
+
 export const orgStripeCustomerMappings = pgTable(
 	'org_stripe_customer_mappings',
 	{
