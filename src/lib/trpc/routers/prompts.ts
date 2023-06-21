@@ -2,7 +2,6 @@ import type { User } from '@propelauth/node';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
-import Stripe from 'stripe';
 import { z } from 'zod';
 
 import type { PrivacyLevel } from '../../../components/app/utils';
@@ -18,6 +17,7 @@ import { usersToPublicUserInfo } from '../../../pages/api/orgs/[orgId]';
 import { serverEnv } from '../../../t3-env';
 import { trackEvent } from '../../posthog';
 import { propelauth } from '../../propelauth';
+import { getStripeConfig, openStripe } from '../../stripe';
 import {
 	apiProcedure,
 	authProcedure,
@@ -27,7 +27,8 @@ import {
 } from '../trpc';
 
 async function hasActiveSubscription(orgId: string) {
-	if (!serverEnv.STRIPE_SECRET_KEY) {
+	const stripeConfig = getStripeConfig();
+	if (!stripeConfig) {
 		return false;
 	} else {
 		const mappings = await db
@@ -35,7 +36,7 @@ async function hasActiveSubscription(orgId: string) {
 			.from(orgStripeCustomerMappings)
 			.where(eq(orgStripeCustomerMappings.orgId, orgId));
 
-		const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+		const stripe = openStripe(stripeConfig);
 
 		const res = await Promise.all(
 			mappings.map(async ({ stripeCustomerId }) => {

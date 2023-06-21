@@ -1,23 +1,23 @@
 import type { User } from '@propelauth/node';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
-import Stripe from 'stripe';
 import { z } from 'zod';
 
 import { db } from '../../../db/db';
 import { gptKeys, orgStripeCustomerMappings } from '../../../db/schema';
-import { serverEnv } from '../../../t3-env';
+import { getStripeConfig, openStripe } from '../../stripe';
 import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
 export const settingsRouter = createTRPCRouter({
 	stripeConfigured: orgProcedure.query(() => {
-		return serverEnv.STRIPE_SECRET_KEY !== undefined && serverEnv.STRIPE_PRICE_ID !== undefined;
+		return getStripeConfig() !== undefined;
 	}),
 	getSubscriptions: orgProcedure.query(async ({ ctx }) => {
-		if (!serverEnv.STRIPE_SECRET_KEY) {
+		const stripeConfig = getStripeConfig();
+		if (!stripeConfig) {
 			return [];
 		} else {
-			const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+			const stripe = openStripe(stripeConfig);
 
 			const mappings = await db
 				.select()

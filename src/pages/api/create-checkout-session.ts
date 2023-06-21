@@ -1,10 +1,10 @@
 import { handleError, initBaseAuth } from '@propelauth/node';
 import type { APIRoute } from 'astro';
 import { eq } from 'drizzle-orm';
-import Stripe from 'stripe';
 
 import { db } from '../../db/db';
 import { orgStripeCustomerMappings } from '../../db/schema';
+import { getStripeConfig, openStripe } from '../../lib/stripe';
 import { serverEnv } from '../../t3-env';
 
 export const prerender = false;
@@ -22,8 +22,9 @@ export const post: APIRoute = async ({ request }) => {
 	const token = request.headers.get('Authorization');
 
 	try {
-		if (!serverEnv.STRIPE_SECRET_KEY) {
-			throw new Error('No Stripe secret key');
+		const stripeConfig = getStripeConfig();
+		if (!stripeConfig) {
+			throw new Error('Stripe secret key and price ID are not configured');
 		}
 
 		if (!token) {
@@ -46,14 +47,14 @@ export const post: APIRoute = async ({ request }) => {
 
 		const customerId = mappings[0]?.stripeCustomerId;
 
-		const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+		const stripe = openStripe(stripeConfig);
 		const app_url = new URL(request.url).origin + '/app/settings';
 		const session = await stripe.checkout.sessions.create({
 			client_reference_id: orgId,
 			customer: customerId,
 			line_items: [
 				{
-					price: serverEnv.STRIPE_PRICE_ID,
+					price: stripeConfig.priceId,
 					quantity: 1,
 				},
 			],
