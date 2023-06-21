@@ -44,7 +44,7 @@ export const post: APIRoute = async ({ request }) => {
 			.from(orgStripeCustomerMappings)
 			.where(eq(orgStripeCustomerMappings.orgId, orgId));
 
-		const customerId = mappings[0] && mappings[0].stripeCustomerId;
+		const customerId = mappings[0]?.stripeCustomerId;
 
 		const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
 		const app_url = new URL(request.url).origin + '/app/settings';
