@@ -334,17 +334,20 @@ export const promptsRouter = createTRPCRouter({
 						message: 'No OpenAI key found for this organization',
 					});
 				} else {
-					const hasSubscription = ctx.requiredOrgId && hasActiveSubscription(ctx.requiredOrgId);
+					const hasSubscription =
+						ctx.requiredOrgId && (await hasActiveSubscription(ctx.requiredOrgId));
 
 					const remaining = await rateLimitUpsert(ctx.user.userId, Date.now());
 
 					if (hasSubscription || remaining > 0) {
 						secretKey = serverEnv.OPENAI_API_KEY;
 					} else {
+						const message = serverEnv.STRIPE_SECRET_KEY
+							? 'You have exceeded your daily rate limit. To fix this, add your own OpenAI key or purchase a subscription.'
+							: 'You have exceeded your daily rate limit. To fix this, add your own OpenAI key.';
 						throw new TRPCError({
 							code: 'TOO_MANY_REQUESTS',
-							message:
-								'You have exceeded your daily rate limit. To fix this, add your own OpenAI key or purchase a subscription.',
+							message,
 						});
 					}
 				}

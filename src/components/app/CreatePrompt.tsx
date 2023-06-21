@@ -457,7 +457,17 @@ export const EditPromptControls = ({
 						</div>
 					)}
 					{runPromptMutation.error && (
-						<div className="text-sm text-red-500">{runPromptMutation.error.message}</div>
+						<div className="flex items-center gap-3">
+							<div className="text-sm text-red-500">{runPromptMutation.error.message}</div>
+							{runPromptMutation?.error?.data?.code === 'TOO_MANY_REQUESTS' && (
+								<a
+									className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
+									href="/app/settings"
+								>
+									Open settings
+								</a>
+							)}
+						</div>
 					)}
 					{runPromptMutation.data?.error && (
 						<div className="text-sm text-red-500">{runPromptMutation.data?.error}</div>
