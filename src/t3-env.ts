@@ -15,8 +15,6 @@ const runtimeEnv = import.meta.env || process.env;
 const x = validateEnv({
 	clientPrefix: 'PUBLIC_',
 	server: {
-		// site
-		SITE_URL: z.string().min(1),
 		// database
 		DATABASE_URL: z.string().min(1),
 		// propel auth

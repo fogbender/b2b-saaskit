@@ -38,7 +38,7 @@ export const settingsRouter = createTRPCRouter({
 
 					const cancelAtEpochSec = subscriptionWithCancel?.cancel_at;
 
-					const return_url = serverEnv.SITE_URL + '/app/settings';
+					const return_url = new URL(ctx.req.url).origin + '/app/settings';
 
 					const billingPortalSession = await stripe.billingPortal.sessions.create({
 						customer: stripeCustomerId,

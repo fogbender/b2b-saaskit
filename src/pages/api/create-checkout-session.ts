@@ -47,7 +47,7 @@ export const post: APIRoute = async ({ request }) => {
 		const customerId = mappings[0] && mappings[0].stripeCustomerId;
 
 		const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
-		const app_url = serverEnv.SITE_URL + '/app/settings';
+		const app_url = new URL(request.url).origin + '/app/settings';
 		const session = await stripe.checkout.sessions.create({
 			client_reference_id: orgId,
 			customer: customerId,
