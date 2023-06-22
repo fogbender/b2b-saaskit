@@ -19,21 +19,6 @@ export const openStripe = ({ apiKey }: { apiKey: string }) =>
 		typescript: true,
 	});
 
-export const constructEvent = async (request: Request) => {
-	const config = getStripeConfig();
-	const sig = request.headers.get('stripe-signature');
-
-	if (sig && config) {
-		const stripe = openStripe(config);
-		const text = await request.text();
-		if (text) {
-			return stripe.webhooks.constructEvent(text, sig, config.webhookSecret);
-		}
-	}
-
-	return;
-};
-
 export async function searchSubscriptionsByOrgId(
 	stripeConfig: { apiKey: string },
 	orgId: string,
