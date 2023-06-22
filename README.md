@@ -24,7 +24,6 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 [<img src="public/readme-images/Astro.png" width="200" />](https://astro.build) &nbsp;&nbsp; [<img src="public/readme-images/React.png" width="200" />](https://react.dev) &nbsp;&nbsp; [<img src="public/readme-images/TailwindCSS.png" width="200" />](https://tailwindcss.com)
 
-
 ### Not optional
 
 [<img src="public/readme-images/Doppler.png" width="200" />](https://doppler.com) &nbsp;&nbsp; [<img src="public/readme-images/Supabase.png" width="200" />](https://supabase.com) &nbsp;&nbsp; [<img src="public/readme-images/PropelAuth.png" width="200" />](https://propelauth.com)
