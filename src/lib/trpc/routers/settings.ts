@@ -5,9 +5,22 @@ import { z } from 'zod';
 
 import { db } from '../../../db/db';
 import { gptKeys } from '../../../db/schema';
+import { getStripeConfig, searchSubscriptionsByOrgId } from '../../stripe';
 import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
 export const settingsRouter = createTRPCRouter({
+	stripeConfigured: orgProcedure.query(() => {
+		return getStripeConfig() !== undefined;
+	}),
+	getSubscriptions: orgProcedure.query(async ({ ctx }) => {
+		const stripeConfig = getStripeConfig();
+		if (!stripeConfig) {
+			return [];
+		} else {
+			const returnUrl = new URL('/app/settings', ctx.req.url).toString();
+			return await searchSubscriptionsByOrgId(stripeConfig, ctx.requiredOrgId, returnUrl);
+		}
+	}),
 	getKeys: orgProcedure.query(async ({ ctx }) => {
 		return await db
 			.select({
