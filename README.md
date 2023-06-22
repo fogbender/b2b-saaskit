@@ -22,7 +22,7 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 ### Backbone
 
-[![Astro](https://github.com/fogbender/b2b-saaskit/assets/41166/0d437d31-95da-43d6-bf31-b7cb3af5baa9)](https://astro.build) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/106b6345-bb0e-4785-9b88-086fea0e202a" width="200" />](https://react.dev) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/688ba952-4c3d-414e-a273-fb0bd2d98872" width="200" />](https://tailwindcss.com)
+[<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/0d437d31-95da-43d6-bf31-b7cb3af5baa9" width="200" />](https://astro.build) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/106b6345-bb0e-4785-9b88-086fea0e202a" width="200" />](https://react.dev) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/688ba952-4c3d-414e-a273-fb0bd2d98872" width="200" />](https://tailwindcss.com)
 
 
 ### Not optional
