@@ -4,7 +4,7 @@ import { createCaller } from '../../lib/trpc/root';
 
 export const prerender = false; // to render on the server
 
-const caller = await createCaller({
+const caller = createCaller({
 	req: Astro.request,
 	resHeaders: Astro.response.headers,
 });
