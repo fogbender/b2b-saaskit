@@ -35,11 +35,12 @@ export const post: APIRoute = async ({ request }) => {
 		}
 
 		// make sure we have access to org
-		await propelauth.validateAccessTokenAndGetUserWithOrgInfo(token, { orgId });
+		const { user } = await propelauth.validateAccessTokenAndGetUserWithOrgInfo(token, { orgId });
 
 		const stripe = openStripe(stripeConfig);
 		const appUrl = new URL('/app/settings', request.url).toString();
 		const session = await stripe.checkout.sessions.create({
+			customer_email: user.email,
 			client_reference_id: orgId,
 			line_items: [
 				{
