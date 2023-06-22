@@ -76,11 +76,11 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 #### Stripe (optional)
 
-1. Navigate to https://dashboard.stripe.com/apikeys, and make sure that you have switched to live mode (turned off "Test mode")
+1. Navigate to https://dashboard.stripe.com/apikeys and make sure you're in live mode ("Test mode" off)
 
 1. Locate "Secret key" and store it with `doppler secrets set STRIPE_SECRET_KEY --config prd`
 
-1. Navigate to https://dashboard.stripe.com/products.
+1. Navigate to https://dashboard.stripe.com/products (still in live mode)
 
 1. Create a product of type "subscription" and store its API ID with `doppler secrets set STRIPE_PRICE_ID --config prd`
 
