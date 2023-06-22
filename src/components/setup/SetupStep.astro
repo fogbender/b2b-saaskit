@@ -12,17 +12,14 @@ const { id, title, stepDone, expanded = false } = Astro.props;
 <div class="w-full">
 	<setup-step class="relative ml-5 flex w-full items-start md:ml-0" data-id={id}>
 		<div class="absolute top-5" data-icon>
-			<label class="cursor-pointer">
-				<input type="checkbox" hidden checked={expanded} />
-				<svg class="h-4 w-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M1 1L8 8L1 15"
-						stroke="black"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"></path>
-				</svg>
-			</label>
+			<svg class="h-4 w-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path
+					d="M1 1L8 8L1 15"
+					stroke="black"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"></path>
+			</svg>
 		</div>
 		<div
 			class="mx-6 flex max-w-[calc(100%-3rem)] flex-1 flex-col rounded-xl bg-white shadow-[0_3px_10px_rgba(19,29,118,0.1)] sm:ml-10"
