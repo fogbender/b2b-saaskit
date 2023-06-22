@@ -74,6 +74,14 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Save it with `doppler secrets set OPENAI_API_KEY --config prd`
 
+#### Stripe (optional)
+
+1. Switch to live mode (turn off "Test mode")
+
+1. Locate "Secret key" and store it with `doppler secrets set STRIPE_SECRET_KEY --config prd`
+
+1. Create a product of type "subscription" and store its API ID with `doppler secrets set STRIPE_PRICE_ID --config prd`
+
 #### Check build
 
 1. Make sure you can still build the project locally with `doppler run --config prd yarn build`

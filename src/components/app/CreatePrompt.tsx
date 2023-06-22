@@ -226,6 +226,7 @@ export const EditPromptControls = ({
 		);
 
 	const { hasAnyKey, hasKey, defaultKeyData } = useKeys();
+	const { hasSubscription } = useSubscriptions();
 
 	const navigate = useNavigate();
 
@@ -417,7 +418,7 @@ export const EditPromptControls = ({
 						className="font-medium text-blue-700 hover:text-rose-600 disabled:opacity-50"
 						name="generate"
 						disabled={
-							!hasAnyKey ||
+							(!hasSubscription && !hasAnyKey) ||
 							runPromptMutation.isLoading ||
 							!messages.find((x) => x.content.trim().length > 0)
 						}
@@ -434,14 +435,16 @@ export const EditPromptControls = ({
 						+ system message
 					</button>
 				</form>
-				<div>
-					{hasKey === false && (
-						<div className="text-sm text-gray-500">
-							You need to have a key{' '}
-							<a className="text-blue-500 hover:underline" href="/app/settings">
-								set up
-							</a>{' '}
-							to run a prompt{' '}
+				<div className="mt-8">
+					{hasKey === false && hasSubscription === false && (
+						<div className="text-base text-gray-500">
+							NOTE 👉 To generate responses,{' '}
+							<a
+								className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
+								href="/app/settings"
+							>
+								add your OpenAI key or buy a subscription
+							</a>
 							{defaultKeyData?.isSet && (
 								<>
 									without any limits. You have{' '}
@@ -454,7 +457,17 @@ export const EditPromptControls = ({
 						</div>
 					)}
 					{runPromptMutation.error && (
-						<div className="text-sm text-red-500">{runPromptMutation.error.message}</div>
+						<div className="flex items-center gap-3">
+							<div className="text-sm text-red-500">{runPromptMutation.error.message}</div>
+							{runPromptMutation?.error?.data?.code === 'TOO_MANY_REQUESTS' && (
+								<a
+									className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
+									href="/app/settings"
+								>
+									Open settings
+								</a>
+							)}
+						</div>
 					)}
 					{runPromptMutation.data?.error && (
 						<div className="text-sm text-red-500">{runPromptMutation.data?.error}</div>
@@ -693,6 +706,21 @@ function useKeys() {
 		hasKey,
 		hasAnyKey,
 		defaultKeyData,
+	};
+}
+
+function useSubscriptions() {
+	const { activeOrg } = useRequireActiveOrg();
+	const orgId = activeOrg?.orgId || '';
+	const { data: subscriptions } = trpc.settings.getSubscriptions.useQuery(
+		{ orgId },
+		{ enabled: !!orgId }
+	);
+	const hasSubscription =
+		subscriptions === undefined ? false : subscriptions.some((s) => s.active) !== undefined;
+
+	return {
+		hasSubscription,
 	};
 }
 

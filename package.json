@@ -65,6 +65,7 @@
     "react-router-dom": "^6.11.1",
     "satori": "^0.8.1",
     "solid-js": "^1.7.6",
+    "stripe": "^12.9.0",
     "tsx": "^3.12.7",
     "unthunk": "^0.0.1",
     "wretch": "^2.5.2"

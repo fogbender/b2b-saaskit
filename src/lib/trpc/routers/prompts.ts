@@ -11,6 +11,7 @@ import { usersToPublicUserInfo } from '../../../pages/api/orgs/[orgId]';
 import { serverEnv } from '../../../t3-env';
 import { trackEvent } from '../../posthog';
 import { propelauth } from '../../propelauth';
+import { getStripeConfig, searchSubscriptionsByOrgId } from '../../stripe';
 import {
 	apiProcedure,
 	authProcedure,
@@ -300,13 +301,26 @@ export const promptsRouter = createTRPCRouter({
 						message: 'No OpenAI key found for this organization',
 					});
 				} else {
+					let hasSubscription = false;
+					if (ctx.requiredOrgId) {
+						const stripeConfig = getStripeConfig();
+						if (stripeConfig) {
+							const res = await searchSubscriptionsByOrgId(stripeConfig, ctx.requiredOrgId);
+							hasSubscription = res.some(({ active }) => active === true);
+						}
+					}
+
 					const remaining = await rateLimitUpsert(ctx.user.userId, Date.now());
-					if (remaining > 0) {
+
+					if (hasSubscription || remaining > 0) {
 						secretKey = serverEnv.OPENAI_API_KEY;
 					} else {
+						const message = serverEnv.STRIPE_SECRET_KEY
+							? 'You have exceeded your daily rate limit. To fix this, add your own OpenAI key or purchase a subscription.'
+							: 'You have exceeded your daily rate limit. To fix this, add your own OpenAI key.';
 						throw new TRPCError({
 							code: 'TOO_MANY_REQUESTS',
-							message: 'You have exceeded the rate limit for this key.',
+							message,
 						});
 					}
 				}

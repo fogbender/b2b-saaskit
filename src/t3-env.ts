@@ -24,6 +24,9 @@ const x = validateEnv({
 		FOGBENDER_SECRET: z.string().min(1).optional(),
 		// optional OpenAI API key
 		OPENAI_API_KEY: z.string().min(1).optional(),
+		// optional Stripe
+		STRIPE_SECRET_KEY: z.string().min(1).optional(),
+		STRIPE_PRICE_ID: z.string().min(1).optional(),
 	},
 	client: {
 		// propel auth
