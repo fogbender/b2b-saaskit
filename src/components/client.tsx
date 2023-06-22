@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, useMutation, useQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import wretch from 'wretch';
 
-export { useQuery };
+export { useMutation, useQuery };
 
 export function QueryProvider(props: { queryClient: QueryClient; children: React.ReactNode }) {
 	return (
