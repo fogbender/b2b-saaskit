@@ -27,7 +27,7 @@ export async function searchSubscriptionsByOrgId(
 	const stripe = openStripe(stripeConfig);
 	const search = await stripe.subscriptions.search({
 		expand: ['data.customer'],
-		query: "metadata['orgId']:'" + encodeURI(orgId) + "'",
+		query: 'metadata["orgId"]:"' + encodeURI(orgId) + '"',
 	});
 	const res = await Promise.all(
 		search.data.map(async (x) => {
