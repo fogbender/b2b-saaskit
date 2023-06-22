@@ -27,7 +27,6 @@ const x = validateEnv({
 		// optional Stripe
 		STRIPE_SECRET_KEY: z.string().min(1).optional(),
 		STRIPE_PRICE_ID: z.string().min(1).optional(),
-		STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
 	},
 	client: {
 		// propel auth

@@ -3,15 +3,10 @@ import Stripe from 'stripe';
 import { serverEnv } from '../t3-env';
 
 export const getStripeConfig = () => {
-	if (
-		serverEnv.STRIPE_SECRET_KEY !== undefined &&
-		serverEnv.STRIPE_PRICE_ID !== undefined &&
-		serverEnv.STRIPE_WEBHOOK_SECRET !== undefined
-	) {
+	if (serverEnv.STRIPE_SECRET_KEY !== undefined && serverEnv.STRIPE_PRICE_ID !== undefined) {
 		return {
 			apiKey: serverEnv.STRIPE_SECRET_KEY,
 			priceId: serverEnv.STRIPE_PRICE_ID,
-			webhookSecret: serverEnv.STRIPE_WEBHOOK_SECRET,
 		};
 	} else {
 		return undefined;

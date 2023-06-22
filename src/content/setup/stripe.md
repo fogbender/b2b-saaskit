@@ -1,6 +1,6 @@
 ---
 title: "Payments with Stripe (optional)"
-needsEnv: ["STRIPE_PRICE_ID", "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"]
+needsEnv: ["STRIPE_PRICE_ID", "STRIPE_SECRET_KEY"]
 ---
 
 Stripe (<a href="https://stripe.com" >https://stripe.com</a>) is a payments platform that makes it relatively easy to manage subscriptions in a B2B product.
