@@ -63,7 +63,12 @@ for (const slug of checksOrder) {
 						parsedSteps.map(async ({ stepDone, step }, i) => {
 							const { Content } = await step.render();
 							return (
-								<SetupStep title={`${i + 1}. ${step.data.title || step.slug}`} stepDone={stepDone}>
+								<SetupStep
+									scope="setup"
+									id={step.id}
+									title={`${i + 1}. ${step.data.title || step.slug}`}
+									stepDone={stepDone}
+								>
 									<Content />
 								</SetupStep>
 							);
@@ -73,6 +78,16 @@ for (const slug of checksOrder) {
 			</div>
 		</div>
 	</main>
+	{/* inline scripts run right away so there will be no flicker */}
+	<script is:inline>
+		{
+			const ls_key = 'setup_section_open';
+			const open = localStorage.getItem(ls_key);
+			const el =
+				open && document.querySelector(`setup-step[data-id="${open}"] input[type="checkbox"]`);
+			el && (el.checked = true);
+		}
+	</script>
 </Layout>
 <style>
 	main {
