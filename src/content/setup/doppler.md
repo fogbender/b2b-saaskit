@@ -3,7 +3,9 @@ title: "Secrets management with Doppler"
 needsEnv: ["SITE_URL"]
 ---
 
-Doppler (<a href="https://doppler.com" >doppler.com</a>) will help your development in three main ways: manage environment variables and avoid storing them as plaintext, manage developer access to secrets, and manage secrets during deployments. Dopper is free for up to 5 users.
+Doppler (<a href="https://doppler.com" >doppler.com</a>) will help your development in three main ways: manage environment variables and avoid storing them as plaintext, manage developer access to secrets, and manage secrets during deployments.
+
+Dopper is free for up to 5 users.
 
 Instead of creating `.env` files and storing secrets there, we'll use the Doppler CLI.
 
