@@ -38,3 +38,38 @@ export const constructEvent = async (request: Request) => {
 
 	return;
 };
+
+export async function searchSubscriptionsByOrgId(
+	stripeConfig: { apiKey: string },
+	orgId: string,
+	returnUrl?: string
+) {
+	const stripe = openStripe(stripeConfig);
+	const search = await stripe.subscriptions.search({
+		expand: ['data.customer'],
+		query: "metadata['orgId']:'" + encodeURI(orgId) + "'",
+	});
+	const res = await Promise.all(
+		search.data.map(async (x) => {
+			const customer = x.customer;
+			if (typeof customer === 'string') {
+				throw new Error('data.customer was not expanded in search');
+			}
+			const portalUrl = returnUrl
+				? (
+						await stripe.billingPortal.sessions.create({
+							customer: customer.id,
+							return_url: returnUrl,
+						})
+				  ).url
+				: undefined;
+			return {
+				active: x.status === 'active',
+				email: 'email' in customer && customer.email,
+				portalUrl,
+				cancelAtEpochSec: x.cancel_at,
+			};
+		})
+	);
+	return res;
+}

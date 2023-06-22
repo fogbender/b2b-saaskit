@@ -6,18 +6,12 @@ import { z } from 'zod';
 
 import type { PrivacyLevel } from '../../../components/app/utils';
 import { db } from '../../../db/db';
-import {
-	gptKeys,
-	orgStripeCustomerMappings,
-	promptLikes,
-	prompts,
-	sharedKeyRatelimit,
-} from '../../../db/schema';
+import { gptKeys, promptLikes, prompts, sharedKeyRatelimit } from '../../../db/schema';
 import { usersToPublicUserInfo } from '../../../pages/api/orgs/[orgId]';
 import { serverEnv } from '../../../t3-env';
 import { trackEvent } from '../../posthog';
 import { propelauth } from '../../propelauth';
-import { getStripeConfig, openStripe } from '../../stripe';
+import { getStripeConfig, searchSubscriptionsByOrgId } from '../../stripe';
 import {
 	apiProcedure,
 	authProcedure,
@@ -31,26 +25,8 @@ async function hasActiveSubscription(orgId: string) {
 	if (!stripeConfig) {
 		return false;
 	} else {
-		const mappings = await db
-			.select()
-			.from(orgStripeCustomerMappings)
-			.where(eq(orgStripeCustomerMappings.orgId, orgId));
-
-		const stripe = openStripe(stripeConfig);
-
-		const res = await Promise.all(
-			mappings.map(async ({ stripeCustomerId }) => {
-				const subscriptions = await stripe.subscriptions.list({
-					customer: stripeCustomerId,
-				});
-
-				const active = subscriptions.data.some((s) => s.status === 'active');
-
-				return active;
-			})
-		);
-
-		return res.some((active) => active === true);
+		const res = await searchSubscriptionsByOrgId(stripeConfig, orgId);
+		return res.some(({ active }) => active === true);
 	}
 }
 

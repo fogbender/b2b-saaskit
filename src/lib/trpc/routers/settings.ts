@@ -4,8 +4,8 @@ import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { db } from '../../../db/db';
-import { gptKeys, orgStripeCustomerMappings } from '../../../db/schema';
-import { getStripeConfig, openStripe } from '../../stripe';
+import { gptKeys } from '../../../db/schema';
+import { getStripeConfig, searchSubscriptionsByOrgId } from '../../stripe';
 import { authProcedure, createTRPCRouter, orgProcedure } from '../trpc';
 
 export const settingsRouter = createTRPCRouter({
@@ -17,44 +17,8 @@ export const settingsRouter = createTRPCRouter({
 		if (!stripeConfig) {
 			return [];
 		} else {
-			const stripe = openStripe(stripeConfig);
-
-			const mappings = await db
-				.select()
-				.from(orgStripeCustomerMappings)
-				.where(eq(orgStripeCustomerMappings.orgId, ctx.requiredOrgId));
-
-			const res = await Promise.all(
-				mappings.map(async ({ stripeCustomerId }) => {
-					const customer = await stripe.customers.retrieve(stripeCustomerId);
-
-					const subscriptions = await stripe.subscriptions.list({
-						customer: stripeCustomerId,
-					});
-
-					const active = subscriptions.data.some((s) => s.status === 'active');
-
-					const subscriptionWithCancel = subscriptions.data.find((s) => s.cancel_at);
-
-					const cancelAtEpochSec = subscriptionWithCancel?.cancel_at;
-
-					const return_url = new URL(ctx.req.url).origin + '/app/settings';
-
-					const billingPortalSession = await stripe.billingPortal.sessions.create({
-						customer: stripeCustomerId,
-						return_url,
-					});
-
-					return {
-						active,
-						email: 'email' in customer && customer.email,
-						portalUrl: billingPortalSession.url,
-						cancelAtEpochSec,
-					};
-				})
-			);
-
-			return res;
+			const returnUrl = new URL('/app/settings', ctx.req.url).toString();
+			return await searchSubscriptionsByOrgId(stripeConfig, ctx.requiredOrgId, returnUrl);
 		}
 	}),
 	getKeys: orgProcedure.query(async ({ ctx }) => {

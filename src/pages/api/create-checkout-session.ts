@@ -1,9 +1,6 @@
 import { handleError, initBaseAuth } from '@propelauth/node';
 import type { APIRoute } from 'astro';
-import { eq } from 'drizzle-orm';
 
-import { db } from '../../db/db';
-import { orgStripeCustomerMappings } from '../../db/schema';
 import { getStripeConfig, openStripe } from '../../lib/stripe';
 import { serverEnv } from '../../t3-env';
 
@@ -40,24 +37,26 @@ export const post: APIRoute = async ({ request }) => {
 		// make sure we have access to org
 		await propelauth.validateAccessTokenAndGetUserWithOrgInfo(token, { orgId });
 
-		const mappings = await db
-			.select()
-			.from(orgStripeCustomerMappings)
-			.where(eq(orgStripeCustomerMappings.orgId, orgId));
-
-		const customerId = mappings[0]?.stripeCustomerId;
-
 		const stripe = openStripe(stripeConfig);
 		const appUrl = new URL('/app/settings', request.url).toString();
 		const session = await stripe.checkout.sessions.create({
 			client_reference_id: orgId,
-			customer: customerId,
 			line_items: [
 				{
 					price: stripeConfig.priceId,
 					quantity: 1,
 				},
 			],
+			subscription_data: {
+				metadata: {
+					what: 'subscription_data',
+					orgId,
+				},
+			},
+			metadata: {
+				what: 'checkout_session',
+				orgId,
+			},
 			mode: 'subscription',
 			success_url: appUrl,
 			cancel_url: appUrl,
