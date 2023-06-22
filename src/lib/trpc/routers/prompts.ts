@@ -20,16 +20,6 @@ import {
 	publicProcedure,
 } from '../trpc';
 
-async function hasActiveSubscription(orgId: string) {
-	const stripeConfig = getStripeConfig();
-	if (!stripeConfig) {
-		return false;
-	} else {
-		const res = await searchSubscriptionsByOrgId(stripeConfig, orgId);
-		return res.some(({ active }) => active === true);
-	}
-}
-
 const messageSchema = z.object({
 	role: z.union([z.literal('user'), z.literal('assistant'), z.literal('system')]),
 	content: z.string(),
@@ -311,8 +301,14 @@ export const promptsRouter = createTRPCRouter({
 						message: 'No OpenAI key found for this organization',
 					});
 				} else {
-					const hasSubscription =
-						ctx.requiredOrgId && (await hasActiveSubscription(ctx.requiredOrgId));
+					let hasSubscription = false;
+					if (ctx.requiredOrgId) {
+						const stripeConfig = getStripeConfig();
+						if (stripeConfig) {
+							const res = await searchSubscriptionsByOrgId(stripeConfig, ctx.requiredOrgId);
+							hasSubscription = res.some(({ active }) => active === true);
+						}
+					}
 
 					const remaining = await rateLimitUpsert(ctx.user.userId, Date.now());
 
