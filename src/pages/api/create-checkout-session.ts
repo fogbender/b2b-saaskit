@@ -48,7 +48,7 @@ export const post: APIRoute = async ({ request }) => {
 		const customerId = mappings[0]?.stripeCustomerId;
 
 		const stripe = openStripe(stripeConfig);
-		const app_url = new URL(request.url).origin + '/app/settings';
+		const appUrl = new URL('/app/settings', request.url).toString();
 		const session = await stripe.checkout.sessions.create({
 			client_reference_id: orgId,
 			customer: customerId,
@@ -59,8 +59,8 @@ export const post: APIRoute = async ({ request }) => {
 				},
 			],
 			mode: 'subscription',
-			success_url: app_url,
-			cancel_url: app_url,
+			success_url: appUrl,
+			cancel_url: appUrl,
 		});
 
 		const { url } = session;
