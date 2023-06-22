@@ -22,16 +22,16 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 ### Backbone
 
-[<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/0d437d31-95da-43d6-bf31-b7cb3af5baa9" width="200" />](https://astro.build) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/106b6345-bb0e-4785-9b88-086fea0e202a" width="200" />](https://react.dev) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/688ba952-4c3d-414e-a273-fb0bd2d98872" width="200" />](https://tailwindcss.com)
+[<img src="public/readme-images/Astro.png" width="200" />](https://astro.build) &nbsp;&nbsp; [<img src="public/readme-images/React.png" width="200" />](https://react.dev) &nbsp;&nbsp; [<img src="public/readme-images/TailwindCSS.png" width="200" />](https://tailwindcss.com)
 
 
 ### Not optional
 
-[<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/2c2ec770-92e9-473f-afb5-bc4ebff32081" width="200" />](https://doppler.com) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/ff4a6935-3af3-4c58-a6a2-6a5322365ca2" width="200" />](https://supabase.com) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/6dacda80-ad2f-4eb8-b29e-83b7d687e2d2" width="200" />](https://propelauth.com)
+[<img src="public/readme-images/Doppler.png" width="200" />](https://doppler.com) &nbsp;&nbsp; [<img src="public/readme-images/Supabase.png" width="200" />](https://supabase.com) &nbsp;&nbsp; [<img src="public/readme-images/PropelAuth.png" width="200" />](https://propelauth.com)
 
 ### Optional
 
-[<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/1b059e8a-b1f9-472d-b70c-a073a33eb150" width="200" />](https://stripe.com) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/501080dd-19a3-4ae0-a54f-3cd0fad0588b" width="200" />](https://vercel.com) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/7c9b2a31-c548-429a-8945-18efb4473919" width="200" />](https://fogbender.com) &nbsp;&nbsp; [<img src="https://github.com/fogbender/b2b-saaskit/assets/41166/6f92c033-d3d5-43d4-ac9a-91dd4651837b" width="200" />](https://posthog.com)
+[<img src="public/readme-images/Stripe.png" width="200" />](https://stripe.com) &nbsp;&nbsp; [<img src="public/readme-images/Vercel.png" width="200" />](https://vercel.com) &nbsp;&nbsp; [<img src="public/readme-images/Fogbender.png" width="200" />](https://fogbender.com) &nbsp;&nbsp; [<img src="public/readme-images/PostHog.png" width="200" />](https://posthog.com)
 
 ### Also featuring
 
