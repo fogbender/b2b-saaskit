@@ -32,7 +32,7 @@ export const post: APIRoute = async ({ request }) => {
 			throw new Error('No orgId');
 		}
 
-		// check that we have access to this org
+		// make sure we have access to org
 		const { user, orgMemberInfo } = await propelauth.validateAccessTokenAndGetUserWithOrgInfo(
 			token,
 			{ orgId }
