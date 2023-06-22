@@ -82,8 +82,6 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Create a product of type "subscription" and store its API ID with `doppler secrets set STRIPE_PRICE_ID --config prd`
 
-1. Open <a href="https://dashboard.stripe.com/webhooks/create">https://dashboard.stripe.com/webhooks/create</a>, add an endpoint pointing to `[your URL]/api/stripe-webhooks`, locate and reveal "Signing secret", store it with `doppler secret set STRIPE_WEBHOOK_SECRET --config prd`
-
 #### Check build
 
 1. Make sure you can still build the project locally with `doppler run --config prd yarn build`

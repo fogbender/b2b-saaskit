@@ -15,10 +15,6 @@ It takes some effort to open a Stripe account, with details falling outside the 
 
 1. Create a product of type "subscription" and store its API ID with `doppler secrets set STRIPE_PRICE_ID`
 
-1. Open <a href="https://dashboard.stripe.com/test/webhooks/create">https://dashboard.stripe.com/test/webhooks/create</a>, choose Node.js for sample code, locate the line `const endpointSecret =`, and store the value (starting with `whsec_`) with `doppler secrets set STRIPE_WEBHOOK_SECRET`
-
-1. Install <a href="https://stripe.com/docs/stripe-cli">Stripe CLI</a>, login, then run `stripe listen --forward-to localhost:3000/api/stripe-webhooks`
-
 1. Restart `doppler run yarn dev` to move to the next section of the tutorial
 
 At this point, you should be able purchase a (test) subscription on http://localhost:3000/app/settings. For test card numbers, see <a href="https://stripe.com/docs/testing">https://stripe.com/docs/testing</a>.
