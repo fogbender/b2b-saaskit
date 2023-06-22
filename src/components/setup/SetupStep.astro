@@ -12,7 +12,7 @@ const { id, title, stepDone, expanded = false, scope } = Astro.props;
 
 <div class="w-full">
 	<setup-step class="relative ml-5 flex w-full items-start md:ml-0" data-scope={scope} data-id={id}>
-		<div class="absolute top-5" data-icon>
+		<div class="absolute -ml-5 select-none p-5" data-icon>
 			<svg class="h-4 w-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path
 					d="M1 1L8 8L1 15"
@@ -83,28 +83,38 @@ const { id, title, stepDone, expanded = false, scope } = Astro.props;
 	customElements.define('details-body', DetailBody);
 </script>
 <script>
+	import { radEventListener } from 'rad-event-listener';
 	class SetupStepElement extends HTMLElement {
-		cleanup = () => {};
+		cleanupIcon = () => {};
+		cleanupCheckbox = () => {};
 		connectedCallback() {
 			const id = this.dataset['id'];
 			const scope = this.dataset['scope'];
 			if (!id || !scope) return;
 			const ls_key = scope + '_section_open';
 			const checkbox = this.querySelector('input');
-			if (checkbox instanceof HTMLInputElement) {
-				const handleChange = () => {
-					if (checkbox.checked) {
-						localStorage.setItem(ls_key, id);
-					} else {
-						localStorage.removeItem(ls_key);
-					}
-				};
-				checkbox.addEventListener('change', handleChange);
-				this.cleanup = () => checkbox.removeEventListener('change', handleChange);
+			if (!(checkbox instanceof HTMLInputElement)) {
+				throw new Error('input checkbox not found');
 			}
+			this.cleanupCheckbox = radEventListener(checkbox, 'change', () => {
+				if (checkbox.checked) {
+					localStorage.setItem(ls_key, id);
+				} else {
+					localStorage.removeItem(ls_key);
+				}
+			});
+			const icon = this.querySelector('[data-icon]');
+			if (!(icon instanceof HTMLElement)) {
+				throw new Error('[data-icon] not found');
+			}
+			icon.classList.add('cursor-pointer');
+			this.cleanupIcon = radEventListener(icon, 'click', () => {
+				checkbox.click();
+			});
 		}
 		disconnectedCallback() {
-			this.cleanup();
+			this.cleanupIcon();
+			this.cleanupCheckbox();
 		}
 	}
 	customElements.define('setup-step', SetupStepElement);
