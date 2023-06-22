@@ -81,12 +81,12 @@ export const promptsRouter = createTRPCRouter({
 				if (error === 'UNAUTHORIZED') {
 					throw new TRPCError({
 						code: 'UNAUTHORIZED',
-						message: `You need to sign in to access this prompt.`,
+						message: `You need to sign in to access this prompt`,
 					});
 				} else {
 					throw new TRPCError({
 						code: 'FORBIDDEN',
-						message: `You don't have access to this prompt.`,
+						message: `You don't have access to this prompt`,
 					});
 				}
 			}
@@ -178,7 +178,7 @@ export const promptsRouter = createTRPCRouter({
 				if (prompt?.userId !== ctx.user.userId) {
 					throw new TRPCError({
 						code: 'FORBIDDEN',
-						message: 'You can only update your own prompts.',
+						message: 'You can only update your own prompts',
 					});
 				}
 			}
@@ -255,7 +255,7 @@ export const promptsRouter = createTRPCRouter({
 			if (prompt.userId !== ctx.user.userId) {
 				throw new TRPCError({
 					code: 'FORBIDDEN',
-					message: 'You can only delete your own prompts.',
+					message: 'You can only delete your own prompts',
 				});
 			}
 
@@ -297,7 +297,7 @@ export const promptsRouter = createTRPCRouter({
 				if (!serverEnv.OPENAI_API_KEY) {
 					throw new TRPCError({
 						code: 'NOT_FOUND',
-						message: 'No OpenAI key found for this organization.',
+						message: 'No OpenAI key found for this organization',
 					});
 				} else {
 					const remaining = await rateLimitUpsert(ctx.user.userId, Date.now());
