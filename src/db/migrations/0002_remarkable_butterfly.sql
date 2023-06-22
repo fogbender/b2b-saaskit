@@ -1,1 +1,0 @@
-DROP TABLE org_stripe_customer_mappings;
