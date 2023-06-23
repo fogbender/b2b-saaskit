@@ -1,15 +1,19 @@
+import type { DehydratedState } from '@tanstack/react-query';
+
 import { trpc, TRPCProvider } from './trpc';
 
-export function Counter() {
+export function Counter({ dehydratedState }: { dehydratedState?: DehydratedState }) {
 	return (
-		<TRPCProvider>
+		<TRPCProvider dehydratedState={dehydratedState}>
 			<CounterInternal />
 		</TRPCProvider>
 	);
 }
 
 const CounterInternal = () => {
-	const counterQuery = trpc.counter.getCount.useQuery();
+	const counterQuery = trpc.counter.getCount.useQuery(undefined, {
+		staleTime: 1000,
+	});
 	const trpcUtils = trpc.useContext();
 	const incrementMutation = trpc.counter.increment.useMutation({
 		async onSettled() {

@@ -1,8 +1,14 @@
 ---
 import { Counter } from '../components/Counter';
 import Layout from '../layouts/Layout.astro';
+import { createHelpers } from '../lib/trpc/root';
+
+export const prerender = false;
+
+const helpers = createHelpers(Astro);
+await helpers.counter.getCount.prefetch();
 ---
 
 <Layout title="Counter">
-	<Counter client:only="react" />
+	<Counter client:load dehydratedState={helpers.dehydrate()} />
 </Layout>
