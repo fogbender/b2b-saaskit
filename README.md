@@ -83,7 +83,7 @@ Please refer to section `9. Production deployment to Vercel` of the [setup guide
 
 # Working with the codebase
 
-### DB migrations
+### DB migrations with Drizzle
 
 We're using Drizzle Kit to manage database migrations in B2B SaaS Kit. For details on Drizzle, see https://orm.drizzle.team/kit-docs/overview.
 
