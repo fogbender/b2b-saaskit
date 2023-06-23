@@ -79,6 +79,8 @@ yarn dev
 
 ### Deploy to production
 
+Please refer to section `9. Production deployment to Vercel` of the [setup guide](http://promptswithfriends.com/setup)
+
 ## Working with the codebase
 
 ### DB migrations
