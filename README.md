@@ -90,7 +90,7 @@ We're using Drizzle Kit to manage database migrations in B2B SaaS Kit. For detai
 Another popular option is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate) - if you'd like to use Prisma instead of Drizzle and need help, please get in touch with us.
 
 <details>
-<summary>Click to expand</summary>
+<summary>Expand</summary>
 
 #### Example: create a new table
 
@@ -139,16 +139,18 @@ doppler run yarn migrate --config prd
 
 </details>
 
-### tRPC (type-safe tool to talk to your backend)
+### tRPC: Type-safe remote calls
 
-For better organization of our backend code, we are using [tRPC](https://trpc.io/). It has built-in features like middleware, serialization, and validation that you would expect from a backend framework. But its excellent integration with [TanStack Query](https://tanstack.com/query/latest) (formerly React Query) and [Zod](https://zod.dev/) is what makes it so easy to call backend functions from the frontend while keeping type safety and ease of refactoring.
+We settled on [tRPC](https://trpc.io/) to take care of the "API" part of the app. tRPC's excellent integration with [TanStack Query](https://tanstack.com/query/latest) (formerly React Query) and [Zod](https://zod.dev/) sealed the deal for us, because we considered ease of refactoring and typesafety very important for a codebase that's meant to be heavily modified. There are other reasons to like tRPC: it ships with a set of great features, like middlewares, serialization, input validation, and error handling.
 
 <details>
-<summary>Click to expand</summary>
+<summary>Expand</summary>
 
-#### Example: create new endpoints
+#### Example: add an endpoint
 
-Backend routing for tRPC starts from `appRouter` in the `src/lib/trpc/root.ts` file. You can add new endpoints by adding a new router to the `appRouter`:
+Backend routing for tRPC starts with `export const appRouter` in the `src/lib/trpc/root.ts` file.
+
+To add a new endpoint, add a router to `appRouter`:
 
 ```diff
 + import { counterRouter } from './routers/counter';
@@ -163,7 +165,7 @@ export const appRouter = createTRPCRouter({
 });
 ```
 
-Now let's create the new router file `src/lib/trpc/routers/counter.ts`:
+Next, create the router file called `src/lib/trpc/routers/counter.ts`:
 
 ```ts
 import { createTRPCRouter, publicProcedure } from '../trpc';
@@ -180,13 +182,13 @@ export const counterRouter = createTRPCRouter({
 });
 ```
 
-Let's quickly overview what's happening here:
+What's happening here?
 
-- `createTRPCRouter` creates a new router that will be mounted on the `appRouter` from the previous step. You can keep nesting routers as much as you want.
-- `publicProcedure` is a regular procedure that doesn't have any middleware. You can check out `authProcedure` and `orgProcedure` which are defined in `src/lib/trpc/trpc.ts` for inspiration. The main way middleware is used is by adding data to the `ctx` object and performing checks like making sure that the user has access to the requested resource.
+- `createTRPCRouter` creates a new router that will be mounted in the `appRouter`. Routers can be nested ad infinitum.
+- `publicProcedure` is a regular function that doesn't have any middleware. (Check out `authProcedure` and `orgProcedure` in `src/lib/trpc/trpc.ts` for inspiration.) The main way middleware is used is by adding data to the `ctx` object and performing checks like making sure that the user has access to the requested resource.
 - the difference between `query` and `mutation` is that one corresponds to `useQuery` in TanStack Query and the other to `useMutation`. You can just think of it as `GET` and `POST` requests.
 - we are just using a simple variable to store the counter value to illustrate that it lives outside the frontend code. In a real app, that would be a database call so that you can persist the value across server restarts.
-- we are using `await new Promise((resolve) => setTimeout(resolve, 300));` to simulate a network latency. This is useful for testing loading states during development.
+- we are using `await new Promise((resolve) => setTimeout(resolve, 300));` to simulate network latency. This is useful for testing loading states during development.
 
 Now that we have the backend code, let's call it from the frontend. We'll add a new page `src/components/Counter.tsx`:
 
@@ -196,13 +198,13 @@ import { trpc, TRPCProvider } from './trpc';
 export function Counter() {
 	return (
 		<TRPCProvider>
-			<CounterInteral />
+			<CounterInternal />
 		</TRPCProvider>
 	);
 }
 
-const CounterInteral = () => {
-  const counterQuery = trpc.counter.getCount.useQuery();
+const CounterInternal = () => {
+ 	const counterQuery = trpc.counter.getCount.useQuery();
 	const trpcUtils = trpc.useContext();
 	const incrementMutation = trpc.counter.increment.useMutation({
 		async onSettled() {
@@ -228,17 +230,17 @@ const CounterInteral = () => {
 };
 ```
 
-Now let's quickly overview what's happening here:
+What's happening here:
 
-- we need to wrap our components in `TRPCProvider` otherwise `useQuery` and `useMutation` won't work. Usually, this is done higher up in the component tree.
-- `const counterQuery = trpc.counter.getCount.useQuery();` is how we call the backend endpoint. You can think of `counter.getCount` as a path to the endpoint that corresponds to `counterRouter` from the previous step. If you used TanStack Query before you might think of `trpc.[path].useQuery()` as an equivalent to `useQuery({ queryKey: [path], queryFn: () => fetch('http://localhost:3000/api/trpc/[path]') })`.
-- [`trpc.useContext`](https://trpc.io/docs/client/react/useContext) is tRPC wrapper around `queryClient` the main use of which is to update the cache (used for [optimistic updates](https://tanstack.com/query/v4/docs/react/guides/optimistic-updates) and cause queries to re-fetch. In this example we want to see the new value of the counter after we incremented it.
-- `useMutation` is similar to `useQuery`, but you need to manually call it with `incrementMutation.mutate()` and it won't be re-fetched automatically like `useQuery` would (by default `useQuery` will re-fetch on window focus), so you should use it similarly to "POST" requests. In this case it will cause counter value to be changed.
-- `onSettled` is a callback that is called after the mutation is completed (either successfully or with an error). Because we know that the counter value has changed on the server, the value in `counterQuery`.data` is now out-of-date. To see the new value we need to re-fetch `getCounter` by invalidating its cache (which will cause it to be re-fetched right away).
-- `invalidate()` returns a promise that is going to be resolved once the new value of the counter is fetched. Because we are waiting for this promise in `incrementMutation.onSettled` the value of `incrementMutation.isLoading` is going to be `true` until the new value of `counterQuery` is fetched.
-- In our app we use `{incrementMutation.isLoading}` to set our button in the `disabled` state, which will prevent the user from clicking it multiple times, thus ensuring that one user can only increment the counter by one.
+- We're wrapping our components in `TRPCProvider`, otherwise `useQuery` and `useMutation` won't work. Usually, this is done higher up in the component tree.
+- `const counterQuery = trpc.counter.getCount.useQuery();` is how we call the backend endpoint. You can think of `counter.getCount` as a path to the endpoint that corresponds to `counterRouter` from the previous step. If you've used TanStack Query, you might think of `trpc.[path].useQuery()` as the equivalent of `useQuery({ queryKey: [path], queryFn: () => fetch('http://localhost:3000/api/trpc/[path]') })`.
+- [`trpc.useContext`](https://trpc.io/docs/client/react/useContext) is a tRPC wrapper around `queryClient`. Its main purpose is to update the cache (used for [optimistic updates](https://tanstack.com/query/v4/docs/react/guides/optimistic-updates) and re-fetch queries. In our example, we'd like to see the new value for the counter right after clicking the "Increase count" button.
+- `useMutation` is similar to `useQuery`, but you need to manually call it with `incrementMutation.mutate()` and it'll never auto re-fetch like `useQuery`. (By default, `useQuery` re-fetches on window focus.) Conceptually, calling `useMutation` is similar to making a "POST" request - in our case it will cause the counter value to increase.
+- `onSettled` is called after the mutation is completed (either successfully or with an error). Because we know that the counter value has changed on the server, the value in `counterQuery`.data` is now out of date. To see the new value, we invalide the `getCounter` cache, which immediately triggers a re-fetch.
+- `invalidate()` returns a Promise that is resolved once the new value of the counter is fetched. Because we are waiting for this Promise in `incrementMutation.onSettled`, the value of `incrementMutation.isLoading` is going to be `true` until the new value of `counterQuery` is available.
+- We use `{incrementMutation.isLoading}` to place the button in `disabled` state - this prevents the user from clicking the button multiple times, thus ensuring the same user can only increment the counter by one.
 
-Now that we have a `Counter` component let's add a page that would show it. For that we are going to create `src/pages/counter.astro` file with the following content:
+Now that we have a `Counter` component, let's add a way to display it by creating a `src/pages/counter.astro` file with the following content:
 
 ```astro
 ---
@@ -251,9 +253,13 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 ```
 
-And you can see this page at http://localhost:3000/counter
+To see it in action, open http://localhost:3000/counter.
 
-If you used CRA (crate-react-app) or Vite before everything you've seen so far should have seemed very familiar (except for how nicely our backend code is integrated with our frontend code). The main characteristic of the classic SPA approach is that you see "Loading..." while fresh data from the server is fetched. If you used Next or Remix before you might be wondering if we can do something similar to `getServerSideProps` or `getStaticProps` to improve the loading experience. There are too many options on how to achieve that to cover in this guide, so we are going to focus just on the basics of tRPC prefetch.
+If you've used CRA (Create React App) or Vite before, everything we've done here so far should seem very familiar (except for how elegantly the backend integrates with the frontend).
+
+The main characteristic of the classic SPA (Single-page application) approach is that you see "Loading..." indicators where fresh data is fetched from the server.
+
+If you've used Next or Remix before, you might be wondering if we can do something similar to `getServerSideProps` or `getStaticProps` to improve the loading experience (XXX what's wrong with it?). The answer is "yes"! - in more ways that one can imagine - though all but one fall outside the scope of this guide. As such, let's focus on the basics of tRPC prefetch.
 
 Let's change our `src/pages/counter.astro` to the following:
 
@@ -274,13 +280,21 @@ const count = await helpers.counter.getCount.fetch();
 </Layout>
 ```
 
-Code between `---` (usually called frontmatter) runs on the server and is not sent to users.
-You can think of `export const prerender = ...` as a switch between SSG and SSR per route. By default (when using `output: "hybrid"`) pages are going to be pre-rendered into HTML during the build time (so `prerender = true` is similar to `getStaticProps`), and to switch our page to SSR (similar to `getServerSideProps`) we need to set `prerender` to `false`.
-`createHelpers` is a utility that allows you to perform tRPC procedures server side.
-`await helpers.counter.getCount.fetch();` is the first important part of our tRPC SSR integration. If you call `fetch()` or `prefetch()` on any tRPC procedure before you start rendering the app you are pre-populating TanStack Query cache for those queries. That means two things. One is that during SSR usually `useQuery` is set to `loading` state and `data` is `undefined`. Now the queries that we have successfully prefetch will return actual data. So in this case `trpc.counter.getCount.useQuery().data` in our React code is going to be `0` (or whatever the value is on the server) instead of `undefined`. And two, now during client rendering that query will have an initial value and you might use that value to show to your users or choose to refetch it in the background. The rule of thumb that I recommend is that you can prefetch on the server + fetch updates in the background on the client for SSG pages, and prefetch on the server and do not re-fetch it on the client for SSR pages. To control this behavior we use `staleTime` option (more on that later).
-`dehydratedState={helpers.dehydrate()}` is the second important part of the integration. It will allow components to use the query cache during SSR as well as perform actual serialization of the query cache into HTML so that we can use the same data to perform "hydration" of the client components.
+Note that in Astro, the code between `---` (called "frontmatter") runs on the server and is not sent to the client.
 
-Now we need to make some changes in our React code in the `src/components/Counter.tsx` file:
+You can think of `export const prerender = ...` as a per-route switch between SSG and SSR (XXX must be defined). By default, (when using `output: "hybrid"` (XXX - where?)) pages are pre-rendered to HTML during at build time (so `prerender = true` is similar to `getStaticProps`), and to switch our page to SSR (similar to `getServerSideProps`), we need to set `prerender` to `false`.
+
+`createHelpers` is a utility that allows you to perform tRPC procedures server-side.
+
+`await helpers.counter.getCount.fetch();` is the first important part of our tRPC SSR integration. If you call `fetch()` or `prefetch()` on any tRPC procedure before rendering the app, you are pre-populating the TanStack Query cache for those queries. This means two things.
+
+One, during SSR, `useQuery` is usually set to `loading` state and `data` is `undefined`. Now, the queries that we have successfully prefetched will return actual data. So, in this case, `trpc.counter.getCount.useQuery().data` in our React code is going to be `0` (or whatever the value is on the server) instead of `undefined`.
+
+Two, during client rendering, the query will have an initial value that can be displayed to a user or refetched in the background (XXX why?). Our recommended rule of thumb is to prefetch on the server and do background updates on the client for SSG pages, and to prefetch on the server and do no background re-fetches on the client for SSR pages. To control this behavior, we use the `staleTime` `useQuery` option (more on this later).
+
+`dehydratedState={helpers.dehydrate()}` is the second important part of the integration: it allows components to use query cache during SSR, as well as perform actual serialization of the cache into HTML, so that we can use the same data to perform "hydration" of the client components.
+
+Now, we need to make some changes in our React code in the `src/components/Counter.tsx` file:
 
 ```diff
 +import type { DehydratedState } from '@tanstack/react-query';
@@ -292,12 +306,12 @@ Now we need to make some changes in our React code in the `src/components/Counte
         return (
 -               <TRPCProvider>
 +               <TRPCProvider dehydratedState={dehydratedState}>
-                        <CounterInteral />
+                        <CounterInternal />
                 </TRPCProvider>
         );
  }
  
- const CounterInteral = () => {
+ const CounterInternal = () => {
 -       const counterQuery = trpc.counter.getCount.useQuery();
 +       const counterQuery = trpc.counter.getCount.useQuery(undefined, {
 +               staleTime: 1000,
@@ -305,10 +319,11 @@ Now we need to make some changes in our React code in the `src/components/Counte
         const trpcUtils = trpc.useContext();
 ```
 
-We need to pass `dehydratedState` that we got from Astro Component into `TRPCProvider` so that when we use the same queries we can use values from the cache.
-Note that we also are passing `staleTime` to the query to prevent TanStack Query from re-fetching data that we already got from the server (because of `prerender=false` each page load will get fresh data from the server). In case of SSG (`prerender=true`) the time between when the query cache was created and the `useQuery` is called on the client could be much bigger, so there's more of a chance that the data is outdated and you do need to get fresh data from the server.
+We need to pass `dehydratedState` we got from the Astro Component into `TRPCProvider`, so that when we use the same queries, we can use values from the cache.
 
+Note that we are also passing `staleTime` to `useQuery` - this prevents TanStack Query from re-fetching data that we already got from the server (because of `prerender=false` each page load will get fresh data from the server).
 
+In the case of SSG (`prerender=true`), the time between query cache creation on the server and the `useQuery` call on the client could be much bigger, making it more likely that the data is outdated - in this case, it's a good idea to get fresh data from the server on page load.
 
 Read more
 
