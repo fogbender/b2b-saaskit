@@ -189,7 +189,8 @@ export const counterRouter = createTRPCRouter({
 What's happening here?
 
 - `createTRPCRouter` creates a new router mounted in `appRouter`. Routers can be nested ad infinitum.
-- `publicProcedure` is a regular function that doesn't have any middleware (XXX explain). (Check out `authProcedure` and `orgProcedure` in `src/lib/trpc/trpc.ts` for inspiration.) The main way middleware is used is by adding data to the `ctx` object and performing checks like making sure that the user has access to the requested resource.
+- `publicProcedure` is a way to add a remote call that doesn't perform any authentication or other checks. For examples of procedure builders that do perform additional checks or invoke middlewares see `authProcedure` and `orgProcedure` in `src/lib/trpc/trpc.ts`.
+- tRPC middlewares add data to the `ctx` object and perform checks like making sure that the user has access to the requested resource.
 - `query` and `mutation` correspond to `useQuery` and `useMutation` in TanStack Query, respectively. You can think of these as `GET` and `POST` requests.
 - We are using a simple variable to store the counter value to illustrate that it lives outside the frontend code. In a real app, similar functionality would be handled by a database, to persist data across frontend nodes and server restarts.
 - We are using `await new Promise((resolve) => setTimeout(resolve, 300));` to simulate network latency - useful for testing loading states during development.
@@ -261,7 +262,11 @@ To see it in action, open http://localhost:3000/counter.
 
 If you've used CRA (Create React App) or Vite before, everything we've done here so far should seem very familiar (except for how elegantly the backend integrates with the frontend).
 
-The main characteristic of the classic SPA (Single-page application) approach is that you see "Loading..." indicators where fresh data is fetched from the server. (XXX this seems out of place, remove?)
+But if you are looking for something that is closer to Next.js or Remix, you might be wondering if we can do something similar to `getServerSideProps` or `getStaticProps` to get your page pre-rendered for example to improve SEO or generate `og:image` tags.
+
+XXX
+
+The main characteristic of the classic SPA (Single-page application) is that you see "Loading..." indicators where fresh data is fetched from the server. (XXX this seems out of place, remove?)
 
 If you've used Next or Remix before, you might be wondering if we can do something similar to `getServerSideProps` or `getStaticProps` to improve the loading experience (XXX what's wrong with it?). The answer is "yes"! - in more ways that one can imagine - though all the ways but one fall outside the scope of this guide. As such, let's focus on the basics of tRPC prefetch.
 
