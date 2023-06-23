@@ -90,9 +90,16 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 #### Publish to GitHub, deploy to Vercel
 
-1. Publish your project to GitHub. TODO: How?
+1. Publish your project to GitHub
 
-2. Link your GitHub project to Vercel. TODO: How?
+   - Create a new project on GitHub, copy the new URL
+   - Change our origin URL to yours with `git remote set-url origin NEW_URL`
+   - Commit your changes (if any) with `git commit -a -m "My updates"`
+   - Push to GitHub with `git push -u -f origin main`
+
+2. Link your GitHub project to Vercel
+
+   - See https://vercel.com/docs/concepts/deployments/git/vercel-for-github
 
 3. Note that if your Vercel subdomain ended up being different from the one used in the 2nd step of PropelAuth settings above, make sure to update "Primary Frontend Location" in PropelAuth to your actual Vercel subdomain
 
