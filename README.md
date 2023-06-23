@@ -12,7 +12,7 @@ The kit is designed with two primary goals in mind:
 
 2. You should be able to build an app to validate your idea for the cost of a domain name - all the third-party services used by the kit offer meaningful free-forever starter plans.
 
-## Why "B2B"?
+# Why "B2B"?
 
 "B2B" means "business-to-business". In the simplest terms, a B2B product is a product where post-signup, a user can create an organization, invite others, and do something as a team.
 
@@ -40,7 +40,7 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 [GitHub](https://github.com)
 
-## Get started
+# Get started
 
 ### High-level plan
 
@@ -81,7 +81,7 @@ yarn dev
 
 Please refer to section `9. Production deployment to Vercel` of the [setup guide](http://promptswithfriends.com/setup)
 
-## Working with the codebase
+# Working with the codebase
 
 ### DB migrations
 
@@ -335,6 +335,6 @@ Read more
 
 </details>
 
-## License
+# License
 
 B2B SaaS Kit is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for more details.
