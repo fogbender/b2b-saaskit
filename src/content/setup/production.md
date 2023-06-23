@@ -94,8 +94,8 @@ Note that the Supabase free tier has a limit of 2 projects.
 
    - Create a new project on GitHub, copy the new URL
    - Change our origin URL to yours with `git remote set-url origin NEW_URL`
-   - Commit your changes (if any) with `git commit -a -m "My updates"`
-   - Push to GitHub with `git push -u -f origin main`
+   - Add and commit your changes (if any) with `git add . && git commit -m "my updates"`
+   - Push to GitHub with `git push -u origin main`
 
 2. Link your GitHub project to Vercel
 
