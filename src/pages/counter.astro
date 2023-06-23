@@ -6,9 +6,9 @@ import { createHelpers } from '../lib/trpc/root';
 export const prerender = false;
 
 const helpers = createHelpers(Astro);
-await helpers.counter.getCount.prefetch();
+const count = await helpers.counter.getCount.fetch();
 ---
 
-<Layout title="Counter">
+<Layout title={'Counter initial value is ' + count}>
 	<Counter client:load dehydratedState={helpers.dehydrate()} />
 </Layout>
