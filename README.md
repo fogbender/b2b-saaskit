@@ -172,17 +172,17 @@ export const appRouter = createTRPCRouter({
 Next, create a router file called `src/lib/trpc/routers/counter.ts`:
 
 ```ts
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 let i = 0;
 export const counterRouter = createTRPCRouter({
-	getCount: publicProcedure.query(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 300));
-		return i;
-	}),
-	increment: publicProcedure.mutation(() => {
-		return ++i;
-	}),
+  getCount: publicProcedure.query(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return i;
+  }),
+  increment: publicProcedure.mutation(() => {
+    return ++i;
+  }),
 });
 ```
 
@@ -197,40 +197,40 @@ What's happening here?
 Now that we have the backend code in place, let's call it from a new page `src/components/Counter.tsx`:
 
 ```tsx
-import { trpc, TRPCProvider } from './trpc';
+import { trpc, TRPCProvider } from "./trpc";
 
 export function Counter() {
-	return (
-		<TRPCProvider>
-			<CounterInternal />
-		</TRPCProvider>
-	);
+  return (
+    <TRPCProvider>
+      <CounterInternal />
+    </TRPCProvider>
+  );
 }
 
 const CounterInternal = () => {
- 	const counterQuery = trpc.counter.getCount.useQuery();
-	const trpcUtils = trpc.useContext();
-	const incrementMutation = trpc.counter.increment.useMutation({
-		async onSettled() {
-			await trpcUtils.counter.getCount.invalidate();
-		},
-	});
+  const counterQuery = trpc.counter.getCount.useQuery();
+  const trpcUtils = trpc.useContext();
+  const incrementMutation = trpc.counter.increment.useMutation({
+    async onSettled() {
+      await trpcUtils.counter.getCount.invalidate();
+    },
+  });
 
-	return (
-		<div className="container mx-auto mt-8">
-			Count: {counterQuery.data ?? 'loading...'}
-			<br />
-			<button
-				disabled={incrementMutation.isLoading}
-				className="rounded bg-blue-500 px-4 py-2 text-white disabled:bg-gray-400"
-				onClick={() => {
-					incrementMutation.mutate();
-				}}
-			>
-				Increase count
-			</button>
-		</div>
-	);
+  return (
+    <div className="container mx-auto mt-8">
+      Count: {counterQuery.data ?? "loading..."}
+      <br />
+      <button
+        disabled={incrementMutation.isLoading}
+        className="rounded bg-blue-500 px-4 py-2 text-white disabled:bg-gray-400"
+        onClick={() => {
+          incrementMutation.mutate();
+        }}
+      >
+        Increase count
+      </button>
+    </div>
+  );
 };
 ```
 
@@ -240,7 +240,7 @@ What's happening here?
 - `const counterQuery = trpc.counter.getCount.useQuery();` is how we call the backend endpoint. You can think of `counter.getCount` as a path to the endpoint that corresponds to `counterRouter` from the previous step. If you've used TanStack Query, you can think of `trpc.[path].useQuery()` as the equivalent of `useQuery({ queryKey: [path], queryFn: () => fetch('http://localhost:3000/api/trpc/[path]') })`.
 - [`trpc.useContext`](https://trpc.io/docs/client/react/useContext) is a tRPC wrapper around `queryClient`. Its main purpose is to update the cache (used for [optimistic updates](https://tanstack.com/query/v4/docs/react/guides/optimistic-updates) and re-fetch queries. In our example, we'd like to see the new value for the counter right after clicking the "Increase count" button.
 - `useMutation` is similar to `useQuery`, but it must be called manually with `incrementMutation.mutate()` and it'll never auto re-fetch like `useQuery`. (By default, `useQuery` re-fetches on window focus.) Conceptually, calling `useMutation` is similar to making a "POST" request - in our example, calling it causes the counter value to increase.
-- `onSettled` is called after the mutation is completed, either successfully or with an error. Because we know that the counter value has changed on the server, we know the value in `counterQuery`.data` is out of date. To get the current value, we invalide the `getCounter` cache, which immediately triggers a `useQuery` re-fetch.
+- `onSettled` is called after the mutation is completed, either successfully or with an error. Because we know that the counter value has changed on the server, we know the value in `counterQuery`.data`is out of date. To get the current value, we invalide the`getCounter`cache, which immediately triggers a`useQuery` re-fetch.
 - `invalidate()` returns a Promise that is resolved once the new value of the counter is fetched. While we're waiting on this Promise in `incrementMutation.onSettled`, the value of `incrementMutation.isLoading` is going to be `true` until the new value of `counterQuery` is available.
 - We use `{incrementMutation.isLoading}` to place the button in `disabled` state - this prevents the user from clicking the button multiple times, thus ensuring the same user can only increment the counter by one with each click.
 
@@ -248,12 +248,12 @@ Now that we have a `Counter` component, let's add a way to show it by creating a
 
 ```astro
 ---
-import { Counter } from '../components/Counter';
-import Layout from '../layouts/Layout.astro';
+import { Counter } from "../components/Counter";
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Counter">
-	<Counter client:only="react" />
+  <Counter client:only="react" />
 </Layout>
 ```
 
@@ -269,9 +269,9 @@ Let's change our `src/pages/counter.astro` to the following:
 
 ```astro
 ---
-import { Counter } from '../components/Counter';
-import Layout from '../layouts/Layout.astro';
-import { createHelpers } from '../lib/trpc/root';
+import { Counter } from "../components/Counter";
+import Layout from "../layouts/Layout.astro";
+import { createHelpers } from "../lib/trpc/root";
 
 export const prerender = false;
 
@@ -279,8 +279,8 @@ const helpers = createHelpers(Astro);
 const count = await helpers.counter.getCount.fetch();
 ---
 
-<Layout title={'Counter initial value is ' + count}>
-	<Counter client:load dehydratedState={helpers.dehydrate()} />
+<Layout title={"Counter initial value is " + count}>
+  <Counter client:load dehydratedState={helpers.dehydrate()} />
 </Layout>
 ```
 
@@ -306,7 +306,7 @@ Now, we need to make some changes in our React code in the `src/components/Count
 +import type { DehydratedState } from '@tanstack/react-query';
 +
  import { trpc, TRPCProvider } from './trpc';
- 
+
 -export function Counter() {
 +export function Counter({ dehydratedState }: { dehydratedState?: DehydratedState }) {
         return (
@@ -316,7 +316,7 @@ Now, we need to make some changes in our React code in the `src/components/Count
                 </TRPCProvider>
         );
  }
- 
+
  const CounterInternal = () => {
 -       const counterQuery = trpc.counter.getCount.useQuery();
 +       const counterQuery = trpc.counter.getCount.useQuery(undefined, {
