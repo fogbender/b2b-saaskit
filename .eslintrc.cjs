@@ -8,6 +8,7 @@ module.exports = {
 	],
 	overrides: [
 		{
+			extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
 			files: ['*.astro'],
 			parser: 'astro-eslint-parser',
 			parserOptions: {
@@ -16,7 +17,21 @@ module.exports = {
 			},
 			rules: {
 				'@typescript-eslint/no-unsafe-assignment': 'off',
+				'@typescript-eslint/no-unsafe-return': 'off',
+				'@typescript-eslint/no-unsafe-member-access': 'off',
+				'@typescript-eslint/restrict-plus-operands': 'off',
 				'deprecation/deprecation': 'off',
+			},
+		},
+		{
+			files: ['*.ts', '*.tsx'],
+			extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
+			rules: {
+				'@typescript-eslint/no-unsafe-member-access': 'off',
+				'@typescript-eslint/no-floating-promises': 'off',
+				'@typescript-eslint/no-misused-promises': 'off',
+				'@typescript-eslint/no-unsafe-return': 'off',
+				'@typescript-eslint/restrict-template-expressions': 'off',
 			},
 		},
 		{
@@ -46,13 +61,8 @@ module.exports = {
 		'simple-import-sort/exports': 'error',
 		'deprecation/deprecation': 'error',
 
-		'@typescript-eslint/no-misused-promises': 'off',
-		'@typescript-eslint/no-floating-promises': 'off',
-		'@typescript-eslint/no-unsafe-return': 'off',
 		'@typescript-eslint/await-thenable': 'off',
-		'@typescript-eslint/restrict-template-expressions': 'off',
 		'@typescript-eslint/no-unsafe-call': 'off',
-		'@typescript-eslint/no-unsafe-member-access': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-unused-vars': 'off',
 		'@typescript-eslint/no-non-null-assertion': 'off',
