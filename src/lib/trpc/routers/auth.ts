@@ -73,7 +73,7 @@ export const authRouter = createTRPCRouter({
 				exp: String(decodedJwt.exp),
 			};
 			const httpOnlyCookie = {
-				accessToken: input.accessToken!,
+				accessToken: input.accessToken,
 			};
 			set(HTTP_ONLY_AUTH_COOKIE_NAME, '' + new URLSearchParams(httpOnlyCookie));
 			set(AUTH_COOKIE_NAME, '' + new URLSearchParams(publicCookie));
