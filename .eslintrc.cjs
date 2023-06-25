@@ -27,12 +27,21 @@ module.exports = {
 			files: ['*.ts', '*.tsx'],
 			extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
 			rules: {
+				'@typescript-eslint/no-unsafe-assignment': 'off',
 				'@typescript-eslint/no-unsafe-member-access': 'off',
 				'@typescript-eslint/no-floating-promises': 'off',
 				'@typescript-eslint/no-misused-promises': 'off',
+				'@typescript-eslint/no-unsafe-argument': 'off',
 				'@typescript-eslint/no-unsafe-return': 'off',
+				'@typescript-eslint/restrict-plus-operands': 'off',
 				'@typescript-eslint/restrict-template-expressions': 'off',
 			},
+		},
+		{
+			files: ['*.json', '*.jsonc'],
+			excludedFiles: ['package.json'],
+			parser: 'jsonc-eslint-parser',
+			extends: ['plugin:jsonc/recommended-with-json'],
 		},
 		{
 			extends: ['plugin:markdown/recommended'],
@@ -72,6 +81,8 @@ module.exports = {
 
 		// Stylistic concerns that don't interfere with Prettier
 		'no-mixed-spaces-and-tabs': 'off',
+		'jsx-a11y/no-autofocus': 'off',
+		'jsx-a11y/click-events-have-key-events': 'off',
 		'padding-line-between-statements': 'off',
 		'@typescript-eslint/padding-line-between-statements': 'off',
 	},
