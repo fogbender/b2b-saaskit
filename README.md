@@ -87,11 +87,11 @@ Please refer to section `9. Production deployment to Vercel` of the [setup guide
 
 # Working with the codebase
 
-### DB migrations with Drizzle
+### DB migrations with Drizzle ORM
 
-We're using Drizzle Kit to manage database migrations in B2B SaaS Kit. For details on Drizzle, see https://orm.drizzle.team/kit-docs/overview.
+We're using Drizzle ORM to manage database migrations in B2B SaaS Kit. For details on Drizzle, see https://orm.drizzle.team/kit-docs/overview.
 
-Another popular option is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate) - if you'd like to use Prisma instead of Drizzle and need help, please get in touch with us.
+Another popular ORM option is [Prisma](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate) - if you'd like to use Prisma instead of Drizzle and need help, please get in touch with us.
 
 <details>
 <summary>Expand</summary>
