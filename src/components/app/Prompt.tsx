@@ -82,7 +82,7 @@ export function Prompt() {
 
 	return (
 		<Layout>
-			<div className="flex flex-col items-start items-center gap-4 sm:flex-row">
+			<div className="flex flex-col items-center gap-4 sm:flex-row">
 				<h3 className="w-full max-w-2xl truncate text-2xl font-bold sm:w-fit md:max-w-4xl">
 					{websiteTitle} / {promptQuery.data ? promptQuery.data.prompt.title : 'Loading...'}
 				</h3>
