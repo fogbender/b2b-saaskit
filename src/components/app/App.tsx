@@ -104,7 +104,7 @@ const AppWithOrg = ({
 						As it happens, this project started off as the obligatory collaborative note-taking app,
 						but in the process our attention quickly turned to GPT prompt-building.
 					</p>
-					<p>
+					<div>
 						What if we came up with a sensible way for teams to work on complex prompts? For
 						example, what if it was easy to do things like
 						<ul className="ml-4 mt-4">
@@ -114,7 +114,7 @@ const AppWithOrg = ({
 							<li>- Fork prompts</li>
 							<li>- Like prompts</li>
 						</ul>
-					</p>
+					</div>
 					<p>
 						Roughly, that's what we've got for you here. To give it a go, start by{' '}
 						<Link
