@@ -33,8 +33,8 @@ export const authRouter = createTRPCRouter({
 
 			const reset = () => {
 				if (currentCookies[AUTH_COOKIE_NAME] || currentCookies[HTTP_ONLY_AUTH_COOKIE_NAME]) {
-					set(AUTH_COOKIE_NAME, '');
 					set(HTTP_ONLY_AUTH_COOKIE_NAME, '');
+					set(AUTH_COOKIE_NAME, '');
 				}
 			};
 
@@ -75,8 +75,8 @@ export const authRouter = createTRPCRouter({
 			const httpOnlyCookie = {
 				accessToken: input.accessToken!,
 			};
-			set(AUTH_COOKIE_NAME, '' + new URLSearchParams(publicCookie));
 			set(HTTP_ONLY_AUTH_COOKIE_NAME, '' + new URLSearchParams(httpOnlyCookie));
+			set(AUTH_COOKIE_NAME, '' + new URLSearchParams(publicCookie));
 			return 'everything went well';
 		}),
 });
