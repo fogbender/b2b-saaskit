@@ -19,9 +19,6 @@ export function LoginInternal() {
 		<PropelAuthCSS>
 			<LoginManager
 				onLoginCompleted={redirectToYourProduct}
-				onRedirectToPasswordlessLogin={() => {
-					window.location.href = '/login-passwordless';
-				}}
 				onRedirectToSignup={() => {
 					window.location.href = '/signup';
 				}}
