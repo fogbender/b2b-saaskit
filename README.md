@@ -270,7 +270,7 @@ Mechanisms that return pre-rendered content to the caller can either assemble it
 
 SSR is often mentioned in discussions that involve generating `og:image` tags and other SEO-focused operations.
 
-Our setup let's us do both SSR and SSG - let's take a look how.
+Our setup lets us do both SSR and SSG - let's take a look how.
 
 First, we'll change our `src/pages/counter.astro` to the following:
 
