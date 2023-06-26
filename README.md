@@ -60,7 +60,9 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 1. Install prerequisites
 
-   - Node.js 18
+   - Node.js 18 or Node.js 20
+  
+    ⚠️ Warning: Will not work with Node.js 19 due to bug in `set-cookie` implementation that was fixed in Node.js 20
 
 2. Clone repo, start app
 
