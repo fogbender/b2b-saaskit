@@ -189,7 +189,7 @@ export const counterRouter = createTRPCRouter({
 What's happening here?
 
 - `createTRPCRouter` creates a new router mounted in `appRouter`. Routers can be nested ad infinitum.
-- `publicProcedure` is a way to add a remote call that doesn't perform any checks in the middle (i.e., without any middlewares). For examples of procedure builders that do perform additional checks,  see `authProcedure` or `orgProcedure` in `src/lib/trpc/trpc.ts`.
+- `publicProcedure` is a way to add a remote call that doesn't perform any checks in the middle (i.e., without any middlewares). For examples of procedure builders that do perform additional checks, see `authProcedure` or `orgProcedure` in `src/lib/trpc/trpc.ts`.
 - Such checks are often implemented with "middlewares". tRPC middlewares add data to the `ctx` object, which is passed as input to all tRPC functions. Middleware are commonly used to perform access control checks or input validation.
 - `query` and `mutation` correspond to `useQuery` and `useMutation` in TanStack Query, respectively. You can think of these as `GET` and `POST` requests.
 - We're using a simple variable to store the counter value to illustrate that it lives outside the frontend code. In a real app, similar functionality would be handled by a database, whose role is to persist data across frontend nodes and server restarts.
