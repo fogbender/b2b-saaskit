@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS "prompts" (
 );
 
 ALTER TABLE prompts ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "service" ON "public"."prompts" AS PERMISSIVE FOR ALL TO service_role USING (true)
+CREATE POLICY "service" ON "public"."prompts" AS PERMISSIVE FOR ALL TO service_role USING (true);
 
 CREATE TABLE IF NOT EXISTS "shared_key_ratelimit" (
 	"id" text PRIMARY KEY NOT NULL,
