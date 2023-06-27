@@ -15,12 +15,9 @@ Keep in mind that you have the option of using the web interface as well (or ins
 
 1. Run `doppler login` to authenticate with Doppler. Create a new account if you don't already have one
 
-1. Next, run `doppler projects create prompts-with-friends` this will create a doppler project named `prompts-with-friends`
+1. Next, in the root of the project, run `doppler projects create prompts-with-friends` to create a Doppler project named `prompts-with-friends`
 
-1. After creating a project, in the root of the project run `doppler setup` to connect it to Doppler
-
-   - select `prompts-with-friends` as the project
-   - select `dev` for the config
+1. Connect the current directory with the `dev` environment by running `doppler setup -c dev -p prompts-with-friends`
 
 1. Next, run `doppler secrets set SITE_URL http://localhost:3000` - this will set the secret named `SITE_URL` to the value `http://localhost:3000`
 
