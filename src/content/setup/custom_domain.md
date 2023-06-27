@@ -44,7 +44,7 @@ Note that a custom domain is required for making PropelAuth work with Safari.
 
 #### PropelAuth GitHub OAuth (optional)
 
-1. In the sidebar, select "Configuration" - "Social Logins", and click on "Sign in with GitHub".
+1. In the sidebar, select "Configuration" - "Signup / Login", and click on "Sign in with GitHub".
 
 1. You going to see two URLs in the "Authorized redirect URIs" section. Copy the second one that looks like https://auth.yourdomain.com/github/callback, this URL is going to be used in the next step.
 

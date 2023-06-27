@@ -1,3 +1,4 @@
+/** @type {import('@typescript-eslint/experimental-utils').TSESLint.Linter.Config} */
 module.exports = {
 	extends: [
 		'eslint:recommended',
@@ -20,7 +21,7 @@ module.exports = {
 		},
 		{
 			extends: ['plugin:markdown/recommended'],
-			files: ['**/*.md', '**/*.md/*.{js,jsx,ts,tsx}'],
+			files: ['**/*.md', '**/*.md/*.{js,jsx,ts,tsx,astro}'],
 			processor: 'markdown/markdown',
 		},
 	],

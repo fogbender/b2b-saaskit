@@ -12,19 +12,13 @@ A great next step is to learn how to deploy your version of the app to productio
 #### Fogbender (optional)
 
 1. Create a new Fogbender workspace on <a href="https://fogbender.com/admin/-/workspaces" >https://fogbender.com/admin/-/workspaces</a>
+
 2. Copy the new `widgetId`, then save it with `doppler secrets set PUBLIC_FOGBENDER_WIDGET_ID --config prd`
 3. Copy the new `secret`, then save it with `doppler secrets set FOGBENDER_SECRET --config prd`
 
-#### Supabase
-
-Note that the Supabase free tier has a limit of 2 projects.
-
-1. Create a new Supabase project and save the new database URL with `doppler secrets set DATABASE_URL --config prd`
-2. Run `doppler run --config prd yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>.
-
 #### PropelAuth
 
-1. Create a new PropelAuth project (e.g., `pwf-prod`), then locate "Integrate your product" - "Frontend integration".
+1. Create a new PropelAuth project (e.g., `pwf_prod`), then locate "Integrate your product" - "Frontend integration".
 
 1. Under "Test" / "Primary Frontend Location", change **Type** to `Vercel`, then come up with a value for "Subdomain" - this can be any string (e.g., `pwf-2023-may-13-435pm`), as long as `https://[subdomain].vercel.app` resolves to 404: NOT_FOUND.
 
@@ -42,9 +36,16 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 1. Click on "Create New API Key", give the key a name (e.g., `pwf-prod`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`
 
+#### Supabase
+
+Note that the Supabase free tier has a limit of 2 projects.
+
+1. Create a new Supabase project and save the new database URL with `doppler secrets set DATABASE_URL --config prd`
+2. Run `doppler run --config prd yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>.
+
 #### PropelAuth GitHub OAuth (optional)
 
-1. In the sidebar, select "Configuration" - "Social Logins", and click on "Sign in with GitHub".
+1. In the sidebar, select "Configuration" - "Signup / Login", and click on "Sign in with GitHub".
 
 1. Locate "Authorized redirect URIs", this URL is going to be used in the next step.
 
