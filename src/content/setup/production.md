@@ -45,7 +45,7 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 #### PropelAuth GitHub OAuth (optional)
 
-1. In the sidebar, select "Configuration" - "Social Logins", and click on "Sign in with GitHub".
+1. In the sidebar, select "Configuration" - "Signup / Login", and click on "Sign in with GitHub".
 
 1. Locate "Authorized redirect URIs", this URL is going to be used in the next step.
 
