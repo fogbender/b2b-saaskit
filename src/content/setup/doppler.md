@@ -18,8 +18,9 @@ Keep in mind that you have the option of using the web interface as well (or ins
 1. Next, run `doppler projects create prompts-with-friends` this will create a doppler project named `prompts-with-friends`
 
 1. After creating a project, in the root of the project run `doppler setup` to connect it to Doppler
-    - select `prompts-with-friends` as the project
-    - select `dev` for the config
+
+   - select `prompts-with-friends` as the project
+   - select `dev` for the config
 
 1. Next, run `doppler secrets set SITE_URL http://localhost:3000` - this will set the secret named `SITE_URL` to the value `http://localhost:3000`
 
