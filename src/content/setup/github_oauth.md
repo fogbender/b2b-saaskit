@@ -7,7 +7,7 @@ By default, _Prompts with Friends_ offers email-based user authentication. An al
 
 In this step, we'll configure authentication with GitHub. Using GitHub as an OAuth provider is free to you and your users.
 
-1. Open <a href="https://app.propelauth.com">https://app.propelauth.com</a>, in the sidebar, select "Configuration" - "Social Logins", then click on "Sign in with GitHub"
+1. Open <a href="https://app.propelauth.com">https://app.propelauth.com</a>, in the sidebar, select "Configuration" - "Signup/Login", then click on "Sign in with GitHub"
 
 1. Locate "Authorized redirect URIs" - this URL will be used in the next step (it should similar to `https://123456789.propelauthtest.com/github/callback`)
 
