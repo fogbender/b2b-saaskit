@@ -7,7 +7,7 @@ Supabase (<a href="https://supabase.com" >https://supabase.com</a>) is an open s
 
 Supabase is free for 2 lightweight projects.
 
-1. Create an account on <a href="https://supabase" >Supabase</a>, then:
+1. Create an account on <a href="https://supabase.com" >Supabase</a>, then:
 
 - Create a new project named "b2b localhost"
 - Click on "generate a password" link under "Database Password"
