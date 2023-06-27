@@ -12,15 +12,9 @@ A great next step is to learn how to deploy your version of the app to productio
 #### Fogbender (optional)
 
 1. Create a new Fogbender workspace on <a href="https://fogbender.com/admin/-/workspaces" >https://fogbender.com/admin/-/workspaces</a>
+
 2. Copy the new `widgetId`, then save it with `doppler secrets set PUBLIC_FOGBENDER_WIDGET_ID --config prd`
 3. Copy the new `secret`, then save it with `doppler secrets set FOGBENDER_SECRET --config prd`
-
-#### Supabase
-
-Note that the Supabase free tier has a limit of 2 projects.
-
-1. Create a new Supabase project and save the new database URL with `doppler secrets set DATABASE_URL --config prd`
-2. Run `doppler run --config prd yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>.
 
 #### PropelAuth
 
@@ -41,6 +35,13 @@ Note that the Supabase free tier has a limit of 2 projects.
 1. Copy "Public (Verifier) Key", then save it with `doppler secrets set PROPELAUTH_VERIFIER_KEY --config prd`
 
 1. Click on "Create New API Key", give the key a name (e.g., `pwf-prod`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd`
+
+#### Supabase
+
+Note that the Supabase free tier has a limit of 2 projects.
+
+1. Create a new Supabase project and save the new database URL with `doppler secrets set DATABASE_URL --config prd`
+2. Run `doppler run --config prd yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>.
 
 #### PropelAuth GitHub OAuth (optional)
 
