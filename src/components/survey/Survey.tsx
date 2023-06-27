@@ -242,20 +242,22 @@ function Published() {
 
 	return (
 		<div className="flex flex-col items-center justify-center py-20">
-			<h2 className="mb-4 text-2xl">Thank you to everyone who participated in the survey</h2>
+			<h2 className="mb-4 text-center text-xl  lg:text-2xl">
+				Thank you to everyone who participated in the survey
+			</h2>
 			<Link
 				to="/survey/rate-experience"
-				className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+				className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-700"
 			>
-				Add your own comment!
+				Add your own comment !
 			</Link>
 			<div className="my-4 w-full sm:w-[500px] lg:w-[800px]">
-				<h3 className="mb-2 text-xl">
+				<h3 className="mb-2 text-center text-xl">
 					{!postSurveyMutation.isLoading && postSurveyMutation.data?.length === 0
 						? 'No comments yet'
 						: 'Comments'}
 				</h3>
-				<ul className="list-inside list-disc">
+				<ul className="list-inside list-disc px-8">
 					{postSurveyMutation.isLoading && <li>Loading...</li>}
 					{postSurveyMutation.data?.map((survey) => (
 						<li key={survey.id}>
@@ -270,7 +272,10 @@ function Published() {
 					))}
 				</ul>
 			</div>
-			<Link to="/survey" className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+			<Link
+				to="/survey"
+				className="mt-6 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+			>
 				Return back to survey home page
 			</Link>
 		</div>
