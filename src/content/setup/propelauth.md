@@ -7,7 +7,7 @@ PropelAuth (<a href="https://propelauth.com" >https://propelauth.com</a>) provid
 
 PropelAuth is free up to 1000 monthly active users.
 
-1. Create an account on <a href="https://propelauth.com" >https://propelauth.com</a>, create a new project (e.g. `pwf-dev`), in the sidebar select "Integrate your product" - "Frontend integration"
+1. Create an account on <a href="https://propelauth.com" >https://propelauth.com</a>, create a new project (e.g. `pwf_dev`), in the sidebar select "Integrate your product" - "Frontend integration"
 
 1. In the "Test" tab "Primary Frontend Location" should be `https://localhost:3000`. Set "Default redirect path after login" to `/app`
 
@@ -19,10 +19,10 @@ PropelAuth is free up to 1000 monthly active users.
 
 1. Locate and copy the value of "Auth URL" - it should like like `https://123456789.propelauthtest.com`, then run `doppler secrets set PUBLIC_AUTH_URL` and paste the value
 
-NOTE: to exit Doppler CLI after setting the value, type Enter twice, then type "." (period). Run `doppler secrets` to make sure the value of PUBLIC_AUTH_URL looks good - set it again (step 4 above) if you see any extra newlines
+NOTE: to exit Doppler CLI after setting the value, type Enter twice, then type "." (period). Run `doppler secrets` to make sure the value of PUBLIC_AUTH_URL looks good - set it again (step 6 above) if you see any extra newlines
 
-3. Copy "Public (Verifier) Key" and save it with `doppler secrets set PROPELAUTH_VERIFIER_KEY`
+1. Copy "Public (Verifier) Key" and save it with `doppler secrets set PROPELAUTH_VERIFIER_KEY`
 
-4. Click on "Create New API Key" give it a name "b2b localhost", copy the key and save it with `doppler secrets set PROPELAUTH_API_KEY`
+1. Click on "Create New API Key" give it a name "b2b localhost", copy the key and save it with `doppler secrets set PROPELAUTH_API_KEY`
 
-5. Restart `doppler run yarn dev` to move to the next section of the tutorial
+1. Restart `doppler run yarn dev` to move to the next section of the tutorial
