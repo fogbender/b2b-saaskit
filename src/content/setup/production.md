@@ -24,7 +24,7 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 #### PropelAuth
 
-1. Create a new PropelAuth project (e.g., `pwf-prod`), then locate "Integrate your product" - "Frontend integration".
+1. Create a new PropelAuth project (e.g., `pwf_prod`), then locate "Integrate your product" - "Frontend integration".
 
 1. Under "Test" / "Primary Frontend Location", change **Type** to `Vercel`, then come up with a value for "Subdomain" - this can be any string (e.g., `pwf-2023-may-13-435pm`), as long as `https://[subdomain].vercel.app` resolves to 404: NOT_FOUND.
 
