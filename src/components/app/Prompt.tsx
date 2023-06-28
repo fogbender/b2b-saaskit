@@ -56,7 +56,7 @@ export function Prompt() {
 		if (stickyErrorCode === 'FORBIDDEN') {
 			return (
 				<Layout title="You don't have access to this prompt 😭">
-					<div class="mt-5">
+					<div className="mt-5">
 						You can only view prompts that are public, shared within your team, or created by you
 					</div>
 				</Layout>
