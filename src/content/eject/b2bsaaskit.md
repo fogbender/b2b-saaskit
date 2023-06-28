@@ -36,6 +36,10 @@ export const prerender = true;
 - `rm src/pages/app/_envCheck.ts`
 - Remove `await import('./_envCheck');` from files in `src/pages/app/`
 
+## Faq page
+
+- `rm src/pages/faq.astro src/components/landing/faq.astro`
+
 ## Setup and Eject pages
 
 - `rm -r src/pages/setup src/pages/eject`
