@@ -24,7 +24,6 @@
     "@propelauth/node": "^2.1.0",
     "@propelauth/react": "2.1.0-beta.4",
     "@resvg/resvg-js": "^2.4.1",
-    "@supabase/supabase-js": "^2.21.0",
     "@t3-oss/env-core": "^0.2.2",
     "@tanstack/eslint-plugin-query": "^4.29.4",
     "@tanstack/react-query": "^4.29.5",
