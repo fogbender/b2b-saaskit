@@ -43,7 +43,12 @@ for (const slug of checksOrder) {
 						parsedSteps.map(async ({ step }) => {
 							const { Content } = await step.render();
 							return (
-								<SetupStep scope="eject" id={step.id} title={step.data.title || step.slug}>
+								<SetupStep
+									scope="eject"
+									id={step.id}
+									title={step.data.title || step.slug}
+									underConstruction={step.body.trim().endsWith('TODO')}
+								>
 									<Content />
 								</SetupStep>
 							);

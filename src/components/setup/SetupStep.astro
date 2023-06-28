@@ -5,6 +5,7 @@ export type Props = {
 	title: string;
 	stepDone?: boolean;
 	expanded?: boolean;
+	underConstruction?: boolean;
 };
 
 const { id, title, stepDone, expanded = false, scope } = Astro.props;
@@ -36,6 +37,7 @@ const { id, title, stepDone, expanded = false, scope } = Astro.props;
 					{title}
 					<a href={'#' + id} class="group-hover:opacity-100 [@media(hover:hover)]:opacity-0">🔗</a>
 				</div>
+				{Astro.props.underConstruction && <span>🚧</span>}
 				{stepDone && <span>✅</span>}
 			</label>
 			<details-body
