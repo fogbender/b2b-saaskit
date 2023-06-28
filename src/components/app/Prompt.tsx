@@ -55,8 +55,9 @@ export function Prompt() {
 	if (stickyErrorCode) {
 		if (stickyErrorCode === 'FORBIDDEN') {
 			return (
-				<Layout title="You don't have access to this prompt">
-					You can only view prompts that are public or that you have access to
+				<Layout title="You don't have access to this prompt 😭">
+					You can only view prompts that are public, shared by others with your team, or created by
+					you
 				</Layout>
 			);
 		} else if (stickyErrorCode === 'UNAUTHORIZED') {
