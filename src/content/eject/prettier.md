@@ -1,5 +1,5 @@
 ---
-title: Removing Prettier
+title: Removing Prettier (easy)
 ---
 
 These days, it's hard to imagine working on a project without [Prettier](https://prettier.io/)! That said, if you're not a fan, you can get rid of it in a few pretty simple steps:

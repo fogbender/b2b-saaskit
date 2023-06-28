@@ -1,5 +1,5 @@
 ---
-title: Removing kit assets
+title: Removing kit assets (recommended)
 ---
 
 ## The landing page
@@ -36,8 +36,14 @@ export const prerender = true;
 - `rm src/pages/app/_envCheck.ts`
 - Remove `await import('./_envCheck');` from files in `src/pages/app/`
 
+## Setup and Eject pages
+
+- `rm -r src/pages/setup src/pages/eject`
+- `rm -r src/content/`
+
 ## Demos
 
 - `rm -r src/pages/demo`
+- `rm -r src/pages/survey src/lib/trpc/routers/surveys.ts src/components/survey/Survey.tsx`
 
-WIP
+TODO
