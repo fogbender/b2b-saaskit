@@ -1,12 +1,12 @@
 ---
-title: Removing kit assets
+title: Removing kit assets (recommended)
 ---
 
 ## The landing page
 
-We've got some landing page complexity here, since we're using the same codebase for three websites: https://b2bsaaskit.com, https://PromptsWithFriends.com, and the instructons on https://localhost:3000.
+We've got some landing page complexity, since we're using the same codebase for three websites: https://b2bsaaskit.com, https://PromptsWithFriends.com, and the instructons on https://localhost:3000.
 
-To replace our mess with a single landing page, do this:
+To replace all this with a single landing page:
 
 - `rm src/assets/free.svg src/assets/b2b7.svg`
 - `rm src/components/landing/Prod.astro src/components/landing/B2B.astro src/components/landing/Dev.astro`
@@ -36,8 +36,14 @@ export const prerender = true;
 - `rm src/pages/app/_envCheck.ts`
 - Remove `await import('./_envCheck');` from files in `src/pages/app/`
 
+## Setup and Eject pages
+
+- `rm -r src/pages/setup src/pages/eject`
+- `rm -r src/content/`
+
 ## Demos
 
 - `rm -r src/pages/demo`
+- `rm -r src/pages/survey src/lib/trpc/routers/surveys.ts src/components/survey/Survey.tsx`
 
-WIP
+TODO
