@@ -11,7 +11,12 @@ const { id, title, stepDone, expanded = false, scope } = Astro.props;
 ---
 
 <div class="w-full">
-	<setup-step class="relative ml-5 flex w-full items-start md:ml-0" data-scope={scope} data-id={id}>
+	<setup-step
+		class="relative ml-5 flex w-full scroll-mt-4 items-start md:ml-0"
+		data-scope={scope}
+		data-id={id}
+		id={id}
+	>
 		<div class="absolute -ml-5 select-none p-5" data-icon>
 			<svg class="h-4 w-4" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path
@@ -25,9 +30,12 @@ const { id, title, stepDone, expanded = false, scope } = Astro.props;
 		<div
 			class="mx-6 flex max-w-[calc(100%-3rem)] flex-1 flex-col rounded-xl bg-white shadow-[0_3px_10px_rgba(19,29,118,0.1)] sm:ml-10"
 		>
-			<label class="flex cursor-pointer items-center justify-between p-3">
+			<label class="group flex cursor-pointer items-center justify-between p-3">
 				<input type="checkbox" hidden checked={expanded} />
-				<div class="text-lg font-semibold">{title}</div>
+				<div class="text-lg font-semibold">
+					{title}
+					<a href={'#' + id} class="group-hover:opacity-100 [@media(hover:hover)]:opacity-0">🔗</a>
+				</div>
 				{stepDone && <span>✅</span>}
 			</label>
 			<details-body
