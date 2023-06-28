@@ -2,7 +2,7 @@
 title: Removing Tailwind CSS
 ---
 
-If you don't like Tailwind CSS, you can get rid of it in a few pretty simple steps:
+If you don't like Tailwind CSS, you can get rid of it in a few simple steps:
 
 - Remove the line `import '../styles/tailwind.css';` from `src/layouts/Layout.astro`
 - In the terminal, run `rm src/styles/tailwind.css tailwind.config.cjs`

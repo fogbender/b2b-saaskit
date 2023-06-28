@@ -2,14 +2,14 @@
 title: Replacing Astro (hard)
 ---
 
-It's technically possible to replace Astro with other meta-frameworks. But we fill like that's the best tool that can adapt to any team.
+While it's technically possible to replace Astro with other meta-frameworks, we have no plans of offering alternatives to Astro as an option in this toolkit.
 
-Is your team all in on HTML first and doesn't like to write a lot of javascript? Look at the `/setup` and `/eject` pages that ship almost no JS, and even work with JS disabled.
+If your team is HTML-first, anti-JavaScript, take a look at the `/setup` and `/eject` pages that ship with almost no JavaScript and work with JavaScript disabled.
 
-Is your team experienced with simple SPA apps like CRA or Vite? Look at the `/survey` page that has no SSR, no hassle with hydration, no server bills.
+If your team is experienced with SPA apps like CRA or Vite, take a look at the `/survey` page - it has no SSR, no hassle with hydration, and no server bills.
 
-If your team worked with SSR frameworks before they can build modern apps with client-side routing, data fetching, and more. That's what we have on our `/`app` page.
+If your team is experienced with SSR frameworks, Astro makes it easy to transition from SSR to modern application development with client-side routing, data fetching, and more - this is what we have on the `/app` page.
 
-If you feel adventurous and want to play with server components, keep in mind that Astro server components do a lot of what is possible in RSCs already, and they are on track to support more in the future.
+If you must go with server components, Astro server components cover quite a bit of what's possible in RSCs today, and the Astro team is on on track to increase support in the near future.
 
-We do not have plans to support other meta-frameworks, but we would be happy to see this template ported to other frameworks. If you do so, please let us know!
+If you end up porting this template to another meta-framework, please let us know!
