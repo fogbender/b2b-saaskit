@@ -1,10 +1,10 @@
 ---
-import { Props as Meta, SEO } from 'astro-seo';
+import { Props as SeoProps, SEO as SeoTag } from 'astro-seo';
 
 import { websiteDescription, websiteTitle } from '../../constants';
 import { getGeneratorUrl } from '../../pages/og/index';
 
-export interface SeoProps {
+export interface Props {
 	title?: string;
 	description?: string;
 	ogType?:
@@ -21,7 +21,7 @@ export interface SeoProps {
 		| 'book'
 		| 'profile';
 	ogImage?: string;
-	meta?: Meta;
+	meta?: SeoProps;
 }
 
 const {
@@ -77,4 +77,4 @@ if (altText) {
 }
 ---
 
-<SEO {...meta} />
+<SeoTag {...meta} />
