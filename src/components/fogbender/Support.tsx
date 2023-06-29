@@ -20,7 +20,7 @@ import { useActiveOrg, useAuthInfo } from '../propelauth';
 
 export const FullPageSupport = () => {
 	return (
-		<div className="relative mt-2 border-gray-300">
+		<div data-hide-footer={true} className="relative mt-2 border-gray-300">
 			<SupportWidget kind="widget" />
 		</div>
 	);
