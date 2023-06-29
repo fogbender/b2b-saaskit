@@ -1,0 +1,134 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout ogType="article" title="FAQ" description="Frequently asked questions">
+	<main class="container max-w-[56rem] pb-10">
+		<div class="mt-24 flex w-full flex-col md:flex-row">
+			<div class="ml-5">
+				<a class="text-3xl text-blue-600 hover:text-rose-600" href="/">Home</a>
+			</div>
+			<div class="flex flex-col gap-14">
+				<div class="w-full">
+					<div class="ml-5 leading-8">
+						<div class="text-5xl">FAQ</div>
+					</div>
+				</div>
+				<div class="w-full">
+					<div class="ml-5 leading-8">
+						<div class="text-4xl">Who's behind this project?</div>
+					</div>
+					<div class="ml-10 mt-5">
+						The initial work on B2B SaaS Kit was done by the team at Fogbender, with Yaroslav Lapin
+						(<a href="https://twitter.com/jlarky" class="text-blue-600 hover:text-rose-600"
+							>@JLarky</a
+						> on Twitter) leading development. We underestimated the effort roughly by a factor of six!
+						If you want to get in touch with us, send us an email to hello@fogbender.com.
+					</div>
+				</div>
+				<div class="w-full">
+					<div class="ml-5 leading-8">
+						<div class="text-4xl">Why does this project exist?</div>
+					</div>
+					<div class="ml-10 mt-5 flex flex-col gap-5">
+						<p>
+							While working on Fogbender - which is a customer support system for companies whose
+							customers are <i>teams</i>, not individuals - we realized that quite a few startups
+							end up building B2B SaaS products without team management. This means all users at a
+							customer organization share a login - like dev@company.ai - which is suboptimal for
+							all sorts of reasons, one of which is rendering products like Fogbender - where
+							identities of users are very important - completely useless.
+						</p>
+
+						<p>
+							We also realized that B2B-focused services like ours, or Doppler for secrets
+							management, or PropelAuth for authentication, face significant adoption challenges
+							with startups that already have something working, even if it's later discovered that
+							the alternatives are probably superior. Replacement costs are high even for a
+							proof-of-concept stage product, let alone one that's established and growing.
+						</p>
+
+						<p>
+							Our thinking is that marketing an open-source template with a fully-built example
+							might be not as soul-crushing as marketing a "user authentication service", or a
+							"secrets management service", or a "customer support service". We built this toolkit
+							to make it easier for day-zero B2B founders to discover B2B-focused services, and for
+							us to get discovered.
+						</p>
+					</div>
+				</div>
+				<div class="w-full">
+					<div class="ml-5 leading-8">
+						<div class="text-4xl">Who is this project for?</div>
+					</div>
+					<div class="ml-10 mt-5">
+						This project is aimed at seasoned or aspiring technical or semi-technical B2B SaaS
+						founders who want to spend as little time and money as possible on things that aren't
+						core to their business, while steering clear of PHP.
+					</div>
+				</div>
+				<div class="w-full">
+					<div class="ml-5 leading-8">
+						<div class="text-4xl">
+							How come Prompts with Friends is an actual working app with payments enabled?
+						</div>
+					</div>
+					<div class="ml-10 mt-5">
+						We thought that the only way to convince a B2B SaaS founder that a starter toolkit is
+						real is to show how an actual, relatively complex app can be assembled in a matter of
+						minutes. We wanted to avoid a scenario where the note-taking sample app seems to be
+						working, but one must hire a full-stack developer for six months to implement billing.
+					</div>
+				</div>
+				<div class="w-full">
+					<div class="ml-5 leading-8">
+						<div class="text-4xl">Did you build this just to drive Fogbender signups?</div>
+					</div>
+					<div class="ml-10 mt-5">Yes?</div>
+				</div>
+				<div class="w-full">
+					<div class="ml-5 leading-8">
+						<div class="text-4xl">Why does it include so many services?</div>
+					</div>
+					<div class="ml-10 mt-5">
+						We've taken many trips down the "roll your own" road over the years, and we definitely
+						appreciate the sentiment. However, we believe the B2B SaaS ecosystem has gotten to be
+						mature enough where outsourcing all non-essential services to third parties is a winning
+						strategy for founders without an infinite R&D budget.
+					</div>
+				</div>
+				<div class="w-full">
+					<div class="ml-5 leading-8">
+						<div class="text-4xl">Why does it include so few services?</div>
+					</div>
+					<div class="ml-10 mt-5 flex flex-col gap-5">
+						<p>
+							The kit is missing important pieces, such as an error tracking service, a
+							transactional email service, and a queue, off the top.
+						</p>
+						<p>
+							We plan on expanding the offering with additional options, as well as making it much
+							easier to rip stuff out and swap in alternatives.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+	}
+</style>
+<style is:global>
+	html {
+		font-family: system-ui, sans-serif;
+		background-color: #f6f6f6;
+	}
+	code {
+		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+			Bitstream Vera Sans Mono, Courier New, monospace;
+	}
+</style>
