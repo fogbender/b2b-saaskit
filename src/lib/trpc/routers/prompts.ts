@@ -1,6 +1,6 @@
 import type { User } from '@propelauth/node';
 import { TRPCError } from '@trpc/server';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, or, sql } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
@@ -114,7 +114,21 @@ export const promptsRouter = createTRPCRouter({
 			};
 		}),
 	getPrompts: orgProcedure.query(async ({ ctx }) => {
-		const promptsRes = await db.select().from(prompts).where(eq(prompts.orgId, ctx.requiredOrgId));
+		const p = (x: PromptPrivacyLevel) => x;
+		const promptsRes = await db
+			.select()
+			.from(prompts)
+			.where(
+				and(
+					eq(prompts.orgId, ctx.requiredOrgId),
+					or(
+						eq(prompts.privacyLevel, p('public')),
+						eq(prompts.privacyLevel, p('unlisted')),
+						eq(prompts.privacyLevel, p('team')),
+						and(eq(prompts.privacyLevel, p('private')), eq(prompts.userId, ctx.user.userId))
+					)
+				)
+			);
 		const userIds = new Set<string>();
 		promptsRes.forEach((x) => userIds.add(x.userId));
 		const users = await resolvePropelPublicUsers([...userIds]);
