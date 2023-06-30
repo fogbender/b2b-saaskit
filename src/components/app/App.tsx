@@ -1,6 +1,7 @@
 import type { OrgMemberInfo } from '@propelauth/javascript';
 import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
-import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import { Link, NavLink } from 'react-router-dom';
 
 import { LoginInternal } from '../Login';
 import {
@@ -142,9 +143,17 @@ const AppWithOrg = ({
 							Hello, {auth.user.email} ({activeOrg.orgName})
 						</div>
 						<div className="mt-4 text-center">
-							<a href="/app/prompts" className="rounded bg-indigo-500 px-4 py-2 text-white">
+							<NavLink
+								to="/app/prompts"
+								className={({ isPending }) =>
+									clsx(
+										'rounded  px-4 py-2 text-white',
+										isPending ? 'bg-indigo-600' : 'bg-indigo-500'
+									)
+								}
+							>
 								View prompts
-							</a>
+							</NavLink>
 						</div>
 					</div>
 				</div>
