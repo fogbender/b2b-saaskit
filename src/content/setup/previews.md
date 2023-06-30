@@ -14,19 +14,19 @@ There are multiple ways of dealing with this, but in this guide we're going to u
 
 #### PropelAuth
 
-1. In PropelAuth, locate "Integrate your product" - "Frontend integration", then switch to the "Test" tab (because PropelAuth lets us set any domain for test environments)
+1. In PropelAuth, locate "Integrate your product" - "Frontend Integration", then switch to the "Test" tab (because PropelAuth lets us set any domain for test environments)
 
 1. Click on "Add additional frontend location" and add `https://vercel.app`. Make sure that "Allow any subdomain" is checked. (If you need greater security, you'd need to add your preview domains one by one after each deployment)
 
 1. Press "Save"
 
-1. Locate "Integrate your product" - "Integrate your Backend"
+1. Locate "Integrate your product" - "Backend Integration"
 
 1. Copy "Auth URL", then save it with `doppler secrets set PUBLIC_AUTH_URL --config prd_preview`
 
 1. Copy "Public (Verifier) Key", then save it with `doppler secrets set PROPELAUTH_VERIFIER_KEY --config prd_preview`
 
-1. Click on "Create New API Key", give it a name (e.g. `pwf-preview`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd_preview`
+1. Click on "Create New API Key", give it a name (e.g. `pwf_preview`), copy the key, then save it with `doppler secrets set PROPELAUTH_API_KEY --config prd_preview`
 
 #### Supabase - Option 1, using a separate DB
 
@@ -52,4 +52,4 @@ There are multiple ways of dealing with this, but in this guide we're going to u
 
 #### Vercel
 
-Assuming you're using GitHub with Vercel, push to a branch and navigate to the preview site by clicking the "View deployment" button in GitHub - you'll now be able to login with a user from the "Test" environment in your production PropelAuth project
+Assuming you're using GitHub with Vercel, push to a branch and navigate to the preview site by clicking the "View deployment" button in GitHub - you'll now be able to login with a user from the "Test" environment in your production PropelAuth project.
