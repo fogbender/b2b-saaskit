@@ -9,7 +9,8 @@ import { Layout } from './Layout';
 export function Prompts() {
 	const trpcUtils = trpc.useContext();
 
-	const { activeOrg } = useRequireActiveOrg();
+	const { auth, activeOrg } = useRequireActiveOrg();
+	const userId = auth.loading === false && auth.user?.userId;
 	const orgId = activeOrg?.orgId || '';
 	const promptsQuery = trpc.prompts.getPrompts.useQuery(
 		{},
@@ -99,6 +100,7 @@ export function Prompts() {
 								</td>
 								<td className="break-all px-3 py-4 text-sm text-gray-500">
 									{prompt._meta.user?.name || prompt._meta.user?.email || prompt.userId}
+									{prompt.userId === userId ? ' (You)' : ''}
 								</td>
 								<td className="relative flex flex-col items-start gap-2 whitespace-nowrap break-all py-4 pl-3 pr-4 text-right text-sm font-medium sm:flex-row sm:gap-6 sm:pr-6 lg:pr-8">
 									<Link

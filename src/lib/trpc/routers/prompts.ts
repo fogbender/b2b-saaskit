@@ -193,7 +193,7 @@ export const promptsRouter = createTRPCRouter({
 				if (prompt?.userId !== ctx.user.userId) {
 					throw new TRPCError({
 						code: 'FORBIDDEN',
-						message: 'You can only update your own prompts',
+						message: 'You can only update your own prompts, try saving a copy instead.',
 					});
 				}
 			}
