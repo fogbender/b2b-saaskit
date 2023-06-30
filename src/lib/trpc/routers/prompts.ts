@@ -484,7 +484,7 @@ function checkAccessToPrompt(
 	// you need to be in the same team to access team prompts
 	if (privacyLevel === 'team') {
 		const hasAccess = user.orgIdToOrgMemberInfo?.[prompt.orgId] !== undefined;
-		if (!hasAccess) {
+		if (hasAccess) {
 			return undefined;
 		}
 	}
