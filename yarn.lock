@@ -1366,10 +1366,10 @@ astro-seo@^0.7.2:
   resolved "https://registry.yarnpkg.com/astro-seo/-/astro-seo-0.7.4.tgz#0c2788b97ec3944390be2dd39a8ad9a6aec294b0"
   integrity sha512-E+wJmxOnvBRjgzVctdGk/VdwoEqeQ6Q/KgVW2wRBXZWJVDgOweB32Da/UiH0/FpGncPzo2daOrc08DNn5wTanw==
 
-astro@^2.7.0:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.7.1.tgz#fbb9b20bd27bc1b4af232c8e58ca13ecda8b54d3"
-  integrity sha512-W7KbiHPIWM9tmjAUza8iQtalbNnpRcbtKgEZ7zc/+vOpuvcmSHxkYVar+VhLf2ZuwBIDjgaF9M8ScQ2B1oobAA==
+astro@^2.6.6:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.7.2.tgz#c777418b70c77001a6fcb0829b63e73396569055"
+  integrity sha512-2+vjXeVGU04aecs0mm93Qx9KdeVDw4OTeBIijs2Z+QLoe4RUYZnkqx5gR70VNfnoMdXoPp7+wB+ARcb0+ee/yg==
   dependencies:
     "@astrojs/compiler" "^1.5.0"
     "@astrojs/internal-helpers" "^0.1.1"
