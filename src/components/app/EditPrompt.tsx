@@ -4,6 +4,7 @@ import { websiteTitle } from '../../constants';
 import { trpc } from '../trpc';
 import { EditPromptControls } from './CreatePrompt';
 import { Layout } from './Layout';
+import { usePromptErrorPage } from './usePromptErrorPage';
 
 export function EditPrompt() {
 	const { promptId } = useParams<{ promptId: string }>();
@@ -14,8 +15,18 @@ export function EditPrompt() {
 		{
 			enabled: !!promptId,
 			staleTime: 1000,
+			retry: (retry, error) => {
+				return retry < 3 && !error.data?.code;
+			},
 		}
 	);
+
+	const errorPage = usePromptErrorPage(promptsQuery.status, promptsQuery.error?.data?.code);
+
+	if (errorPage) {
+		return errorPage;
+	}
+
 	const data = promptsQuery.data;
 	return (
 		<Layout
