@@ -36,7 +36,7 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 [tRPC](https://trpc.io/)
 
-[Drizzle Kit](https://orm.drizzle.team/kit-docs/overview)
+[Drizzle ORM](https://orm.drizzle.team/kit-docs/overview)
 
 [Prettier](https://prettier.io/)
 
