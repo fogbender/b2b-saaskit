@@ -1,19 +1,14 @@
-import { createEnv, LooseOptions, StrictOptions } from '@t3-oss/env-core';
-import { z, ZodOptional, ZodString, ZodType } from 'zod';
-
-function validateEnv<
-	TPrefix extends string,
-	TServer extends Record<string, ZodType> = NonNullable<unknown>,
-	TClient extends Record<string, ZodType> = NonNullable<unknown>
->(opts: LooseOptions<TPrefix, TServer, TClient> | StrictOptions<TPrefix, TServer, TClient>) {
-	return opts;
-}
+import { createEnv, Simplify } from '@t3-oss/env-core';
+import { z } from 'zod';
 
 // in case if the script was imported from node like in case of migrations
 const runtimeEnv = import.meta.env || process.env;
 
-const x = validateEnv({
-	clientPrefix: 'PUBLIC_',
+const clientPrefix = 'PUBLIC_' as const;
+
+// export env for server code
+export const serverEnv = createEnv({
+	clientPrefix,
 	server: {
 		// database
 		DATABASE_URL: z.string().min(1),
@@ -43,18 +38,8 @@ const x = validateEnv({
 		runtimeEnv.SKIP_ENV_VALIDATION !== '0',
 });
 
-// this function would be dead code eliminated
-const client = () => {
-	// add check that values are strings
-	const v = (_: (ZodString | ZodOptional<ZodString>)[]) => {};
-
-	// this line will error if the client env is not a string
-	v(Object.values(x.client));
-	// generate type just for the client
-	return z.object(x.client);
+type PickByPrefix<T, TPrefix extends string> = {
+	[TKey in keyof T as TKey extends `${TPrefix}${string}` ? TKey : never]: T[TKey];
 };
 
-export type ClientEnv = z.infer<ReturnType<typeof client>>;
-
-// export env for server code
-export const serverEnv = createEnv(x);
+export type ClientEnv = Simplify<PickByPrefix<typeof serverEnv, typeof clientPrefix>>;
