@@ -1,0 +1,68 @@
+---
+import '../../styles/tailwind.css';
+
+import pwf from '../assets/b2b7.svg?url';
+
+export type Props = {};
+
+const secretKey = import.meta.env.OPENAI_API_KEY;
+
+if (!secretKey) {
+	throw new Error('OPENAI_API_KEY is not set');
+}
+
+// const messages = [{ role: 'user', content: 'what is 1+1?' }];
+const messages = [{ role: 'user', content: 'tell me about titanic sinking in pirate voice' }];
+
+const res = await fetch('https://api.openai.com/v1/chat/completions', {
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json',
+		Authorization: `Bearer ${secretKey}`,
+	},
+	body: JSON.stringify({
+		model: 'gpt-3.5-turbo',
+		messages,
+		stream: true,
+	}),
+});
+
+const decoder = new TextDecoder('utf-8');
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href={pwf} />
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body class="mt-4">
+		<h1 class="text-2xl font-bold">Hello, world!</h1>
+		{
+			(async function* () {
+				if (!res.body) {
+					throw new Error('no body');
+				}
+				for await (const c of res.body) {
+					const chunk = decoder.decode(c);
+					const lines = chunk.split('\n');
+					const parsedLines = lines
+						.map((line) => line.replace(/^data: /, '').trim()) // Remove the "data: " prefix
+						.filter((line) => line !== '' && line !== '[DONE]') // Remove empty lines and "[DONE]"
+						.map((line) => JSON.parse(line)); // Parse the JSON string
+					for (const parsedLine of parsedLines) {
+						const { choices } = parsedLine;
+						const { delta } = choices[0];
+						const { content } = delta;
+						// Update the UI with the new content
+						if (content) {
+							yield content;
+						}
+					}
+				}
+			})()
+		}
+	</body>
+</html>
