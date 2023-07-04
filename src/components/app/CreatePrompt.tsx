@@ -470,7 +470,8 @@ export const EditPromptControls = ({
 				<div className="mt-8">
 					{hasKey === false && hasSubscription === false && (
 						<div className="text-base text-gray-500">
-							NOTE 👉 To generate unlimited responses,{' '}
+							NOTE 👉 To generate {defaultKeyData?.isSet === false ? '' : ' unlimited '}
+							responses,{' '}
 							<a
 								className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
 								href="/app/settings"
