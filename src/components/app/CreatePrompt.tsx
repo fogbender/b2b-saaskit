@@ -470,20 +470,23 @@ export const EditPromptControls = ({
 				<div className="mt-8">
 					{hasKey === false && hasSubscription === false && (
 						<div className="text-base text-gray-500">
-							NOTE 👉 To generate responses,{' '}
+							NOTE 👉 To generate {defaultKeyData?.isSet === false ? '' : ' unlimited '}
+							responses,{' '}
 							<a
 								className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
 								href="/app/settings"
 							>
 								add your OpenAI key or buy a subscription
 							</a>
+							.
 							{defaultKeyData?.isSet && (
 								<>
-									without any limits. You have{' '}
+									{' '}
+									You have{' '}
 									<code className="rounded-md bg-gray-100 p-1">
 										{defaultKeyData.requestsRemaining}
 									</code>{' '}
-									requests until {defaultKeyData.resetsAt?.toLocaleString()}
+									free requests left until {defaultKeyData.resetsAt?.toLocaleString()}
 								</>
 							)}
 						</div>
@@ -748,8 +751,7 @@ function useSubscriptions() {
 		{ orgId },
 		{ enabled: !!orgId }
 	);
-	const hasSubscription =
-		subscriptions === undefined ? false : subscriptions.some((s) => s.active) !== undefined;
+	const hasSubscription = subscriptions === undefined ? false : subscriptions.some((s) => s.active);
 
 	return {
 		hasSubscription,
