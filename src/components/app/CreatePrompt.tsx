@@ -748,8 +748,7 @@ function useSubscriptions() {
 		{ orgId },
 		{ enabled: !!orgId }
 	);
-	const hasSubscription =
-		subscriptions === undefined ? false : subscriptions.some((s) => s.active) !== undefined;
+	const hasSubscription = subscriptions === undefined ? false : subscriptions.some((s) => s.active);
 
 	return {
 		hasSubscription,
