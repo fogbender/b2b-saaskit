@@ -5,8 +5,6 @@ import { createRouterContext } from '../../lib/router';
 
 export const prerender = false; // to enable trpc prefetching
 
-await import('./_envCheck');
-
 const res = await createRouterContext(Astro);
 if (res.kind === 'response') {
 	return res.response;
