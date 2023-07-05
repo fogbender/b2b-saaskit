@@ -1,6 +1,8 @@
 ---
 import { incrementCounter } from './_db';
 
+export const prerender = false;
+
 if (Astro.request.method !== 'POST') {
 	return Astro.redirect('/demo/htmx');
 }
