@@ -1,0 +1,49 @@
+---
+import clsx from 'clsx';
+
+export const tabs = ['1', '2', '3'];
+export const tabContent = [
+	'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum',
+	'Doloribus, voluptatum. Quisquam, voluptatum',
+	'Magni, voluptatum. Quisquam, voluptatum',
+];
+
+export function getStaticPaths() {
+	return tabs.map((tab) => ({ params: { number: tab } }));
+}
+
+const currentTab = Astro.params.number;
+---
+
+<div class="tab-list">
+	{
+		tabs.map((tab) => (
+			<a hx-get={`/demo/htmx/tab${tab}`} class={clsx(currentTab === tab && 'selected')}>
+				Tab {tab}
+			</a>
+		))
+	}
+</div>
+<div class="tab-content">
+	<p>{tabContent[Number(currentTab) - 1]}</p>
+
+	<img src=`https://picsum.photos/id/5${currentTab}/200/300` />
+</div>
+
+<style is:inline>
+	#tabs > .tab-list {
+		border-bottom: solid 3px #eee;
+	}
+	#tabs > .tab-list a {
+		display: inline-block;
+		padding: 5px 10px;
+		cursor: pointer;
+	}
+	#tabs > .tab-list a.selected {
+		background-color: #eee;
+	}
+	#tabs > .tab-content {
+		padding: 10px;
+		margin-bottom: 100px;
+	}
+</style>

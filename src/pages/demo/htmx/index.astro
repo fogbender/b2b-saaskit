@@ -1,0 +1,31 @@
+---
+import { getCounter } from './_db';
+
+const i = await getCounter();
+---
+
+<script src="https://unpkg.com/htmx.org@1.9.2"></script>
+
+<h1>HTMX</h1>
+
+<h3>Counter</h3>
+
+<button hx-post="/demo/htmx/increment" hx-target="#result">Increment</button>
+<output id="result">{i}</output>
+
+<h3>Tabs</h3>
+
+<div
+	id="tabs"
+	hx-get="/demo/htmx/tab1"
+	hx-trigger="load delay:100ms"
+	hx-target="#tabs"
+	hx-swap="innerHTML"
+>
+</div>
+<style>
+	body {
+		max-width: 40em;
+		margin: 4em auto;
+	}
+</style>

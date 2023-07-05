@@ -1,0 +1,10 @@
+---
+import { incrementCounter } from './_db';
+
+if (Astro.request.method !== 'POST') {
+	return Astro.redirect('/demo/htmx');
+}
+const i = await incrementCounter();
+---
+
+{i}
