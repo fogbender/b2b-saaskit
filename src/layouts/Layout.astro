@@ -1,5 +1,5 @@
 ---
-import '../styles/tailwind.css';
+// import '../styles/tailwind.css';
 
 import pwf from '../assets/b2b7.svg?url';
 import Posthog from '../components/head/Posthog.astro';
@@ -21,5 +21,19 @@ const props = Astro.props;
 	</head>
 	<body class="md:overscroll-y-none">
 		<slot />
+		<script>
+			import * as colors from 'twind/colors';
+			import typography from '@twind/typography';
+			import 'twind/shim';
+			import { setup, strict, voidSheet } from 'twind';
+			setup({
+				plugins: {
+					...typography(),
+				},
+				theme: {
+					colors,
+				},
+			});
+		</script>
 	</body>
 </html>
