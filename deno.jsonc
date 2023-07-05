@@ -1,0 +1,13 @@
+{
+	"tasks": {
+		"astro": "deno run -A npm:astro",
+		"patch": "patch node_modules/.deno/undici@5.22.1/node_modules/undici/lib/fetch/index.js undici_5.22.1.patch",
+		"dev": "deno run -A npm:astro dev",
+		"build": "deno run --allow-read --allow-env --allow-sys --allow-net --allow-write --allow-run npm:astro build",
+		"preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs"
+	},
+	"imports": {
+		"superjson": "npm:superjson@^1.12",
+		"zod": "npm:zod"
+	}
+}

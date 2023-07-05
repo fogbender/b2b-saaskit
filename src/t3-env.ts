@@ -2,12 +2,13 @@ import { createEnv, Simplify } from '@t3-oss/env-core';
 import { z } from 'zod';
 
 // in case if the script was imported from node like in case of migrations
-const runtimeEnv = import.meta.env || process.env;
+const runtimeEnv = Deno.env.toObject();
 
 const clientPrefix = 'PUBLIC_' as const;
 
 // export env for server code
 export const serverEnv = createEnv({
+	isServer: true,
 	clientPrefix,
 	server: {
 		// database

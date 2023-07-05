@@ -1,14 +1,17 @@
 import react from '@astrojs/react';
-import vercel from '@astrojs/vercel/serverless';
 import { defineConfig } from 'astro/config';
+import deno from 'npm:@astrojs/deno';
+
+import {} from 'superjson';
+import {} from 'zod';
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [react()],
 	output: 'hybrid',
-	adapter: vercel(),
+	adapter: deno(),
 	// eslint-disable-next-line no-undef
-	site: process.env.SITE_URL,
+	site: Deno.env.get('SITE_URL'),
 	experimental: {
 		assets: true,
 	},
