@@ -1,0 +1,113 @@
+---
+// ¯\_(ツ)_/¯
+export type Props = Record<string, unknown>;
+---
+
+<!-- https://twitter.com/JLarky/status/1622751780554817536 -->
+<div id="app"></div>
+
+<script>
+	// @ts-nocheck it's hard to do this with CDN import, but typescript works
+	import 'https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.min.js';
+	interface Props {}
+
+	interface State {
+		text: string;
+		some: string;
+	}
+
+	class Test extends React.Component<Props, State> {
+		constructor(props: Props) {
+			super(props);
+			this.changed = this.changed.bind(this);
+			this.state = {
+				some: 'stuff',
+				text: 'change me',
+			};
+		}
+
+		render() {
+			return React.DOM.div(null, [
+				React.DOM.h1(null, 'Hello from 2014-2015'),
+				'Child could be a text',
+				React.DOM.br(),
+				'some input ',
+				React.DOM.input({
+					value: this.state.text,
+					placeholder: 'placeholder',
+					onChange: this.changed,
+				}),
+				React.DOM.br(),
+				' and some values like ',
+				this.state.some,
+				' length: ',
+				this.state.text.length,
+			]);
+		}
+
+		changed(e) {
+			// what? no state merging???
+			this.setState({
+				text: e.currentTarget.value,
+			});
+		}
+	}
+
+	React.render(React.createElement(Test), document.getElementById('app'));
+
+	console.log('can you imagine this was part of "react" npm package?', React.DOM);
+</script>
+
+<pre>{`
+    <script>
+        // @ts-nocheck it's hard to do this with CDN import, but typescript works
+        import 'https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.min.js';
+        interface Props {}
+    
+        interface State {
+            text: string;
+            some: string;
+        }
+    
+        class Test extends React.Component<Props, State> {
+            constructor(props: Props) {
+                super(props);
+                this.changed = this.changed.bind(this);
+                this.state = {
+                    some: 'stuff',
+                    text: 'change me',
+                };
+            }
+    
+            render() {
+                return React.DOM.div(null, [
+                    React.DOM.h1(null, 'Hello from 2014-2015'),
+                    'Child could be a text',
+                    React.DOM.br(),
+                    'some input ',
+                    React.DOM.input({
+                        value: this.state.text,
+                        placeholder: 'placeholder',
+                        onChange: this.changed,
+                    }),
+                    React.DOM.br(),
+                    ' and some values like ',
+                    this.state.some,
+                    ' length: ',
+                    this.state.text.length,
+                ]);
+            }
+    
+            changed(e) {
+                // what? no state merging???
+                this.setState({
+                    text: e.currentTarget.value,
+                });
+            }
+        }
+    
+        React.render(React.createElement(Test), document.getElementById('app'));
+    
+        console.log('can you imagine this was part of "react" npm package?', React.DOM);
+    </script>`}
+</pre>
