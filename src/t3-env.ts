@@ -51,10 +51,10 @@ export const serverEnv = createEnv({
 		if (import.meta.env.DEV) {
 			error.hint = `If you see this error, the app is not configured properly
 
-- This error is produced by \`createEnv\` function inside of \`src/t3-env.ts\` file
-- This could happen if you are running \`yarn dev\` instead of \`doppler run yarn dev\`
-- To fix this error go to http://localhost:3000/setup and follow the instructions there
-- If you feel stuck you can also try: \`SKIP_ENV_VALIDATION=true doppler run yarn dev\` which will skip environment variables validation
+- This error is produced by \`createEnv\` function inside the \`src/t3-env.ts\` file
+- It can happen if you're running \`yarn dev\` instead of \`doppler run yarn dev\`
+- To fix it, go to http://localhost:3000/setup and follow the instructions there
+- If you're stuck, you can try: \`SKIP_ENV_VALIDATION=true doppler run yarn dev\`, which will skip environment variables validation
 `;
 		}
 		throw error;
