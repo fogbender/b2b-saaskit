@@ -31,11 +31,6 @@ export const prerender = true;
 - Replace `public/favicon.ico` with your `.ico` file
 - In `src/layouts/Layout.astro`, update `<link rel="icon" type="image/svg+xml" href={pwf} />` with your .ico file
 
-## Environment variables checker
-
-- `rm src/pages/app/_envCheck.ts`
-- Remove `await import('./_envCheck');` from files in `src/pages/app/`
-
 ## Faq page
 
 - `rm src/pages/faq.astro src/components/landing/faq.astro`
