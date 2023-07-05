@@ -36,6 +36,29 @@ export const serverEnv = createEnv({
 		!!runtimeEnv.SKIP_ENV_VALIDATION &&
 		runtimeEnv.SKIP_ENV_VALIDATION !== 'false' &&
 		runtimeEnv.SKIP_ENV_VALIDATION !== '0',
+	onValidationError: (zodError) => {
+		// we can't use internal AstroError directly unfortunatelly https://github.com/withastro/astro/blob/c459b81785b8bbdd07c3d27b471990e8ffa656df/packages/astro/src/core/errors/errors.ts#L32
+		class AstroError extends Error {
+			constructor(message: string, public hint?: string) {
+				super(message);
+			}
+		}
+		const { fieldErrors } = zodError.flatten();
+		const errorString = Object.entries(fieldErrors)
+			.map(([key, value]) => `\n - ${key} ${value}`)
+			.join('');
+		const error = new AstroError('❌ Invalid environment variables: ' + errorString);
+		if (import.meta.env.DEV) {
+			error.hint = `If you see this error, the app is not configured properly
+
+- This error is produced by \`createEnv\` function inside of \`src/t3-env.ts\` file
+- This could happen if you are running \`yarn dev\` instead of \`doppler run yarn dev\`
+- To fix this error go to http://localhost:3000/setup and follow the instructions there
+- If you feel stuck you can also try: \`SKIP_ENV_VALIDATION=true doppler run yarn dev\` which will skip environment variables validation
+`;
+		}
+		throw error;
+	},
 });
 
 type PickByPrefix<T, TPrefix extends string> = {
