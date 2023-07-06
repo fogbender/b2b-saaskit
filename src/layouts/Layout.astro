@@ -1,11 +1,12 @@
 ---
+import type { Simplify } from 'astro:assets';
 import '../styles/tailwind.css';
 
 import pwf from '../assets/b2b7.svg?url';
 import Posthog from '../components/head/Posthog.astro';
 import SEO, { Props as SeoProps } from '../components/head/SEO.astro';
 
-export type Props = SeoProps;
+export type Props = Simplify<SeoProps>;
 const props = Astro.props;
 ---
 
