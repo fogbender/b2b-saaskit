@@ -8,6 +8,7 @@ module.exports = {
 	],
 	overrides: [
 		{
+			extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
 			files: ['*.astro'],
 			parser: 'astro-eslint-parser',
 			parserOptions: {
@@ -16,8 +17,31 @@ module.exports = {
 			},
 			rules: {
 				'@typescript-eslint/no-unsafe-assignment': 'off',
+				'@typescript-eslint/no-unsafe-return': 'off',
+				'@typescript-eslint/no-unsafe-member-access': 'off',
+				'@typescript-eslint/restrict-plus-operands': 'off',
 				'deprecation/deprecation': 'off',
 			},
+		},
+		{
+			files: ['*.ts', '*.tsx'],
+			extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
+			rules: {
+				'@typescript-eslint/no-unsafe-assignment': 'off',
+				'@typescript-eslint/no-unsafe-member-access': 'off',
+				'@typescript-eslint/no-floating-promises': 'off',
+				'@typescript-eslint/no-misused-promises': 'off',
+				'@typescript-eslint/no-unsafe-argument': 'off',
+				'@typescript-eslint/no-unsafe-return': 'off',
+				'@typescript-eslint/restrict-plus-operands': 'off',
+				'@typescript-eslint/restrict-template-expressions': 'off',
+			},
+		},
+		{
+			files: ['*.json', '*.jsonc'],
+			excludedFiles: ['package.json'],
+			parser: 'jsonc-eslint-parser',
+			extends: ['plugin:jsonc/recommended-with-json'],
 		},
 		{
 			extends: ['plugin:markdown/recommended'],
@@ -46,22 +70,20 @@ module.exports = {
 		'simple-import-sort/exports': 'error',
 		'deprecation/deprecation': 'error',
 
-		'@typescript-eslint/no-misused-promises': 'off',
-		'@typescript-eslint/no-floating-promises': 'off',
-		'@typescript-eslint/no-unsafe-return': 'off',
-		'@typescript-eslint/await-thenable': 'off',
-		'@typescript-eslint/restrict-template-expressions': 'off',
 		'@typescript-eslint/no-unsafe-call': 'off',
-		'@typescript-eslint/no-unsafe-member-access': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
-		'@typescript-eslint/no-unused-vars': 'off',
+		'@typescript-eslint/no-unused-vars': [
+			'warn',
+			{ argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+		],
 		'@typescript-eslint/no-non-null-assertion': 'off',
 		'@typescript-eslint/no-empty-function': 'off',
 		'typescript-sort-keys/interface': 'off',
-		'no-empty-pattern': 'error',
 
 		// Stylistic concerns that don't interfere with Prettier
 		'no-mixed-spaces-and-tabs': 'off',
+		'jsx-a11y/no-autofocus': 'off',
+		'jsx-a11y/click-events-have-key-events': 'off',
 		'padding-line-between-statements': 'off',
 		'@typescript-eslint/padding-line-between-statements': 'off',
 	},

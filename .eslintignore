@@ -2,5 +2,6 @@
 dist
 .vscode
 .vercel
+.eslintrc.cjs
 src/db/migrations
 src/env.d.ts
