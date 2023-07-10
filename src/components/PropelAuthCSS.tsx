@@ -5,13 +5,12 @@ import { createPortal } from 'react-dom';
 import { BetaComponentLibraryProvider } from './propelauth';
 
 export function PropelAuthCSS({ children }: { children: React.ReactNode }) {
+	const css = 'https://unpkg.com/@propelauth/base-elements@0.0.16/dist/default.css';
 	return (
 		<BetaComponentLibraryProvider elements={BaseElements}>
+			<link rel="preload" as="style" href={css} />
 			<IsolateCSS>
-				<link
-					rel="stylesheet"
-					href="https://unpkg.com/@propelauth/base-elements@0.0.16/dist/default.css"
-				/>
+				<link rel="stylesheet" href={css} />
 				{children}
 			</IsolateCSS>
 		</BetaComponentLibraryProvider>
