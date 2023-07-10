@@ -1,9 +1,6 @@
-import type { OrgMemberInfo } from '@propelauth/javascript';
-import type { UseAuthInfoLoggedInProps } from '@propelauth/react/types/useAuthInfo';
 import clsx from 'clsx';
 import { Link, NavLink } from 'react-router-dom';
 
-import { LoginInternal } from '../Login';
 import {
 	saveOrgSelectionToLocalStorage,
 	useActiveOrg,
@@ -19,22 +16,7 @@ export function App() {
 	const { redirectToCreateOrgPage } = useRedirectFunctions();
 	useNavigateToReturnUrl();
 
-	if (auth.loading === true) {
-		return <div className="container mx-4 my-10">Loading...</div>;
-	}
-
-	if (auth.user === null) {
-		return (
-			<>
-				<div className="my-10 text-center">
-					<h1 className="mb-4 text-center text-2xl font-bold">Please sign in to continue</h1>
-					<LoginInternal />
-				</div>
-			</>
-		);
-	}
-
-	if (!activeOrg) {
+	if (auth.loading === false && auth.orgHelper && !activeOrg) {
 		const orgs = auth.orgHelper.getOrgs();
 		if (orgs.length === 0) {
 			return (
@@ -77,16 +59,6 @@ export function App() {
 		);
 	}
 
-	return <AppWithOrg auth={auth} activeOrg={activeOrg} />;
-}
-
-const AppWithOrg = ({
-	auth,
-	activeOrg,
-}: {
-	auth: UseAuthInfoLoggedInProps;
-	activeOrg: OrgMemberInfo;
-}) => {
 	return (
 		<Layout title="">
 			<div className="flex flex-col-reverse gap-8 md:flex-row">
@@ -139,25 +111,47 @@ const AppWithOrg = ({
 				</div>
 				<div className="flex w-full items-center justify-center md:w-1/3">
 					<div className="flex flex-col">
-						<div className="mt-4">
-							Hello, {auth.user.email} ({activeOrg.orgName})
-						</div>
-						<div className="mt-4 text-center">
-							<NavLink
-								to="/app/prompts"
-								className={({ isPending }) =>
-									clsx(
-										'rounded  px-4 py-2 text-white',
-										isPending ? 'bg-indigo-600' : 'bg-indigo-500'
-									)
-								}
-							>
-								View prompts
-							</NavLink>
-						</div>
+						<AppWithOrg />
 					</div>
 				</div>
 			</div>
 		</Layout>
 	);
+}
+
+const AppWithOrg = () => {
+	const activeOrg = useActiveOrg();
+	const auth = useAuthInfo();
+	if (auth.loading === false) {
+		if (!auth.user) {
+			return (
+				<div className="text-center">
+					<a className="rounded  bg-indigo-500 px-4 py-2 text-white" href="/login">
+						Sign up or Sign in
+					</a>
+				</div>
+			);
+		}
+		return (
+			<>
+				{activeOrg && (
+					<div className="mt-4">
+						Hello, {auth.user.email} ({activeOrg.orgName})
+					</div>
+				)}
+				<div className="mt-4 text-center">
+					<NavLink
+						to="/app/prompts"
+						className={({ isPending }) =>
+							clsx('rounded  px-4 py-2 text-white', isPending ? 'bg-indigo-600' : 'bg-indigo-500')
+						}
+					>
+						View prompts
+					</NavLink>
+				</div>
+			</>
+		);
+	}
+
+	return <div className="container mx-4 my-10">Loading...</div>;
 };
