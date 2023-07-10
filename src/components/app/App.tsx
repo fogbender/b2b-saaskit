@@ -41,11 +41,16 @@ export function App() {
 					<select
 						className="rounded px-4  py-2"
 						onChange={(e) => {
+							if (e.target.value === 'create_org') {
+								redirectToCreateOrgPage();
+								return;
+							}
 							saveOrgSelectionToLocalStorage(e.target.value);
 							window.location.reload();
 						}}
 					>
 						<option value="">&nbsp;&nbsp;Select an organization</option>
+						<option value="create_org">&nbsp;&nbsp;Create an organization</option>
 						{orgs.map((org) => {
 							return (
 								<option key={org.orgId} value={org.orgId}>
