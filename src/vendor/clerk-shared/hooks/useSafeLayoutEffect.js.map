@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/hooks/useSafeLayoutEffect.tsx"],"sourcesContent":["import React from 'react';\n\nexport const useSafeLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;\n"],"mappings":"AAAA,OAAO,WAAW;AAEX,MAAM,sBAAsB,OAAO,WAAW,cAAc,MAAM,kBAAkB,MAAM;","names":[]}

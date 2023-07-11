@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/utils/ssr.ts"],"sourcesContent":["export const inClientSide = (): boolean => {\n  return typeof window !== 'undefined';\n};\n"],"mappings":"AAAO,MAAM,eAAe,MAAe;AACzC,SAAO,OAAO,WAAW;AAC3B;","names":[]}
