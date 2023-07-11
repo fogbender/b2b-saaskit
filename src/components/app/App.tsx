@@ -9,6 +9,7 @@ import {
 	useAuthInfo,
 	useRedirectFunctions,
 } from '../propelauth';
+import { Clerk } from './Clerk';
 import { Layout } from './Layout';
 import { propelAuthAtom } from './store';
 import { useNavigateToReturnUrl } from './utils';
@@ -69,6 +70,7 @@ export function App() {
 
 	return (
 		<Layout title="">
+			<Clerk />
 			<div className="flex flex-col-reverse gap-8 md:flex-row">
 				<div className="flex w-full flex-col gap-4 p-4 md:w-2/3 md:p-12">
 					<p>

@@ -24,6 +24,8 @@ export const serverEnv = createEnv({
 		STRIPE_PRICE_ID: z.string().min(1).optional(),
 	},
 	client: {
+		// clerk
+		PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
 		// propel auth
 		PUBLIC_AUTH_URL: z.string().min(1),
 		// fogbender
