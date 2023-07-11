@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/contexts/index.ts"],"sourcesContent":["export { ClerkProvider, __internal__setErrorThrowerOptions } from './ClerkProvider';\nexport type { ClerkProviderProps } from './ClerkProvider';\n"],"mappings":";AAAA,SAAS,eAAe,0CAA0C;","names":[]}

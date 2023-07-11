@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/contexts/UserContext.tsx"],"sourcesContent":["export { UserContext, useUserContext } from '@clerk/shared';\n"],"mappings":";AAAA,SAAS,aAAa,sBAAsB;","names":[]}

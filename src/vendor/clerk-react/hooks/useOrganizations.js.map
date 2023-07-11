@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/hooks/useOrganizations.ts"],"sourcesContent":["export { useOrganizations } from '@clerk/shared';\n"],"mappings":";AAAA,SAAS,wBAAwB;","names":[]}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/contexts/ClientContext.tsx"],"sourcesContent":["export { ClientContext, useClientContext } from '@clerk/shared';\n"],"mappings":";AAAA,SAAS,eAAe,wBAAwB;","names":[]}

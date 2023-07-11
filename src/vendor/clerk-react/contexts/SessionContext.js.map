@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/contexts/SessionContext.tsx"],"sourcesContent":["export { SessionContext, useSessionContext } from '@clerk/shared';\n"],"mappings":";AAAA,SAAS,gBAAgB,yBAAyB;","names":[]}

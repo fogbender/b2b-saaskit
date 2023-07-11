@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/utils/isConstructor.ts"],"sourcesContent":["export function isConstructor<T>(f: any): f is T {\n  return typeof f === 'function';\n}\n"],"mappings":";AAAO,SAAS,cAAiB,GAAgB;AAC/C,SAAO,OAAO,MAAM;AACtB;","names":[]}
