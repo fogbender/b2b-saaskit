@@ -1,4 +1,5 @@
 import type { QueryClient } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
 import { Outlet, RouteObject } from 'react-router-dom';
 
 import { env } from '../../config';
@@ -14,6 +15,7 @@ import { AppNav } from './Nav';
 import { Prompt } from './Prompt';
 import { Prompts } from './Prompts';
 import { Settings } from './Settings';
+import { propelAuthAtom } from './store';
 
 export const routes: RemixBrowserContext & RouteObject[] = [
 	{
@@ -34,8 +36,9 @@ export const routes: RemixBrowserContext & RouteObject[] = [
 	{
 		path: '/app',
 		Component() {
+			const key = useAtomValue(propelAuthAtom);
 			return (
-				<AuthProvider authUrl={env.PUBLIC_AUTH_URL}>
+				<AuthProvider key={key} authUrl={env.PUBLIC_AUTH_URL}>
 					<AuthSync />
 					<AppNav />
 					<Outlet />
