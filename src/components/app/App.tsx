@@ -1,4 +1,6 @@
 import clsx from 'clsx';
+import { useSetAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import {
@@ -8,6 +10,7 @@ import {
 	useRedirectFunctions,
 } from '../propelauth';
 import { Layout } from './Layout';
+import { propelAuthAtom } from './store';
 import { useNavigateToReturnUrl } from './utils';
 
 export function App() {
@@ -125,8 +128,21 @@ export function App() {
 }
 
 const AppWithOrg = () => {
+	const setAtom = useSetAtom(propelAuthAtom);
 	const activeOrg = useActiveOrg();
 	const auth = useAuthInfo();
+	const [propelDied, setPropelDied] = useState(false);
+	useEffect(() => {
+		setPropelDied(false);
+		if (auth.loading === true) {
+			const timer = setTimeout(() => {
+				setPropelDied(true);
+			}, 3000);
+			return () => clearTimeout(timer);
+		}
+		return;
+	}, [auth.loading]);
+
 	if (auth.loading === false) {
 		if (!auth.user) {
 			return (
@@ -153,6 +169,35 @@ const AppWithOrg = () => {
 					>
 						View prompts
 					</NavLink>
+				</div>
+			</>
+		);
+	}
+
+	if (propelDied) {
+		return (
+			<>
+				<div className="mt-4">
+					Oops, looks like PropelAuth is down. You can{' '}
+					<a
+						className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
+						href="https://twitter.com/propelauth"
+					>
+						tweet at them
+					</a>{' '}
+					with a screenshot of the error from your dev tools or a note with "got a 503 on mobile".
+					This page will try to reconnect on its own, but you can also retry manually:
+				</div>
+				<div className="mt-4 text-center">
+					<button
+						className="rounded bg-indigo-500 px-4 py-2 text-white
+					transition-colors duration-200 hover:bg-indigo-600"
+						onClick={() => {
+							setAtom((x) => x + 1);
+						}}
+					>
+						Retry
+					</button>
 				</div>
 			</>
 		);
