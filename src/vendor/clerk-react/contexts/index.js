@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { ClerkProvider, __internal__setErrorThrowerOptions } from "./ClerkProvider";
 export {
   ClerkProvider,

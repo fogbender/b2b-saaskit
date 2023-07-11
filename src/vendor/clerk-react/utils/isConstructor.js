@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 function isConstructor(f) {
   return typeof f === "function";
 }

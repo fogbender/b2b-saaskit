@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { UserContext, useUserContext } from "@clerk/shared";
 export {
   UserContext,

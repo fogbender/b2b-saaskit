@@ -2,7 +2,7 @@ import {
   __privateAdd,
   __privateGet,
   __privateSet
-} from "./chunk-UKSPFOP7.js";
+} from "./chunk-UKSPFOP7";
 var _loaded, _domain, _proxyUrl, _instance;
 import { handleValueOrFn, inClientSide } from "@clerk/shared";
 import { unsupportedNonBrowserDomainOrProxyUrlFunction } from "./errors";

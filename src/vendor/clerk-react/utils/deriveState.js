@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 const deriveState = (clerkLoaded, state, initialState) => {
   if (!clerkLoaded && initialState) {
     return deriveFromSsrInitialState(initialState);

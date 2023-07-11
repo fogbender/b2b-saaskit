@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { createDevOrStagingUrlCache } from "@clerk/shared";
 const { isDevOrStagingUrl } = createDevOrStagingUrlCache();
 export {

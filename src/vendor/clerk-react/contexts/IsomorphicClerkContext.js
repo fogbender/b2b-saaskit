@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { ClerkInstanceContext, useClerkInstanceContext } from "@clerk/shared";
 const [IsomorphicClerkContext, useIsomorphicClerkContext] = [ClerkInstanceContext, useClerkInstanceContext];
 export {

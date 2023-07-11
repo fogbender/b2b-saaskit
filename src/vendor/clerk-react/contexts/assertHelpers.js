@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { noClerkProviderError, noGuaranteedLoadedError } from "../errors";
 function assertWrappedByClerkProvider(contextVal) {
   if (!contextVal) {

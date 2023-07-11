@@ -1,4 +1,4 @@
-import "./chunk-UKSPFOP7.js";
+import "./chunk-UKSPFOP7";
 import "./polyfills";
 export * from "./contexts";
 export * from "./components";

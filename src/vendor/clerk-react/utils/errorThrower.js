@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { buildErrorThrower } from "@clerk/shared";
 const errorThrower = buildErrorThrower({ packageName: "@clerk/react" });
 function __internal__setErrorThrowerOptions(options) {

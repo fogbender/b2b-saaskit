@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import React from "react";
 const counts = /* @__PURE__ */ new Map();
 function useMaxAllowedInstancesGuard(name, error, maxCount = 1) {

@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { useCallback } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useIsomorphicClerkContext } from "../contexts/IsomorphicClerkContext";

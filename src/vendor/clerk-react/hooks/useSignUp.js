@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { useClientContext } from "../contexts/ClientContext";
 import { useIsomorphicClerkContext } from "../contexts/IsomorphicClerkContext";
 const useSignUp = () => {

@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import { addClerkPrefix, isValidProxyUrl, loadScript, parsePublishableKey, proxyUrlToAbsoluteURL } from "@clerk/shared";
 import { errorThrower } from "./errorThrower";
 import { isDevOrStagingUrl } from "./isDevOrStageUrl";

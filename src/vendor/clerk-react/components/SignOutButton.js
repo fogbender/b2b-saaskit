@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 import React from "react";
 import { assertSingleChild, normalizeWithDefaultValue, safeExecute } from "../utils";
 import { withClerk } from "./withClerk";

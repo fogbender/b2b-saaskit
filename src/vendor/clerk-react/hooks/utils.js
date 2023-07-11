@@ -1,4 +1,4 @@
-import "../chunk-UKSPFOP7.js";
+import "../chunk-UKSPFOP7";
 const clerkLoaded = (isomorphicClerk) => {
   return new Promise((resolve) => {
     if (isomorphicClerk.loaded) {
