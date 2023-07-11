@@ -4,3 +4,4 @@ dist
 .vercel
 src/db/migrations
 src/env.d.ts
+src/vendor
