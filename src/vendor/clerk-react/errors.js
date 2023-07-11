@@ -4,7 +4,7 @@ import {
   isClerkAPIResponseError,
   isKnownError,
   isMetamaskError
-} from "@clerk/shared";
+} from "../clerk-shared";
 const noFrontendApiError = "Clerk: You must add the frontendApi prop to your <ClerkProvider>";
 const noClerkProviderError = "Clerk: You must wrap your application in a <ClerkProvider> component.";
 const noGuaranteedLoadedError = (hookName) => `Clerk: You're calling ${hookName} before there's a guarantee the client has been loaded. Call ${hookName} from a child of <SignedIn>, <SignedOut>, or <ClerkLoaded>, or use the withClerk() HOC.`;

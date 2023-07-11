@@ -1,5 +1,5 @@
 import "../chunk-UKSPFOP7";
-import { isLegacyFrontendApiKey, isPublishableKey } from "@clerk/shared";
+import { isLegacyFrontendApiKey, isPublishableKey } from "../../clerk-shared";
 import React from "react";
 import { multipleClerkProvidersError } from "../errors";
 import { __internal__setErrorThrowerOptions, errorThrower, withMaxAllowedInstancesGuard } from "../utils";

@@ -1,5 +1,5 @@
 import "../chunk-UKSPFOP7";
-import { useOrganization } from "@clerk/shared";
+import { useOrganization } from "../../clerk-shared";
 export {
   useOrganization
 };

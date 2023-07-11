@@ -1,5 +1,5 @@
 import "../chunk-UKSPFOP7";
-import { addClerkPrefix, isValidProxyUrl, loadScript, parsePublishableKey, proxyUrlToAbsoluteURL } from "@clerk/shared";
+import { addClerkPrefix, isValidProxyUrl, loadScript, parsePublishableKey, proxyUrlToAbsoluteURL } from "../../clerk-shared";
 import { errorThrower } from "./errorThrower";
 import { isDevOrStagingUrl } from "./isDevOrStageUrl";
 const FAILED_TO_LOAD_ERROR = "Clerk: Failed to load Clerk";

@@ -1,5 +1,5 @@
 import "../chunk-UKSPFOP7";
-import { ClientContext, useClientContext } from "@clerk/shared";
+import { ClientContext, useClientContext } from "../../clerk-shared";
 export {
   ClientContext,
   useClientContext

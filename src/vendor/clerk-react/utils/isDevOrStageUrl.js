@@ -1,5 +1,5 @@
 import "../chunk-UKSPFOP7";
-import { createDevOrStagingUrlCache } from "@clerk/shared";
+import { createDevOrStagingUrlCache } from "../../clerk-shared";
 const { isDevOrStagingUrl } = createDevOrStagingUrlCache();
 export {
   isDevOrStagingUrl
