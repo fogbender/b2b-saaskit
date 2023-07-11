@@ -178,15 +178,15 @@ const AppWithOrg = () => {
 		return (
 			<>
 				<div className="mt-4">
-					Oops, it looks like Propel Auth is down. You can Tweet at them{' '}
+					Oops, looks like PropelAuth is down. You can{' '}
 					<a
 						className="text-blue-700 underline visited:text-purple-600 hover:text-rose-600"
 						href="https://twitter.com/propelauth"
 					>
-						here
+						tweet at them
 					</a>{' '}
-					with a screenshot of the error from your dev tools. It will try to reconnect
-					automatically. But you can also retry manually.
+					with a screenshot of the error from your dev tools or a note with "got a 503 on mobile".
+					This page will try to reconnect on its own, but you can also retry manually:
 				</div>
 				<div className="mt-4 text-center">
 					<button
