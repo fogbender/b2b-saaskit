@@ -23,7 +23,7 @@ export function useRequireActiveOrg() {
 		if (auth.loading === false) {
 			if (!auth.user || !activeOrg) {
 				if (window.location.pathname !== '/app') {
-					window.location.pathname = '/app';
+					window.location.pathname = '/login';
 				}
 			}
 		}
