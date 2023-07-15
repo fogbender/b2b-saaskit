@@ -2,6 +2,7 @@
   "name": "@fogbender/b2bsaaskit",
   "private": true,
   "type": "module",
+  "license": "MIT",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",

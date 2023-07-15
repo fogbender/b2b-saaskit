@@ -67,7 +67,7 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 2. Clone repo, start app
 
 ```
-git clone git@github.com:fogbender/b2b-saaskit.git
+git clone https://github.com/fogbender/b2b-saaskit.git
 cd b2b-saaskit
 corepack enable
 corepack prepare yarn@1.22.19 --activate
