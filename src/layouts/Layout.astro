@@ -1,6 +1,7 @@
 ---
 import '../styles/tailwind.css';
 
+import { ViewTransitions } from 'astro:transitions';
 import type { Simplify } from 'astro:assets';
 
 import pwf from '../assets/b2b7.svg?url';
@@ -20,6 +21,7 @@ const props = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<SEO {...props} />
 		<Posthog />
+		<ViewTransitions />
 	</head>
 	<body class="md:overscroll-y-none">
 		<slot />
