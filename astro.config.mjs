@@ -11,6 +11,7 @@ export default defineConfig({
 	site: process.env.SITE_URL,
 	experimental: {
 		assets: true,
+		viewTransitions: true,
 	},
 	vite: {
 		optimizeDeps: {
