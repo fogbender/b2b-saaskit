@@ -1,0 +1,41 @@
+---
+import { getSurveys } from './_db';
+import Layout from './_layout.astro';
+
+const data = await getSurveys();
+---
+
+<Layout>
+	<div class="flex flex-col items-center justify-center py-20">
+		<h2 class="mb-4 text-2xl">Thank you to everyone who participated in the survey</h2>
+		<a
+			href="/demo/htmx/safe/rate-experience"
+			class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+		>
+			Add your own comment!
+		</a>
+		<div class="my-4 w-full sm:w-[500px] lg:w-[800px]">
+			<h3 class="mb-2 text-xl">
+				{data?.length === 0 ? 'No comments yet' : 'Comments'}
+			</h3>
+			<ul class="list-inside list-disc">
+				{
+					data?.map((survey) => (
+						<li>
+							{survey.rating} out of 5 on {survey.createdAt.toLocaleString()}
+							{survey.comments && (
+								<>
+									<br />
+									<span class="text-sm">{survey.comments}</span>
+								</>
+							)}
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<a href="/demo/htmx/safe" class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+			Return back to survey home page
+		</a>
+	</div>
+</Layout>

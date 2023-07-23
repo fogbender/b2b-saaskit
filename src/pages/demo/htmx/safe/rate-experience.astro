@@ -1,0 +1,26 @@
+---
+import Layout from './_layout.astro';
+---
+
+<Layout>
+	<div class="flex h-screen flex-col items-center justify-center">
+		<h2 class="mb-4 px-8 text-2xl">Please rate your experience from 1 to 5</h2>
+		<form class="w-full px-8 sm:w-96" action="/demo/htmx/safe/optional-comments">
+			<input
+				name="rating"
+				type="number"
+				min="1"
+				max="5"
+				class="mb-4 w-full rounded-md border border-gray-200 px-3 py-2"
+				required
+			/>
+			<button
+				type="submit"
+				class="w-full rounded-md bg-blue-500 px-3 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
+			>
+				Next
+			</button>
+		</form>
+		<a href="/demo/htmx/safe" class="mt-4 text-blue-500 hover:underline">Back</a>
+	</div>
+</Layout>

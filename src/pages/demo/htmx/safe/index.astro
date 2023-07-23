@@ -1,0 +1,28 @@
+---
+import { getSurveys } from './_db';
+
+import Layout from './_layout.astro';
+export const prerender = false;
+
+const i = await getSurveys();
+---
+
+<Layout>
+	<div class="flex h-screen flex-col items-center justify-center">
+		<div class="mb-4 flex gap-4">
+			<a
+				href="/demo/htmx/safe/rate-experience"
+				class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+			>
+				Start survey
+			</a>
+			<a
+				href="/demo/htmx/safe/published"
+				class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+			>
+				Public surveys
+			</a>
+		</div>
+		<a href="/demo/htmx/safe" class="text-blue-500 hover:underline"> Return to home page</a>
+	</div>
+</Layout>
