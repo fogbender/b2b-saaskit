@@ -233,10 +233,10 @@ function useWaited() {
 }
 
 function Published() {
-	const postSurveyMutation = trpc.surveys.getPublic.useQuery();
+	const publicSurveysQuery = trpc.surveys.getPublic.useQuery();
 
 	const waited = useWaited();
-	if (!waited && postSurveyMutation.isLoading) {
+	if (!waited && publicSurveysQuery.isLoading) {
 		return null;
 	}
 
@@ -251,13 +251,13 @@ function Published() {
 			</Link>
 			<div className="my-4 w-full sm:w-[500px] lg:w-[800px]">
 				<h3 className="mb-2 text-xl">
-					{!postSurveyMutation.isLoading && postSurveyMutation.data?.length === 0
+					{!publicSurveysQuery.isLoading && publicSurveysQuery.data?.length === 0
 						? 'No comments yet'
 						: 'Comments'}
 				</h3>
 				<ul className="list-inside list-disc">
-					{postSurveyMutation.isLoading && <li>Loading...</li>}
-					{postSurveyMutation.data?.map((survey) => (
+					{publicSurveysQuery.isLoading && <li>Loading...</li>}
+					{publicSurveysQuery.data?.map((survey) => (
 						<li key={survey.id}>
 							{survey.rating} out of 5 on {survey.createdAt.toLocaleString()}
 							{survey.comments && (
