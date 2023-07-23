@@ -1,0 +1,17 @@
+---
+import Stuff2 from './_async2.astro';
+const asyncData = new Promise<number>((resolve) => {
+	setTimeout(() => {
+		const date = new Date().getTime();
+		resolve(date);
+	}, 1000);
+});
+---
+
+{asyncData}
+
+before
+
+<Stuff2 />
+
+after

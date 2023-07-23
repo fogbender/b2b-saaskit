@@ -1,0 +1,15 @@
+---
+import { Hello } from './_Hello';
+import Stuff from './_async.astro';
+const date = new Date().getTime();
+if (Astro.request.method === 'POST') {
+	console.log('post');
+}
+---
+
+<Hello client:load prefix="He">
+	<h1>hello</h1>
+
+	{date}
+</Hello>
+<Stuff />

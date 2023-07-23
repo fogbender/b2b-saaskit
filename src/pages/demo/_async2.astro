@@ -1,0 +1,10 @@
+---
+const asyncData = new Promise<number>((resolve) => {
+	setTimeout(() => {
+		const date = new Date().getTime();
+		resolve(date);
+	}, 2000);
+});
+---
+
+{asyncData}
