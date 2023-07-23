@@ -1,0 +1,50 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import template1 from './_ToHTML1.astro?raw';
+import template2 from './_ToHTML2.astro?raw';
+import template3 from './_ToHTML3.astro?raw';
+import template4 from './_ToHTML4.astro?raw';
+---
+
+<Layout>
+	<h1 class="my-4 text-xl">Unsafe HTMX (danger danger, don't click the links!)</h1>
+	But if you do, check the devtools console to see what is going on.
+	<main class="prose">
+		I was too lazy to re-create the whole app, so I just created one page that is unsafe (XSS wise).
+		<br />
+		The main point is that when you are in the `ToHTML` component you should be treating `props.text`
+		as user input and escaping it.
+		<ol>
+			<li>
+				<a target="_blank" href="/demo/htmx/unsafe/published1">Regular Astro text is safe</a>
+				<pre>{template1}</pre>
+			</li>
+			<li>
+				<a target="_blank" href="/demo/htmx/unsafe/published2"
+					>set:html without escaping is obviously unsafe (you can just send a script tag, so HTMX
+					doesn't make a difference here)</a
+				>
+				<pre>{template2}</pre>
+			</li>
+			<li>
+				<a target="_blank" href="/demo/htmx/unsafe/published3"
+					>naive way of escaping HTML (that your markdown parser or whatever could be doing) might
+					not know that `data` attributes are executable in HTMX</a
+				>
+				<pre>{template3}</pre>
+			</li>
+			<li>
+				<a target="_blank" href="/demo/htmx/unsafe/published4"
+					>so you have to perform HTMX aware HTML escaping 🫠</a
+				>
+				<pre>{template4}</pre>
+			</li>
+		</ol>
+	</main>
+	<style>
+		body {
+			max-width: 40em;
+			margin: 4em auto;
+		}
+	</style>
+</Layout>

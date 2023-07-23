@@ -1,9 +1,13 @@
 ---
-import { getSurveys } from './_db';
-import Layout from './_layout.astro';
+import { getSurveys } from '../safe/_db';
+import Layout from '../safe/_layout.astro';
+// import ToHTMX from './_ToHTML1.astro'; // safe, using Astro escaping
+import ToHTMX3 from './_ToHTML3.astro'; // safe, using Astro escaping
 
+const ToHTMX = ToHTMX3;
+
+export const prerender = false; // to allow to change escape strategy
 const data = await getSurveys();
-export const prerender = false; // enable SSR
 ---
 
 <Layout>
@@ -27,7 +31,7 @@ export const prerender = false; // enable SSR
 							{survey.comments && (
 								<>
 									<br />
-									<span class="text-sm">{survey.comments}</span>
+									<ToHTMX text={survey.comments} />
 								</>
 							)}
 						</li>

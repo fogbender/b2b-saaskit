@@ -1,0 +1,25 @@
+---
+import sanitizeHtml from 'sanitize-html';
+
+export type Props = {
+	text: string;
+};
+// but unsafe htmx
+const safeHtml = (raw: string) =>
+	sanitizeHtml(raw, {
+		allowedAttributes: {
+			'*': ['data-*'],
+		},
+	});
+// solution that HTMX provides to you is `hx-disable` attribute
+// https://htmx.org/attributes/hx-disable/
+// it makes safe HTMX not executable 🫠
+---
+
+<span hx-disable class="text-sm" set:html={safeHtml(Astro.props.text)} />
+<span
+	hx-disable
+	set:html={safeHtml(
+		'<pre><a data-hx-post="https://example.com/pwnd" data-hx-trigger="load, click">Click Me! or dont, same thing</a></pre><script>console.log(1234)</script>'
+	)}
+/>

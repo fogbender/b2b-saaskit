@@ -1,0 +1,8 @@
+---
+export type Props = {
+	text: string;
+};
+// this is going to be a default in Astro, since we just use that text as text :)
+---
+
+<span class="text-sm">{Astro.props.text}</span>

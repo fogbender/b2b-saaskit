@@ -1,0 +1,9 @@
+---
+export type Props = {
+	text: string;
+};
+// this is obviously bad, the same as dangerouslySetInnerHTML
+---
+
+<span class="text-sm" set:html={Astro.props.text} />
+<span set:html={'<pre>hi</pre><script>console.log(123)</script>'} />
