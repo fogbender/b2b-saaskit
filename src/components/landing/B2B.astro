@@ -12,6 +12,7 @@ import supabase from '../../assets/b2b/supabase.jpg';
 import tailwind from '../../assets/b2b/tailwind.jpg';
 import vercel from '../../assets/b2b/vercel.jpg';
 import b2b7logo from '../../assets/b2b7.svg?url';
+import weWorkHere from '../../assets/we-work-here.svg?url';
 import wink from '../../assets/wink.svg?url';
 import Layout from '../../layouts/Layout.astro';
 import ClipboardCopy from '../utils/ClipboardCopy.astro';
@@ -70,14 +71,14 @@ const services: LegoPiece[] = [
 		name: 'Stripe',
 	},
 	{
-		url: 'https://fogbender.com/',
-		imgUrl: fogbender,
-		name: 'Fogbender',
-	},
-	{
 		url: 'https://posthog.com/',
 		imgUrl: posthog,
 		name: 'PostHog',
+	},
+	{
+		url: 'https://fogbender.com/',
+		imgUrl: fogbender,
+		name: 'Fogbender',
 	},
 ];
 ---
@@ -140,7 +141,7 @@ const services: LegoPiece[] = [
 		</div>
 
 		<div class="ml-0 mt-8 md:ml-[7.25rem]">
-			<div class="flex flex-wrap gap-6">
+			<div class="relative flex flex-wrap gap-6">
 				{
 					[...libraries, ...services].map((x) => (
 						<a href={x.url}>
@@ -152,6 +153,7 @@ const services: LegoPiece[] = [
 									width={86 * 2}
 									height={86 * 2}
 									title={x.name}
+									id={`id-${x.name}`}
 								/>
 							) : (
 								<Image
@@ -163,12 +165,14 @@ const services: LegoPiece[] = [
 									title={x.name}
 									loading="eager"
 									decoding="sync"
+									id={`id-${x.name}`}
 								/>
 							)}
 						</a>
 					))
 				}
 			</div>
+			<img class="absolute w-[6rem]" src={weWorkHere} alt="We work here" id="we-work-here" />
 			<div class="mt-[3.75rem] flex justify-center gap-6">
 				<a class="text-xl font-medium uppercase" href="/faq">FAQ</a>
 			</div>
@@ -253,5 +257,20 @@ yarn dev</pre>
 	</main>
 	<script>
 		document.body.classList.add('overscroll-none');
+
+		const fogbender = document.getElementById('id-Fogbender');
+		const weWorkHere = document.getElementById('we-work-here');
+
+		const tellEmWhere = () => {
+			if (fogbender && weWorkHere) {
+				const { left } = fogbender.getBoundingClientRect();
+				weWorkHere.style.left = left - 10 + 'px';
+			}
+		};
+
+		if (fogbender && weWorkHere && tellEmWhere) {
+			addEventListener('resize', () => tellEmWhere());
+			addEventListener('load', () => tellEmWhere());
+		}
 	</script>
 </Layout>
