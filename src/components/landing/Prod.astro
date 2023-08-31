@@ -48,7 +48,7 @@ import Layout from '../../layouts/Layout.astro';
 		>
 			<a
 				href="/app"
-				class="max-w-max bg-black px-8 py-2 text-lg uppercase text-white no-underline drop-shadow-[6px_6px_0_rgba(211,211,211)] visited:text-white hover:text-yellow-300"
+				class="ignore-visited max-w-max bg-black px-8 py-2 text-lg uppercase text-white no-underline drop-shadow-[6px_6px_0_rgba(211,211,211) hover:text-yellow-300"
 			>
 				Get started
 			</a>
@@ -68,12 +68,12 @@ import Layout from '../../layouts/Layout.astro';
 		</div>
 
 		<style>
-			a {
+			a:not(.ignore-visited) {
 				color: #0029ff;
 				text-decoration: underline;
 			}
 
-			a:visited {
+			a:visited:not(.ignore-visited) {
 				color: #bc48d9;
 			}
 		</style>
