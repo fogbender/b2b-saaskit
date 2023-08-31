@@ -12,9 +12,9 @@ import { CopyToClipboardBtn, JsonSnippet } from './Prompt';
 import {
 	defaultPrivacyLevel,
 	detectTemplates,
-	Message,
-	PrivacyLevel,
-	PromptState,
+	type Message,
+	type PrivacyLevel,
+	type PromptState,
 	resolveTemplates,
 	updateTemplateValue,
 } from './utils';

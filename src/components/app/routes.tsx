@@ -1,6 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
-import { Outlet, RouteObject } from 'react-router-dom';
+import { Outlet, type RouteObject } from 'react-router-dom';
 
 import { env } from '../../config';
 import type { Helpers } from '../../lib/trpc/root';
