@@ -7,7 +7,7 @@ import type { FogbenderTokenResponse } from '../../types/types';
 
 export const prerender = false;
 
-export const post: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request }) => {
 	const propelauth = initBaseAuth({
 		authUrl: serverEnv.PUBLIC_AUTH_URL,
 		apiKey: serverEnv.PROPELAUTH_API_KEY,
