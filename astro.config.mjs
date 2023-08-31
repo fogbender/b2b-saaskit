@@ -6,7 +6,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	integrations: [react()],
 	output: 'hybrid',
-	adapter: vercel(),
+	adapter: vercel({
+		functionPerRoute: false,
+	}),
 	// eslint-disable-next-line no-undef
 	site: process.env.SITE_URL,
 	vite: {
