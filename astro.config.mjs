@@ -19,4 +19,7 @@ export default defineConfig({
 			sourcemap: true /* B2B:CONFIG consider disabling sourcemaps for production */,
 		},
 	},
+	server: {
+		port: 3000,
+	},
 });
