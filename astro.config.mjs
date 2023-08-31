@@ -9,9 +9,6 @@ export default defineConfig({
 	adapter: vercel(),
 	// eslint-disable-next-line no-undef
 	site: process.env.SITE_URL,
-	experimental: {
-		assets: true,
-	},
 	vite: {
 		optimizeDeps: {
 			exclude: ['@resvg/resvg-js'],
