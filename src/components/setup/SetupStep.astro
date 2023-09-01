@@ -1,4 +1,6 @@
 ---
+import { DetailsBody } from '../solid/DetailsBody';
+
 export type Props = {
 	scope: string;
 	id: string;
@@ -40,11 +42,12 @@ const { id, title, stepDone, expanded = false, scope } = Astro.props;
 				{Astro.props.underConstruction && <span>🚧</span>}
 				{stepDone && <span>✅</span>}
 			</label>
-			<details-body
+			<DetailsBody
+				client:load
 				class="prose ml-2 cursor-auto break-words px-3 prose-a:text-blue-600 visited:prose-a:text-fuchsia-600 hover:prose-a:text-rose-500"
 			>
 				<slot />
-			</details-body>
+			</DetailsBody>
 		</div>
 	</setup-step>
 </div>
@@ -129,3 +132,4 @@ const { id, title, stepDone, expanded = false, scope } = Astro.props;
 	}
 	customElements.define('setup-step', SetupStepElement);
 </script>
+../solid/DetailsBody

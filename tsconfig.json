@@ -5,8 +5,7 @@
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsx": "preserve"
   },
   "exclude": ["node_modules", "dist"]
 }
