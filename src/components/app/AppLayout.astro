@@ -6,7 +6,7 @@ import type { Props as SeoProps } from '../head/SEO.astro';
 export type Props = SeoProps;
 ---
 
-<Layout {...Astro.props}>
+<Layout {...Astro.props} spa={true}>
 	<div class="relative flex min-h-screen flex-col justify-between gap-4">
 		<main class="relative grow">
 			<slot />
