@@ -25,20 +25,20 @@
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.5.4.tgz#82ff7e1b23eee4888ae5b5ee7a956bc40bcf7a34"
   integrity sha512-Muk0Nr1Yp2KQ9cwPBKiw+YbTHYGT8ag4RXV+P+4d2nkO2iya46nONzvH4Yv8S/sldL2ij17HGxFMmlPAxaSr6A==
 
-"@astrojs/compiler@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-2.0.1.tgz#f275b53bf029f1708b5eef960d7dde12ae6df82d"
-  integrity sha512-DfBR7Cf+tOgQ4n7TIgTtU5x5SEA/08DNshpEPcT+91A0KbBlmUOYMBM/O6qAaHkmVo1KIoXQYhAmfdTT1zx9PQ==
+"@astrojs/compiler@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-2.1.0.tgz#ebc9e648d606709e6f03be9e6ced3777b09e7936"
+  integrity sha512-Mp+qrNhly+27bL/Zq8lGeUY+YrdoU0eDfIlAeGIPrzt0PnI/jGpvPUdCaugv4zbCrDkOUScFfcbeEiYumrdJnw==
 
 "@astrojs/internal-helpers@0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@astrojs/internal-helpers/-/internal-helpers-0.2.0.tgz#3b6fabd28fba86aa44e26f9fbb238ac6b4962b71"
   integrity sha512-NQ4ppp1CM0HNkKbJNM4saVSfmUYzGlRalF6wx7F6T/MYHYSWGuojY89/oFTy4t8VlOGUCUijlsVNNeziWaUo5g==
 
-"@astrojs/markdown-remark@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-3.0.0.tgz#2e191a1714b95721c1f109cd0e9a1b36e24d25a0"
-  integrity sha512-s8I49Je4++ImgYAgwL32HgN8m6we2qz3RtBpN4AjObMODPwDylmzUHZksD8Toy31q/P59ED3MuwphqOGm9l03w==
+"@astrojs/markdown-remark@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-3.1.0.tgz#5ae8ecb06ca941dd29b7945cec911afa11764782"
+  integrity sha512-5UwamK0iFxN0n1Nw44vUk8AkQr4psKS63hM3D1/4bhhjs4ZFRyrYmg5NjScaMEXZcrd2KgGPsd+PEwNs4mlBOw==
   dependencies:
     "@astrojs/prism" "^3.0.0"
     github-slugger "^2.0.0"
@@ -70,10 +70,10 @@
     "@vitejs/plugin-react" "^4.0.4"
     ultrahtml "^1.3.0"
 
-"@astrojs/telemetry@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/telemetry/-/telemetry-3.0.0.tgz#1af7e508f752805a52f44160723d1347ac07ca4e"
-  integrity sha512-RhFlEXTiT0gbWX1osMuPS9IWm1SwhQmCZVAdAixrPyZ0xiLlHfw3Nkw3z6IYuzX3hqbx24G4XmkT/akBMBqxPg==
+"@astrojs/telemetry@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/telemetry/-/telemetry-3.0.1.tgz#4baee14a7c4271f461e4e080dffa26f09c39afa6"
+  integrity sha512-7zJMuikRDQ0LLLivteu0+y4pqdgznrChFiRrY3qmKlOEkLWD1T3u1a5M970lvpErP7Vgh4P298JBPjv8LTj+sw==
   dependencies:
     ci-info "^3.8.0"
     debug "^4.3.4"
@@ -1482,15 +1482,15 @@ astro-seo@^0.7.2:
   resolved "https://registry.yarnpkg.com/astro-seo/-/astro-seo-0.7.4.tgz#0c2788b97ec3944390be2dd39a8ad9a6aec294b0"
   integrity sha512-E+wJmxOnvBRjgzVctdGk/VdwoEqeQ6Q/KgVW2wRBXZWJVDgOweB32Da/UiH0/FpGncPzo2daOrc08DNn5wTanw==
 
-astro@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-3.0.5.tgz#57de462a285b9b0044db7231c241bc9d372076b1"
-  integrity sha512-g6WOl39HyzQJhPSkcO+Tvm3aZ2ZumfAPnxyhnFKmFRDOI78a59iW9EdRl9TbLH6Cinj2CQiOBATfGiR2FU4EXg==
+astro@^3.0.12:
+  version "3.0.12"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-3.0.12.tgz#b216c975e657da6f8110833734fb1549fc031d2f"
+  integrity sha512-nDLI9OGEjYIX90a1Md1orqyurPxqXTWTy7Sm3ZsWl5dpzSjcUXo3VB/GTvNjAMS9sE40BOxhay7/hnnQuI8p7A==
   dependencies:
-    "@astrojs/compiler" "^2.0.1"
+    "@astrojs/compiler" "^2.1.0"
     "@astrojs/internal-helpers" "0.2.0"
-    "@astrojs/markdown-remark" "3.0.0"
-    "@astrojs/telemetry" "3.0.0"
+    "@astrojs/markdown-remark" "3.1.0"
+    "@astrojs/telemetry" "3.0.1"
     "@babel/core" "^7.22.10"
     "@babel/generator" "^7.22.10"
     "@babel/parser" "^7.22.10"
@@ -1524,13 +1524,12 @@ astro@^3.0.5:
     ora "^7.0.1"
     p-limit "^4.0.0"
     path-to-regexp "^6.2.1"
-    preferred-pm "^3.0.3"
+    preferred-pm "^3.1.2"
     prompts "^2.4.2"
     rehype "^12.0.1"
     resolve "^1.22.4"
     semver "^7.5.4"
     server-destroy "^1.0.1"
-    sharp "^0.32.5"
     shiki "^0.14.3"
     string-width "^6.1.0"
     strip-ansi "^7.1.0"
@@ -1540,9 +1539,11 @@ astro@^3.0.5:
     vfile "^5.3.7"
     vite "^4.4.9"
     vitefu "^0.2.4"
-    which-pm "^2.0.0"
+    which-pm "^2.1.1"
     yargs-parser "^21.1.1"
     zod "3.21.1"
+  optionalDependencies:
+    sharp "^0.32.5"
 
 astrojs-compiler-sync@^0.3.0:
   version "0.3.3"
@@ -4645,10 +4646,10 @@ prebuild-install@^7.1.1:
     tar-fs "^2.0.0"
     tunnel-agent "^0.6.0"
 
-preferred-pm@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/preferred-pm/-/preferred-pm-3.0.3.tgz#1b6338000371e3edbce52ef2e4f65eb2e73586d6"
-  integrity sha512-+wZgbxNES/KlJs9q40F/1sfOd/j7f1O9JaHcW5Dsn3aUUOZg3L2bjpVUcKV2jvtElYfoTuQiNeMfQJ4kwUAhCQ==
+preferred-pm@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/preferred-pm/-/preferred-pm-3.1.2.tgz#aedb70550734a574dffcbf2ce82642bd1753bdd6"
+  integrity sha512-nk7dKrcW8hfCZ4H6klWcdRknBOXWzNQByJ0oJyX97BOupsYD+FzLS4hflgEu/uPUEHZCuRfMxzCBsuWd7OzT8Q==
   dependencies:
     find-up "^5.0.0"
     find-yarn-workspace-root2 "1.2.16"
@@ -5866,10 +5867,18 @@ which-pm-runs@^1.1.0:
   resolved "https://registry.yarnpkg.com/which-pm-runs/-/which-pm-runs-1.1.0.tgz#35ccf7b1a0fce87bd8b92a478c9d045785d3bf35"
   integrity sha512-n1brCuqClxfFfq/Rb0ICg9giSZqCS+pLtccdag6C2HyufBrh3fBOiy9nb6ggRMvWOVH5GrdJskj5iGTZNxd7SA==
 
-which-pm@2.0.0, which-pm@^2.0.0:
+which-pm@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/which-pm/-/which-pm-2.0.0.tgz#8245609ecfe64bf751d0eef2f376d83bf1ddb7ae"
   integrity sha512-Lhs9Pmyph0p5n5Z3mVnN0yWcbQYUAD7rbQUiMsQxOJ3T57k7RFe35SUwWMf7dsbDZks1uOmw4AecB/JMDj3v/w==
+  dependencies:
+    load-yaml-file "^0.2.0"
+    path-exists "^4.0.0"
+
+which-pm@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/which-pm/-/which-pm-2.1.1.tgz#0be2b70c67e94a32e87b9768a94a7f0954f2dcfa"
+  integrity sha512-xzzxNw2wMaoCWXiGE8IJ9wuPMU+EYhFksjHxrRT8kMT5SnocBPRg69YAMtyV4D12fP582RA+k3P8H9J5EMdIxQ==
   dependencies:
     load-yaml-file "^0.2.0"
     path-exists "^4.0.0"
