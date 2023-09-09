@@ -19,6 +19,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.2.0",
     "@astrojs/react": "^3.0.0",
     "@astrojs/vercel": "^4.0.2",
     "@propelauth/base-elements": "^0.0.16",
@@ -59,6 +60,7 @@
     "postgres": "^3.3.4",
     "posthog-js": "^1.69.0",
     "posthog-node": "^3.1.1",
+    "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.3.0",
     "rad-event-listener": "^0.2.4",
     "react": "^18.0.0",
@@ -68,11 +70,12 @@
     "solid-js": "^1.7.6",
     "stripe": "^12.12.0",
     "tsx": "^3.12.7",
+    "typescript": "^5.2.2",
     "unthunk": "^0.0.1",
     "wretch": "^2.5.2"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
-    "tailwindcss": "^3.3.2"
+    "tailwindcss": "^3.3.3"
   }
 }
