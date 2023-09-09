@@ -1,7 +1,7 @@
 import type { AstroGlobal } from 'astro';
 import { createStaticHandler } from 'react-router-dom/server';
 
-import { RemixContext, routes } from '../components/app/routes';
+import { type RemixContext, routes } from '../components/app/routes';
 import { createHelpers } from './trpc/root';
 
 export const handler = createStaticHandler(routes);

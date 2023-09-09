@@ -1,4 +1,4 @@
-import { createEnv, Simplify } from '@t3-oss/env-core';
+import { createEnv, type Simplify } from '@t3-oss/env-core';
 import { z } from 'zod';
 
 // in case if the script was imported from node like in case of migrations
