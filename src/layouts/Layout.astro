@@ -4,6 +4,7 @@ import '../styles/tailwind.css';
 import type { Simplify } from 'astro:assets';
 
 import pwf from '../assets/b2b7.svg?url';
+import CheckerOverlay from '../components/head/CheckerOverlay.astro';
 import Posthog from '../components/head/Posthog.astro';
 import SEO, { Props as SeoProps } from '../components/head/SEO.astro';
 
@@ -20,6 +21,7 @@ const props = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<SEO {...props} />
 		<Posthog />
+		{import.meta.env.DEV && <CheckerOverlay />}
 	</head>
 	<body class="md:overscroll-y-none">
 		<slot />
