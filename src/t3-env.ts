@@ -1,4 +1,4 @@
-import { createEnv, Simplify } from '@t3-oss/env-core';
+import { createEnv, type Simplify } from '@t3-oss/env-core';
 import { z } from 'zod';
 
 // in case if the script was imported from node like in case of migrations
@@ -39,7 +39,10 @@ export const serverEnv = createEnv({
 	onValidationError: (zodError) => {
 		// we can't use internal AstroError directly unfortunatelly https://github.com/withastro/astro/blob/c459b81785b8bbdd07c3d27b471990e8ffa656df/packages/astro/src/core/errors/errors.ts#L32
 		class AstroError extends Error {
-			constructor(message: string, public hint?: string) {
+			constructor(
+				message: string,
+				public hint?: string
+			) {
 				super(message);
 			}
 		}

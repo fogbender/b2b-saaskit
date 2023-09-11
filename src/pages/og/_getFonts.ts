@@ -13,7 +13,7 @@ export async function getFont<TWeights extends readonly number[]>({
 		text ? `&text=${encodeURIComponent(text)}` : ''
 	}`;
 
-	const css = await (
+	const css: string = await (
 		await fetch(API, {
 			headers: {
 				// Make sure it returns TTF.

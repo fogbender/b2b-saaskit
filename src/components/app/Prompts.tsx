@@ -26,8 +26,9 @@ export function Prompts() {
 			// snapshot the previous value
 			const previousPrompts = trpcUtils.prompts.getPrompts.getData({});
 			// optimistically update to the new value
-			trpcUtils.prompts.getPrompts.setData({}, (oldData) =>
-				oldData?.filter((prompt) => prompt.promptId !== promptId)
+			trpcUtils.prompts.getPrompts.setData(
+				{},
+				(oldData) => oldData?.filter((prompt) => prompt.promptId !== promptId)
 			);
 			// return a context object with the snapshotted value
 			return { previousPrompts };

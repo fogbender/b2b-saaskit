@@ -67,7 +67,7 @@ export const createTRPCContext = (opts: CreateAstroContextOptions) => {
  * errors on the backend.
  */
 import { createServerSideHelpers } from '@trpc/react-query/server';
-import { AnyRouter, initTRPC, TRPCError } from '@trpc/server';
+import { type AnyRouter, initTRPC, TRPCError } from '@trpc/server';
 import { parse } from 'cookie';
 import superjson from 'superjson';
 import { unthunk } from 'unthunk';

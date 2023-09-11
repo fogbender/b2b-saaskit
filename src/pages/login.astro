@@ -1,11 +1,11 @@
 ---
-import { Login } from '../components/Login';
+import { Login as LoginReact } from '../components/Login';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Login">
 	<main class="container mx-auto my-8">
 		<h1 class="text-4xl">Welcome, please sign in</h1>
-		<Login client:load />
+		<LoginReact client:load />
 	</main>
 </Layout>

@@ -4,10 +4,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { websiteTitle } from '../../constants';
 import type { PromptPrivacyLevel } from '../../lib/trpc/routers/prompts';
-import { RouterOutput, trpc } from '../trpc';
+import { type RouterOutput, trpc } from '../trpc';
 import { Layout } from './Layout';
 import { usePromptErrorPage } from './usePromptErrorPage';
-import { Message, resolveTemplates, useRedirectToLoginPage } from './utils';
+import { type Message, resolveTemplates, useRedirectToLoginPage } from './utils';
 
 export function Prompt() {
 	const navigate = useNavigate();

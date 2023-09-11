@@ -1,4 +1,4 @@
-import { handleError, initBaseAuth, UserMetadata } from '@propelauth/node';
+import { handleError, initBaseAuth, type UserMetadata } from '@propelauth/node';
 import type { APIRoute } from 'astro';
 
 import { serverEnv } from '../../../t3-env';

@@ -1,6 +1,6 @@
 import {
 	createStaticRouter,
-	StaticHandlerContext,
+	type StaticHandlerContext,
 	StaticRouterProvider,
 } from 'react-router-dom/server';
 
