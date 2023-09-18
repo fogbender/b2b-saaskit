@@ -5,7 +5,7 @@ needsEnv: ["PROD"]
 
 At this point, Prompts with Friends is fully configured on your machine! You can check it out here: <a href="http://localhost:3000/app" >http://localhost:3000/app</a>.
 
-Except for the data, you should see the exact same app we have running on <a href="https://promptswithfirends.com/app" >https://promptswithfirends.com/app</a>.
+Except for the data, you should see the exact same app we have running on <a href="https://promptswithfriends.com/app" >https://promptswithfirends.com/app</a>.
 
 A great next step is to learn how to deploy your version of the app to production. For this, we'll be using Vercel (<a href="https://vercel.com" >https://vercel.com</a>), a cloud platform for deploying and hosting static sites and serverless functions.
 
