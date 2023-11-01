@@ -1,5 +1,6 @@
 import react from '@astrojs/react';
 import vercel from '@astrojs/vercel/serverless';
+import { unstable_vitePlugin as remix } from '@remix-run/dev';
 import { defineConfig } from 'astro/config';
 import checker from 'vite-plugin-checker';
 
@@ -19,6 +20,7 @@ export default defineConfig({
 				overlay: { initialIsOpen: false, badgeStyle: 'left: 55px; bottom: 8px;' },
 				enableBuild: false, // we already check that in `yarn ci:check`
 			}),
+			remix(),
 		],
 		optimizeDeps: {
 			exclude: ['@resvg/resvg-js'],
