@@ -1,9 +1,24 @@
 ---
 import { getCounter } from './_db';
+const remix = await import('virtual:server-entry');
 
 export const prerender = false;
 
+
 const i = await getCounter();
+// export default function handleRequest(
+//   request: Request,
+//   responseStatusCode: number,
+//   responseHeaders: Headers,
+//   remixContext: EntryContext,
+//   loadContext: AppLoadContext
+// ) {
+const request = Astro.request;
+const responseStatusCode = Astro.response.status
+const responseHeaders = Astro.response.headers
+const remixContext = {};
+const loadContext = {};
+console.log('i', i, await remix.entry.module.default(request, responseStatusCode, responseHeaders, remixContext, loadContext));
 ---
 
 <script src="https://unpkg.com/htmx.org@1.9.2"></script>
