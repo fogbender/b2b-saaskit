@@ -145,7 +145,9 @@ function OptionalComments() {
 
 	return (
 		<div className="flex h-screen flex-col items-center justify-center">
-			<h2 className="mb-4 text-2xl">Any comments or suggestions?</h2>
+			<h2 className="mb-4 text-2xl" style={{ textAlign: 'center' }}>
+				Any comments or suggestions?
+			</h2>
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
@@ -206,7 +208,9 @@ function OptionalComments() {
 function ThankYou() {
 	return (
 		<div className="flex h-screen flex-col items-center justify-center">
-			<h2 className="mb-4 text-2xl">Thank you for participating in our survey!</h2>
+			<h2 className="mb-4 text-2xl" style={{ textAlign: 'center' }}>
+				Thank you for participating in our survey!
+			</h2>
 			<Link to="/survey" className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
 				Return back to survey home page
 			</Link>
@@ -242,14 +246,16 @@ function Published() {
 
 	return (
 		<div className="flex flex-col items-center justify-center py-20">
-			<h2 className="mb-4 text-2xl">Thank you to everyone who participated in the survey</h2>
+			<h2 className="mb-4 text-2xl" style={{ textAlign: 'center' }}>
+				Thank you to everyone who participated in the survey
+			</h2>
 			<Link
 				to="/survey/rate-experience"
 				className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
 			>
 				Add your own comment!
 			</Link>
-			<div className="my-4 w-full sm:w-[500px] lg:w-[800px]">
+			<div className="w-75 my-4 sm:w-[500px] lg:w-[800px]">
 				<h3 className="mb-2 text-xl">
 					{!postSurveyMutation.isLoading && postSurveyMutation.data?.length === 0
 						? 'No comments yet'
