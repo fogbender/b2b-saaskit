@@ -3,7 +3,7 @@ import type { APIRoute } from 'astro';
 export const prerender = true; // generates static robots.txt 🤯
 
 // you might consider using `astro-robots-txt` instead of this file
-export const get: APIRoute = () => {
+export const GET: APIRoute = () => {
 	const site = import.meta.env.SITE as string | undefined;
 	const siteUrl = site ? new URL(site) : undefined;
 	const sitemapEnabled /* B2B:CONFIG */ = false;
