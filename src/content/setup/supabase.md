@@ -14,7 +14,7 @@ Supabase is free for 2 lightweight projects.
 - Open a fresh editor buffer and paste the password there
 - Click "Create new project" - this can take a few minutes to complete
 
-2. Click on <a href="https://app.supabase.com/project/_/settings/database" >"Project Settings" - "Database"</a>, navigate to "Connection string" and copy the URI (it will look something like `postgresql://postgres:[YOUR-PASSWORD]@db.xxxxxxxxxxxxxxxxxxxx.supabase.co:5432/postgres`)
+2. Click on <a href="https://app.supabase.com/project/_/settings/database" >"Project Settings" - "Database"</a>, navigate to "Connection string" and copy the URI (it will look something like `postgresql://postgres.xxxxxxxxxxxxxxxxxxxx:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres`)
 
 3. Paste the URI to the editor buffer from step 1, replace `[YOUR-PASSWORD]` with your password, then copy the resulting string
 
