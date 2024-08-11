@@ -13,7 +13,7 @@ import OpenGraphPrompt from './_openGraphPrompt';
 
 export const prerender = false;
 
-export const get: APIRoute = async (request) => {
+export const GET: APIRoute = async (request) => {
 	const params = request.url.searchParams;
 	const kind = params.get('kind') as 'prompt' | null;
 	const title = params.get('title') ?? websiteTitle;

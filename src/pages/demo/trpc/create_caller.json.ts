@@ -4,7 +4,7 @@ import { createCaller } from '../../../lib/trpc/root';
 
 export const prerender = false; // to allow dynamic title per user
 
-export const all: APIRoute = async ({ request }) => {
+export const ALL: APIRoute = async ({ request }) => {
 	const responseHeaders = new Headers();
 	responseHeaders.set('content-type', 'application/json');
 	const callerExample = await createCaller({
