@@ -1,11 +1,11 @@
 import { defineConfig } from 'drizzle-kit';
 
-export const migrationsFolder = './src/db/migrations';
+export const dbFolder = './src/db';
 
 export default defineConfig({
 	dialect: 'postgresql', // supports "sqlite" | "mysql"
-	schema: './src/db',
-	out: migrationsFolder,
+	schema: `${dbFolder}/schema.ts`,
+	out: dbFolder,
 	dbCredentials: {
 		// used by "push" and "pull" commands
 		url: process.env.DATABASE_URL!,

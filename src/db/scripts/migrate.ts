@@ -2,7 +2,7 @@
 // `drizzle-kit generate` but moving it to src/db/scripts seems to fix the issue
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 
-import { migrationsFolder } from '../../../drizzle.config';
+import { dbFolder as migrationsFolder } from '../../../drizzle.config';
 import { db } from '../db';
 
 console.log('Migrating database using', migrationsFolder, 'folder');
