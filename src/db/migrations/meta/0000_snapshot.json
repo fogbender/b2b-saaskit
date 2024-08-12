@@ -1,10 +1,10 @@
 {
-  "version": "5",
-  "dialect": "pg",
-  "id": "1d984902-03b4-4306-aa9b-a9adef27bd11",
+  "id": "76756e22-d13d-40bc-9c2e-ecf3e247ef98",
   "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "gpt_keys": {
+    "public.gpt_keys": {
       "name": "gpt_keys",
       "schema": "",
       "columns": {
@@ -29,6 +29,7 @@
         "key_type": {
           "name": "key_type",
           "type": "gpt_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -67,9 +68,10 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
-    "prompt_likes": {
+    "public.prompt_likes": {
       "name": "prompt_likes",
       "schema": "",
       "columns": {
@@ -96,16 +98,17 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "prompt_likes_prompt_id_user_id": {
-          "name": "prompt_likes_prompt_id_user_id",
+        "prompt_likes_prompt_id_user_id_pk": {
+          "name": "prompt_likes_prompt_id_user_id_pk",
           "columns": [
             "prompt_id",
             "user_id"
           ]
         }
-      }
+      },
+      "uniqueConstraints": {}
     },
-    "prompts": {
+    "public.prompts": {
       "name": "prompts",
       "schema": "",
       "columns": {
@@ -175,9 +178,10 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
-    "shared_key_ratelimit": {
+    "public.shared_key_ratelimit": {
       "name": "shared_key_ratelimit",
       "schema": "",
       "columns": {
@@ -203,9 +207,10 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
-    "surveys": {
+    "public.surveys": {
       "name": "surveys",
       "schema": "",
       "columns": {
@@ -244,22 +249,25 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
   "enums": {
-    "gpt_type": {
+    "public.gpt_type": {
       "name": "gpt_type",
-      "values": {
-        "gpt-3": "gpt-3",
-        "gpt-4": "gpt-4"
-      }
+      "schema": "public",
+      "values": [
+        "gpt-3",
+        "gpt-4"
+      ]
     }
   },
   "schemas": {},
+  "sequences": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
+    "tables": {}
   }
 }
