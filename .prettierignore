@@ -2,4 +2,4 @@
 dist
 .vscode
 .vercel
-src/db/migrations
+src/db/meta/
