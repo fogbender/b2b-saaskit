@@ -1,4 +1,6 @@
 {
+  "id": "76756e22-d13d-40bc-9c2e-ecf3e247ef98",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -27,6 +29,7 @@
         "key_type": {
           "name": "key_type",
           "type": "gpt_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -95,8 +98,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "prompt_likes_prompt_id_user_id": {
-          "name": "prompt_likes_prompt_id_user_id",
+        "prompt_likes_prompt_id_user_id_pk": {
+          "name": "prompt_likes_prompt_id_user_id_pk",
           "columns": [
             "prompt_id",
             "user_id"
@@ -261,12 +264,10 @@
     }
   },
   "schemas": {},
+  "sequences": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "1d984902-03b4-4306-aa9b-a9adef27bd11",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "sequences": {}
+    "tables": {}
+  }
 }
