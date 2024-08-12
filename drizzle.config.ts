@@ -6,5 +6,4 @@ export default defineConfig({
 	dialect: 'postgresql', // supports "sqlite" | "mysql"
 	schema: './src/db',
 	out: migrationsFolder,
-	breakpoints: false,
 });
