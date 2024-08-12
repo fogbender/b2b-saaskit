@@ -202,7 +202,7 @@ export const EditPromptControls = ({
 
 	const runPromptMutation = trpc.prompts.runPrompt.useMutation({
 		onSettled: () => {
-			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getDefaultKey));
+			queryClient.invalidateQueries({ queryKey: getQueryKey(trpc.prompts.getDefaultKey) });
 		},
 	});
 
@@ -264,7 +264,7 @@ export const EditPromptControls = ({
 
 	const addPromptMutation = trpc.prompts.createPrompt.useMutation({
 		onSettled: () => {
-			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getPrompts));
+			queryClient.invalidateQueries({ queryKey: getQueryKey(trpc.prompts.getPrompts) });
 		},
 		onSuccess: (promptId) => {
 			navigate(`/app/prompts/${promptId}`);
@@ -273,7 +273,7 @@ export const EditPromptControls = ({
 	const [saved, setSaved] = useState<string>();
 	const updatePromptMutation = trpc.prompts.updatePrompt.useMutation({
 		onSettled: () => {
-			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getPrompts));
+			queryClient.invalidateQueries({ queryKey: getQueryKey(trpc.prompts.getPrompts) });
 		},
 		onSuccess: (promptId) => {
 			setSaved(promptId);
@@ -288,7 +288,7 @@ export const EditPromptControls = ({
 			navigate(`/app/prompts`);
 		},
 		onSettled: () => {
-			queryClient.invalidateQueries(getQueryKey(trpc.prompts.getPrompts));
+			queryClient.invalidateQueries({ queryKey: getQueryKey(trpc.prompts.getPrompts) });
 		},
 	});
 
