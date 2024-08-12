@@ -32,12 +32,12 @@ export const GET: APIRoute = async (request) => {
 					description,
 					chatTemplate,
 					originUrl: request.url.origin,
-			  })
+				})
 			: OpenGraph({
 					title,
 					description,
 					originUrl: request.url.origin,
-			  }),
+				}),
 		{
 			width: 1200,
 			height: 630,

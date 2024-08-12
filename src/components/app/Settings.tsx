@@ -181,8 +181,8 @@ export function Settings() {
 									{addKeyMutation.isLoading
 										? 'Saving...'
 										: keysQuery.data?.length
-										? 'Replace'
-										: 'Save'}
+											? 'Replace'
+											: 'Save'}
 								</button>
 								{addKeyMutation.isError && (
 									<div>
