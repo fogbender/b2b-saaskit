@@ -1,10 +1,8 @@
 {
-  "version": "5",
-  "dialect": "pg",
-  "id": "1d984902-03b4-4306-aa9b-a9adef27bd11",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "gpt_keys": {
+    "public.gpt_keys": {
       "name": "gpt_keys",
       "schema": "",
       "columns": {
@@ -67,9 +65,10 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
-    "prompt_likes": {
+    "public.prompt_likes": {
       "name": "prompt_likes",
       "schema": "",
       "columns": {
@@ -103,9 +102,10 @@
             "user_id"
           ]
         }
-      }
+      },
+      "uniqueConstraints": {}
     },
-    "prompts": {
+    "public.prompts": {
       "name": "prompts",
       "schema": "",
       "columns": {
@@ -175,9 +175,10 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
-    "shared_key_ratelimit": {
+    "public.shared_key_ratelimit": {
       "name": "shared_key_ratelimit",
       "schema": "",
       "columns": {
@@ -203,9 +204,10 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
-    "surveys": {
+    "public.surveys": {
       "name": "surveys",
       "schema": "",
       "columns": {
@@ -244,16 +246,18 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
   "enums": {
-    "gpt_type": {
+    "public.gpt_type": {
       "name": "gpt_type",
-      "values": {
-        "gpt-3": "gpt-3",
-        "gpt-4": "gpt-4"
-      }
+      "schema": "public",
+      "values": [
+        "gpt-3",
+        "gpt-4"
+      ]
     }
   },
   "schemas": {},
@@ -261,5 +265,8 @@
     "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "1d984902-03b4-4306-aa9b-a9adef27bd11",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "sequences": {}
 }
