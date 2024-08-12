@@ -23,12 +23,6 @@ export default tseslint.config(
 	...tseslint.configs.recommended,
 	...eslintPluginAstro.configs['all'],
 	{
-		files: ['src/pages/demo/htmx/*.astro', 'src/components/landing/B2B.astro'],
-		rules: {
-			'astro/no-unused-css-selector': 'off',
-		},
-	},
-	{
 		files: ['**/*.md', '**/*.md/*.{js,jsx,ts,tsx,astro}'],
 		plugins: {
 			markdown,
@@ -68,7 +62,7 @@ export default tseslint.config(
 			'@typescript-eslint/no-non-null-assertion': 'off',
 			'@typescript-eslint/no-empty-function': 'off',
 			'no-empty-pattern': 'error',
-
+			'@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true }],
 			// Stylistic concerns that don't interfere with Prettier
 			'no-mixed-spaces-and-tabs': 'off',
 			'padding-line-between-statements': 'off',
@@ -80,6 +74,12 @@ export default tseslint.config(
 		rules: {
 			'no-undef': 'off',
 			'@typescript-eslint/no-require-imports': 'off',
+		},
+	},
+	{
+		files: ['src/pages/demo/htmx/*.astro', 'src/components/landing/B2B.astro'],
+		rules: {
+			'astro/no-unused-css-selector': 'off',
 		},
 	}
 );

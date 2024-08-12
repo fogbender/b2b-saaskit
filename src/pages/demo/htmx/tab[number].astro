@@ -1,8 +1,7 @@
 ---
-import clsx from 'clsx';
-
+// eslint-disable-next-line astro/no-exports-from-components
 export const tabs = ['1', '2', '3'];
-export const tabContent = [
+const tabContent = [
 	'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum',
 	'Doloribus, voluptatum. Quisquam, voluptatum',
 	'Magni, voluptatum. Quisquam, voluptatum',
@@ -18,7 +17,7 @@ const currentTab = Astro.params.number;
 <div class="tab-list">
 	{
 		tabs.map((tab) => (
-			<a hx-get={`/demo/htmx/tab${tab}`} class:list={currentTab === tab && 'selected'}>
+			<a hx-get={`/demo/htmx/tab${tab}`} class:list={[currentTab === tab && 'selected']}>
 				Tab {tab}
 			</a>
 		))
