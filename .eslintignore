@@ -1,6 +1,0 @@
-/.astro
-dist
-.vscode
-.vercel
-src/db/migrations
-src/env.d.ts

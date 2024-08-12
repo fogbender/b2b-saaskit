@@ -311,8 +311,8 @@ export const EditPromptControls = ({
 									{(message.role === 'user'
 										? 'User'
 										: message.role === 'assistant'
-										? 'Assistant'
-										: 'System') + ': '}
+											? 'Assistant'
+											: 'System') + ': '}
 								</label>
 								<div className="flex w-32 flex-col items-start">
 									{actions
@@ -371,12 +371,12 @@ export const EditPromptControls = ({
 												{action === 'delete'
 													? 'Delete'
 													: action === 'regenerate'
-													? 'Regenerate'
-													: action === 'move up'
-													? 'Move up'
-													: action === 'move down'
-													? 'Move down'
-													: 'Change to ' + action}
+														? 'Regenerate'
+														: action === 'move up'
+															? 'Move up'
+															: action === 'move down'
+																? 'Move down'
+																: 'Change to ' + action}
 											</button>
 										))}
 								</div>
@@ -416,8 +416,8 @@ export const EditPromptControls = ({
 										message.role === 'system'
 											? 'bg-gray-200'
 											: message.role === 'assistant'
-											? 'bg-yellow-50'
-											: '',
+												? 'bg-yellow-50'
+												: '',
 										'block min-h-[8rem] w-full resize-y overflow-y-scroll whitespace-pre-wrap rounded-md border border-gray-300 p-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
 									)}
 								></textarea>

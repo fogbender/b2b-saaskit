@@ -41,7 +41,7 @@ export async function searchSubscriptionsByOrgId(
 							customer: customer.id,
 							return_url: returnUrl,
 						})
-				  ).url
+					).url
 				: undefined;
 			return {
 				active: x.status === 'active',

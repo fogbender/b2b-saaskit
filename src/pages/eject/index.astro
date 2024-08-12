@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, getEntryBySlug } from 'astro:content';
+import { type CollectionEntry, getEntry } from 'astro:content';
 
 import SetupStep from '../../components/setup/SetupStep.astro';
 import Layout from '../../layouts/Layout.astro';
@@ -29,7 +29,7 @@ const parsedSteps: {
 	step: CollectionEntry<'eject'>;
 }[] = [];
 for (const slug of checksOrder) {
-	const step = await getEntryBySlug('eject', slug);
+	const step = await getEntry('eject', slug);
 	parsedSteps.push({ step });
 }
 ---
