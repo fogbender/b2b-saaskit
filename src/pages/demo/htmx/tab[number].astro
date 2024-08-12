@@ -18,7 +18,7 @@ const currentTab = Astro.params.number;
 <div class="tab-list">
 	{
 		tabs.map((tab) => (
-			<a hx-get={`/demo/htmx/tab${tab}`} class={clsx(currentTab === tab && 'selected')}>
+			<a hx-get={`/demo/htmx/tab${tab}`} class:list={currentTab === tab && 'selected'}>
 				Tab {tab}
 			</a>
 		))

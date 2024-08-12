@@ -1,9 +1,9 @@
 import eslint from '@eslint/js';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import markdown from 'eslint-plugin-markdown';
+import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tseslint from 'typescript-eslint';
-import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default tseslint.config(
 	{

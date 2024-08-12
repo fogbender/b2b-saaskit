@@ -69,8 +69,8 @@ const { id, title, stepDone, expanded = false, scope } = Astro.props;
 	}
 </style>
 <script>
+	import { createEffect, createSignal, onCleanup } from 'solid-js';
 	import { render, style } from 'solid-js/web';
-	import { createSignal, createEffect, onCleanup } from 'solid-js';
 
 	const Details = (props: { details: HTMLElement }) => {
 		// keep max height in sync with the content
