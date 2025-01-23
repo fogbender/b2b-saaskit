@@ -1,5 +1,5 @@
 import react from '@astrojs/react';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import { defineConfig } from 'astro/config';
 import checker from 'vite-plugin-checker';
 
