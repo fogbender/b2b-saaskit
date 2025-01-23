@@ -117,7 +117,7 @@ Drizzle migrations happen in two steps: the first step generates a migration fil
 To generate a migration file, run
 
 ```sh
-doppler run yarn drizzle-kit generate:pg
+doppler run yarn drizzle-kit generate
 ```
 
 This will generate a file called something like `src/db/migration/1234_xyz.sql`. Under normal circumstances, you wouldn't have to worry about this file - it will contain an auto-generated set of SQL statements needed to apply the changes expressed in your `schema.ts` to the database. However, since we're using Supabase Postgres, we have to take care of [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies when creating new tables.
