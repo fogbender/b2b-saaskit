@@ -6,9 +6,7 @@ import checker from 'vite-plugin-checker';
 // https://astro.build/config
 export default defineConfig({
 	integrations: [react()],
-	adapter: vercel({
-		functionPerRoute: false,
-	}),
+	adapter: vercel({}),
 	// eslint-disable-next-line no-undef
 	site: process.env.SITE_URL,
 	vite: {
