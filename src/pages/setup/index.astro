@@ -29,6 +29,7 @@ const parsedSteps: {
 }[] = [];
 for (const slug of checksOrder) {
 	const step = await getEntry('setup', slug);
+	if (!step) continue;
 	const stepDone = step.data.needsEnv.every((x) => {
 		const value = process.env[x] || import.meta.env[x];
 		return value !== undefined && value !== false;

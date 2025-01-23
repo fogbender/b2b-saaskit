@@ -30,7 +30,9 @@ const parsedSteps: {
 }[] = [];
 for (const slug of checksOrder) {
 	const step = await getEntry('eject', slug);
-	parsedSteps.push({ step });
+	if (step) {
+		parsedSteps.push({ step });
+	}
 }
 ---
 
