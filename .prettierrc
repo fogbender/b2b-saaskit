@@ -4,6 +4,7 @@
   "tabWidth": 2,
   "useTabs": true,
   "trailingComma": "es5",
+  "plugins": ["prettier-plugin-astro"],
   "overrides": [
     {
       "files": "package.json",
@@ -16,6 +17,12 @@
       "options": {
         "useTabs": false,
         "singleQuote": false
+      }
+    },
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
       }
     }
   ]
