@@ -6,7 +6,6 @@ import checker from 'vite-plugin-checker';
 // https://astro.build/config
 export default defineConfig({
 	integrations: [react()],
-	output: 'hybrid',
 	adapter: vercel({
 		functionPerRoute: false,
 	}),
