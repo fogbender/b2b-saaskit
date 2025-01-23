@@ -11,19 +11,18 @@ To remove the Vercel adapter, follow these steps:
 
 ```diff
 import react from '@astrojs/react';
-- import vercel from '@astrojs/vercel/serverless';
+- import vercel from '@astrojs/vercel';
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [react()],
-	output: 'hybrid',
 -	adapter: vercel(),
 	// eslint-disable-next-line no-undef
 	site: process.env.SITE_URL,
 ```
 
-<p class="text-sm pl-4">NOTE that you can use regular Astro without SSR adapters (if you remove the <code class="whitespace-nowrap">output: 'hybrid',</code> line). This can be a good option if you already have your own backend, but the Kit does not currently support such a configuration.</p>
+<p class="text-sm pl-4">NOTE that you can use regular Astro without SSR adapters (once you remove the <code class="whitespace-nowrap">adapter: vercel({}),</code> line). This can be a good option if you already have your own backend, but the Kit has some routes that will only work in SSR so you'll have to remove those yourself.</p>
 
 Instead, you can add another Astro SSR adapter from the ones available on https://docs.astro.build/en/guides/server-side-rendering/#adding-an-adapter.
 

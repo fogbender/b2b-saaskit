@@ -1,15 +1,12 @@
 import react from '@astrojs/react';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import { defineConfig } from 'astro/config';
 import checker from 'vite-plugin-checker';
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [react()],
-	output: 'hybrid',
-	adapter: vercel({
-		functionPerRoute: false,
-	}),
+	adapter: vercel({}),
 	// eslint-disable-next-line no-undef
 	site: process.env.SITE_URL,
 	vite: {

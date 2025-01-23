@@ -117,7 +117,7 @@ Drizzle migrations happen in two steps: the first step generates a migration fil
 To generate a migration file, run
 
 ```sh
-doppler run yarn drizzle-kit generate:pg
+doppler run yarn drizzle-kit generate
 ```
 
 This will generate a file called something like `src/db/migration/1234_xyz.sql`. Under normal circumstances, you wouldn't have to worry about this file - it will contain an auto-generated set of SQL statements needed to apply the changes expressed in your `schema.ts` to the database. However, since we're using Supabase Postgres, we have to take care of [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies when creating new tables.
@@ -295,7 +295,7 @@ const count = await helpers.counter.getCount.fetch();
 
 Note that in Astro, the code between `---` (called "frontmatter") runs on the server and is not sent to the client.
 
-You can think of `export const prerender = ...` as a per-route switch between SSG and SSR. `prerender = true` means "build-time" (SSG), and `prerender = false` means "request-time" (SSR). If `export const prerender` isn't defined, its default value depends on the value of `output` in the `astro.config.mjs` settings file. In our case, `output` is `hybrid`, which means `prerender = true` by default. For more info on this, see https://docs.astro.build/en/guides/server-side-rendering/.
+You can think of `export const prerender = ...` as a per-route switch between SSG and SSR. `prerender = true` means "build-time" (SSG), and `prerender = false` means "request-time" (SSR). If `export const prerender` isn't defined, its default value depends on the value of `output` in the `astro.config.mjs` settings file. In our case, `output` is `static`, which means `prerender = true` by default. For more info on this, see https://docs.astro.build/en/guides/server-side-rendering/.
 
 If you're familiar with other full-stack frameworks, using `prerender = false` is similar to `getServerSideProps` in Next.js and `loader` in Remix, while `prerender = true` is similar to getStaticProps in Next.js.
 
