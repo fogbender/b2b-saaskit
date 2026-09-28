@@ -60,7 +60,7 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 1. Install prerequisites
 
-   - Node.js 18.17, Node.js 20.3 or Node.js 22. See more in [Astro docs](https://docs.astro.build/en/install-and-setup/#prerequisites)
+   - Node.js 22.12.0 or Node.js 24. See more in [Astro docs](https://docs.astro.build/en/install-and-setup/#prerequisites)
 
 2. Clone repo, start app
 
