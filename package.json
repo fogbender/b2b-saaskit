@@ -21,7 +21,7 @@
   "dependencies": {
     "@astrojs/check": "0.9.4",
     "@astrojs/react": "4.1.6",
-    "@astrojs/vercel": "8.0.3",
+    "@astrojs/vercel": "8.2.11",
     "@propelauth/base-elements": "^0.0.16",
     "@propelauth/node": "^2.1.0",
     "@propelauth/react": "2.1.0-beta.4",
@@ -84,6 +84,6 @@
     "typescript-eslint": "^8.0.1"
   },
   "engines": {
-    "node": "^18.17.1 || ^20.3.0 || >=22.0.0"
+    "node": ">=22.12.0"
   }
 }
