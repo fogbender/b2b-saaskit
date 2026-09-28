@@ -60,8 +60,8 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 1. Install prerequisites
 
-   - Node.js 22.12.0 or Node.js 24. See more in [Astro docs](https://docs.astro.build/en/install-and-setup/#prerequisites)
-   - Corepack, which pins pnpm from the `packageManager` field. Node 24 still bundles Corepack as experimental. Node 25+ does not ship it, so install it first with `npm i -g corepack` (or run the same Corepack commands via `npx corepack`)
+   - Node.js 22.14 or Node.js 24. See more in [Astro docs](https://docs.astro.build/en/install-and-setup/#prerequisites)
+   - Corepack, which pins pnpm from the `packageManager` field. Node 24 still bundles Corepack as experimental. Node 25+ does not ship it, so install it first with `npm i -g corepack`
 
 2. Clone repo, start app
 

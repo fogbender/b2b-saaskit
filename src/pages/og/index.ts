@@ -53,7 +53,7 @@ export const GET: APIRoute = async (request) => {
 	const pngData = resvg.render();
 	const pngBuffer = pngData.asPng();
 
-	return new Response(new Uint8Array(pngBuffer), {
+	return new Response(pngBuffer, {
 		headers: {
 			'Content-Type': 'image/png',
 			'cache-control': import.meta.env.DEV ? 'no-store' : 'public, max-age=31536000, immutable',

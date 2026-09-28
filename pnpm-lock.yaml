@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  posthog-js: 1.69.0
-  vite-plugin-checker: 0.6.2
-  '@resvg/resvg-js': 2.4.1
-
 importers:
 
   .:
@@ -32,7 +27,7 @@ importers:
         specifier: 2.1.0-beta.4
         version: 2.1.0-beta.4(debug@4.4.0(supports-color@7.2.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@resvg/resvg-js':
-        specifier: 2.4.1
+        specifier: ^2.4.1
         version: 2.4.1
       '@t3-oss/env-core':
         specifier: ^0.6.0
@@ -104,7 +99,7 @@ importers:
         specifier: ^3.4.4
         version: 3.4.4
       posthog-js:
-        specifier: 1.69.0
+        specifier: ^1.69.0
         version: 1.69.0
       posthog-node:
         specifier: ^3.1.1
@@ -140,7 +135,7 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1
       vite-plugin-checker:
-        specifier: 0.6.2
+        specifier: ^0.6.2
         version: 0.6.2(eslint@9.9.0(supports-color@7.2.0))(optionator@0.9.3)(typescript@5.5.4)(vite@6.0.11(@types/node@20.4.0)(tsx@4.17.0)(yaml@2.6.0))
       wretch:
         specifier: ^2.5.2

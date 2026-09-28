@@ -3,7 +3,3 @@ allowBuilds:
   sharp: true
   protobufjs: true
   '@resvg/resvg-js': true
-overrides:
-  posthog-js: 1.69.0
-  vite-plugin-checker: 0.6.2
-  '@resvg/resvg-js': 2.4.1

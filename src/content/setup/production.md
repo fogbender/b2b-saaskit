@@ -102,9 +102,11 @@ Note that the Supabase free tier has a limit of 2 projects.
 
    - See https://vercel.com/docs/concepts/deployments/git/vercel-for-github
 
-3. Note that if your Vercel subdomain ended up being different from the one used in the 2nd step of PropelAuth settings above, make sure to update "Primary Frontend Location" in PropelAuth to your actual Vercel subdomain
+3. Make the Vercel build use the pinned pnpm 11 from `packageManager`. The repo cannot set this. In the Vercel project, add environment variable `ENABLE_EXPERIMENTAL_COREPACK` = `1` (Production, Preview, and Development). Projects created before 2025-02-24 otherwise install with pnpm 9, which fails on this lockfile (`packages field missing or empty`). Node 24 still bundles Corepack as experimental; this flag turns it on for the install.
 
-4. Configure Vercel to use production secrets from Doppler by using the <a href="https://www.doppler.com/integrations/vercel" >Doppler Vercel integration</a>. For additional information, see <a href="https://docs.doppler.com/docs/vercel">https://docs.doppler.com/docs/vercel</a>
+4. Note that if your Vercel subdomain ended up being different from the one used in the 2nd step of PropelAuth settings above, make sure to update "Primary Frontend Location" in PropelAuth to your actual Vercel subdomain
+
+5. Configure Vercel to use production secrets from Doppler by using the <a href="https://www.doppler.com/integrations/vercel" >Doppler Vercel integration</a>. For additional information, see <a href="https://docs.doppler.com/docs/vercel">https://docs.doppler.com/docs/vercel</a>
 
 #### Astro
 
