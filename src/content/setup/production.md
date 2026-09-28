@@ -41,7 +41,7 @@ A great next step is to learn how to deploy your version of the app to productio
 Note that the Supabase free tier has a limit of 2 projects.
 
 1. Create a new Supabase project and save the new database URL with `doppler secrets set DATABASE_URL --config prd`
-2. Run `doppler run --config prd yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>.
+2. Run `doppler run --config prd pnpm migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>.
 
 #### PropelAuth GitHub OAuth (optional)
 
@@ -87,7 +87,7 @@ Note that the Supabase free tier has a limit of 2 projects.
 
 #### Check build
 
-1. Make sure you can still build the project locally with `doppler run --config prd yarn build`
+1. Make sure you can still build the project locally with `doppler run --config prd pnpm build`
 
 #### Publish to GitHub, deploy to Vercel
 

@@ -6,7 +6,7 @@ The two main benefits of Vercel is that it's free to start and its industry-lead
 
 To remove the Vercel adapter, follow these steps:
 
-- `yarn remove @astrojs/vercel`
+- `pnpm remove @astrojs/vercel`
 - Edit `astro.config.mjs` and remove two lines of code:
 
 ```diff

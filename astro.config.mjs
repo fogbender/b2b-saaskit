@@ -14,7 +14,7 @@ export default defineConfig({
 			checker({
 				typescript: true,
 				overlay: { initialIsOpen: false, badgeStyle: 'left: 55px; bottom: 8px;' },
-				enableBuild: false, // we already check that in `yarn ci:check`
+				enableBuild: false, // we already check that in `pnpm ci:check`
 			}),
 		],
 		optimizeDeps: {

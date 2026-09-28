@@ -15,6 +15,6 @@ It takes some effort to open a Stripe account, with details falling outside the 
 
 1. Create a product of type "subscription" and store its API ID with `doppler secrets set STRIPE_PRICE_ID`
 
-1. Restart `doppler run yarn dev` to move to the next section of the tutorial
+1. Restart `doppler run pnpm dev` to move to the next section of the tutorial
 
 At this point, you should be able purchase a (test) subscription on http://localhost:3000/app/settings. For test card numbers, see <a href="https://stripe.com/docs/testing">https://stripe.com/docs/testing</a>.

@@ -3,18 +3,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout actions
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Prepare actions
         uses: ./.github/actions/prepare
       - name: Sync astro
-        run: yarn astro sync
+        run: pnpm astro sync
       - name: Type Checking
-        run: yarn ci:check
+        run: pnpm ci:check
       - uses: mshick/add-pr-comment@v2
         if: failure()
         with:
           message-failure: |
-            Uh oh! TypeScript found some issues. Please confirm it's fixed with `yarn ci:check`.
+            Uh oh! TypeScript found some issues. Please confirm it's fixed with `pnpm ci:check`.
 
 name: TypeScript Check
 

@@ -13,4 +13,4 @@ OpenAI does not come with a free tier, but all new accounts get a $5 credit that
 
 1. Save the API key with `doppler secrets set OPENAI_API_KEY`
 
-1. Restart `doppler run yarn dev` to move to the next section of the tutorial
+1. Restart `doppler run pnpm dev` to move to the next section of the tutorial

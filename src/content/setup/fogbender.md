@@ -15,4 +15,4 @@ Fogbender is free for 2 customer-facing agents and unlimited "readers" (agents w
 
 4. Run `doppler secrets set FOGBENDER_SECRET` and paste the secret as the value
 
-5. Restart `doppler run yarn dev` to move to the next section of the tutorial
+5. Restart `doppler run pnpm dev` to move to the next section of the tutorial

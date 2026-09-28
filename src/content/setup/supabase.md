@@ -20,6 +20,6 @@ Supabase is free for 2 lightweight projects.
 
 4. Run `doppler secrets set DATABASE_URL` and set it the string from step 3
 
-5. Run `doppler run yarn migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>
+5. Run `doppler run pnpm migrate` to initialize the database. You should see your new tables in the <a href="https://app.supabase.com/project/_/editor" >Supabase table editor</a>
 
-6. Restart `doppler run yarn dev` to move to the next section of the tutorial
+6. Restart `doppler run pnpm dev` to move to the next section of the tutorial
