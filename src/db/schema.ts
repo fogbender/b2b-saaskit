@@ -15,8 +15,8 @@ import {
 // 1. run `doppler run npx drizzle-kit generate` to generate migrations
 // 2. (IMPORTANT) if you are creating new tables you would need to manually
 //    edit SQL file to add row level security policies
-// 3. once this is done, run `doppler run yarn migrate` to apply the migration
-// 4. don't forget to run `doppler run yarn migrate --config prd` to apply migrations in production
+// 3. once this is done, run `doppler run pnpm migrate` to apply the migration
+// 4. don't forget to run `doppler run pnpm migrate --config prd` to apply migrations in production
 
 /* ```sql
 ALTER TABLE prompts ENABLE ROW LEVEL SECURITY;

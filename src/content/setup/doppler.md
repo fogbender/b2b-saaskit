@@ -23,4 +23,4 @@ Keep in mind that you have the option of using the web interface as well (or ins
 
 1. Run `doppler secrets` to make sure that it's actually set
 
-1. Restart the project with `doppler run yarn dev` (instead of `yarn dev`). If everything worked out, you should see a green checkmark ✅ on this section of the tutorial, with the next section expanded
+1. Restart the project with `doppler run pnpm dev` (instead of `pnpm dev`). If everything worked out, you should see a green checkmark ✅ on this section of the tutorial, with the next section expanded

@@ -3,16 +3,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout actions
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Prepare actions
         uses: ./.github/actions/prepare
       - name: Prettier
-        run: yarn fmt --check --write=false
+        run: pnpm fmt --check --write=false
       - uses: mshick/add-pr-comment@v2
         if: failure()
         with:
           message-failure: |
-            Uh oh! Prettier found some formatting issues. Please run `yarn fix` and commit the changes.
+            Uh oh! Prettier found some formatting issues. Please run `pnpm fix` and commit the changes.
 
 name: Prettier
 

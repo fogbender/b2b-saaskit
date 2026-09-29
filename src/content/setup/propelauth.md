@@ -25,4 +25,4 @@ NOTE: to exit Doppler CLI after setting the value, type Enter twice, then type "
 
 1. Click on "Create New API Key" give it a name "b2b localhost", copy the key and save it with `doppler secrets set PROPELAUTH_API_KEY`
 
-1. Restart `doppler run yarn dev` to move to the next section of the tutorial
+1. Restart `doppler run pnpm dev` to move to the next section of the tutorial

@@ -8,13 +8,13 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "full:check": "yarn fix && yarn ci:check && doppler run --config prd yarn build",
+    "full:check": "pnpm fix && pnpm ci:check && doppler run --config prd pnpm build",
     "ci:check": "astro check && tsc --noEmit",
     "preview": "astro preview",
     "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
     "fmt": "prettier --write --ignore-unknown .",
-    "fix": "yarn lint:fix; yarn fmt",
-    "lint:fix": "yarn lint --fix",
+    "fix": "pnpm lint:fix; pnpm fmt",
+    "lint:fix": "pnpm lint --fix",
     "migrate": "tsx src/db/scripts/migrate",
     "astro": "astro"
   },
@@ -47,6 +47,7 @@
     "jotai": "^2.2.2",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.1",
+    "nanoid": "^3.3.8",
     "postgres": "^3.4.4",
     "posthog-js": "^1.69.0",
     "posthog-node": "^3.1.1",
@@ -57,10 +58,12 @@
     "satori": "^0.10.1",
     "solid-js": "^1.7.6",
     "stripe": "^12.12.0",
+    "superjson": "^1.10.0",
     "tsx": "^4.17.0",
     "unthunk": "^0.0.1",
     "vite-plugin-checker": "^0.6.2",
-    "wretch": "^2.5.2"
+    "wretch": "^2.5.2",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -84,6 +87,7 @@
     "typescript-eslint": "^8.0.1"
   },
   "engines": {
-    "node": ">=22.12.0"
-  }
+    "node": ">=22.14.0"
+  },
+  "packageManager": "pnpm@10.34.6+sha512.7e1ae66a83a9143c118cc1944f37cc4f2b8acddeda4b001cfa78908f6e46e45e15292739ca6c9d026426cc757e9318cc98c5551d6a16c165097b0028ba87b4e6"
 }

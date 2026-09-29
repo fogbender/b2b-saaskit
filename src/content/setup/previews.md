@@ -32,7 +32,7 @@ There are multiple ways of dealing with this, but in this guide we're going to u
 
 1. Create a new DB. Keep in mind that Supabase only allows two free projects - you won't be able to use the same free Supabase account for separate development, preview, and production databases. Configure `DATABASE_URL` with `doppler secrets set DATABASE_URL --config prd_preview`
 
-1. To run migrations, use `doppler run --config prd_preview yarn migrate`
+1. To run migrations, use `doppler run --config prd_preview pnpm migrate`
 
 #### Supabase - Option 2, using the development DB
 
@@ -40,7 +40,7 @@ There are multiple ways of dealing with this, but in this guide we're going to u
 
 1. Set `DATABASE_URL` with `doppler secrets set DATABASE_URL --config prd_preview` to the value from the previous step
 
-1. Run migrations with `doppler run --config dev yarn migrate` - `--config dev` works, because development and preview environments share the same database
+1. Run migrations with `doppler run --config dev pnpm migrate` - `--config dev` works, because development and preview environments share the same database
 
 #### Supabase - Option 3, using the production DB
 

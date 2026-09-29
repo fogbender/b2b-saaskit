@@ -1,0 +1,7 @@
+packages:
+  - '.'
+allowBuilds:
+  esbuild: true
+  sharp: true
+  protobufjs: true
+  '@resvg/resvg-js': true

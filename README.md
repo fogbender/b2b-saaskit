@@ -60,7 +60,8 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 
 1. Install prerequisites
 
-   - Node.js 22.12.0 or Node.js 24. See more in [Astro docs](https://docs.astro.build/en/install-and-setup/#prerequisites)
+   - Node.js 22.14 or Node.js 24. See more in [Astro docs](https://docs.astro.build/en/install-and-setup/#prerequisites)
+   - Corepack, which pins pnpm 10 from the `packageManager` field. Node 24 still bundles Corepack as experimental. Node 25+ does not ship it, so install it first with `npm i -g corepack`
 
 2. Clone repo, start app
 
@@ -68,9 +69,9 @@ B2B companies are fairly common - for example, over 40% of <a href="https://www.
 git clone https://github.com/fogbender/b2b-saaskit.git
 cd b2b-saaskit
 corepack enable
-corepack prepare yarn@1.22.19 --activate
-yarn
-yarn dev
+corepack install
+pnpm install
+pnpm dev
 ```
 
 3. Open http://localhost:3000 in a browser tab - you should see a page titled "Welcome to Prompts with Friends"
@@ -115,7 +116,7 @@ Drizzle migrations happen in two steps: the first step generates a migration fil
 To generate a migration file, run
 
 ```sh
-doppler run yarn drizzle-kit generate
+doppler run pnpm drizzle-kit generate
 ```
 
 This will generate a file called something like `src/db/migration/1234_xyz.sql`. Under normal circumstances, you wouldn't have to worry about this file - it will contain an auto-generated set of SQL statements needed to apply the changes expressed in your `schema.ts` to the database. However, since we're using Supabase Postgres, we have to take care of [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies when creating new tables.
@@ -130,7 +131,7 @@ CREATE POLICY "service" ON "public"."example" AS PERMISSIVE FOR ALL TO service_r
 Finally, run the migration:
 
 ```sh
-doppler run yarn migrate
+doppler run pnpm migrate
 ```
 
 If you open your Postgres console (e.g., Supabase or psql), you'll see the new table.
@@ -138,7 +139,7 @@ If you open your Postgres console (e.g., Supabase or psql), you'll see the new t
 Migrating your development database will not migrate the production one. To migrate production, run `migrate` with production configuration:
 
 ```sh
-doppler run yarn migrate --config prd
+doppler run pnpm migrate --config prd
 ```
 
 </details>
